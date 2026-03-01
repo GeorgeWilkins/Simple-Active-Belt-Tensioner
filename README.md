@@ -4,6 +4,9 @@ A haptic device for sim racing, designed specifically for people who do not have
 It requires **no soldering or programming** and can be built for **as little as ~210 GBP**, using easy-to-obtain components and some printed parts.
 
 ![20260222_164041](https://github.com/user-attachments/assets/2179f3e5-fdd0-48b4-a8db-6886b8e6a477)
+![Overview](https://github.com/user-attachments/assets/0b368048-69bc-4125-be12-c66637d15133)
+
+
 
 ## What Is It?
 
@@ -56,6 +59,14 @@ The cost of the printed parts will depend largely on your choice of priting proc
 | 60~90 | MJF/SLS Service | [JLC3DP](http://jlc3dp.com/) and [3DPrintUK](http://3dprint-uk.co.uk/) used for reference pricing (nylon dyed black with peening) |
 
 Note that you will need [SimHub Licensed Edition](https://www.simhubdash.com/get-a-license/) (currently **8 EUR** or more) to use this device.
+
+## How Does It Work?
+
+The two motors are anchored to your rig with printed brackets. A self-orienting pulley is attached to the face of each motor.
+
+The ends of each shoulder belt are attached to lengths UHMWPE/Dyneema cord, which are wrapped around each motor pulley.
+
+When SimHub sends game telemetry to our plugin, it converts this into torque commands and send them to the motors over a serial connection.
 
 ## How Does It Perform?
 
