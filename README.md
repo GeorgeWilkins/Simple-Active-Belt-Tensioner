@@ -4,7 +4,8 @@ A haptic device for sim racing, designed specifically for people who do not have
 It requires **no soldering or programming** and can be built for **as little as ~210 GBP**, using easy-to-obtain components and some printed parts.
 
 ![20260222_164041](https://github.com/user-attachments/assets/2179f3e5-fdd0-48b4-a8db-6886b8e6a477)
-![Overview](https://github.com/user-attachments/assets/0b368048-69bc-4125-be12-c66637d15133)
+
+![Overview](https://github.com/user-attachments/assets/7bf4e79b-7a66-4d18-92bf-b6108b6370fb)
 
 
 
