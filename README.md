@@ -1,17 +1,16 @@
 # Simple Active Belt Tensioner
+
 A haptic device for sim racing, designed specifically for people who do not have a background in software or electronics.
 
 It requires **no soldering or programming** and can be built for **as little as ~210 GBP**, using easy-to-obtain components and some printed parts.
 
-<img width="1703" height="1277" alt="image" src="https://github.com/user-attachments/assets/e5b356b7-595d-4174-a9b4-3269f77e686b" />
+![Tensioner](https://github.com/user-attachments/assets/e5b356b7-595d-4174-a9b4-3269f77e686b)
 
 ![Overview](https://github.com/user-attachments/assets/03607090-3a0a-4d38-a8ac-7460096c6493)
 
-
-
 ## What Is It?
 
-An _active belt tensioner_ is a device that attaches to your sim rig and racing harness. It actively tensions the harness in response to game telemetry; giving a sense of the forces you'd be experencing in a vehicle when changing speed, braking, cornering and jumping/landing.
+An _active belt tensioner_ is a device that attaches between your sim rig and the anchor points of your racing harness. It dynamically tensions the harness in response to game telemetry; giving a sense of the forces you'd be experencing in a vehicle when changing speed, braking, cornering and jumping/landing.
 
 It works with **any game fully supported by [SimHub](https://www.simhubdash.com/)**, but the current software is designed primarily for racing games and simluators.
 
@@ -20,7 +19,7 @@ This project consists of three parts:
 - Printable [parts](#) and instructions on how to assemble them
 - A _SimHub_ [plugin](#) that controls the hardware and allows customisation of the effects
 
-The printable files and software are **completely free** (except the required [SimHub License](https://www.simhubdash.com/get-a-license/)). The printed part designs are `CERN-OHL-P` licensed (open-source), which essentially means you can do what you like with them, including selling printed/machined parts kits.
+The printable files and software are **completely free** (except the required [SimHub License](https://www.simhubdash.com/get-a-license/)). The printed part designs are `CERN-OHL-P` licensed (open-source), and the software is `MIT` licensed, which essentially means you can do what you like with either; including selling printed/machined parts kits.
 
 ### Design Goals
 - Low Cost
@@ -34,7 +33,9 @@ The printable files and software are **completely free** (except the required [S
 
 Anyone with a sim rig that desires a more immersive experience. It's a plug-and-play design that requires no soldering or progamming, so virtually anyone can build it.
 
-Note that you'll need either an _aluminium profile_ (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) or _2" tubular steel_ (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) rig frame to mount this using the [available brackets](#). Mounting to other types of rig is possible, but you'll need to design and fabricate your own brackets. _Folding-seat_ rigs (e.g. [Playseat Challenge](https://www.playseat.com/)) are _not suitable_.
+Note that you'll need either an _aluminium profile_ (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) or _2" tubular steel_ (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) sim rig frame to mount this using the [available brackets](#). Mounting to other types of rig is possible, but you'll need to design and fabricate your own brackets (or [get in touch](mailto:sabt@georgewilkins.co.uk) with me). _Folding-seat_ rigs (e.g. [Playseat Challenge](https://www.playseat.com/)) are _not suitable_.
+
+I would reccommend installing tactile tranducers (bass shakers) before embarking on belt tensioners and other exotic haptic system. Tranducers are by far the simplest and cheapest way of adding real immersion to your experience.
 
 ## What Does It Cost?
 
@@ -47,7 +48,7 @@ If you have your own 3D printer, as little as **210 GBP**. If not, **250~300 GBP
 | 8 | 2 x Bearings | 6809ZZ bearings (for the pulleys) |
 | 7 | M2.5 Screw & Nut Set | A low-cost set that contains every needed fastener (and _many_ spares) |
 | 10 | 2 x 1M UHMWPE/Dyneema Cord | The low-friction high-strength cord for the pulleys (1.5~2.0MM Diameter) |
-| 20 | 12V 3A DC Power Supply | The power supply for the board and motors (5.5x2.5MM power jack or XT60 connector) |
+| 20 | 15V 3A DC Power Supply | The power supply for the board and motors (5.5x2.5MM power jack or XT60 connector) |
 | 25 | 5-Point 2" Harness | A low-cost Aliexpress model or used/expired FIA harness |
 | **210** | **Total** | Excluding printables |
 
@@ -93,3 +94,5 @@ For comparison, the [QS-BT1](https://qubicsystem.com/product/qs-bt1) claims a _"
 Since seat and harness designs vary massively, I cannot provide _belt clamp_ and _belt roller_ designs for every combination. The included belt clamp is intended for 2" wide belts of up to 2MM thickness.
 
 Rollers aren't strictly needed on most seats, but recommended for the smoothest experience. As a simple low-cost solution, you can place UHMW low-friction adhesive tape over the contact points in the seat holes to reduce wear and increase smoothness.
+
+I've settled on `15V` for the power supply as being comfortably in the operational range of the motors and driver board. This seems to work reliably while driving the motors _energetically enough_. Theoretically both will tolerate up to `24V` supply, but I've not tried this. Back-driving the motors (e.g. by pulling fast on the belts) can raise the bus voltage over the supply, which when using a `24V` supply may mean overvolting the board and motors. If you intend to use a higher voltage supply, make sure you add a diode and capacitor between the board and motor to protect both from over-voltage. A `19V` laptop-style power suppply may be a good compromise.

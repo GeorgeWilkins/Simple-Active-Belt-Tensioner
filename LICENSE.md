@@ -4,12 +4,26 @@ The printable files and plans included within this repository are _open-source_ 
 - Print, modify and redistribute the files and/or hardware based upon them
 - Sell hardware (e.g. printed parts, component kits or pre-built systems) based upon them
 
-The SimHub plugin `DLL` is closed-source but freely downloadable. You may redistribute the `DLL` plugin file without modification, but may not charge for or otherwise restrict access to it.
+The SimHub plugin `DLL` and its source files are also _open-source_ (see **MIT** license details below) and you are free to:
+- Modify, recompile and distribute the software in binary or source forms
+- Sell products based upon this software
 
-You may not use the `GW` brand, logo or name. You may not imply any _endorsement_ by the author of this repository when selling hardware or software based or dependant upon it.
+You may not use the `GW` brand, logo or name. You may not imply any _endorsement_ by the author of this repository when selling hardware or software based-on or dependant-upon it.
+
+You may not sell commercial solutions based upon this project and then direct your customers to this repository and its authors for support or warranty purposes.
 
 Any queries regarding commercial use or collaboration should be directed to
 [sabt@georgewilkins.co.uk](mailto:sabt@georgewilkins.co.uk).
+
+## MIT Licence
+
+Copyright (c) [2026] [George Wilkins]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ## CERN Open Hardware Licence Version 2 - Permissive
 
