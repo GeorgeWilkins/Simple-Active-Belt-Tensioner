@@ -83,7 +83,7 @@ The maximum force appliable by these motors with the current pulley design is es
 
 This is plenty to give extra immersion and feedback, but significantly less than you'd feel in a real vehicle at motorsport velocities.
 
-For comparison, the [QS-BT1](https://qubicsystem.com/product/qs-bt1) claims a _"41Kg sustained pulling force"_, but is a considerably larger and costs six times more.
+For comparison, the [QS-BT1](https://qubicsystem.com/product/qs-bt1) claims _"20.5 kg/45 lbs/200 N per channel"_, but is a considerably larger and costs six times more.
 
 ## Where Can I See It In Action?
 
