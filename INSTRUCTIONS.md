@@ -112,6 +112,15 @@ Since the motors are technically _wheels_, they come pre-fitted with rubber trea
 6. Install the pulley onto the motor hub
 7. Insert and tighten three `M2.5x12MM` screws into the face plate
 
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Parts.png" alt="Pulley Parts" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Bearing%20Fitting.png" alt="Pulley Bearing Fitting" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Bearing%20Fitted.png" alt="Pulley Bearing Fitted" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Face%20Fitted.png" alt="Pulley Face Fitted" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Hub%20Fitted.png" alt="Pulley Hub Fitted" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Cord%20Fitting.png" alt="Pulley Cord Fitting" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Cord%20Fitted.png" alt="Pulley Cord Fitted" />
+<br style="clear: both;" />
+
 ### Belt Clamps
 
 1. Insert `M2.5` nuts into the hexagonal holes on the underside of the rear clamp part (as deeply as they will go)

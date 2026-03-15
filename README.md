@@ -1,12 +1,14 @@
+![Diagram](Assets/Diagram.svg)
+
 # Simple Active Belt Tensioner
 
 A haptic device for sim racing, designed specifically for people who do not have a background in software or electronics.
 
 It requires **no soldering or programming** and can be built for **as little as ~210 GBP**, using easy-to-obtain components and some printed parts.
 
-![Tensioner](https://github.com/user-attachments/assets/e5b356b7-595d-4174-a9b4-3269f77e686b)
-
-![Overview](https://github.com/user-attachments/assets/03607090-3a0a-4d38-a8ac-7460096c6493)
+<img align="left" width="49%" height="auto" src="Assets/Installed%20Belts.png" alt="Belts" />
+<img align="right" width="49%" height="auto" src="Assets/Installed%20Pulley.png" alt="Pulleys" />
+<br style="clear: both;" />
 
 ## What Is It?
 
