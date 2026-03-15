@@ -6,6 +6,8 @@ Everything you need to know about building a tensioner of your own is in this do
 
 ### Choosing Your Brackets
 
+<img align="right" width="30%" height="auto" style="margin: 0 0 5% 5%" src="Assets/Bracket%20Example.png" alt="Printed Bracket Example" />
+
 There are two main types of sim rig frame; _tubular_ and _profile_ (also known as _aluminium extrustion_):
 - Tubular frames (e.g. GT Omega Titan) typically use `2"` steel tubing that is mandrel-bent and welded together
 - Profile rigs (e.g. GT Omega Prime) typically use `40-Series` aluminium extrusion that is bolted together
@@ -40,6 +42,8 @@ Irrespective of your bracket choice above, you'll also need to print **all of th
 | [Controller Case (Base).step](#) | `1` | The base for the controller board box |
 
 ### Self Printing
+
+<img align="right" width="50%" height="auto" style="margin: 0 0 5% 5%" src="Assets/Printed%20Parts%20Example.png" alt="Printed Parts Example" />
 
 Obviously if you have your own 3D printer, you can print these yourself. These parts have been designed with hobby FDM printers in mind.
 
@@ -131,6 +135,16 @@ Since the motors are technically _wheels_, they come pre-fitted with rubber trea
   - Tighen each bolt partially in a circular pattern until they are all tight, rather than trying to fully tighten one at a time
   - Once fully tightened, the two clamp parts should be fully touching with ni visible gap between them
 
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Parts.png" alt="Belt Clamp Parts" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Nuts%20Fitted.png" alt="Belt Clamp Nuts Fitted" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Cord%20Fitted.png" alt="Belt Clamp Cord Fitted" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Belt%20Fitted.png" alt="Belt Clamp Belt Fitted" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Halves%20Positioned.png" alt="Belt Clamp Halves Positioned" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Being%20Secured.png" alt="Belt Clamp Being Secured" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Secured.png" alt="Belt Clamp Secured" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Completed.png" alt="Belt Clamp Completed" />
+<br style="clear: both;" />
+
 ### Brackets
 
 1. Feed the motor connectors and wires through the hole in the bracket:
@@ -146,6 +160,14 @@ Since the motors are technically _wheels_, they come pre-fitted with rubber trea
 2. Insert `M2.5` nuts into the hexangonal holes on the underside of the lower printed case (as deeply as they will go)
 3. Insert the board into the lower half of the printed case (the _Raspberry Pi_ header on the rear may be a tight fit here)
 4. Place the upper half of the case on to and secure with four `M2.5x16` bolts
+
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Control%20Board%20Parts.png" alt="Control Board Parts" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Control%20Board%20Nuts%20Fitted.png" alt="Control Board Nuts Fitted" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Control%20Board%20Switch%20Set.png" alt="Control Board Switch Set" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Control%20Board%20Fitted.png" alt="Control Board Fitted" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Control%20Board%20Cover%20Fitted.png" alt="Control Board Cover Fitted" />
+<img align="left" width="25%" height="auto" src="Assets/Assembly/Control%20Board%20Ports.png" alt="Control Board Ports" />
+<br style="clear: both;" />
 
 ## Adjustment
 
