@@ -8,9 +8,9 @@ The SimHub plugin `DLL` and its source files are also _open-source_ (see **MIT**
 - Modify, recompile and distribute the software in binary or source forms
 - Sell products based upon this software
 
-You may not use the `GW` brand, logo or name. You may not imply any _endorsement_ by the author of this repository when selling hardware or software based-on or dependant-upon it.
+You **may not** use the `GW` brand, logo or name. You **may not** imply any _endorsement_ by the author of this repository when selling hardware or software based-on or dependant-upon it.
 
-You may not sell commercial solutions based upon this project and then direct your customers to this repository and its authors for support or warranty purposes.
+You **must** support and warranty your commercial products _yourself_. This repository and its authors **are not** your support team or warranty provider.
 
 Any queries regarding commercial use or collaboration should be directed to
 [sabt@georgewilkins.co.uk](mailto:sabt@georgewilkins.co.uk).
