@@ -9,12 +9,12 @@ Everything you need to know about building a tensioner of your own is in this do
 <img align="right" width="30%" height="auto" style="margin: 0 0 5% 5%" src="Assets/Bracket%20Example.png" alt="Printed Bracket Example" />
 
 There are two main types of sim rig frame; _tubular_ and _profile_ (also known as _aluminium extrustion_):
-- Tubular frames (e.g. GT Omega Titan) typically use `2"` steel tubing that is mandrel-bent and welded together
-- Profile rigs (e.g. GT Omega Prime) typically use `40-Series` aluminium extrusion that is bolted together
+- **Tubular frames** (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) typically use `2"` steel tubing that is mandrel-bent into shape and welded together
+- **Profile rigs** (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) typically use `40-Series` aluminium extrusion that is bolted together in a modular fashion
 
-Suitable bracket designs for both types are provided below. Designs marked as `Verified` have been printed and successfully used by one or more people.
+Suitable bracket designs for both types are provided below. Designs marked as `Verified` have been printed and successfully used by at least one person. [Let me know](mailto:sabt@georgewilkins.co.uk) if you try an `Unverified` bracket so I can update this list and/or amend the design.
 
-**You only need to print _one_ of these options**. Remember that you need **two** brackets; one for each motor...
+**You only need to print _one_ of these options**. They are all _symetrical_ in design, so you just need to print **two** of the same model (one for each motor)...
 
 | File | For | Orientation | Holes | Verified |
 | - | - | - | - | - |
@@ -23,9 +23,9 @@ Suitable bracket designs for both types are provided below. Designs marked as `V
 | [Bracket (40XX Profile, Angle).step](#) | `40-Series` Aluminium Profile | 45° Fixed | `M8` | ☐ |
 | [Bracket (30XX Profile, Flat).step](#) | `30-Series` Aluminium Profile | Perpendicular | `M8` | ☐ |
 | [Bracket (40XX Profile, Flat).step](#) | `40-Series` Aluminium Profile | Perpendicular | `M8` | ☐ |
-| [Bracket (2" Tube, Truss Clamp).step](#) | `2"` Steel Tube With [Truss Clamp](#) | 360° Variable | | 🗹 |
+| [Bracket (2" Tube, Truss Clamp).step](#) | `2"` Steel Tube With [Truss Clamp](https://www.amazon.co.uk/dp/B07DMHGLWR?th=1) | 360° Variable | | 🗹 |
 
-If none of these are suitable for your rig, [get in touch](#) and we'll see if we can design something.
+If none of these are suitable for your rig, [get in touch](mailto:sabt@georgewilkins.co.uk) and we'll see if we can design something.
 
 ### Other Printed Parts
 
