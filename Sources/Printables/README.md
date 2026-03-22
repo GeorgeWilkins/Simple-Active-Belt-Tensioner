@@ -8,6 +8,7 @@ Note that these files are without any branding.
 
 | File | Part | Description |
 | - | - | - |
+| [Controller Case.FCStd](Controller%20Case.FCStd) | Controller Case | The two halves of the **controller case** |
 | [Belt Clamp.FCStd](Belt%20Clamp.FCStd) | Belt Clamp | The two halves of the **belt clamp** |
 | [Corner Bracket (30~40MM Profile).FCStd](Corner%20Bracket%20(30~40MM%20Profile).FCStd) | Motor Bracket | A motor bracket designed to be **corner-mounted** to `30MM` or `40MM` aluminium profile |
 | [Flat Bracket (30~40MM Profile).FCStd](Flat%20Bracket%20(30~40MM%20Profile).FCStd) | Motor Bracket | A motor bracket designed to be **flat-mounted** to `30MM` or `40MM` aluminium profile |
