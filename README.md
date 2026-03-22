@@ -6,9 +6,7 @@ A haptic device for sim racing, designed specifically for people who do not have
 
 It requires **no soldering or programming** and can be built for **as little as ~210 GBP**, using easy-to-obtain components and some printed parts.
 
-<img align="left" width="49%" height="auto" src="Assets/Installed%20Belts.png" alt="Belts" />
-<img align="right" width="49%" height="auto" src="Assets/Installed%20Pulley.png" alt="Pulleys" />
-<br style="clear: both;" />
+<img alt="Belt Clamps" src="https://github.com/user-attachments/assets/431fbec1-53f8-4b44-bab7-e9f08b6276c0" />
 
 ## What Is It?
 
@@ -17,9 +15,9 @@ An _active belt tensioner_ is a device that attaches between your sim rig and th
 It works with **any game fully supported by [SimHub](https://www.simhubdash.com/)**, but the current software is designed primarily for racing games and simluators.
 
 This project consists of three parts:
-- A shopping list of [components](#), readily available from online sellers
-- Printable [parts](#) and instructions on how to assemble them
-- A _SimHub_ [plugin](#) that controls the hardware and allows customisation of the effects
+- A shopping list of [components](#what-does-it-cost), readily available from online sellers
+- Printable [parts](/Printables/) and instructions on how to assemble them
+- A _SimHub_ [plugin](/Plugin/) that controls the hardware and allows customisation of the effects
 
 The printable files and software are **completely free** (except the required [SimHub License](https://www.simhubdash.com/get-a-license/)). The printed part designs are `CERN-OHL-P` licensed (open-source), and the software is `MIT` licensed, which essentially means you can do what you like with either; including selling printed/machined parts kits.
 
