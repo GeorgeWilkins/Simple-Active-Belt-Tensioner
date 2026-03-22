@@ -83,7 +83,7 @@ The rest of the parts can be obtained from virtually anywhere, including [Amazon
 | `20 GBP` | Controller | Waveshare DDSM Hub Motor Driver Board | [PiHut UK](https://thepihut.com/products/ddsm-hub-motor-driver-board) |
 | `8 GBP` | 2 x Bearings | 6809ZZ bearings (for the pulleys) | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DLV2ND) |
 | `7 GBP` | M2.5 Screw & Nut Set | Four M2.5x16 (or x18) + Eight M2.5x10 + Six M2.5x12 + Six M2.5x20 | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
-| `10 GBP` | 2 x 1M UHMWPE/Dyneema Cord | The low-friction high-strength cord for the pulleys (1.5~2.0MM Diameter) | [Amazon UK](https://www.amazon.co.uk/dp/B0957PH16Q) |
+| `10 GBP` | 1M UHMWPE/Dyneema Cord | The low-friction high-strength cord for the pulleys (1.5~2.0MM Diameter) | [Amazon UK](https://www.amazon.co.uk/dp/B0957PH16Q) |
 | `20 GBP` | 15V 3A DC Power Supply | The power supply for the board and motors (5.5x2.5MM power jack or XT60 connector) | [Amazon UK](https://www.amazon.co.uk/dp/B09CPFVJVC) |
 | `25 GBP` | 5-Point 2" Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
 
@@ -104,26 +104,18 @@ Since the motors are technically _wheels_, they come pre-fitted with rubber trea
 
 ### Pulleys
 
-1. Press the bearing into the largest part. This should be possible by hand. The accuracy/roughness of your print will dictate how easy this is:
-  - If the fit is too tight, use a hammer to _gently_ tap it in (alternating sides with each tap) or consider shaving away some material with a knife or file
-  - If the fit is too loose, cut up a drinks can and shim around the edges of the bearing to fill in the gap (ensuring the shims do no protrude)
-2. Thread one end of the cord through one of the pulley cover holes:
-  - For the left pulley, use the hole marked with 'L' inside the pulley cover
-  - For the right pulley, use the hole marked with 'R' inside the pulley cover
-3. Tie a tight knot in the end, then remove any excess cord after the knot
-4. Push the knot into the base plate (the one with a large triangular hole), then fit the base plate onto the motor hub, with the knot facing the motor
-5. Place the pulley face plate into the bearing hole
-6. Install the pulley onto the motor hub
-7. Insert and tighten three `M2.5x12MM` screws into the face plate
+| Step | Instructions | Guide |
+| :-: | ------- | :-: |
+| 1 | Assemble the four pulley parts; the bearing, the outer cover, the face plate and hub.<br /><br />Note that the pulley design is subject to ongoing refinement; so the exact design may look slightly different to the pictures shown. The assemby process is the same though | <img src="Assets/Assembly/Pulley%20Parts.png" alt="Pulley Parts" /> |
+| 2 | Press the bearing into the outer cover. This should be possible by hand. The accuracy/roughness of your print will dictate how easy this is.<br /><br />If the fit is too tight, use a hammer to _gently_ tap it in (alternating sides with each tap) or consider shaving away some material with a knife or file.<br /><br />If the fit is too loose, cut up a drinks can and shim around the edges of the bearing to fill in the gap (ensuring the shims do no protrude) | <img src="Assets/Assembly/Pulley%20Bearing%20Fitting.png" alt="Pulley Bearing Fitting" /><img src="Assets/Assembly/Pulley%20Bearing%20Fitted.png" alt="Pulley Bearing Fitted" /> |
+| 3 | Insert the pulley face from the front so it sits inside the inner ring of the bearing. The notes above regarding fitting tolerances apply here too | <img src="Assets/Assembly/Pulley%20Face%20Fitted.png" alt="Pulley Face Fitted" /> |
+| 4 | Insert the pulley hub over the top, so that the triangular shape on the face part pushes into the triangular hole of the hub. They may pop together or be loose depending on the tolerances of your print (either is fine). The slot in the hub for the cord should be facing outward | <img src="Assets/Assembly/Pulley%20Hub%20Fitted.png" alt="Pulley Hub Fitted" /> |
+| 6 | Cut a `0.5M` length of the _UHMWPE/Dyneema cord_ and tie a tight knot in the end, then remove any excess cord after the knot | <img src="Assets/Assembly/Pulley%20Cord%20Fitting.png" alt="Pulley Cord Fitting" /> |
+| 5 | Thread one end of the cord through one of the pulley cover holes. When assembling the _Left_ pulley, use the hole marked with `L` inside the pulley cover (or `R` for the _Right_ pulley). Push the knot into the cut-out in the pulley hub. It should stay in place relatively well | <img src="Assets/Assembly/Pulley%20Cord%20Fitted.png" alt="Pulley Cord Fitted" /> |
+| 8 | Install the pulley onto the motor hub and insert and tighten three `M2.5x12MM` screws into the face plate. Make sure that the cord stays in the cut-out when doing so | |
 
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Parts.png" alt="Pulley Parts" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Bearing%20Fitting.png" alt="Pulley Bearing Fitting" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Bearing%20Fitted.png" alt="Pulley Bearing Fitted" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Face%20Fitted.png" alt="Pulley Face Fitted" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Hub%20Fitted.png" alt="Pulley Hub Fitted" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Cord%20Fitting.png" alt="Pulley Cord Fitting" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Pulley%20Cord%20Fitted.png" alt="Pulley Cord Fitted" />
-<br style="clear: both;" />
+
+
 
 ### Belt Clamps
 
