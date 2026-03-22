@@ -2,6 +2,8 @@
 
 The files in this directory are what you need to print (or to have printed by a third party) to complete the kit.
 
+Since there are a couple of options to choose from, you should read this before selecting and printing (or ordering) your parts.
+
 ## Branded VS Unbranded
 
 The first choice you'll need to make is whether to use the [Branded](/Printables/Branded) or [Unbranded](/Printables/Unbranded) parts. The former have the [GW](https://georgewilkins.co.uk/) logo in various places. If you don't want that on your parts (or are **intending to sell pre-printed parts**), use the latter. You only need to print one set.
