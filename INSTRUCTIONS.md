@@ -97,10 +97,12 @@ If using the tubular brackets, you'll need to order two [2" Truss Clamps](https:
 
 ### Motors
 
-Since the motors are technically _wheels_, they come pre-fitted with rubber treads. We'll be removing these:
-1. Unscrew the three M2.5 bolts holding on motor face plate (using the hex wrench included in the screws kit)
-2. Apply pulling force towards the front (away from the axle) and gently wiggle off the rubber tread
-3. Keep the rubber treads and packaging in case you need to return a motor
+| Step | Instructions | Guide |
+| :-: | ------- | :-: |
+| 1 | Since the motors are technically _wheels_, they come pre-fitted with rubber treads. We'll be removing these | |
+| 1 | Unscrew the three M2.5 bolts holding on motor face plate (using the hex wrench included in the screws kit) | |
+| 2 | Apply pulling force towards the front (away from the axle) and gently wiggle off the rubber tread | |
+| 3 | Keep the rubber treads and packaging in case you need to return a motor | |
 
 ### Pulleys
 
@@ -114,52 +116,34 @@ Since the motors are technically _wheels_, they come pre-fitted with rubber trea
 | 5 | Thread one end of the cord through one of the pulley cover holes. When assembling the _Left_ pulley, use the hole marked with `L` inside the pulley cover (or `R` for the _Right_ pulley). Push the knot into the cut-out in the pulley hub. It should stay in place relatively well | <img src="Assets/Assembly/Pulley%20Cord%20Fitted.png" alt="Pulley Cord Fitted" /> |
 | 8 | Install the pulley onto the motor hub and insert and tighten three `M2.5x12MM` screws into the face plate. Make sure that the cord stays in the cut-out when doing so | |
 
-
-
-
 ### Belt Clamps
 
-1. Insert `M2.5` nuts into the hexagonal holes on the underside of the rear clamp part (as deeply as they will go)
-2. Tie a tight knot in other end of the cord you previously attached to the _Pulley_ (`50~60CM` is usually enough length)
-3. Push the knot into the circular detent in the rear clamp plate, so the cord comes out the bottom
-4. Place the end of the harness belt into the rectangular detent of the rear clamp plate (it may overlap the knot; that's fine)
-5. Push the front clamp plate down over both, and keep pressure on them while securing with four `M2.5x10` bolts:
-  - Tighen each bolt partially in a circular pattern until they are all tight, rather than trying to fully tighten one at a time
-  - Once fully tightened, the two clamp parts should be fully touching with ni visible gap between them
-
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Parts.png" alt="Belt Clamp Parts" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Nuts%20Fitted.png" alt="Belt Clamp Nuts Fitted" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Cord%20Fitted.png" alt="Belt Clamp Cord Fitted" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Belt%20Fitted.png" alt="Belt Clamp Belt Fitted" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Halves%20Positioned.png" alt="Belt Clamp Halves Positioned" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Being%20Secured.png" alt="Belt Clamp Being Secured" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Secured.png" alt="Belt Clamp Secured" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Belt%20Clamp%20Completed.png" alt="Belt Clamp Completed" />
-<br style="clear: both;" />
+| Step | Instructions | Guide |
+| :-: | ------- | :-: |
+| 1 | Assemble the belt clamp parts; the four `M2.5x10` bolts, four `M2.5` nuts, and the front and rear plates | <img src="Assets/Assembly/Belt%20Clamp%20Parts.png" alt="Belt Clamp Parts" /> |
+| 1 | Insert `M2.5` nuts into the hexagonal holes on the underside of the rear clamp plate (as deeply as they will go) | <img src="Assets/Assembly/Belt%20Clamp%20Nuts%20Fitted.png" alt="Belt Clamp Nuts Fitted" /> |
+| 2 | Tie a tight knot in other end of the cord you previously attached to the _Pulley_. Push the knot into the cut-out in the rear clamp plate, so the cord comes out the bottom | <img src="Assets/Assembly/Belt%20Clamp%20Cord%20Fitted.png" alt="Belt Clamp Cord Fitted" /> |
+| 3 | Place the end of the harness belt into the rectangular detent of the rear clamp plate (it may overlap the knot; that's fine). Push the front clamp plate firmly down over both | <img src="Assets/Assembly/Belt%20Clamp%20Belt%20Fitted.png" alt="Belt Clamp Belt Fitted" /><img src="Assets/Assembly/Belt%20Clamp%20Halves%20Positioned.png" alt="Belt Clamp Halves Positioned" /> |
+| 4 | Keep pressure on the assembly while securing with the four `M2.5x10` bolts. Tighen each bolt partially in a circular pattern until they are all tight, rather than trying to fully tighten one at a time | <img src="Assets/Assembly/Belt%20Clamp%20Being%20Secured.png" alt="Belt Clamp Being Secured" /> |
+| 5 | Once fully tightened, the two clamp parts should be fully touching with no visible gap between them | <img src="Assets/Assembly/Belt%20Clamp%20Secured.png" alt="Belt Clamp Secured" /><img src="Assets/Assembly/Belt%20Clamp%20Completed.png" alt="Belt Clamp Completed" /> |
 
 ### Brackets
 
-1. Feed the motor connectors and wires through the hole in the bracket:
-  - Bend back the smaller connector so you're not trying to push both through at once
-2. Secure the motor with three `M2.5x20MM` screws
-3. Attach the bracket to your rig frame:
-  - If using any of the profile bracket designs, secure the bracket to your rig frame with suitable t-nuts and bolts
-  - If using the tubular mount (with truss clamp), insert the `M10` nut into the printed backet slot, then secure it to the truss clamp with the `M10x16` bolt
+| Step | Instructions | Guide |
+| :-: | ------- | :-: |
+| 1 | Feed the motor connectors and wires through the hole in the bracket. Bend back the smaller connector so you're not trying to push both through at once |  |
+| 2 | Secure the motor with three `M2.5x20MM` screws |  |
+| 3 | Attach the bracket to your rig frame. If using any of the profile bracket designs, secure the bracket to your rig frame with suitable t-nuts and bolts. If using the tubular mount (with truss clamp), insert the `M10` nut into the printed backet slot, then secure it to the truss clamp with the `M10x16` bolt |  |
 
 ### Control Board
 
-1. Flip the switch on the control board to the `USB` setting
-2. Insert `M2.5` nuts into the hexangonal holes on the underside of the lower printed case (as deeply as they will go)
-3. Insert the board into the lower half of the printed case (the _Raspberry Pi_ header on the rear may be a tight fit here)
-4. Place the upper half of the case on to and secure with four `M2.5x16` bolts
-
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Control%20Board%20Parts.png" alt="Control Board Parts" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Control%20Board%20Nuts%20Fitted.png" alt="Control Board Nuts Fitted" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Control%20Board%20Switch%20Set.png" alt="Control Board Switch Set" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Control%20Board%20Fitted.png" alt="Control Board Fitted" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Control%20Board%20Cover%20Fitted.png" alt="Control Board Cover Fitted" />
-<img align="left" width="25%" height="auto" src="Assets/Assembly/Control%20Board%20Ports.png" alt="Control Board Ports" />
-<br style="clear: both;" />
+| Step | Instructions | Guide |
+| :-: | ------- | :-: |
+| 1 | Assemble the control board parts; the four `M2.5x16` bolts, four `M2.5` nuts, and the upper and lower shells | <img src="Assets/Assembly/Control%20Board%20Parts.png" alt="Control Board Parts" /> |
+| 2 | Flip the switch on the control board to the `USB` setting | <img src="Assets/Assembly/Control%20Board%20Switch%20Set.png" alt="Control Board Switch Set" /> |
+| 3 | Insert `M2.5` nuts into the hexangonal holes on the underside of the lower printed case (as deeply as they will go) | <img src="Assets/Assembly/Control%20Board%20Nuts%20Fitted.png" alt="Control Board Nuts Fitted" /> |
+| 4 | Insert the board into the lower half of the printed case (the _Raspberry Pi_ header on the rear may be a tight fit here) | <img src="Assets/Assembly/Control%20Board%20Fitted.png" alt="Control Board Fitted" /> |
+| 5 | Place the upper half of the case on top and secure with four `M2.5x16` bolts | <img src="Assets/Assembly/Control%20Board%20Cover%20Fitted.png" alt="Control Board Cover Fitted" /><img src="Assets/Assembly/Control%20Board%20Ports.png" alt="Control Board Ports" /> |
 
 ## Adjustment
 
