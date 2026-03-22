@@ -6,7 +6,7 @@ Everything you need to know about building a tensioner of your own is in this do
 
 ### Choosing Your Brackets
 
-<img align="right" width="30%" height="auto" style="margin: 0 0 5% 5%" src="Assets/Bracket%20Example.png" alt="Printed Bracket Example" />
+<img align="right" width="30%" height="auto" style="margin: 0 0 5% 5%" alt="Printed Bracket Example" src="https://github.com/user-attachments/assets/02c48ec1-51da-48e7-ac1e-b915f9ce38fb" />
 
 There are two main types of sim rig frame; _tubular_ and _profile_ (also known as _aluminium extrustion_):
 - **Tubular frames** (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) typically use `2"` steel tubing that is mandrel-bent into shape and welded together
@@ -42,8 +42,6 @@ Irrespective of your bracket choice above, you'll also need to print **all of th
 | [Controller Case (Base).step](#) | `1` | The base for the controller board box |
 
 ### Self Printing
-
-<img align="right" width="50%" height="auto" style="margin: 0 0 5% 5%" src="Assets/Printed%20Parts%20Example.png" alt="Printed Parts Example" />
 
 Obviously if you have your own 3D printer, you can print these yourself. These parts have been designed with hobby FDM printers in mind.
 
@@ -99,22 +97,20 @@ If using the tubular brackets, you'll need to order two [2" Truss Clamps](https:
 
 | Step | Instructions | Guide |
 | :-: | ------- | :-: |
-| 1 | Since the motors are technically _wheels_, they come pre-fitted with rubber treads. We'll be removing these | |
-| 1 | Unscrew the three M2.5 bolts holding on motor face plate (using the hex wrench included in the screws kit) | |
-| 2 | Apply pulling force towards the front (away from the axle) and gently wiggle off the rubber tread | |
-| 3 | Keep the rubber treads and packaging in case you need to return a motor | |
+| 1 | Since the motors are technically _wheels_, they come pre-fitted with rubber treads. We'll be removing these. Keep them safe though; in case you need to return the motors or repurpose them later | <img width="400" alt="Wheel Motor" src="https://github.com/user-attachments/assets/37161acb-f815-408a-b04b-bd79367bf17b" /> |
+| 2 | Unscrew the three M2.5 bolts holding on motor face plate and remove the plate. Apply pulling force towards the front (away from the axle) and gently wiggle off the rubber tread, taking care not to tug on and damage the wires | <img width="400" alt="Motor Without Tire" src="https://github.com/user-attachments/assets/522b9d83-0a32-4464-8a26-77f0ff1cfd14" /> |
 
 ### Pulleys
 
 | Step | Instructions | Guide |
 | :-: | ------- | :-: |
-| 1 | Assemble the four pulley parts; the bearing, the outer cover, the face plate and hub.<br /><br />Note that the pulley design is subject to ongoing refinement; so the exact design may look slightly different to the pictures shown. The assemby process is the same though | <img src="Assets/Assembly/Pulley%20Parts.png" alt="Pulley Parts" /> |
-| 2 | Press the bearing into the outer cover. This should be possible by hand. The accuracy/roughness of your print will dictate how easy this is.<br /><br />If the fit is too tight, use a hammer to _gently_ tap it in (alternating sides with each tap) or consider shaving away some material with a knife or file.<br /><br />If the fit is too loose, cut up a drinks can and shim around the edges of the bearing to fill in the gap (ensuring the shims do no protrude) | <img src="Assets/Assembly/Pulley%20Bearing%20Fitting.png" alt="Pulley Bearing Fitting" /><img src="Assets/Assembly/Pulley%20Bearing%20Fitted.png" alt="Pulley Bearing Fitted" /> |
-| 3 | Insert the pulley face from the front so it sits inside the inner ring of the bearing. The notes above regarding fitting tolerances apply here too | <img src="Assets/Assembly/Pulley%20Face%20Fitted.png" alt="Pulley Face Fitted" /> |
-| 4 | Insert the pulley hub over the top, so that the triangular shape on the face part pushes into the triangular hole of the hub. They may pop together or be loose depending on the tolerances of your print (either is fine). The slot in the hub for the cord should be facing outward | <img src="Assets/Assembly/Pulley%20Hub%20Fitted.png" alt="Pulley Hub Fitted" /> |
-| 6 | Cut a `0.5M` length of the _UHMWPE/Dyneema cord_ and tie a tight knot in the end, then remove any excess cord after the knot | <img src="Assets/Assembly/Pulley%20Cord%20Fitting.png" alt="Pulley Cord Fitting" /> |
-| 5 | Thread one end of the cord through one of the pulley cover holes. When assembling the _Left_ pulley, use the hole marked with `L` inside the pulley cover (or `R` for the _Right_ pulley). Push the knot into the cut-out in the pulley hub. It should stay in place relatively well | <img src="Assets/Assembly/Pulley%20Cord%20Fitted.png" alt="Pulley Cord Fitted" /> |
-| 8 | Install the pulley onto the motor hub and insert and tighten three `M2.5x12MM` screws into the face plate. Make sure that the cord stays in the cut-out when doing so | |
+| 1 | Assemble the four pulley parts; the bearing, the outer cover, the face plate and hub.<br /><br />Note that the pulley design is subject to ongoing refinement; so the exact design may look slightly different to the pictures shown. The assemby process is the same though | <img width="400" alt="Pulley Parts" src="https://github.com/user-attachments/assets/a71e7c59-454f-469d-a038-f88115272059" /> |
+| 2 | Press the bearing into the outer cover. This should be possible by hand. The accuracy/roughness of your print will dictate how easy this is.<br /><br />If the fit is too tight, use a hammer to _gently_ tap it in (alternating sides with each tap) or consider shaving away some material with a knife or file.<br /><br />If the fit is too loose, cut up a drinks can and shim around the edges of the bearing to fill in the gap (ensuring the shims do no protrude) | <img width="400" alt="Inserting The Bearing" src="https://github.com/user-attachments/assets/ad074009-27f4-4a20-aeaf-5cc2b9e5fe1e" /><img width="400" alt="Inserted Bearing" src="https://github.com/user-attachments/assets/36d34db8-b217-4201-b0ea-c0265f49e00e" /> |
+| 3 | Insert the pulley face from the front so it sits inside the inner ring of the bearing. The notes above regarding fitting tolerances apply here too | <img width="400" alt="Face Inserted" src="https://github.com/user-attachments/assets/d301219f-ad1e-46d6-be3b-2027827be9d9" /> |
+| 4 | Insert the pulley hub over the top, so that the triangular shape on the face part pushes into the triangular hole of the hub. They may pop together or be loose depending on the tolerances of your print (either is fine). The slot in the hub for the cord should be facing outward | <img width="400" alt="Hub Fitted" src="https://github.com/user-attachments/assets/74074eec-8118-420c-ae5c-088a4f61ddf7" /> |
+| 6 | Cut a `0.5M` length of the _UHMWPE/Dyneema cord_ and tie a tight knot in the end, then remove any excess cord after the knot | <img width="400" alt="Knotting The Cord" src="https://github.com/user-attachments/assets/e8b54846-080b-41f7-bd63-63bef5716200" /> |
+| 5 | Thread one end of the cord through one of the pulley cover holes. When assembling the _Left_ pulley, use the hole marked with `L` inside the pulley cover (or `R` for the _Right_ pulley). Push the knot into the cut-out in the pulley hub. It should stay in place relatively well | <img width="400" alt="Cord Inserted" src="https://github.com/user-attachments/assets/6f4bf1de-827f-4c2a-84de-9a5fa84f8851" /> |
+| 8 | Install the pulley onto the motor hub and insert and tighten three `M2.5x12MM` screws into the face plate. Make sure that the cord stays in the cut-out when doing so | <img width="400" alt="Installing The Pulley" src="https://github.com/user-attachments/assets/ebaff46f-a8b5-4f85-8226-95cd5d5e60f6" /> |
 
 ### Belt Clamps
 
