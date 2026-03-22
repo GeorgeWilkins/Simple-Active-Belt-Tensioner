@@ -4,70 +4,7 @@ Everything you need to know about building a tensioner of your own is in this do
 
 ## Printed Parts
 
-### Choosing Your Brackets
-
-<img align="right" width="30%" height="auto" style="margin: 0 0 5% 5%" alt="Printed Bracket Example" src="https://github.com/user-attachments/assets/02c48ec1-51da-48e7-ac1e-b915f9ce38fb" />
-
-There are two main types of sim rig frame; _tubular_ and _profile_ (also known as _aluminium extrustion_):
-- **Tubular frames** (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) typically use `2"` steel tubing that is mandrel-bent into shape and welded together
-- **Profile rigs** (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) typically use `40-Series` aluminium extrusion that is bolted together in a modular fashion
-
-Suitable bracket designs for both types are provided below. Designs marked as `Verified` have been printed and successfully used by at least one person. [Let me know](mailto:sabt@georgewilkins.co.uk) if you try an `Unverified` bracket so I can update this list and/or amend the design.
-
-**You only need to print _one_ of these options**. They are all _symetrical_ in design, so you just need to print **two** of the same model (one for each motor)...
-
-| File | For | Orientation | Holes | Verified |
-| - | - | - | - | - |
-| [Bracket (20XX Profile, Angle).step](#) | `20-Series` Aluminium Profile | 45° Fixed | `M5` | 🗹 |
-| [Bracket (30XX Profile, Angle).step](#) | `30-Series` Aluminium Profile | 45° Fixed | `M8` | ☐ |
-| [Bracket (40XX Profile, Angle).step](#) | `40-Series` Aluminium Profile | 45° Fixed | `M8` | ☐ |
-| [Bracket (30XX Profile, Flat).step](#) | `30-Series` Aluminium Profile | Perpendicular | `M8` | ☐ |
-| [Bracket (40XX Profile, Flat).step](#) | `40-Series` Aluminium Profile | Perpendicular | `M8` | ☐ |
-| [Bracket (2" Tube, Truss Clamp).step](#) | `2"` Steel Tube With [Truss Clamp](https://www.amazon.co.uk/dp/B07DMHGLWR?th=1) | 360° Variable | | 🗹 |
-
-If none of these are suitable for your rig, [get in touch](mailto:sabt@georgewilkins.co.uk) and we'll see if we can design something.
-
-### Other Printed Parts
-
-Irrespective of your bracket choice above, you'll also need to print **all of the following files**:
-
-| File | Quantity | Descrption |
-| - | - | - |
-| [Belt Clamp (Front).step](#) | `2` | Front part of the harness/rope clamp |
-| [Belt Clamp (Rear).step](#) | `2` | Rear part of the harness/rope clamp |
-| [Pulley (Cover).step](#) | `2` | The largest outer part of the pulley |
-| [Pulley (Hub).step](#) | `2` | The inner spindle of the pulley |
-| [Pulley (Face).step](#) | `2` | The front-facing cover of the pulley |
-| [Controller Case (Top).step](#) | `1` | The lid for the controller board box |
-| [Controller Case (Base).step](#) | `1` | The base for the controller board box |
-
-### Self Printing
-
-Obviously if you have your own 3D printer, you can print these yourself. These parts have been designed with hobby FDM printers in mind.
-
-I've used [DEEPLE PLA Plus](https://www.amazon.co.uk/dp/B0F66H47J8) on my Bambu H2S for all of my own parts; but virtually _any_ strong PLA/ABS/PETG filament should be fine. Fibre-reinforced filament is okay for the mounting brackets but _not reccommended_ for the pulley parts.
-
-As for printing settings, I would suggest:
-| Setting | Value |
-| - | - |
-| Layer Height | `0.16` |
-| Walls | `7` |
-| Top Shell Layers | `7` |
-| Bottom Shell Layers | `7` |
-| Infill Density | `30%` |
-| Supports | `Manual` |
-
-Manually add supports to the counterbored bolt & nut holes _only_. They aren't needed anywhere else.
-
-The above takes about **8 hours** on my H2S if printing everything at once. It uses about 75M of filament, or ~230g of PLA. I'd suggest you do the parts in smaller batchces though, to minimise wastage if something goes wrong during the print.
-
-### Third-Party Printing
-
-There are plenty of hobbyists on eBay offering low-cost FDM printing. Quality will depend very much on the individual seller.
-
-If you want a more professional product, there are companies running SLS/MJF machines which produce Nylon parts for reasonable money:
-- [3DPrintUK](https://3dprint-uk.co.uk) are a provider of SLS/MJF Nylon parts in the UK. They have an instant quotation system that will give you a price right away (~**90 GBP** at the time of writing)
-- [JLC3DP](https://jlc3dp.com) offer a similar service out of China with delivery to most countries
+See the [Printables/](/Printables/) directory to obtain the printable files, and detailed information on printing them.
 
 ## Motors, Electronics & Fixings
 
