@@ -20,6 +20,8 @@ If you have a _profile rig_, choose the bracket file labelled as _'Profile'_ in 
 
 You only need to print _two_ of a single type of bracket. The designs are all symetrical.
 
+There may be multiple bracket styles for your rig type. Consider which one will fit your rig best before printing.
+
 ## Choosing Your Pulley Size
 
 At the moment there are two pulley options; one for `6706` breaings (`30x37x4MM`) and another for `6809` (`45x58x7MM`) bearings. They have the same basic design, but have different hub sizes. This affects the torque (force) and speed (reactivness) of the tensioner effects.
