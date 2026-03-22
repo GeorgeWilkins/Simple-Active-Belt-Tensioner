@@ -1,4 +1,4 @@
-![Diagram](Assets/Diagram.svg)
+![Diagram](https://github.com/user-attachments/assets/31cf6fea-361a-4348-9666-bc6527af917c)
 
 # Simple Active Belt Tensioner
 
