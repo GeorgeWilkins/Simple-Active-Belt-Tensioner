@@ -41,16 +41,18 @@ I would reccommend installing tactile tranducers (bass shakers) before embarking
 
 If you have your own 3D printer, as little as **210 GBP**. If not, **250~300 GBP** depending on your choices:
 
-| Price (GBP) | Part | Description |
+| Price (GBP) | Part | Usage |
 | - | - | - |
-| 120 | 2 x Motors | Waveshare DDSM115 BLDC servo motors |
-| 20 | Controller | Waveshare DDSM Hub Motor Driver Board |
-| 8 | 2 x Bearings | 6809ZZ bearings (for the pulleys) |
-| 7 | M2.5 Screw & Nut Set | A low-cost set that contains every needed fastener (and _many_ spares) |
-| 10 | 2 x 1M UHMWPE/Dyneema Cord | The low-friction high-strength cord for the pulleys (1.5~2.0MM Diameter) |
-| 20 | 15V 3A DC Power Supply | The power supply for the board and motors (5.5x2.5MM power jack or XT60 connector) |
+| 120 | 2 x Motors | Provides the tensioning force |
+| 20 | Controller | Provides a USB interface for the motors |
+| 8 | 2 x Bearings | Allows the pulley covers to rotate smoothly |
+| 7 | Screw & Nut Set | Provides every needed fastener in one set (with _many_ spares) |
+| 10 | 1M Cord | A low-friction cord that winds around the pulleys (attached at the other end to your belts) |
+| 20 | Power Supply | Provides DC power to the motors |
 | 25 | 5-Point 2" Harness | A low-cost Aliexpress model or used/expired FIA harness |
 | **210** | **Total** | Excluding printables |
+
+There is a [detailed parts list](/INSTRUCTIONS.md#motors-electronics--fixings) with sources in the build guide.
 
 The cost of the printed parts will depend largely on your choice of priting process and material:
 
@@ -79,7 +81,7 @@ The benefits of this are:
 - Spring and auto-retraction functionality
 - Compact & clean design
 
-The maximum force appliable by these motors with the current pulley design is estimated to be about **8.5Kgf per belt**. Imagine having **8.5Kg of weight** attached to each belt hanging down from the back of your seat, and you'll get the idea.
+The maximum force appliable by these motors with the current pulley design is estimated to be about **8.5Kgf to 12Kgf per belt**, depending on the chosen pulley size. Imagine having **8.5Kg to 12Kgf of weight** attached to each belt hanging down from the back of your seat, and you'll get the idea.
 
 This is plenty to give extra immersion and feedback, but significantly less than you'd feel in a real vehicle at motorsport velocities.
 
@@ -87,7 +89,7 @@ For comparison, the [QS-BT1](https://qubicsystem.com/product/qs-bt1) claims _"20
 
 ## Where Can I See It In Action?
 
-(Videos Here)
+TBC
 
 ## Anything Else To Note?
 
