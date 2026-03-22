@@ -91,6 +91,14 @@ For comparison, the [QS-BT1](https://qubicsystem.com/product/qs-bt1) claims _"20
 
 TBC
 
+## How Do I Get Started?
+
+Read through the [instructions](/INSTRUCTIONS.md) to get a better idea of what's involved and how to proceed.
+
+> **Note**: Right now I'm working with a couple of early-adpoters to test and revise the design, software and documentation. Therefore everything here is subject to change at any time.
+> 
+> I would suggest **NOT** attempting to replicate this project until we've finished doing so. That will be indicated by the removal of this notice and the release version being `1.0` or higher.
+
 ## Anything Else To Note?
 
 Since seat and harness designs vary massively, I cannot provide _belt clamp_ and _belt roller_ designs for every combination. The included belt clamp is intended for 2" wide belts of up to 2MM thickness.
