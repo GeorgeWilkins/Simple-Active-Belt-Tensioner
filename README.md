@@ -39,9 +39,9 @@ I would reccommend installing tactile tranducers (bass shakers) before embarking
 
 ## What Does It Cost?
 
-If you have your own 3D printer, as little as **210 GBP**. If not, **250~300 GBP** depending on your choices:
+If you have your own 3D printer, as little as **210 GBP** including taxes. If not, **250~300 GBP** depending on your choices:
 
-| Price (GBP) | Part | Usage |
+| Price (GBP) | Part | Notes |
 | - | - | - |
 | 120 | 2 x Motors | Provides the tensioning force |
 | 20 | Controller | Provides a USB interface for the motors |
@@ -50,13 +50,13 @@ If you have your own 3D printer, as little as **210 GBP**. If not, **250~300 GBP
 | 10 | 1M Cord | A low-friction cord that winds around the pulleys (attached at the other end to your belts) |
 | 20 | Power Supply | Provides DC power to the motors |
 | 25 | 5-Point 2" Harness | A low-cost Aliexpress model or used/expired FIA harness |
-| **210** | **Total** | Excluding printables |
+| **210** | **Total** | ...excluding printables |
 
 There is a [detailed parts list](/INSTRUCTIONS.md#motors-electronics--fixings) with sources in the build guide.
 
 The cost of the printed parts will depend largely on your choice of priting process and material:
 
-| Price (GBP) | Method | Description |
+| Price (GBP) | Method | Notes |
 | - | - | - |
 | 5 | Self-Print | Roughly 200g or 75M of filament |
 | 30~60 | FDM Service | Assuming an _eBay-tier_ printing provider, not a professional company |
