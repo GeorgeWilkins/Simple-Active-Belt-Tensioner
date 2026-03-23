@@ -46,7 +46,7 @@ Regardless of your choices above, you should end up with:
 
 ### Self Printing
 
-Obviously if you have your own 3D printer, you can print these yourself. These parts have been designed with hobby FDM printers in mind.
+Obviously if you have your own 3D printer, you can print these yourself. These parts have been designed with hobby FDM printers in mind (not SLA/DLP/MSLA/LCD resin printers).
 
 I've used [DEEPLE PLA Plus](https://www.amazon.co.uk/dp/B0F66H47J8) on my Bambu H2S for all of my own parts; but virtually _any_ strong PLA/ABS/PETG filament should be fine. Fibre-reinforced filament is okay for the mounting brackets but _not reccommended_ for the pulley parts.
 
@@ -71,3 +71,11 @@ There are plenty of hobbyists on eBay offering low-cost FDM printing. Quality wi
 If you want a more professional product, there are companies running SLS/MJF machines which produce Nylon parts for reasonable money:
 - [3DPrintUK](https://3dprint-uk.co.uk) are a provider of SLS/MJF Nylon parts in the UK. They have an instant quotation system that will give you a price right away (~**90 GBP** at the time of writing)
 - [JLC3DP](https://jlc3dp.com) offer a similar service out of China with delivery to most countries
+
+### CNC Machining
+
+At some point I'd love to see machined aluminium parts become available; but the parts included in this repository are very much designed for FDM printing, not CNC subtractive manufacturing.
+
+Some of the parts would need to be adapted considerably to work with the latter process.
+
+If you have the means to do this and want to make them available, please [get in touch](sabt@georgewilkins.co.uk).
