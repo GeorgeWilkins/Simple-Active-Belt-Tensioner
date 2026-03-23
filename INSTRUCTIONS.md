@@ -70,15 +70,15 @@ If using the tubular brackets, you'll need to order two [2" Truss Clamps](https:
 | 2 | Secure the motor with the three `M2.5x20MM` bolts | <img alt="Motor Bolted In" src="https://github.com/user-attachments/assets/bee30fac-97a7-4d76-a025-d396fefac354" /> |
 | 3 | Attach the bracket to your rig frame. If using the _aluminium profile_ bracket designs, secure the bracket to your rig frame with suitable t-nuts and bolts. If using the tubular mount (with truss clamp), insert the `M10` nut into the printed backet slot, then secure it to the truss clamp with the `M10x16` bolt | <img alt="Assembled Bracket" src="https://github.com/user-attachments/assets/357d287c-e556-41b7-832f-6e56bf0db2f5" /> |
 
-### Control Board
+### Controller Board
 
 | Step | Instructions | Illustration |
 | :-: | ------- | :-: |
-| 1 | Assemble the control board parts; the four `M2.5x16` bolts, four `M2.5` nuts, and the upper and lower shells | <img src="Assets/Assembly/Control%20Board%20Parts.png" alt="Control Board Parts" /> |
-| 2 | Flip the switch on the control board to the `USB` setting | <img src="Assets/Assembly/Control%20Board%20Switch%20Set.png" alt="Control Board Switch Set" /> |
-| 3 | Insert `M2.5` nuts into the hexangonal holes on the underside of the lower printed case (as deeply as they will go) | <img src="Assets/Assembly/Control%20Board%20Nuts%20Fitted.png" alt="Control Board Nuts Fitted" /> |
-| 4 | Insert the board into the lower half of the printed case (the _Raspberry Pi_ header on the rear may be a tight fit here) | <img src="Assets/Assembly/Control%20Board%20Fitted.png" alt="Control Board Fitted" /> |
-| 5 | Place the upper half of the case on top and secure with four `M2.5x16` bolts | <img src="Assets/Assembly/Control%20Board%20Cover%20Fitted.png" alt="Control Board Cover Fitted" /><img src="Assets/Assembly/Control%20Board%20Ports.png" alt="Control Board Ports" /> |
+| 1 | Assemble the control board parts; the four `M2.5x16` bolts, four `M2.5` nuts, and the upper and lower shells | <img alt="Controller Board Parts" src="https://github.com/user-attachments/assets/b8023f4c-4e64-4e19-91b4-73b5ddaa23a3" /> |
+| 2 | Flip the switch on the control board to the `USB` setting | <img alt="Switch Set To 'USB'" src="https://github.com/user-attachments/assets/535d4f6b-7255-40b4-9976-2180dd30fd0d" /> |
+| 3 | Insert `M2.5` nuts into the hexangonal holes on the underside of the lower printed case (as deeply as they will go) | <img alt="Nuts Inserted" src="https://github.com/user-attachments/assets/a611f28a-1c1b-444c-a974-b4a9d2b50296" /> |
+| 4 | Insert the board into the lower half of the printed case (the _Raspberry Pi_ header on the rear may be a tight fit here) | <img alt="Board Inserted" src="https://github.com/user-attachments/assets/e3a8817d-76d7-4f4c-a74f-d56d9005a955" /> |
+| 5 | Place the upper half of the case on top and secure with four `M2.5x16` bolts | <img alt="Case Assembled" src="https://github.com/user-attachments/assets/986af12a-4858-4d80-8412-7975f14e810f" /> |
 
 ## Adjustment
 
