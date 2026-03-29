@@ -1,6 +1,6 @@
 # Printables
 
-The files in this directory are what you need to print (or to have printed by a third party) to complete the kit.
+The files in this directory and its sub-directories are what you need to print (or to have printed by a third party) to complete the kit.
 
 Since there are a couple of options to choose from, you should read this before selecting and printing (or ordering) your parts.
 
@@ -12,31 +12,40 @@ There are two main types of sim rig frame; _tubular_ and _profile_ (also known a
 - **Profile rigs** (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) typically use `40-Series` aluminium extrusion that is bolted together in a modular fashion
 - **Tubular frames** (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) typically use `2"` steel tubing that is mandrel-bent into shape and welded together
 
-If you have a _profile rig_, choose the bracket file labelled as _'Profile'_ in the appropriate size.
+If you have a _profile rig_, choose from the `Corner` or `Flat` profile bracket designs. They support both `30-series` and `40-series` profile.
+
+If you have a _tubular frame_, choose the `Tube` clamp bracket design (which integrates with a commercial [truss clamp](https://www.amazon.co.uk/dp/B07DP1FK33) to attach to the tube).
 
 You only need to print _two_ of a single type of bracket. The designs are all symetrical.
-
-There may be multiple bracket styles for your rig type. Consider which one will fit your rig best before printing.
 
 ### Choosing Your Pulley Size
 
 At the moment there are two pulley options; one for `6706` breaings (`30x37x4MM`) and another for `6809` (`45x58x7MM`) bearings. They have the same basic design, but have different hub sizes. This affects the torque (force) and speed (reactivness) of the tensioner effects.
 
-I'm currently trialling these with a couple early-adpoters to see which one performs the best.
+Right now the smaller `6706` pulley is being used in testing and is considered the default size.
 
-Each pulley has three parts; the outer cover, the face and the hub. You'll need to print two of each part in your chosen size.
+Each pulley has three parts; the outer cover, the face and the hub. You'll need to print two of each part in your chosen size. Again, these are all symetrical; there are no _'right'_ or _'left'_ versions of any of the parts.
+
+### Choosing Your Belt Clamps
+
+Since there are a variety of belt types and terminations, a few options are available:
+- **End Clamp**: This is designed to clamp the plain end of an unterminated 2" belt (suitable for bare belt ends, or belts you are happy to shorten to the ideal length)
+- **Loop Clamp**: This is designed to loop through a 2" belt (up to 4mm thick) and secure back on itself using a standard belt buckle (likely to have come with your hanress)
+- **Through Clamp**: This is designed to clamp anywhere along a 2" belt without needing to shorten or terminate the belt itself
+
+The _through clamp_ is probably the easiest to integrate, with the _end clamp_ being the neatest; but needing the belts to be shortened specifically for the tensioner (or shortened non-destructively with buckles).
 
 ## Printables List
 
 Regardless of your choices above, you should end up with:
-- 2x Belt Clamp Front
-- 2x Belt Clamp Rear
-- 1x Controller Case Top
-- 1x Controller Case Base
-- 2x Motor Bracket (whichever is suitable for your rig)
-- 2x Pulley Cover (`6706` for **torque** or `6809` for **speed**)
-- 2x Pulley Face (`6706` for **torque** or `6809` for **speed**)
-- 2x Pulley Hub (`6706` for **torque** or `6809` for **speed**)
+- 2x Belt `End`|`Loop`|`Through` Clamp (Front)
+- 2x Belt `End`|`Loop`|`Through` Clamp (Rear)
+- 1x Controller Case (Top)
+- 1x Controller Case (Base)
+- 2x `Corner`|`Flat`|`Tube` Motor Bracket
+- 2x `6706`|`6809` Bearing Pulley (Cover)
+- 2x `6706`|`6809` Bearing Pulley (Face)
+- 2x `6706`|`6809` Bearing Pulley (Hub)
 
 <img alt="Printable Parts" src="https://github.com/user-attachments/assets/0f1a7170-193e-4ecd-94d9-9bf6c1afe0a8" />
 

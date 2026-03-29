@@ -7,9 +7,11 @@ These files are the original [FreeCAD](https://www.freecad.org/) design files fr
 | File | Part | Description |
 | - | - | - |
 | [Controller Case.FCStd](Controller%20Case.FCStd) | Controller Case | The two halves of the **controller case** |
-| [Belt Clamp.FCStd](Belt%20Clamp.FCStd) | Belt Clamp | The two halves of the **belt clamp** |
-| [Corner Bracket (30~40MM Profile).FCStd](Corner%20Bracket%20(30~40MM%20Profile).FCStd) | Motor Bracket | A motor bracket designed to be **corner-mounted** to `30MM` or `40MM` aluminium profile |
-| [Flat Bracket (30~40MM Profile).FCStd](Flat%20Bracket%20(30~40MM%20Profile).FCStd) | Motor Bracket | A motor bracket designed to be **flat-mounted** to `30MM` or `40MM` aluminium profile |
-| [Truss Clamp Bracket (50MM Tube).FCStd](Truss%20Clamp%20Bracket%20(50MM%20Tube).FCStd) | Motor Bracket | A motor bracket designed to be **clamp-mounted** to `50MM` tube (requires [truss clamp](https://www.amazon.co.uk/dp/B07DP1FK33)) |
-| [Pulley (6706 Bearing).FCStd](Pulley%20(6706%20Bearing).FCStd) | Pulley Assembly | The **pulley** cover, hub and face parts for a `6706` sized bearing; the **torque-optimized** pulley option |
-| [Pulley (6809 Bearing).FCStd](Pulley%20(6809%20Bearing).FCStd) | Pulley Assembly | The **pulley** cover, hub and face parts for a `6809` sized bearing; the **speed-optimized** pulley option |
+| [Belt End Clamp.FCStd](Belt%20End%20Clamp.FCStd) | Belt Clamp | The two halves of a **belt clamp** (suitable for clamping the plain end of a 2" belt) |
+| [Belt Loop Clamp.FCStd](Belt%20Loop%20Clamp.FCStd) | Belt Clamp | The two halves of a **belt clamp** (suitable for looping through a 2" belt) |
+| [Belt Through Clamp.FCStd](Belt%20Through%20Clamp.FCStd) | Belt Clamp | The two halves of a **belt clamp** (suitable for clamping anywhere along a 2" belt) |
+| [Corner Motor Bracket.FCStd](Corner%20Motor%20Bracket.FCStd) | Motor Bracket | A motor bracket designed to be **corner-mounted** to `30MM` or `40MM` aluminium profile |
+| [Flat Motor Bracket.FCStd](Flat%20Motor%20Bracket.FCStd) | Motor Bracket | A motor bracket designed to be **flat-mounted** to `30MM` or `40MM` aluminium profile |
+| [Tube Motor Bracket.FCStd](Tube%20Motor%20Bracket.FCStd) | Motor Bracket | A motor bracket designed to be **clamp-mounted** to `50MM` tube (requires [truss clamp](https://www.amazon.co.uk/dp/B07DP1FK33)) |
+| [6706 Bearing Pulley.FCStd](Pulley%20(6706%20Bearing).FCStd) | Pulley Assembly | The **pulley** cover, hub and face parts for a `6706` sized bearing; the **torque-optimized** pulley option |
+| [6809 Bearing Pulley.FCStd](Pulley%20(6809%20Bearing).FCStd) | Pulley Assembly | The **pulley** cover, hub and face parts for a `6809` sized bearing; the **speed-optimized** pulley option |
