@@ -4,10 +4,6 @@ The files in this directory are what you need to print (or to have printed by a 
 
 Since there are a couple of options to choose from, you should read this before selecting and printing (or ordering) your parts.
 
-### Branded VS Unbranded
-
-The first choice you'll need to make is whether to use the [Branded](/Printables/Branded) or [Unbranded](/Printables/Unbranded) parts. The former have the [GW](https://georgewilkins.co.uk/) logo in various places. If you don't want that on your parts (or are **intending to sell pre-printed parts**), use the latter. You only need to print one set.
-
 ### Choosing Your Brackets
 
 <img align="right" width="30%" height="auto" style="margin: 0 0 5% 5%" alt="Printed Bracket Example" src="https://github.com/user-attachments/assets/02c48ec1-51da-48e7-ac1e-b915f9ce38fb" />

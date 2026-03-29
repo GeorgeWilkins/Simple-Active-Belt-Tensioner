@@ -4,8 +4,6 @@ If you're here looking for things to print, _you're in the wrong place_; go [her
 
 These files are the original [FreeCAD](https://www.freecad.org/) design files from which the printable `.STEP` files are generated. You'll only need these if you intend to change the designs of the parts.
 
-Note that these files are without any branding.
-
 | File | Part | Description |
 | - | - | - |
 | [Controller Case.FCStd](Controller%20Case.FCStd) | Controller Case | The two halves of the **controller case** |
