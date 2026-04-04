@@ -82,8 +82,35 @@ If using the tubular brackets, you'll need to order two [2" Truss Clamps](https:
 
 ## Adjustment
 
-TBC
+If you already have a harness, you'll be accustomed to tightening it up with the buckles/straps it has. **You don't need to do that with this tensioner**, since it pre-tensions the harness for you (see `Idle Tension` in the `Tension` tab of the plugin).
+
+However when first setting up the tensioner, you'll need to ensure the following:
+- There is enough _plain belt_ (with no buckles or wider sections) to slide through the belt holes on your seat unhindered (allow for at least `20CM` of movement)
+- Any excess belt is tucked/buckled away such that it does not catch or rub on anything
+
+If you have excess shoulder belt length, you should run it through the seat holes and then buckle it back upon itself behind the seat (just above where you apply the tensioner's cord clamps).
+
+![Belt Clamps](https://github.com/user-attachments/assets/320dab6c-9a38-4121-a394-edff68d2a8c5)
+
+The method of adjustment may depend on your chosen belt clamp design:
+- **End Clamps**: These require the shortening of the harness shoulder belts, which is _strongly discouraged_ until you're 100% happy with your setup. Try using the belt buckles that likely came with your harness to make non-destructive adjustments to length first
+- **Through Clamps**: Loosen the clamp bolts and simply slide the clamp up or down the length of the harness shoulder belts, then retighten in the desired location
+- **Loop Clamps**: You'll already be using belt buckles to secure the looped harness shoulder belts against themselves, so simply adjust those buckles until you achieve the desired lengths
+
+![Adjustment](https://github.com/user-attachments/assets/36ae4e29-3134-4734-8135-1fb9f7847400)
+
+The ideal total cord length is approximately `50CM`; of which we want about half to be wound around the pulley when the harness is fastened.
+
+If you allow the cord to _fully unwind_, the motors will not be able to apply the correct force. Make sure _at least one turn_ of cord is wrapped around the pulleys. To do this, increase the length of your shoulder harness belt by roughly `10CM`.
+
+If you allow _too much_ cord to wrap around a pulley, it may start binding. If so, reduce the length of your shoulder harness belt. If you cannot do this, reduce the length of the cord; ensuring that there is at least some cord _not_ wrapped around the pulley when the harness is fastened.
+
+[INSERT VIDEO HERE]
 
 ## Software
+
+TBC
+
+## First Use
 
 TBC
