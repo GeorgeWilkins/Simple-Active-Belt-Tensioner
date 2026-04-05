@@ -1,0 +1,606 @@
+﻿using FMOD.Studio;
+using GameReaderCommon;
+using MahApps.Metro.IconPacks;
+using OxyPlot;
+using OxyPlot.Annotations;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+using SimHub;
+using SimHub.Plugins;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Configuration;
+using System.IO.Ports;
+using System.Linq;
+using System.Runtime;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Media3D;
+using static log4net.Appender.ColoredConsoleAppender;
+using static SimHub.Plugins.UI.SupportedGamePicker;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
+using static User.ActiveBeltTensioner.DevicePlugin;
+using static User.ActiveBeltTensioner.MotorController;
+
+
+namespace User.ActiveBeltTensioner
+{
+    [PluginDescription("A control panel for the 'Simple Active Belt Tensioner'")]
+    [PluginAuthor("George Wilkins")]
+    [PluginName("Simple Active Belt Tensioner")]
+    public class DevicePlugin : IPlugin, IDataPlugin, IWPFSettingsV2
+    {
+        public DeviceSettings Settings;
+
+        public PluginManager PluginManager { get; set; }
+
+        public ImageSource PictureIcon => this.ToIcon(Properties.Resources.MenuIcon);
+
+        public string LeftMenuTitle => "Simple Active Belt Tensioner";
+
+        private MotorController _motorController;
+        private readonly object _motorControllerLock = new object();
+
+        private readonly object _telemetryLock = new object();
+        private TelemetrySnapshot _latestTelemetry;
+
+        private readonly AutoResetEvent _hasTelemetryArrived = new AutoResetEvent(false);
+        private Thread _controlThread;
+        private volatile bool _runControlLoop = false;
+
+        public struct TelemetrySnapshot
+        {
+            public double? Surge;
+            public double? Sway;
+            public double? Heave;
+            public double? Speed;
+            public bool DidUpshift;
+            public bool IsActive;
+        }
+
+        public System.Windows.Controls.Control GetWPFSettingsControl(PluginManager pluginManager)
+        {
+            Logging.Current.Info("SABT: GetWPFSettingsControl()...");
+
+            return new DeviceControl(this);
+        }
+
+        /// <summary>Called by SimHub to initialise the plugin</summary>
+        public void Init(PluginManager pluginManager)
+        {
+            InitialiseTelemetryGraph();
+
+            Logging.Current.Info("SABT: Init()...");
+
+            Settings = this.ReadCommonSettings<DeviceSettings>("GeneralSettings", () => new DeviceSettings());
+            Settings.PropertyChanged += OnSettingsChanged;
+
+            if (Settings.IsEnabled && Settings.IsSerialPortValid)
+            {
+                ConfigureMotorController();
+            }
+
+            UpdateTelemetryGraphThresholds(Settings);
+            UpdateTelemetryGraph(0, 0, 0);
+
+            _runControlLoop = true;
+            _controlThread = new Thread(ControlLoop)
+            {
+                IsBackground = true,
+                Name = "SABT.ControlLoop"
+            };
+            _controlThread.Start();
+        }
+
+        /// <summary>Selectively initiates side effects for settings property changes</summary>
+        private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
+        {
+            Logging.Current.Info("SABT: OnSettingsChanged(" + e.PropertyName + " = " + Settings.GetType().GetProperty(e.PropertyName).GetValue(Settings, null) + ")...");
+
+            if (
+                e.PropertyName == nameof(DeviceSettings.SerialPort) ||
+                e.PropertyName == nameof(DeviceSettings.IsEnabled)
+            )
+            {
+                if (Settings.IsEnabled)
+                {
+                    if (Settings.IsSerialPortValid)
+                    {
+                        ConfigureMotorController();
+                    }
+                }
+                else
+                {
+                    if (_motorController != null)
+                    {
+                        _motorController.Disconnect();
+                        _motorController = null;
+                    }
+                }
+            }
+
+            if (e.PropertyName == nameof(DeviceSettings.IsFlipped))
+            {
+                if (_motorController != null)
+                {
+                    _motorController.IsFlipped = Settings.IsFlipped;
+                }
+            }
+
+            if (
+                e.PropertyName == nameof(DeviceSettings.MinimumSurge) ||
+                e.PropertyName == nameof(DeviceSettings.MaximumSurge) ||
+                e.PropertyName == nameof(DeviceSettings.MinimumSway) ||
+                e.PropertyName == nameof(DeviceSettings.MaximumSway) ||
+                e.PropertyName == nameof(DeviceSettings.MinimumHeave) ||
+                e.PropertyName == nameof(DeviceSettings.MaximumHeave)
+            )
+            {
+                UpdateTelemetryGraphThresholds(Settings);
+            }
+        }
+
+        /// <summary>Called by SimHub when new telemetry data is available</summary>
+        public void DataUpdate(PluginManager pluginManager, ref GameData data)
+        {
+            if (!Settings.IsEnabled) { return; }
+
+            short oldGear = 0;
+            short newGear = 0;
+            bool inGear = Int16.TryParse(data.OldData?.Gear, out oldGear) && Int16.TryParse(data.NewData?.Gear, out newGear);
+
+            TelemetrySnapshot telemetrySnapshot = new TelemetrySnapshot
+            {
+                Surge = data.NewData?.AccelerationSurge,
+                Sway = data.NewData?.AccelerationSway,
+                Heave = data.NewData?.AccelerationHeave,
+                Speed = data.NewData?.SpeedKmh,
+                DidUpshift = inGear && (oldGear < newGear),
+                IsActive = (data.GameRunning && !data.GameInMenu) || data.GameReplay
+            };
+
+            lock (_telemetryLock)
+            {
+                _latestTelemetry = telemetrySnapshot;
+            }
+
+            _hasTelemetryArrived.Set();
+
+            if (telemetrySnapshot.IsActive) {
+
+                UpdateTelemetryGraph(
+                    telemetrySnapshot.Surge ?? 0,
+                    telemetrySnapshot.Sway ?? 0,
+                    telemetrySnapshot.Heave ?? 0
+                );
+
+            }
+        }
+
+        /// <summary>Called by SimHub when the plugin is unloaded, allowing the graceful release of connections and resources</summary>
+        public void End(PluginManager pluginManager)
+        {
+            _runControlLoop = false;
+            _hasTelemetryArrived.Set();
+
+            if (_controlThread != null)
+            {
+                _controlThread.Join(500);
+                _controlThread = null;
+            }
+
+            this.SaveCommonSettings("GeneralSettings", Settings);
+
+            if (_motorController != null)
+            {
+                _motorController.Disconnect();
+                _motorController = null;
+            }
+        }
+
+        /// <summary>Evalulates the <see cref="TelemetrySnapshot"/> propeties and calculates the appropriate effects to apply</summary>
+        /// <remarks>Runs as a separate thread to keep effects processing and motor commands out of the <see cref="DataUpdate"/> calls</remarks>
+        private void ControlLoop()
+        {
+            while (_runControlLoop)
+            {
+                _hasTelemetryArrived.WaitOne();
+
+                if (!_runControlLoop || !Settings.IsEnabled)
+                {
+                    break;
+                }
+
+                TelemetrySnapshot telemetrySnapshot;
+                lock (_telemetryLock)
+                {
+                    telemetrySnapshot = _latestTelemetry;
+                }
+                
+                MotorController motorController;
+                lock (_motorControllerLock)
+                {
+                    motorController = _motorController;
+                }
+
+                if (motorController == null)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    // Preferences
+                    double idleTension = ConvertToFraction(Settings.IdleTension);
+                    double minimumTension = ConvertToFraction(Settings.MinimumTension);
+                    double maximumTension = ConvertToFraction(Settings.MaximumTension);
+                    double sideBias = ConvertToFraction(Settings.SideBias);
+                    double corneringStrength = ConvertToFraction(Settings.CorneringStrength);
+                    double accelerationStrength = ConvertToFraction(Settings.AccelerationStrength);
+                    double brakingStrength = ConvertToFraction(Settings.BrakingStrength);
+                    double jumpingStrength = ConvertToFraction(Settings.JumpingStrength);
+                    double landingStrength = ConvertToFraction(Settings.LandingStrength);
+                    double shiftingStrength = ConvertToFraction(Settings.ShiftingStrength);
+
+                    // Tuning
+                    int minimumSurge = Settings.MinimumSurge;
+                    int maximumSurge = Settings.MaximumSurge;
+                    int minimumSway = Settings.MinimumSway;
+                    int maximumSway = Settings.MaximumSway;
+                    int minimumHeave = Settings.MinimumHeave;
+                    int maximumHeave = Settings.MaximumHeave;
+
+                    // Telemetry
+                    bool isMoving = telemetrySnapshot.Speed > 0.2;
+                    bool didUpshift = telemetrySnapshot.DidUpshift;
+                    double surge = telemetrySnapshot.Surge ?? 0.0;
+                    double sway = (ConvertToFractionOfRange(telemetrySnapshot.Sway ?? 0.0, minimumSway, maximumSway) * 2.0) - 1.0;
+                    double heave = telemetrySnapshot.Heave ?? 0.0;
+                    double speed = telemetrySnapshot.Speed ?? 0.0;
+
+                    double braking = ConvertToFractionOfRange(surge, 0, maximumSurge);
+                    double acceleration = 1.0 - ConvertToFractionOfRange(surge, minimumSurge, 0);
+                    double landing = ConvertToFractionOfRange(heave, 0, maximumHeave);
+                    double jumping = 1.0 - ConvertToFractionOfRange(heave, minimumHeave, 0);
+
+                    // Effects
+                    double increasingModifierLeft = 0.0;
+                    double increasingModifierRight = 0.0;
+                    double decreasingModifierLeft = 0.0;
+                    double decreasingModifierRight = 0.0;
+
+                    double leftTarget = 0.0;
+                    double rightTarget = 0.0;
+
+                    increasingModifierLeft = Math.Max(increasingModifierLeft, (braking * brakingStrength));
+                    increasingModifierRight = Math.Max(increasingModifierRight, (braking * brakingStrength));
+                    decreasingModifierLeft = Math.Max(decreasingModifierLeft, (acceleration * accelerationStrength));
+                    decreasingModifierRight = Math.Max(decreasingModifierRight, (acceleration * accelerationStrength));
+                    decreasingModifierLeft = Math.Max(decreasingModifierLeft, (jumping * jumpingStrength));
+                    decreasingModifierRight = Math.Max(decreasingModifierRight, (jumping * jumpingStrength));
+                    increasingModifierLeft = Math.Max(increasingModifierLeft, (landing * landingStrength));
+                    increasingModifierRight = Math.Max(increasingModifierRight, (landing * landingStrength));
+                    increasingModifierLeft = Math.Max(increasingModifierLeft, (sway <= 0.0) ? (Math.Abs(sway * corneringStrength)) : 0.0);
+                    increasingModifierRight = Math.Max(increasingModifierRight, (sway > 0.0) ? (Math.Abs(sway * corneringStrength)) : 0.0);
+
+                    if (didUpshift && shiftingStrength > 0.0)
+                    {
+                        Logging.Current.Info("UPSHIFT (@" + speed + ")");
+
+                        // @TODO: A very crude and temporary proof-of-concept (replace with time-controlled muliplier of underlying negative surge force)
+                        if (!_motorController.IsBusy)
+                        {
+                            _motorController.SetTorques(0.0, 0.0);
+                            Thread.Sleep((int)(shiftingStrength * 1000));
+                        }
+                    }
+
+                    // Combinator
+                    double totalModifierLeft = increasingModifierLeft - decreasingModifierLeft;
+                    double totalModifierRight = increasingModifierRight - decreasingModifierRight;
+
+                    if (totalModifierLeft < 0.0)
+                    {
+                        leftTarget = minimumTension + (totalModifierLeft * minimumTension);
+                    }
+                    else {
+                        leftTarget = minimumTension + totalModifierLeft;
+                    }
+                    if (totalModifierRight < 0.0)
+                    {
+                        rightTarget = minimumTension + (totalModifierRight * minimumTension);
+                    }
+                    else
+                    {
+                        rightTarget = minimumTension + totalModifierRight;
+                    }
+
+                    if (!isMoving)
+                    {
+                        leftTarget = idleTension;
+                        rightTarget = idleTension;
+                    }
+
+                    // Side Bias
+                    if (sideBias < 0.0)
+                    {
+                        rightTarget *= (1.0 - Math.Abs(sideBias));
+                    }
+                    else if (sideBias > 0.0)
+                    {
+                        leftTarget *= (1.0 - sideBias);
+                    }
+
+                    // Send To Motors
+                    if (!_motorController.IsBusy)
+                    {
+                        if (!_motorController.SetTorques(leftTarget, rightTarget))
+                        {
+                            Logging.Current.Warn("SABT: Motor communication failure");
+
+                            _motorController.Stop();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.Current.Error("SABT: " + ex.Message);
+                }
+            }
+        }
+
+        /// <summary>A task wrapper for the <see cref="MotorController" /> instance, allowing logic in this and other classes to asynchronously execute motor actions</summary>
+        public async Task OnMotorController(Action<MotorController> taskToPerform)
+        {
+            await Task.Run(() => taskToPerform(_motorController));
+        }
+
+        /// <summary>Asynchronously updates the <see cref="Settings"/> properties related to motor state (the status labels and icons)</summary>
+        /// <remarks>This is a hacky way of updating the UI due to limitations I encountered earlier in development. It should be replaced; possibly with the same direct binding approach used with the new telemetry graph</remarks>
+        public async Task RefreshStatus()
+        {
+            await Task.Run(() =>
+            {
+                lock (_motorControllerLock)
+                {
+                    if (_motorController != null)
+                    {
+                        Motor leftMotor = _motorController.GetLeftMotor();
+                        Motor rightMotor = _motorController.GetRightMotor();
+
+                        if (leftMotor != null)
+                        {
+                            Settings.LeftMotorIcon = leftMotor.Icon;
+                            Settings.LeftMotorStatus = leftMotor.Status;
+                        }
+                        if (rightMotor != null)
+                        {
+                            Settings.RightMotorIcon = rightMotor.Icon;
+                            Settings.RightMotorStatus = rightMotor.Status;
+                        }
+                    }
+                }
+            });
+        }
+
+        /// <summary>Applies the current <see cref="Settings"/> to a new <see cref="MotorController"/> instance</summary>
+        public async Task ConfigureMotorController(bool ignoreExisting = false)
+        {
+            await Task.Run(() =>
+            {
+                if (string.IsNullOrWhiteSpace(Settings.SerialPort))
+                {
+                    return;
+                }
+
+                lock (_motorControllerLock)
+                {
+                    if (_motorController != null)
+                    {
+                        if (!ignoreExisting)
+                        {
+                            return;
+                        }
+
+                        _motorController.Disconnect();
+                        _motorController = null;
+                    }
+
+                    try
+                    {
+                        _motorController = new MotorController(this, Settings.SerialPort);
+                        if (!_motorController.Connect())
+                        {
+                            _motorController = null;
+                        }
+                    }
+                    catch (Exception connectionException)
+                    {
+                        Logging.Current.Error($"SABT: {connectionException.Message}");
+
+                        _motorController = null;
+                    }
+                }
+            });
+        }
+
+        /// <summary>A utility method for converting the 10x/100x/1000x integers used in the settings sliders with decimal values</summary>
+        private static double ConvertToFraction(double value, uint resolution = 1000)
+        {
+            value /= resolution;
+            if (value < -1.0) { return -1.0; }
+            if (value > 1.0) { return 1.0; }
+            return value;
+        }
+
+        /// <summary>A utility method for converting the integers used in the settings sliders with decimal values (relative to the given range)</summary>
+        private static double ConvertToFractionOfRange(double value, double min, double max)
+        {
+            value = ClampTo(value, min, max);
+
+            return (value - min) / (max - min);
+        }
+
+        /// <summary>A utility method for clamping the given value to a given range</summary>
+        private static double ClampTo(double value, double min, double max)
+        {
+            if (value < min) { return min; }
+            if (value > max) { return max; }
+            return value;
+        }
+
+
+
+
+        public PlotModel TelemetryGraphModel { get; private set; }
+
+        private LineSeries _surgeSeries;
+        private LineSeries _swaySeries;
+        private LineSeries _heaveSeries;
+
+        private LineAnnotation _surgeMinimumAnnotation;
+        private LineAnnotation _surgeMaximumAnnotation;
+        private LineAnnotation _swayMinimumAnnotation;
+        private LineAnnotation _swayMaximumAnnotation;
+        private LineAnnotation _heaveMinimumAnnotation;
+        private LineAnnotation _heaveMaximumAnnotation;
+
+        private int _plotPointIndex = 0;
+        private const int MaxPlotPoints = 200;
+
+        private DateTime _lastPlotRefresh = DateTime.MinValue;
+        private static readonly TimeSpan PlotRefreshInterval = TimeSpan.FromMilliseconds(33);
+
+        /// <summary>Initialises the telemetry graph instance and configures its styling and legends</summary>
+        private void InitialiseTelemetryGraph()
+        {
+            OxyColor blue = OxyColor.Parse("#119eda");
+            OxyColor grey = OxyColor.Parse("#454545");
+
+            TelemetryGraphModel = new PlotModel {
+                Title = " ",
+                TextColor = OxyColors.White,
+                LegendTextColor = OxyColors.White,
+                PlotAreaBorderColor = OxyColors.Transparent
+            };
+
+            TelemetryGraphModel.Axes.Add(
+                new LinearAxis {
+                    Title = "m/s²",
+                    Position = AxisPosition.Left,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MajorGridlineColor = grey,
+                    MinorGridlineStyle = LineStyle.Dot,
+                    MinorGridlineColor = grey,
+                    TicklineColor = OxyColors.Transparent,
+                    Minimum = -50,
+                    Maximum = 100
+                }
+            );
+
+            TelemetryGraphModel.Axes.Add(
+                new LinearAxis
+                {
+                    Position = AxisPosition.Bottom,
+                    IsAxisVisible = false
+                }
+            );
+
+            _surgeSeries = AddTelemetryLine("Surge", OxyColors.Red);
+            _surgeMinimumAnnotation = AddThresholdLine(OxyColors.Red);
+            _surgeMaximumAnnotation = AddThresholdLine(OxyColors.Red);
+
+            _swaySeries = AddTelemetryLine("Sway", OxyColors.Green);
+            _swayMinimumAnnotation = AddThresholdLine(OxyColors.Green);
+            _swayMaximumAnnotation = AddThresholdLine(OxyColors.Green);
+
+            _heaveSeries = AddTelemetryLine("Heave", OxyColors.Blue);
+            _heaveMinimumAnnotation = AddThresholdLine(OxyColors.Blue);
+            _heaveMaximumAnnotation = AddThresholdLine(OxyColors.Blue);
+        }
+
+        /// <summary>Redraws the telemetry graph, providing enough time has passed since the last redraw to achieve the desired refresh rate</summary>
+        private void RedrawGraph()
+        {
+            DateTime now = DateTime.UtcNow;
+            if (now - _lastPlotRefresh >= PlotRefreshInterval)
+            {
+                TelemetryGraphModel.InvalidatePlot(true);
+                _lastPlotRefresh = now;
+            }
+        }
+
+        /// <summary>Applies the given telemetry data to the telemetry graph and requests (but does not guarantee) a redraw</summary>
+        private void UpdateTelemetryGraph(double surge, double sway, double heave)
+        {
+            double x = _plotPointIndex++;
+
+            _surgeSeries.Points.Add(new DataPoint(x, surge));
+            _swaySeries.Points.Add(new DataPoint(x, sway));
+            _heaveSeries.Points.Add(new DataPoint(x, heave));
+
+            if (_surgeSeries.Points.Count > MaxPlotPoints)
+            {
+                _surgeSeries.Points.RemoveAt(0);
+                _swaySeries.Points.RemoveAt(0);
+                _heaveSeries.Points.RemoveAt(0);
+            }
+
+            RedrawGraph();
+        }
+
+        /// <summary>Applies the given telemetry thresholds to the telemetry graph and requests (but does not guarantee) a redraw</summary>
+        private void UpdateTelemetryGraphThresholds(DeviceSettings settings)
+        {
+            _surgeMinimumAnnotation.Y = settings.MinimumSurge;
+            _surgeMaximumAnnotation.Y = settings.MaximumSurge;
+            _swayMinimumAnnotation.Y = settings.MinimumSway;
+            _swayMaximumAnnotation.Y = settings.MaximumSway;
+            _heaveMinimumAnnotation.Y = settings.MinimumHeave;
+            _heaveMaximumAnnotation.Y = settings.MaximumHeave;
+
+            TelemetryGraphModel.InvalidatePlot(true);
+
+            RedrawGraph();
+        }
+
+        /// <summary>Adds and returns a new threshold line of the given color to the telemetry graph</summary>
+        private LineAnnotation AddThresholdLine(OxyColor color)
+        {
+            LineAnnotation annotation = new LineAnnotation
+            {
+                Type = LineAnnotationType.Horizontal,
+                Color = color,
+                StrokeThickness = 1,
+                LineStyle = LineStyle.Dot,
+                Y = 0,
+            };
+
+            TelemetryGraphModel.Annotations.Add(annotation);
+
+            return annotation;
+        }
+
+        /// <summary>Adds and returns a new telemetry line of the given title and color to the telemetry graph</summary>
+        private LineSeries AddTelemetryLine(string title, OxyColor color)
+        {
+            LineSeries series = new LineSeries
+            {
+                Title = title,
+                Color = color,
+                StrokeThickness = 1
+            };
+
+            series.Points.Capacity = MaxPlotPoints;
+
+            TelemetryGraphModel.Series.Add(series);
+
+            return series;
+        }
+    }
+}

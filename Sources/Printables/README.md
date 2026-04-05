@@ -13,5 +13,4 @@ These files are the original [FreeCAD](https://www.freecad.org/) design files fr
 | [Corner Motor Bracket.FCStd](Corner%20Motor%20Bracket.FCStd) | Motor Bracket | A motor bracket designed to be **corner-mounted** to `30MM` or `40MM` aluminium profile |
 | [Flat Motor Bracket.FCStd](Flat%20Motor%20Bracket.FCStd) | Motor Bracket | A motor bracket designed to be **flat-mounted** to `30MM` or `40MM` aluminium profile |
 | [Tube Motor Bracket.FCStd](Tube%20Motor%20Bracket.FCStd) | Motor Bracket | A motor bracket designed to be **clamp-mounted** to `50MM` tube (requires [truss clamp](https://www.amazon.co.uk/dp/B07DP1FK33)) |
-| [6706 Bearing Pulley.FCStd](Pulley%20(6706%20Bearing).FCStd) | Pulley Assembly | The **pulley** cover, hub and face parts for a `6706` sized bearing; the **torque-optimized** pulley option |
-| [6809 Bearing Pulley.FCStd](Pulley%20(6809%20Bearing).FCStd) | Pulley Assembly | The **pulley** cover, hub and face parts for a `6809` sized bearing; the **speed-optimized** pulley option |
+| [Bearing Pulley.FCStd](Pulley%20(6706%20Bearing).FCStd) | Pulley Assembly | The **pulley** cover, hub and face parts for a `6706` sized bearing |

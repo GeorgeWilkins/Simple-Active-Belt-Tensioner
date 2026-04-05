@@ -18,14 +18,6 @@ If you have a _tubular frame_, choose the `Tube` clamp bracket design (which int
 
 You only need to print _two_ of a single type of bracket. The designs are all symetrical.
 
-### Choosing Your Pulley Size
-
-At the moment there are two pulley options; one for `6706` breaings (`30x37x4MM`) and another for `6809` (`45x58x7MM`) bearings. They have the same basic design, but have different hub sizes. This affects the torque (force) and speed (reactivness) of the tensioner effects.
-
-Right now the smaller `6706` pulley is being used in testing and is considered the default size.
-
-Each pulley has three parts; the outer cover, the face and the hub. You'll need to print two of each part in your chosen size. Again, these are all symetrical; there are no _'right'_ or _'left'_ versions of any of the parts.
-
 ### Choosing Your Belt Clamps
 
 Since there are a variety of belt types and terminations, a few options are available:
@@ -43,9 +35,9 @@ Regardless of your choices above, you should end up with:
 - 1x Controller Case (Top)
 - 1x Controller Case (Base)
 - 2x `Corner`|`Flat`|`Tube` Motor Bracket
-- 2x `6706`|`6809` Bearing Pulley (Cover)
-- 2x `6706`|`6809` Bearing Pulley (Face)
-- 2x `6706`|`6809` Bearing Pulley (Hub)
+- 2x Bearing Pulley (Cover)
+- 2x Bearing Pulley (Face)
+- 2x Bearing Pulley (Hub)
 
 <img alt="Printable Parts" src="https://github.com/user-attachments/assets/0f1a7170-193e-4ecd-94d9-9bf6c1afe0a8" />
 
