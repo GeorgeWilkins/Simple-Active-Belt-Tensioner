@@ -16,7 +16,7 @@ The rest of the parts can be obtained from virtually anywhere, including [Amazon
 | - | - | - | - |
 | `120 GBP` | 2 x Motors | Waveshare DDSM115 BLDC servo motors | [PiHut UK](https://thepihut.com/products/ddsm115-direct-drive-servo-motor) |
 | `20 GBP` | Controller | Waveshare DDSM Hub Motor Driver Board | [PiHut UK](https://thepihut.com/products/ddsm-hub-motor-driver-board) |
-| `8 GBP` | 2 x Bearings | `6809` or `6706` bearings (for the two different pulley options) | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DLV2ND) or [Amazon UK](https://www.amazon.co.uk/dp/B0D4DN3RW8) |
+| `8 GBP` | 2 x Bearings | `6706` bearings for the pulleys | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DN3RW8) |
 | `7 GBP` | M2.5 Screw & Nut Set | Four `M2.5x16` (or `M2.5x18`) + eight `M2.5x10` + six `M2.5x12` + six `M2.5x20` + twelve `M2.5` nuts | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
 | `10 GBP` | ~1M UHMWPE/Dyneema Cord | The low-friction high-strength cord for the pulleys (1.5~2.0MM Diameter) | [Amazon UK](https://www.amazon.co.uk/dp/B0957PH16Q) |
 | `20 GBP` | 15V 3A DC Power Supply | The power supply for the board and motors (5.5x2.5MM power jack or XT60 connector) | [Amazon UK](https://www.amazon.co.uk/dp/B09CPFVJVC) |
@@ -41,7 +41,7 @@ If using the tubular brackets, you'll need to order two [2" Truss Clamps](https:
 
 | Step | Instructions | Illustration |
 | :-: | :- | :-: |
-| 1 | Assemble the four pulley parts; the bearing, the outer cover, the face plate and hub.<br /><br />Note that the pulley design is subject to ongoing refinement; so the exact design may look slightly different to the pictures shown. The assembly process is the same though. | <img alt="Pulley Parts" src="https://github.com/user-attachments/assets/a71e7c59-454f-469d-a038-f88115272059" /> |
+| 1 | Assemble the four pulley parts; the bearing, the outer cover, the face plate and hub. | <img alt="Pulley Parts" src="https://github.com/user-attachments/assets/a71e7c59-454f-469d-a038-f88115272059" /> |
 | 2 | Press the bearing into the outer cover. This should be possible by hand. The accuracy/roughness of your print will dictate how easy this is.<br /><br />If the fit is too tight, use a hammer to _gently_ tap it in (alternating sides with each tap) or consider shaving away some material with a knife or file.<br /><br />If the fit is too loose, cut up a drinks can and shim around the edges of the bearing to fill in the gap (ensuring the shims do not protrude). | <img alt="Inserting The Bearing" src="https://github.com/user-attachments/assets/ad074009-27f4-4a20-aeaf-5cc2b9e5fe1e" /><img alt="Inserted Bearing" src="https://github.com/user-attachments/assets/36d34db8-b217-4201-b0ea-c0265f49e00e" /> |
 | 3 | Insert the pulley face from the front so it sits inside the inner ring of the bearing. The notes above regarding fitting tolerances apply here too | <img alt="Face Inserted" src="https://github.com/user-attachments/assets/d301219f-ad1e-46d6-be3b-2027827be9d9" /> |
 | 4 | Insert the pulley hub over the top, so that the triangular shape on the face part pushes into the triangular hole of the hub. They may pop together or be loose depending on the tolerances of your print (either is fine). The slot in the hub for the cord should be facing outward. | <img alt="Hub Fitted" src="https://github.com/user-attachments/assets/74074eec-8118-420c-ae5c-088a4f61ddf7" /> |
