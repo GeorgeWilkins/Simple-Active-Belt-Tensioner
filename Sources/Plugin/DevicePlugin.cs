@@ -43,7 +43,9 @@ namespace User.ActiveBeltTensioner
 
         public string LeftMenuTitle => "Simple Active Belt Tensioner";
 
-        private MotorController _motorController;
+
+        public MotorController MotorController;
+
         private readonly object _motorControllerLock = new object();
 
         private readonly object _telemetryLock = new object();
@@ -73,20 +75,26 @@ namespace User.ActiveBeltTensioner
         /// <summary>Called by SimHub to initialise the plugin</summary>
         public void Init(PluginManager pluginManager)
         {
-            InitialiseTelemetryGraph();
-
             Logging.Current.Info("SABT: Init()...");
 
             Settings = this.ReadCommonSettings<DeviceSettings>("GeneralSettings", () => new DeviceSettings());
             Settings.PropertyChanged += OnSettingsChanged;
 
+            MotorController = new MotorController(this);
             if (Settings.IsEnabled && Settings.IsSerialPortValid)
             {
-                ConfigureMotorController();
+                DoWithoutWaiting(devicePlugin =>
+                {
+                    devicePlugin.MotorController.Connect();
+                });
             }
 
+
+            InitialiseTelemetryGraph();
             UpdateTelemetryGraphThresholds(Settings);
             UpdateTelemetryGraph(0, 0, 0);
+
+
 
             _runControlLoop = true;
             _controlThread = new Thread(ControlLoop)
@@ -103,42 +111,44 @@ namespace User.ActiveBeltTensioner
             Logging.Current.Info("SABT: OnSettingsChanged(" + e.PropertyName + " = " + Settings.GetType().GetProperty(e.PropertyName).GetValue(Settings, null) + ")...");
 
             if (
-                e.PropertyName == nameof(DeviceSettings.SerialPort) ||
-                e.PropertyName == nameof(DeviceSettings.IsEnabled)
+                e.PropertyName == nameof(Settings.SerialPort) ||
+                e.PropertyName == nameof(Settings.IsEnabled)
             )
             {
                 if (Settings.IsEnabled)
                 {
                     if (Settings.IsSerialPortValid)
                     {
-                        ConfigureMotorController();
+                        DoWithoutWaiting(devicePlugin =>
+                        {
+                            devicePlugin.MotorController.Connect();
+                        });
                     }
                 }
                 else
                 {
-                    if (_motorController != null)
+                    DoWithoutWaiting(devicePlugin =>
                     {
-                        _motorController.Disconnect();
-                        _motorController = null;
-                    }
+                        devicePlugin.MotorController.Disconnect();
+                    });
                 }
             }
 
-            if (e.PropertyName == nameof(DeviceSettings.IsFlipped))
+            if (e.PropertyName == nameof(Settings.IsFlipped))
             {
-                if (_motorController != null)
+                if (MotorController != null)
                 {
-                    _motorController.IsFlipped = Settings.IsFlipped;
+                    MotorController.IsFlipped = Settings.IsFlipped;
                 }
             }
 
             if (
-                e.PropertyName == nameof(DeviceSettings.MinimumSurge) ||
-                e.PropertyName == nameof(DeviceSettings.MaximumSurge) ||
-                e.PropertyName == nameof(DeviceSettings.MinimumSway) ||
-                e.PropertyName == nameof(DeviceSettings.MaximumSway) ||
-                e.PropertyName == nameof(DeviceSettings.MinimumHeave) ||
-                e.PropertyName == nameof(DeviceSettings.MaximumHeave)
+                e.PropertyName == nameof(Settings.MinimumSurge) ||
+                e.PropertyName == nameof(Settings.MaximumSurge) ||
+                e.PropertyName == nameof(Settings.MinimumSway) ||
+                e.PropertyName == nameof(Settings.MaximumSway) ||
+                e.PropertyName == nameof(Settings.MinimumHeave) ||
+                e.PropertyName == nameof(Settings.MaximumHeave)
             )
             {
                 UpdateTelemetryGraphThresholds(Settings);
@@ -196,11 +206,7 @@ namespace User.ActiveBeltTensioner
 
             this.SaveCommonSettings("GeneralSettings", Settings);
 
-            if (_motorController != null)
-            {
-                _motorController.Disconnect();
-                _motorController = null;
-            }
+            MotorController.Disconnect();
         }
 
         /// <summary>Evalulates the <see cref="TelemetrySnapshot"/> propeties and calculates the appropriate effects to apply</summary>
@@ -225,12 +231,12 @@ namespace User.ActiveBeltTensioner
                 MotorController motorController;
                 lock (_motorControllerLock)
                 {
-                    motorController = _motorController;
+                    motorController = MotorController;
                 }
 
-                if (motorController == null)
+                if (!motorController.LeftMotorIsConnected || !motorController.RightMotorIsConnected)
                 {
-                    continue;
+                    break;
                 }
 
                 try
@@ -240,6 +246,7 @@ namespace User.ActiveBeltTensioner
                     double minimumTension = ConvertToFraction(Settings.MinimumTension);
                     double maximumTension = ConvertToFraction(Settings.MaximumTension);
                     double sideBias = ConvertToFraction(Settings.SideBias);
+                    double smoothingFactor = ConvertToFraction(Settings.SmoothingFactor);
                     double corneringStrength = ConvertToFraction(Settings.CorneringStrength);
                     double accelerationStrength = ConvertToFraction(Settings.AccelerationStrength);
                     double brakingStrength = ConvertToFraction(Settings.BrakingStrength);
@@ -293,9 +300,9 @@ namespace User.ActiveBeltTensioner
                         Logging.Current.Info("UPSHIFT (@" + speed + ")");
 
                         // @TODO: A very crude and temporary proof-of-concept (replace with time-controlled muliplier of underlying negative surge force)
-                        if (!_motorController.IsBusy)
+                        if (!motorController.IsBusy)
                         {
-                            _motorController.SetTorques(0.0, 0.0);
+                            motorController.SetTorques(0.0, 0.0);
                             Thread.Sleep((int)(shiftingStrength * 1000));
                         }
                     }
@@ -337,13 +344,13 @@ namespace User.ActiveBeltTensioner
                     }
 
                     // Send To Motors
-                    if (!_motorController.IsBusy)
+                    if (!motorController.IsBusy)
                     {
-                        if (!_motorController.SetTorques(leftTarget, rightTarget))
+                        if (!motorController.SetTorques(leftTarget, rightTarget, smoothingFactor))
                         {
                             Logging.Current.Warn("SABT: Motor communication failure");
 
-                            _motorController.Stop();
+                            //motorController.Stop();
                         }
                     }
                 }
@@ -354,80 +361,17 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        /// <summary>A task wrapper for the <see cref="MotorController" /> instance, allowing logic in this and other classes to asynchronously execute motor actions</summary>
-        public async Task OnMotorController(Action<MotorController> taskToPerform)
+
+
+
+
+        /// <summary>A task wrapper for the <see cref="ActiveBeltTensioner.DevicePlugin" /> instance, allowing logic in this and other classes to asynchronously execute actions</summary>
+        public async Task DoWithoutWaiting(Action<DevicePlugin> taskToPerform)
         {
-            await Task.Run(() => taskToPerform(_motorController));
+            await Task.Run(() => taskToPerform(this));
         }
 
-        /// <summary>Asynchronously updates the <see cref="Settings"/> properties related to motor state (the status labels and icons)</summary>
-        /// <remarks>This is a hacky way of updating the UI due to limitations I encountered earlier in development. It should be replaced; possibly with the same direct binding approach used with the new telemetry graph</remarks>
-        public async Task RefreshStatus()
-        {
-            await Task.Run(() =>
-            {
-                lock (_motorControllerLock)
-                {
-                    if (_motorController != null)
-                    {
-                        Motor leftMotor = _motorController.GetLeftMotor();
-                        Motor rightMotor = _motorController.GetRightMotor();
 
-                        if (leftMotor != null)
-                        {
-                            Settings.LeftMotorIcon = leftMotor.Icon;
-                            Settings.LeftMotorStatus = leftMotor.Status;
-                        }
-                        if (rightMotor != null)
-                        {
-                            Settings.RightMotorIcon = rightMotor.Icon;
-                            Settings.RightMotorStatus = rightMotor.Status;
-                        }
-                    }
-                }
-            });
-        }
-
-        /// <summary>Applies the current <see cref="Settings"/> to a new <see cref="MotorController"/> instance</summary>
-        public async Task ConfigureMotorController(bool ignoreExisting = false)
-        {
-            await Task.Run(() =>
-            {
-                if (string.IsNullOrWhiteSpace(Settings.SerialPort))
-                {
-                    return;
-                }
-
-                lock (_motorControllerLock)
-                {
-                    if (_motorController != null)
-                    {
-                        if (!ignoreExisting)
-                        {
-                            return;
-                        }
-
-                        _motorController.Disconnect();
-                        _motorController = null;
-                    }
-
-                    try
-                    {
-                        _motorController = new MotorController(this, Settings.SerialPort);
-                        if (!_motorController.Connect())
-                        {
-                            _motorController = null;
-                        }
-                    }
-                    catch (Exception connectionException)
-                    {
-                        Logging.Current.Error($"SABT: {connectionException.Message}");
-
-                        _motorController = null;
-                    }
-                }
-            });
-        }
 
         /// <summary>A utility method for converting the 10x/100x/1000x integers used in the settings sliders with decimal values</summary>
         private static double ConvertToFraction(double value, uint resolution = 1000)
