@@ -229,6 +229,7 @@ namespace User.ActiveBeltTensioner
                     return false;
                 }
 
+                int direction = (this == _controller.GetLeftMotor()) ? 1 : -1;
                 int good = 0;
                 int bad = 0;
 
@@ -255,7 +256,7 @@ namespace User.ActiveBeltTensioner
 
                     Thread.Sleep(200);
 
-                    torque = (short)((torque > 0) ? 0 : (testTorque * _torqueLimit));
+                    torque = (short)((torque != 0) ? 0 : (testTorque * direction * _torqueLimit));
                 }
 
                 if (bad > 0)
