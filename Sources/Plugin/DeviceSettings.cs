@@ -106,7 +106,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _minimumSurge = -10;
+        private int _minimumSurge = -12;
         public int MinimumSurge
         {
             get { return _minimumSurge; }
@@ -134,7 +134,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _minimumSway = -17;
+        private int _minimumSway = -21;
         public int MinimumSway
         {
             get { return _minimumSway; }
@@ -149,7 +149,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _maximumSway = 17;
+        private int _maximumSway = 21;
         public int MaximumSway
         {
             get { return _maximumSway; }
@@ -205,7 +205,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _smoothingFactor = 0;
+        private int _smoothingFactor = 400;
         public int SmoothingFactor
         {
             get { return _smoothingFactor; }

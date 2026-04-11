@@ -18,6 +18,7 @@ using System.Runtime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -54,6 +55,8 @@ namespace User.ActiveBeltTensioner
         private readonly AutoResetEvent _hasTelemetryArrived = new AutoResetEvent(false);
         private Thread _controlThread;
         private volatile bool _runControlLoop = false;
+
+        private bool _hasBeenInactive = true;
 
         public struct TelemetrySnapshot
         {
@@ -134,14 +137,6 @@ namespace User.ActiveBeltTensioner
                 }
             }
 
-            if (e.PropertyName == nameof(Settings.IsFlipped))
-            {
-                if (MotorController != null)
-                {
-                    MotorController.IsFlipped = Settings.IsFlipped;
-                }
-            }
-
             if (
                 e.PropertyName == nameof(Settings.MinimumSurge) ||
                 e.PropertyName == nameof(Settings.MaximumSurge) ||
@@ -204,9 +199,9 @@ namespace User.ActiveBeltTensioner
                 _controlThread = null;
             }
 
-            this.SaveCommonSettings("GeneralSettings", Settings);
-
             MotorController.Disconnect();
+
+            this.SaveCommonSettings("GeneralSettings", Settings);
         }
 
         /// <summary>Evalulates the <see cref="TelemetrySnapshot"/> propeties and calculates the appropriate effects to apply</summary>
@@ -215,11 +210,18 @@ namespace User.ActiveBeltTensioner
         {
             while (_runControlLoop)
             {
-                _hasTelemetryArrived.WaitOne();
-
-                if (!_runControlLoop || !Settings.IsEnabled)
+                if (!_runControlLoop)
                 {
                     break;
+                }
+
+                _hasTelemetryArrived.WaitOne();
+
+                if (!Settings.IsEnabled)
+                {
+                    _hasBeenInactive = true;
+
+                    continue;
                 }
 
                 TelemetrySnapshot telemetrySnapshot;
@@ -236,7 +238,28 @@ namespace User.ActiveBeltTensioner
 
                 if (!motorController.LeftMotorIsConnected || !motorController.RightMotorIsConnected)
                 {
-                    break;
+                    _hasBeenInactive = true;
+
+                    continue;
+                }
+
+                if (_hasBeenInactive)
+                {
+                    MessageBoxResult result = MessageBoxResult.No;
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        result = MessageBox.Show("The belt tensioner motors will be activated. Are you sure?", "Simple Active Belt Tensioner", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    });
+
+                    if (result != MessageBoxResult.Yes)
+                    {
+                        Settings.IsEnabled = false;
+
+                        continue;
+                    }
+
+                    _hasBeenInactive = false;
                 }
 
                 try
@@ -371,8 +394,6 @@ namespace User.ActiveBeltTensioner
             await Task.Run(() => taskToPerform(this));
         }
 
-
-
         /// <summary>A utility method for converting the 10x/100x/1000x integers used in the settings sliders with decimal values</summary>
         private static double ConvertToFraction(double value, uint resolution = 1000)
         {
@@ -430,7 +451,8 @@ namespace User.ActiveBeltTensioner
                 Title = " ",
                 TextColor = OxyColors.White,
                 LegendTextColor = OxyColors.White,
-                PlotAreaBorderColor = OxyColors.Transparent
+                PlotAreaBorderColor = OxyColors.Transparent,
+                PlotType = PlotType.XY
             };
 
             TelemetryGraphModel.Axes.Add(
@@ -443,7 +465,9 @@ namespace User.ActiveBeltTensioner
                     MinorGridlineColor = grey,
                     TicklineColor = OxyColors.Transparent,
                     Minimum = -50,
-                    Maximum = 100
+                    Maximum = 100,
+                    IsPanEnabled = false,
+                    IsZoomEnabled = false
                 }
             );
 
@@ -451,7 +475,9 @@ namespace User.ActiveBeltTensioner
                 new LinearAxis
                 {
                     Position = AxisPosition.Bottom,
-                    IsAxisVisible = false
+                    IsAxisVisible = false,
+                    IsPanEnabled = false,
+                    IsZoomEnabled = false
                 }
             );
 

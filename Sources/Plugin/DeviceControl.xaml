@@ -75,7 +75,7 @@
 
                                     <ComboBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding MotorController.SerialPorts}" SelectedItem="{Binding Settings.SerialPort, UpdateSourceTrigger=PropertyChanged}" Margin="35,10,35,0" />
 
-                                    <styles:SHButtonPrimary Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Click="RefreshSerialPorts" Margin="35,10,35,0">Refresh Serial Ports</styles:SHButtonPrimary>
+                                    <styles:SHButtonPrimary Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Click="UpdateSerialPorts" Margin="35,10,35,0">Refresh Serial Ports</styles:SHButtonPrimary>
 
                                     <styles:SHButtonPrimary Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Click="SetLeftMotorIdentifier" Margin="0,10,0,0" IsEnabled="{Binding MotorController.OneMotorIsConnected}">Set Channel</styles:SHButtonPrimary>
                                     <styles:SHButtonPrimary Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" Click="SetRightMotorIdentifier" Margin="0,10,0,0" IsEnabled="{Binding MotorController.OneMotorIsConnected}">Set Channel</styles:SHButtonPrimary>
@@ -158,7 +158,7 @@
                         <styles:SHTitledGroup Title="Telemetry Handling">
                             <StackPanel>
 
-                                <oxy:PlotView Height="600" HorizontalAlignment="Stretch" Margin="-10,0,-2,25" Background="Transparent" Model="{Binding TelemetryGraphModel}" />
+                                <oxy:PlotView Height="600" HorizontalAlignment="Stretch" Margin="-14,-10,-14,15" Background="#202020" Model="{Binding TelemetryGraphModel}" />
 
                                 <ui:TitledRangeSlider Title="Surge Limits (Acceleration/Braking)" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <ui:TitledRangeSlider Title="Sway Limits (Cornering)" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

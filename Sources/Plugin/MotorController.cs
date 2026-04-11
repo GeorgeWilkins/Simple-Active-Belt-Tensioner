@@ -419,7 +419,6 @@ namespace User.ActiveBeltTensioner
 
 
         public Motor[] Motors { get; private set; }
-        public bool IsFlipped { get; set; }
         public bool IsBusy {
             get { lock (_actionLock) { return _actionsIdentifiers.Count > 0; } }
         }
@@ -804,7 +803,7 @@ namespace User.ActiveBeltTensioner
         {
             foreach (Motor motor in Motors)
             {
-                if (motor.Label == "Left")
+                if (motor.Label == (_plugin.Settings.IsFlipped ? "Right" : "Left"))
                 {
                     return motor;
                 }
@@ -818,7 +817,7 @@ namespace User.ActiveBeltTensioner
         {
             foreach (Motor motor in Motors)
             {
-                if (motor.Label == "Right")
+                if (motor.Label == (_plugin.Settings.IsFlipped ? "Left" : "Right"))
                 {
                     return motor;
                 }
@@ -1082,40 +1081,6 @@ namespace User.ActiveBeltTensioner
                 }
             }
 
-
-
-            /*
-            string[] ports = MotorController.FindMatchingDevices()
-                .Select(device => device.SerialPort)
-                .Where(port => !string.IsNullOrWhiteSpace(port))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .OrderBy(port => port, StringComparer.OrdinalIgnoreCase)
-                .ToArray();
-
-            bool changed =
-                (settings.SerialPorts == null) ||
-                (settings.SerialPorts.Length != ports.Length) ||
-                !settings.SerialPorts.SequenceEqual(ports, StringComparer.OrdinalIgnoreCase);
-
-            if (!changed)
-            {
-                return;
-            }
-
-            settings.SerialPorts = ports;
-
-            if (!string.IsNullOrWhiteSpace(settings.SerialPort) &&
-                ports.Contains(settings.SerialPort, StringComparer.OrdinalIgnoreCase))
-            {
-                return;
-            }
-
-            settings.SerialPort = ports.Length > 0 ? ports[0] : null;
-            */
-
-
-
-
             string[] serialPorts = devices
                 .OrderBy(d => d.SerialPort, StringComparer.OrdinalIgnoreCase)
                 .ToList()
@@ -1138,14 +1103,12 @@ namespace User.ActiveBeltTensioner
                 !string.IsNullOrWhiteSpace(_plugin.Settings.SerialPort) ||
                 !serialPorts.Contains(_plugin.Settings.SerialPort, StringComparer.OrdinalIgnoreCase)
             ) {
+Logging.Current.Info("SELECTING FIRST FOUND SERIAL PORT");
                 _plugin.Settings.SerialPort = serialPorts[0];
             }
 
             return SerialPorts;
         }
-
-
-
 
         public sealed class DeviceInstance
         {

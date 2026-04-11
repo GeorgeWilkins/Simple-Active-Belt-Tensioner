@@ -23,7 +23,7 @@ namespace User.ActiveBeltTensioner
 
         public Action<string> OnSerialPortSelected;
 
-        public PlotModel TelemetryGraphModel { get; }
+        //public PlotModel TelemetryGraphModel { get; }
 
         public DeviceControl(DevicePlugin plugin)
         {
@@ -32,17 +32,6 @@ namespace User.ActiveBeltTensioner
             _plugin = plugin;
 
             InitializeComponent();
-
-            /*
-            TelemetryGraph.Model = plugin.TelemetryGraphModel;
-
-            if (TelemetryGraphModel != null)
-            {
-                Logging.Current.Info("GRAPH EXISTS");
-            }
-            else {
-                Logging.Current.Warn("GRAPH IS NULL");
-            }*/
 
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
@@ -77,7 +66,7 @@ namespace User.ActiveBeltTensioner
             Logging.Current.Info("SABT: OnUnloaded()...");
         }
 
-        private void RefreshSerialPorts(object sender, RoutedEventArgs e)
+        private void UpdateSerialPorts(object sender, RoutedEventArgs e)
         {
             _plugin.DoWithoutWaiting(
                 devicePlugin =>
