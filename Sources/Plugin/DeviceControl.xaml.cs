@@ -1,5 +1,7 @@
-﻿using SimHub;
+﻿using OxyPlot;
+using SimHub;
 using SimHub.Plugins;
+using SimHub.Plugins.Devices;
 using SimHub.Plugins.Styles;
 using System;
 using System.ComponentModel;
@@ -12,18 +14,14 @@ using System.Windows.Documents;
 using System.Windows.Threading;
 using System.Xml.Linq;
 using WoteverLocalization;
-using OxyPlot;
 
 namespace User.ActiveBeltTensioner
 {
     public partial class DeviceControl : UserControl
     {
         private readonly DevicePlugin _plugin;
-        private readonly DispatcherTimer __serialRefreshTimer = new DispatcherTimer();
 
         public Action<string> OnSerialPortSelected;
-
-        public PlotModel TelemetryGraphModel { get; }
 
         public DeviceControl(DevicePlugin plugin)
         {
@@ -33,146 +31,95 @@ namespace User.ActiveBeltTensioner
 
             InitializeComponent();
 
-            DataContext = _plugin.Settings;
-
-            TelemetryGraph.Model = plugin.TelemetryGraphModel;
-
-            if (TelemetryGraphModel != null)
-            {
-                Logging.Current.Info("GRAPH EXISTS");
-            }
-            else {
-                Logging.Current.Warn("GRAPH IS NULL");
-            }
-
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
 
             _plugin.Settings.PropertyChanged += OnPropertyChanged;
-
-            __serialRefreshTimer.Interval = TimeSpan.FromSeconds(5);
-            __serialRefreshTimer.Tick += (s, e) => RefreshPorts();
         }
  
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            /*
-            if (
-                e.PropertyName == "SerialPort" ||
-                e.PropertyName == "BaudRate"
-            )
-            {
-                _plugin.ConfigureMotorController();
-            }
-            */
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             Logging.Current.Info("SABT: OnLoaded()...");
 
-            RefreshPorts();
+            DataContext = new DeviceViewModel(
+                _plugin.Settings,
+                _plugin.MotorController,
+                _plugin.TelemetryGraphModel
+            );
 
-            __serialRefreshTimer.Start();
+            _plugin.DoWithoutWaiting(
+                devicePlugin =>
+                {
+                    devicePlugin.MotorController.UpdateSerialPorts();
+                }
+            );
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             Logging.Current.Info("SABT: OnUnloaded()...");
-
-            __serialRefreshTimer.Stop();
         }
 
-        private void RefreshPorts()
+        private void UpdateSerialPorts(object sender, RoutedEventArgs e)
         {
-            DeviceSettings settings = DataContext as DeviceSettings;
-
-            if (settings == null || !settings.IsEnabled)
-            {
-                return;
-            }
-
-            Logging.Current.Info("SABT: RefreshPorts()...");
-
-            string[] ports = DeviceEnumerator.FindMatchingDevices()
-                .Select(device => device.SerialPort)
-                .Where(port => !string.IsNullOrWhiteSpace(port))
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .OrderBy(port => port, StringComparer.OrdinalIgnoreCase)
-                .ToArray();
-
-            bool changed =
-                (settings.SerialPorts == null) ||
-                (settings.SerialPorts.Length != ports.Length) ||
-                !settings.SerialPorts.SequenceEqual(ports, StringComparer.OrdinalIgnoreCase);
-
-            if (!changed)
-            {
-                return;
-            }
-
-            settings.SerialPorts = ports;
-
-            if (!string.IsNullOrWhiteSpace(settings.SerialPort) &&
-                ports.Contains(settings.SerialPort, StringComparer.OrdinalIgnoreCase))
-            {
-                return;
-            }
-
-            settings.SerialPort = ports.Length > 0 ? ports[0] : null;
+            _plugin.DoWithoutWaiting(
+                devicePlugin =>
+                {
+                    devicePlugin.MotorController.UpdateSerialPorts();
+                }
+            );
         }
 
-        private async void ConnectToMotorController(object sender, RoutedEventArgs e)
+        private void SetLeftMotorIdentifier(object sender, RoutedEventArgs e)
         {
-            await _plugin.ConfigureMotorController();
-        }
-
-        private async void SetLeftMotorIdentifier(object sender, RoutedEventArgs e)
-        {
-            await _plugin.OnMotorController(
-                controller => {
-                    if (!controller.IsBusy)
+            _plugin.DoWithoutWaiting(
+                devicePlugin => {
+                    if (!devicePlugin.MotorController.IsBusy)
                     {
-                        controller.SetMotorIdentifier(controller.GetLeftMotor());
+                        devicePlugin.MotorController.SetMotorIdentifier(devicePlugin.MotorController.GetLeftMotor());
                     }
                 }
             );
         }
 
-        private async void SetRightMotorIdentifier(object sender, RoutedEventArgs e)
+        private void SetRightMotorIdentifier(object sender, RoutedEventArgs e)
         {
-            await _plugin.OnMotorController(
-                controller =>
+            _plugin.DoWithoutWaiting(
+                devicePlugin =>
                 {
-                    if (!controller.IsBusy)
+                    if (!devicePlugin.MotorController.IsBusy)
                     {
-                        controller.SetMotorIdentifier(controller.GetRightMotor());
+                        devicePlugin.MotorController.SetMotorIdentifier(devicePlugin.MotorController.GetRightMotor());
                     }
                 }
             );
         }
 
-        private async void TestLeftMotor(object sender, RoutedEventArgs e)
+        private void TestLeftMotor(object sender, RoutedEventArgs e)
         {
-            await _plugin.OnMotorController(
-                controller =>
+            _plugin.DoWithoutWaiting(
+                devicePlugin =>
                 {
-                    if (!controller.IsBusy)
+                    if (!devicePlugin.MotorController.IsBusy)
                     {
-                        controller.TestMotor(controller.GetLeftMotor());
+                        devicePlugin.MotorController.TestMotor(devicePlugin.MotorController.GetLeftMotor());
                     }
                 }
             );
         }
 
-        private async void TestRightMotor(object sender, RoutedEventArgs e)
+        private void TestRightMotor(object sender, RoutedEventArgs e)
         {
-            await _plugin.OnMotorController(
-                controller =>
+            _plugin.DoWithoutWaiting(
+                devicePlugin =>
                 {
-                    if (!controller.IsBusy)
+                    if (!devicePlugin.MotorController.IsBusy)
                     {
-                        controller.TestMotor(controller.GetRightMotor());
+                        devicePlugin.MotorController.TestMotor(devicePlugin.MotorController.GetRightMotor());
                     }
                 }
             );

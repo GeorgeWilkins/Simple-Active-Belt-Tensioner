@@ -115,10 +115,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DeviceEnumerator.cs" />
-    <Compile Include="DeviceInstance.cs" />
     <Compile Include="DevicePlugin.cs" />
     <Compile Include="DeviceSettings.cs" />
+    <Compile Include="DeviceViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MotorController.cs" />
     <Compile Include="DeviceControl.xaml.cs">

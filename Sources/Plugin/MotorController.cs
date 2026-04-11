@@ -4,41 +4,104 @@ using SimHub.Plugins;
 using SimHub.Plugins.DataPlugins.RGBDriverCommon.Settings;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO.Ports;
 using System.Linq;
+using System.Management;
+using System.Runtime;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Windows.Threading;
+using WoteverCommon.Extensions;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace User.ActiveBeltTensioner
 {
     /// <summary>A representation of the motor control system, which is technically one serial port shared by multiple <see cref="Motor" /> objects</summary>
-    public class MotorController : IDisposable
+    public class MotorController : INotifyPropertyChanged, IDisposable
     {
-        /// <summary>A representation of a single motor, which receives and responds to commands via the shared serial port of the parent <see cref="MotorController" /></summary>
-        public class Motor
-        {
-            public byte Identifier { get; set; } = 0;
-            public double Torque { get; set; } = 0.0;
-            public long LastCommand { get; set; }
-            public bool IsConnected { get; set; } = false;
-            public string Status { get; set; } = "Not Connected";
-            public PackIconMaterialKind Icon { get; set; } = PackIconMaterialKind.HelpCircleOutline;
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        private void InvokePropertyChange([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        /// <summary>A representation of a single motor, which receives and responds to commands via the shared serial port of the parent <see cref="MotorController" /></summary>
+        public class Motor : INotifyPropertyChanged
+        {
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            private void InvokePropertyChange([CallerMemberName] string name = null)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            }
+
+            public byte Identifier { get; set; } = 0;
+            public string Label { get; set; }
+
+            private bool _isConnected = false;
+            public bool IsConnected
+            {
+                get { return _isConnected; }
+                set
+                {
+                    if (_isConnected != value)
+                    {
+                        _isConnected = value;
+                        InvokePropertyChange();
+                    }
+                }
+            }
+
+            private string _status = "Not Connected";
+            public string Status
+            {
+                get { return _status; }
+                set
+                {
+                    if (_status != value)
+                    {
+                        _status = value;
+                        InvokePropertyChange();
+                    }
+                }
+            }
+
+            private PackIconMaterialKind _icon = PackIconMaterialKind.HelpCircleOutline;
+            public PackIconMaterialKind Icon
+            {
+                get { return _icon; }
+                set
+                {
+                    if (_icon != value)
+                    {
+                        _icon = value;
+                        InvokePropertyChange();
+                    }
+                }
+            }
+
+            private const short _maximumConsecutiveFailures = 10;
             private const byte _torqueMode = 0x01;
             private const short _torqueLimit = 12000;
-            private double _maximumCommandGap = 100;
-
-            private readonly long _maximumCommandTicks;
             private MotorController _controller;
 
-            public Motor(MotorController controller, byte identifier)
+            private int _commandFailures = 0;
+            private double _smoothedTorque = 0.0;
+
+            public Motor(MotorController controller, byte identifier, string label = "Unassigned")
             {
                 _controller = controller;
-                Identifier = identifier;
 
-                _maximumCommandTicks = TimeSpan.FromMilliseconds(_maximumCommandGap).Ticks;
+                Identifier = identifier;
+                Label = label;
             }
 
             /// <summary>Invokes various methods to ascertain the status of the motor, while updating its status indicators</summary>
@@ -49,14 +112,12 @@ namespace User.ActiveBeltTensioner
                 Status = "Connecting...";
                 Icon = PackIconMaterialKind.CircleSlice3;
 
-                _controller.RefreshStatus();
+                _smoothedTorque = 0;
 
                 if (!_controller.HasSerial)
                 {
                     Status = "No Device Detected";
                     Icon = PackIconMaterialKind.CloseCircleOutline;
-
-                    _controller.RefreshStatus();
 
                     return false;
                 }
@@ -66,15 +127,11 @@ namespace User.ActiveBeltTensioner
                     Status = "Checking Mode...";
                     Icon = PackIconMaterialKind.CircleSlice5;
 
-                    _controller.RefreshStatus();
-
                     if (Check(true))
                     {
                         IsConnected = true;
                         Status = "Connected";
                         Icon = PackIconMaterialKind.CheckCircle;
-
-                        _controller.RefreshStatus();
 
                         return true;
                     }
@@ -82,15 +139,11 @@ namespace User.ActiveBeltTensioner
                     Status = "Setting Mode...";
                     Icon = PackIconMaterialKind.CircleSlice7;
 
-                    _controller.RefreshStatus();
-
                     if (SetMode(_torqueMode))
                     {
                         IsConnected = true;
                         Status = "Connected";
                         Icon = PackIconMaterialKind.CheckCircle;
-
-                        _controller.RefreshStatus();
 
                         return true;
                     }
@@ -99,8 +152,6 @@ namespace User.ActiveBeltTensioner
                 IsConnected = false;
                 Status = "Failed To Connect";
                 Icon = PackIconMaterialKind.CloseCircleOutline;
-
-                _controller.RefreshStatus();
 
                 return false;
             }
@@ -113,7 +164,7 @@ namespace User.ActiveBeltTensioner
                 Status = "Stopping...";
                 Icon = PackIconMaterialKind.StopCircle;
 
-                _controller.RefreshStatus();
+                _smoothedTorque = 0;
 
                 byte[] tx = BuildFrame(Identifier, 0x64, 0x00, 0x00);
                 byte[] rx = new byte[10];
@@ -130,18 +181,14 @@ namespace User.ActiveBeltTensioner
 
                 if (hasStopped)
                 {
-                    Status = "Disconnected";
+                    Status = "Disconnected (Stopped)";
                     Icon = PackIconMaterialKind.CircleOffOutline;
-
-                    _controller.RefreshStatus();
 
                     return true;
                 }
 
                 Status = "Failed To Stop";
                 Icon = PackIconMaterialKind.CarBrakeAlert;
-
-                _controller.RefreshStatus();
 
                 return false;
             }
@@ -168,12 +215,10 @@ namespace User.ActiveBeltTensioner
 
             /// <summary>Sends a series of torque commands to the motor to oscillate it, while updating its status indicators</summary>
             /// <returns>Whether the motor responded as expected</returns>
-            public bool Test(int times = 8, double maximumTorque = 0.10)
+            public bool Test(int times = 8, double testTorque = 0.10)
             {
                 Status = "Testing...";
                 Icon = PackIconMaterialKind.AccessPoint;
-
-                _controller.RefreshStatus();
 
                 if (!Check(true))
                 {
@@ -181,22 +226,18 @@ namespace User.ActiveBeltTensioner
                     Status = "Failed To Test (Disconnected)";
                     Icon = PackIconMaterialKind.CloseCircleOutline;
 
-                    _controller.RefreshStatus();
-
                     return false;
                 }
 
+                int direction = (this == _controller.GetLeftMotor()) ? -1 : 1;
                 int good = 0;
                 int bad = 0;
 
-                times += 5;
+                short torque = 0;
 
-                short torque = (short)(maximumTorque * _torqueLimit);
                 for (int i = 0; i < times; i++)
                 {
                     Icon = GetProgressIcon(i, times);
-
-                    _controller.RefreshStatus();
 
                     byte highByte = (byte)((torque >> 8) & 0xFF);
                     byte lowByte = (byte)(torque & 0xFF);
@@ -215,11 +256,7 @@ namespace User.ActiveBeltTensioner
 
                     Thread.Sleep(200);
 
-                    if (i >= times - 5) {
-                        torque = 0;
-                    }
-
-                    torque *= -1;
+                    torque = (short)((torque != 0) ? 0 : (testTorque * direction * _torqueLimit));
                 }
 
                 if (bad > 0)
@@ -230,8 +267,6 @@ namespace User.ActiveBeltTensioner
                         Status = "Test Failed (No Response)";
                         Icon = PackIconMaterialKind.AlertCircleOutline;
 
-                        _controller.RefreshStatus();
-
                         return false;
 
                     }
@@ -240,16 +275,12 @@ namespace User.ActiveBeltTensioner
                     Status = "Test Partially Passed (Bad Responses)";
                     Icon = PackIconMaterialKind.AlertCircleCheckOutline;
 
-                    _controller.RefreshStatus();
-
                     return true;
                 }
 
                 IsConnected = true;
                 Status = "Test Passed";
                 Icon = PackIconMaterialKind.CheckCircle;
-
-                _controller.RefreshStatus();
 
                 return true;
             }
@@ -266,7 +297,6 @@ namespace User.ActiveBeltTensioner
                 {
                     Icon = GetProgressIcon(i, 5);
 
-                    _controller.RefreshStatus();
                     _controller.FlushSerialBuffer();
                     _controller.WriteFrameReadFrame(tx, rx, 100, false, true);
                 }
@@ -296,35 +326,36 @@ namespace User.ActiveBeltTensioner
                 return Check(true);
             }
 
-            /// <summary>Sends the given torque value (as a fraction of maximum torque) to the motor, where changed or enough time has passed since the last command</summary>
+            /// <summary>Sends the given torque value (as a fraction of maximum torque) to the motor; optionally subject to a smoothing factor</summary>
             /// <returns>Whether the motor responded as expected</returns>
-            public bool SetTorque(double torque)
+            public bool SetTorque(double torque, double smoothingFactor = 0.0)
             {
-                long now = System.Diagnostics.Stopwatch.GetTimestamp();
+                _smoothedTorque = (torque * (1.0 - smoothingFactor)) + (_smoothedTorque * smoothingFactor);
 
-                if (
-                    (Math.Abs(Torque - torque) < double.Epsilon) ||
-                    LastCommand == 0 ||
-                    (now - LastCommand) > _maximumCommandTicks
-                )
+                torque = _smoothedTorque;
+
+                short newTorque = ClampValue(
+                    (short)(torque * _torqueLimit * -1.0),
+                    (short)_torqueLimit * -1,
+                    (short)_torqueLimit
+                );
+
+                byte highByte = (byte)((newTorque >> 8) & 0xFF);
+                byte lowByte = (byte)(newTorque & 0xFF);
+
+                byte[] tx = BuildFrame(Identifier, 0x64, highByte, lowByte);
+                byte[] rx = new byte[10];
+
+                if (!_controller.WriteFrameReadFrame(tx, rx, 10))
                 {
-                    short newTorque = ClampValue(
-                        (short)(torque * _torqueLimit * -1.0),
-                        (short)_torqueLimit * -1,
-                        (short)_torqueLimit
-                    );
-                    byte highByte = (byte)((newTorque >> 8) & 0xFF);
-                    byte lowByte = (byte)(newTorque & 0xFF);
-
-                    byte[] tx = BuildFrame(Identifier, 0x64, highByte, lowByte);
-                    byte[] rx = new byte[10];
-
-                    bool hasResponded = _controller.WriteFrameReadFrame(tx, rx);
+                    _commandFailures++;
                     
-                    LastCommand = hasResponded ? now : LastCommand;
+                    Logging.Current.Warn("SABT: " + this.Label + " Motor Communication Failure (" + _commandFailures + "/" + _maximumConsecutiveFailures  + ")");
 
-                    return hasResponded;
+                    return (_commandFailures < _maximumConsecutiveFailures);
                 }
+                
+                _commandFailures = 0;
 
                 return true;
             }
@@ -353,7 +384,6 @@ namespace User.ActiveBeltTensioner
         }
 
         public Motor[] Motors { get; private set; }
-        public bool IsFlipped { get; set; }
         public bool IsBusy {
             get { lock (_actionLock) { return _actionsIdentifiers.Count > 0; } }
         }
@@ -362,32 +392,89 @@ namespace User.ActiveBeltTensioner
             get { return (_serialPort != null); }
         }
 
+        public bool BothMotorsAreConnected {
+            get { return GetLeftMotor().IsConnected && GetRightMotor().IsConnected; }
+        }
+
+        public bool OneMotorIsConnected {
+            get { return GetLeftMotor().IsConnected != GetRightMotor().IsConnected; }
+        }
+
+        public bool LeftMotorIsConnected {
+            get { return GetLeftMotor().IsConnected; }
+        }
+        public bool RightMotorIsConnected
+        {
+            get { return GetRightMotor().IsConnected; }
+        }
+        public string LeftMotorStatus {
+            get { return GetLeftMotor().Status; }
+        }
+        public string RightMotorStatus {
+            get { return GetRightMotor().Status; }
+        }
+        public PackIconMaterialKind LeftMotorIcon {
+            get { return GetLeftMotor().Icon; }
+        }
+        public PackIconMaterialKind RightMotorIcon
+        {
+            get { return GetRightMotor().Icon; }
+        }
+
+        private string[] _serialPorts = new string[0];
+        public string[] SerialPorts
+        {
+            get { return _serialPorts; }
+            private set
+            {
+                if (!ReferenceEquals(_serialPorts, value))
+                {
+                    _serialPorts = value ?? new string[0];
+                    InvokePropertyChange(nameof(SerialPorts));
+                }
+            }
+        }
+
         private readonly DevicePlugin _plugin;
-        private readonly SerialPort _serialPort;
         private readonly List<string> _actionsIdentifiers = new List<string>();
+        private SerialPort _serialPort;
         private long _actionsCounter = 0;
         private readonly object _actionLock = new object();
         private readonly object _serialLock = new object();
         private bool _hasNotifiedOfLicense = false;
 
-        public MotorController(DevicePlugin plugin, string comPort, int baud = 115200)
+        private bool _motorCommandSwitch = true;
+
+        private readonly long _motorCommandTicks;
+        private long _lastCommandTicks = 0;
+
+        public MotorController(DevicePlugin plugin)
         {
             _plugin = plugin;
 
-            _serialPort = new SerialPort(comPort, baud)
-            {
-                Parity = Parity.None,
-                StopBits = StopBits.One,
-                ReadTimeout = 100,
-                WriteTimeout = 100,
-                DtrEnable = false,
-                RtsEnable = false,
-                NewLine = "\n"
+            Motors = new Motor[] {
+                new Motor(this, 0x01, "Left"),
+                new Motor(this, 0x02, "Right")
             };
 
-            Motors = new Motor[2];
-            Motors[0] = new Motor(this, 0x01);
-            Motors[1] = new Motor(this, 0x02);
+            foreach (Motor motor in Motors)
+            {
+                motor.PropertyChanged += MotorPropertyChanged;
+            }
+
+            _motorCommandTicks = (long)(16.67 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 60Hz
+        }
+
+        private void MotorPropertyChanged(object origin, PropertyChangedEventArgs e)
+        {
+            Motor motor = origin as Motor;
+
+            if (motor == null) return;
+
+            InvokePropertyChange($"{motor.Label}Motor{e.PropertyName}");
+
+            InvokePropertyChange(nameof(BothMotorsAreConnected));
+            InvokePropertyChange(nameof(OneMotorIsConnected));
         }
 
         /// <summary>Opens the serial port, then invokes the <see cref="Motor.Connect()" /> method on each motor</summary>
@@ -400,28 +487,36 @@ namespace User.ActiveBeltTensioner
             {
                 _hasNotifiedOfLicense = true;
 
-                MessageBox.Show("Your installation of SimHub is not licensed, so telemetry updates will be limited to 10Hz", "SimHub License Suggested", MessageBoxButton.OK);
+                MessageBox.Show("Your installation of SimHub is not licensed, so telemetry updates will be limited to 10Hz", "SABT: SimHub License Suggested", MessageBoxButton.OK);
             }
 
             lock (_serialLock)
             {
                 try
                 {
-                    if (_serialPort != null && !_serialPort.IsOpen)
+                    _serialPort = new SerialPort(_plugin.Settings.SerialPort, 115200)
                     {
-                        _serialPort.Open();
+                        Parity = Parity.None,
+                        StopBits = StopBits.One,
+                        ReadTimeout = 10,
+                        WriteTimeout = 100,
+                        DtrEnable = false,
+                        RtsEnable = false,
+                        NewLine = "\n"
+                    };
 
-                        bool didConnect = true;
+                    _serialPort.Open();
 
-                        foreach (Motor motor in Motors)
-                        {
-                            didConnect = didConnect && motor.Connect();
-                        }
+                    bool didConnect = true;
 
-                        EndAction(action);
-
-                        return didConnect;
+                    foreach (Motor motor in Motors)
+                    {
+                        didConnect = motor.Connect() && didConnect;
                     }
+
+                    EndAction(action);
+
+                    return didConnect;
                 }
                 catch
                 {
@@ -431,8 +526,6 @@ namespace User.ActiveBeltTensioner
                         motor.Status = "Serial Failure";
                         motor.Icon = PackIconMaterialKind.HelpCircleOutline;
                     }
-
-                    _plugin.RefreshStatus();
                 }
             }
 
@@ -462,7 +555,7 @@ namespace User.ActiveBeltTensioner
                     }
                     catch
                     {
-                        Logging.Current.Warn("SABT: Serial port could not be released");
+                        Logging.Current.Warn("SABT: Serial Port Release Failure");
                     }
                 }
 
@@ -500,17 +593,11 @@ namespace User.ActiveBeltTensioner
             motor.Status = "Checking Motors...";
             motor.Icon = PackIconMaterialKind.RecordCircleOutline;
 
-            RefreshStatus();
-
             if (_serialPort == null || !_serialPort.IsOpen)
             {
-                Logging.Current.Warn("SABT: Serial port is not avaiable or not open");
-
                 motor.IsConnected = false;
                 motor.Status = "Serial Failure";
                 motor.Icon = PackIconMaterialKind.HelpCircleOutline;
-
-                RefreshStatus();
 
                 EndAction(action);
 
@@ -533,8 +620,6 @@ namespace User.ActiveBeltTensioner
                 motor.Status = "Not Detected";
                 motor.Icon = PackIconMaterialKind.CrosshairsQuestion;
 
-                RefreshStatus();
-
                 EndAction(action);
 
                 return false;
@@ -544,8 +629,6 @@ namespace User.ActiveBeltTensioner
             {
                 motor.Status = "Multiple Motors Detected";
                 motor.Icon = PackIconMaterialKind.CheckboxMultipleBlankCircleOutline;
-
-                RefreshStatus();
 
                 EndAction(action);
 
@@ -559,15 +642,13 @@ namespace User.ActiveBeltTensioner
                 foreach (Motor other in Motors)
                 {
                     other.IsConnected = false;
-                    other.Status = "Disconnected";
+                    other.Status = "Disconnected (Setting Other Identifer)";
                     other.Icon = PackIconMaterialKind.CloseCircleOutline;
                 }
 
                 motor.IsConnected = true;
                 motor.Status = "Identifier Set";
                 motor.Icon = PackIconMaterialKind.CheckCircle;
-
-                RefreshStatus();
 
                 EndAction(action);
 
@@ -578,78 +659,68 @@ namespace User.ActiveBeltTensioner
             motor.Status = "Failed To Set Identifier";
             motor.Icon = PackIconMaterialKind.AlertCircle;
 
-            RefreshStatus();
-
             EndAction(action);
 
             return false;
         }
 
-        /// <summary>Sends the given torque values (as fractions of maximum torque) to the two motors, accounting for the current channel mapping</summary>
-        /// <returns>Whether all indivdual <see cref="Motor.SetTorque(double)" /> methods succeeded</returns>
-        public bool SetTorques(double left, double right)
+        /// <summary>Sends the given torque values (as fractions of maximum torque) to the two motors, alternating between motors at 30Hz per motor (60Hz overall)</summary>
+        /// <returns>Whether the motor commands were sent successfully (if applicable)</returns>
+        public bool SetTorques(double left, double right, double smoothingFactor = 0.0)
         {
             string action = StartAction();
 
             if (_serialPort == null || !_serialPort.IsOpen)
             {
-                Logging.Current.Warn("SABT: Serial port is not avaiable or not open");
-
                 EndAction(action);
 
                 return false;
             }
 
-            bool didSet = (
-                GetLeftMotor().SetTorque(left) &&
-                GetRightMotor().SetTorque(right * -1)
-            );
+            bool didSet = true;
+            long currentTicks = System.Diagnostics.Stopwatch.GetTimestamp();
+
+            if (currentTicks - _lastCommandTicks >= _motorCommandTicks)
+            {
+                didSet = _motorCommandSwitch
+                    ? GetLeftMotor().SetTorque(left, smoothingFactor)
+                    : GetRightMotor().SetTorque(right * -1, smoothingFactor);
+
+                _lastCommandTicks = currentTicks;
+                _motorCommandSwitch = !_motorCommandSwitch;
+            }
 
             EndAction(action);
 
             return didSet;
         }
 
-        public bool Stop()
-        {
-            string action = StartAction();
-
-            if (_serialPort == null || !_serialPort.IsOpen)
-            {
-                Logging.Current.Warn("SABT: Serial port is not avaiable or not open");
-
-                EndAction(action);
-
-                return false;
-            }
-
-            bool didStop = (
-                GetLeftMotor().Stop() &&
-                GetRightMotor().Stop()
-            );
-
-            EndAction(action);
-
-            return didStop;
-        }
-
         /// <summary>Provides the motor instance currently mapped to the `left` channel</summary>
         public Motor GetLeftMotor()
         {
-            return IsFlipped ? Motors[1] : Motors[0];
+            foreach (Motor motor in Motors)
+            {
+                if (motor.Label == (_plugin.Settings.IsFlipped ? "Right" : "Left"))
+                {
+                    return motor;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>Provides the motor instance currently mapped to the `right` channel</summary>
         public Motor GetRightMotor()
         {
-            return IsFlipped ? Motors[0] : Motors[1];
-        }
+            foreach (Motor motor in Motors)
+            {
+                if (motor.Label == (_plugin.Settings.IsFlipped ? "Left" : "Right"))
+                {
+                    return motor;
+                }
+            }
 
-        /// <summary>Tells the plugin to refresh the motor states for the UI</summary>
-        /// <remarks>This feels hacky and needs a better implementation</remarks>
-        public void RefreshStatus()
-        {
-            _plugin.RefreshStatus();
+            return null;
         }
 
         /// <summary>Records the (optionally) given action name as being in-progress. Uses the parent caller name if omitted</summary>
@@ -745,23 +816,17 @@ namespace User.ActiveBeltTensioner
 
                 if (shouldLog)
                 {
-                    Logging.Current.Info("SABT: TX " + BitConverter.ToString(tx));
+                    Logging.Current.Info("SABT: Motor TX (" + BitConverter.ToString(tx) + ")");
                 }
 
                 _serialPort.Write(tx, 0, tx.Length);
 
-                int startedAt = Environment.TickCount;
+                long startedAt = System.Diagnostics.Stopwatch.GetTimestamp();
+                long timeoutTicks = (long)(timeout * System.Diagnostics.Stopwatch.Frequency / 1000.0);
                 int receivedBytes = 0;
 
                 while (receivedBytes < 10)
                 {
-                    if (Environment.TickCount - startedAt > timeout)
-                    {
-                        Array.Clear(rx, 0, rx.Length);
-
-                        return false;
-                    }
-
                     try
                     {
                         int b = _serialPort.ReadByte();
@@ -770,22 +835,32 @@ namespace User.ActiveBeltTensioner
                     }
                     catch (TimeoutException)
                     { }
+
+                    long elapsed = System.Diagnostics.Stopwatch.GetTimestamp() - startedAt;
+
+                    if (elapsed > timeoutTicks)
+                    {
+                        Array.Clear(rx, 0, rx.Length);
+
+                        return false;
+                    }
                 }
             }
 
             if (shouldLog)
             {
-                Logging.Current.Info("SABT: RX " + BitConverter.ToString(rx));
+                Logging.Current.Info("SABT: Motor RX (" + BitConverter.ToString(rx) + ")");
             }
 
             if (shouldValidate)
             {
                 byte checksum = CalculateChecksum(rx, 9);
-                bool isValid = (rx[9] == checksum);
+                byte given = rx[9];
+                bool isValid = (given == checksum);
 
                 if (!isValid)
                 {
-                    Logging.Current.Warn("SABT: INVALID CHECKSUM (" + rx[9].ToString("X2") + " != " + checksum.ToString("X2") + ")");
+                    Logging.Current.Warn("SABT: Invalid Motor Response Checksum (" + given.ToString("X2") + " != " + checksum.ToString("X2") + ")");
 
                     return false;
                 }
@@ -843,6 +918,89 @@ namespace User.ActiveBeltTensioner
             }
 
             return checksum;
+        }
+
+        /// <summary>Identifies devices that match the expected VID/PID for the controller board (or more specifically, the serial bridge we using on it)</summary>
+        /// <returns>A list of <see cref="DeviceInstance" /> instances that appear to match</returns>
+        public string[] UpdateSerialPorts()
+        {
+            Logging.Current.Info("SABT: Updating serial ports...");
+
+            const string vidPid = "VID_1A86&PID_55D3";
+
+            Regex portPattern = new Regex(@"\((COM\d+)\)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+            List<DeviceInstance> devices = new List<DeviceInstance>();
+
+            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(
+                "SELECT Name, Caption, PNPDeviceID FROM Win32_PnPEntity"))
+            {
+                foreach (ManagementObject mo in searcher.Get())
+                {
+                    string name = mo["Name"] as string ?? string.Empty;
+                    string caption = mo["Caption"] as string ?? string.Empty;
+                    string pnpDeviceId = mo["PNPDeviceID"] as string ?? string.Empty;
+
+                    if (string.IsNullOrWhiteSpace(pnpDeviceId))
+                    {
+                        continue;
+                    }
+
+                    if (!pnpDeviceId.Contains(vidPid, StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    string display = !string.IsNullOrWhiteSpace(name) ? name : caption;
+                    Match match = portPattern.Match(display);
+
+                    if (!match.Success)
+                    {
+                        continue;
+                    }
+
+                    devices.Add(new DeviceInstance
+                    {
+                        SerialPort = match.Groups[1].Value.ToUpperInvariant(),
+                        Name = display,
+                        PnpDeviceId = pnpDeviceId
+                    });
+                }
+            }
+
+            string[] serialPorts = devices
+                .OrderBy(d => d.SerialPort, StringComparer.OrdinalIgnoreCase)
+                .ToList()
+                .Select(device => device.SerialPort)
+                .Where(port => !string.IsNullOrWhiteSpace(port))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(port => port, StringComparer.OrdinalIgnoreCase)
+                .ToArray();
+
+            SerialPorts = serialPorts;
+
+            if (serialPorts.Length < 1)
+            {
+                _plugin.Settings.SerialPort = null;
+
+                return SerialPorts;
+            }
+
+            if (
+                !string.IsNullOrWhiteSpace(_plugin.Settings.SerialPort) ||
+                !serialPorts.Contains(_plugin.Settings.SerialPort, StringComparer.OrdinalIgnoreCase)
+            ) {
+                _plugin.Settings.SerialPort = serialPorts[0];
+            }
+
+            return SerialPorts;
+        }
+
+        public sealed class DeviceInstance
+        {
+            public string SerialPort { get; set; }
+            public string Name { get; set; }
+            public string PnpDeviceId { get; set; }
         }
     }
 }

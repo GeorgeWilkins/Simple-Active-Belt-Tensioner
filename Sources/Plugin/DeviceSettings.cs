@@ -3,6 +3,7 @@ using SimHub;
 using System;
 using System.ComponentModel;
 using System.Runtime;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -14,83 +15,9 @@ namespace User.ActiveBeltTensioner
 
         private const string _deviceNotFound = "No Device Found";
 
-        private void InvokePropertyChange(string name)
+        private void InvokePropertyChange([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
-        private PackIconMaterialKind _leftMotorIcon = PackIconMaterialKind.AlertCircleOutline;
-        public PackIconMaterialKind LeftMotorIcon
-        {
-            get { return _leftMotorIcon; }
-            set
-            {
-                if (_leftMotorIcon != value)
-                {
-                    _leftMotorIcon = value;
-
-                    InvokePropertyChange(nameof(LeftMotorIcon));
-                }
-            }
-        }
-
-        private PackIconMaterialKind _rightMotorIcon = PackIconMaterialKind.AlertCircleOutline;
-        public PackIconMaterialKind RightMotorIcon
-        {
-            get { return _rightMotorIcon; }
-            set
-            {
-                if (_rightMotorIcon != value)
-                {
-                    _rightMotorIcon = value;
-
-                    InvokePropertyChange(nameof(RightMotorIcon));
-                }
-            }
-        }
-
-        private string _leftMotorStatus = "";
-        public string LeftMotorStatus
-        {
-            get { return _leftMotorStatus; }
-            set
-            {
-                if (_leftMotorStatus != value)
-                {
-                    _leftMotorStatus = value;
-
-                    InvokePropertyChange(nameof(LeftMotorStatus));
-                }
-            }
-        }
-
-        private string _rightMotorStatus = "";
-        public string RightMotorStatus
-        {
-            get { return _rightMotorStatus; }
-            set
-            {
-                if (_rightMotorStatus != value)
-                {
-                    _rightMotorStatus = value;
-
-                    InvokePropertyChange(nameof(RightMotorStatus));
-                }
-            }
-        }
-
-        private string[] _serialPorts = new string[0];
-        public string[] SerialPorts
-        {
-            get { return _serialPorts; }
-            set
-            {
-                if (!ReferenceEquals(_serialPorts, value))
-                {
-                    _serialPorts = value ?? new string[0];
-                    InvokePropertyChange(nameof(SerialPorts));
-                }
-            }
         }
 
         private string _serialPort = _deviceNotFound;
@@ -104,7 +31,6 @@ namespace User.ActiveBeltTensioner
                     _serialPort = value ?? _deviceNotFound;
                     InvokePropertyChange(nameof(SerialPort));
                     InvokePropertyChange(nameof(IsSerialPortValid));
-                    InvokePropertyChange(nameof(IsAvailable));
                 }
             }
         }
@@ -112,14 +38,13 @@ namespace User.ActiveBeltTensioner
         private bool _isEnabled = false;
         public bool IsEnabled
         {
-            get { return _isEnabled; } // @TODO: Turn off when there is no connection?
+            get { return _isEnabled; }
             set
             {
                 if (_isEnabled != value)
                 {
                     _isEnabled = value;
                     InvokePropertyChange(nameof(IsEnabled));
-                    InvokePropertyChange(nameof(IsAvailable));
                 }
             }
         }
@@ -181,7 +106,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _minimumSurge = -10;
+        private int _minimumSurge = -12;
         public int MinimumSurge
         {
             get { return _minimumSurge; }
@@ -195,7 +120,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _maximumSurge = 20;
+        private int _maximumSurge = 22;
         public int MaximumSurge
         {
             get { return _maximumSurge; }
@@ -209,7 +134,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _minimumSway = -17;
+        private int _minimumSway = -23;
         public int MinimumSway
         {
             get { return _minimumSway; }
@@ -224,7 +149,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _maximumSway = 17;
+        private int _maximumSway = 23;
         public int MaximumSway
         {
             get { return _maximumSway; }
@@ -276,6 +201,20 @@ namespace User.ActiveBeltTensioner
                 {
                     _sideBias = value;
                     InvokePropertyChange(nameof(SideBias));
+                }
+            }
+        }
+
+        private int _smoothingFactor = 300;
+        public int SmoothingFactor
+        {
+            get { return _smoothingFactor; }
+            set
+            {
+                if (_smoothingFactor != value)
+                {
+                    _smoothingFactor = value;
+                    InvokePropertyChange(nameof(SmoothingFactor));
                 }
             }
         }
@@ -365,9 +304,6 @@ namespace User.ActiveBeltTensioner
         }
 
 
-
-
-
         public bool IsMinimumTensionNonZero
         {
             get { return MinimumTension > 0; }
@@ -376,11 +312,6 @@ namespace User.ActiveBeltTensioner
         public bool IsSerialPortValid
         {
             get { return !String.IsNullOrEmpty(_serialPort) && (_serialPort != _deviceNotFound); }
-        }
-
-        public bool IsAvailable
-        {
-            get { return IsSerialPortValid && IsEnabled; }
         }
     }
 }

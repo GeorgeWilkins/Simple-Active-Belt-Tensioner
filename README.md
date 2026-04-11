@@ -4,7 +4,7 @@
 
 A haptic device for sim racing, designed specifically for people who do not have a background in software or electronics.
 
-It requires **no soldering or programming** and can be built for **as little as ~210 GBP**, using easy-to-obtain components and some printed parts.
+It requires **no soldering or programming** and can be built for **as little as ~215 GBP** _including the harness_.
 
 <img alt="Belt Clamps" src="https://github.com/user-attachments/assets/431fbec1-53f8-4b44-bab7-e9f08b6276c0" />
 
@@ -39,18 +39,19 @@ I would reccommend installing tactile tranducers (bass shakers) before embarking
 
 ## What Does It Cost?
 
-If you have your own 3D printer, as little as **210 GBP** including taxes. If not, **250~300 GBP** depending on your choices:
+If you have your own 3D printer, as little as **215 GBP** including taxes. If not, **250~300 GBP** depending on your choices:
 
 | Price (GBP) | Part | Notes |
 | - | - | - |
 | 120 | 2 x Motors | Provides the tensioning force |
 | 20 | Controller | Provides a USB interface for the motors |
-| 8 | 2 x Bearings | Allows the pulley covers to rotate smoothly |
+| 6 | 2 x Bearings | Allows the pulley covers to rotate smoothly |
 | 7 | Screw & Nut Set | Provides every needed fastener in one set (with _many_ spares) |
-| 10 | 1M Cord | A low-friction cord that winds around the pulleys (attached at the other end to your belts) |
+| 5 | 1M Cord | A low-friction cord that winds around the pulleys (attached at the other end to your belts) |
 | 20 | Power Supply | Provides DC power to the motors |
+| 12 | Back Driving Protection Unit | Prevents power-supply resets if the motors are back-driven (**optional but recommended**) |
 | 25 | 5-Point 2" Harness | A low-cost Aliexpress model or used/expired FIA harness |
-| **210** | **Total** | ...excluding printables |
+| **215** | **Total** | ...excluding printables |
 
 There is a [detailed parts list](/INSTRUCTIONS.md#motors-electronics--fixings) with sources in the build guide.
 
@@ -78,18 +79,36 @@ Since we're using high-quality BLDC/FOC integrated servo motors, the effects are
 
 The benefits of this are:
 - Smooth and silent operation
-- Spring and auto-retraction functionality
 - Compact & clean design
+- Auto-adjusting of the harness (adjustable idle tension)
 
-The maximum force appliable by these motors with the current pulley design is estimated to be about **8.5Kgf to 12Kgf per belt**, depending on the chosen pulley size. Imagine having **8.5Kg to 12Kgf of weight** attached to each belt hanging down from the back of your seat, and you'll get the idea.
+The maximum force appliable by these motors with the current pulley design is estimated to be about **8Kgf to 12Kgf per belt**, putting us right around the rated mechanical loading for each motor. Imagine having **~10Kgf of weight** attached to each belt hanging down from the back of your seat, and you'll get the idea.
 
 This is plenty to give extra immersion and feedback, but significantly less than you'd feel in a real vehicle at motorsport velocities.
 
-For comparison, the [QS-BT1](https://qubicsystem.com/product/qs-bt1) claims _"20.5 kg/45 lbs/200 N per channel"_, but is a considerably larger and costs six times more.
+For comparison, the [QS-BT1](https://qubicsystem.com/product/qs-bt1) claims _"20.5kg per channel"_, but is a considerably larger and costs six times more.
 
 ## Where Can I See It In Action?
 
 TBC
+
+## Anything I Should Be Aware Of?
+
+There is considerable variation in rig, seat and harness designs, so I cannot anticipate every possible configuration. You'll need to decide if this system is suitable for your rig by looking at the installations examples and instructions.
+
+Of particular note:
+- The belt clamp designs are intended for 2" wide belts of up to 2MM thickness. If your belts are wider or thicker than this, you will need to modify the design (or let me know and I'll create additional designs)
+- Rollers aren't strictly needed on most seats, but recommended for the smoothest experience. Because of the huge variation in seats, I cannot provide a one-size-fits-all roller design. As a simple low-cost solution, you can place UHMW low-friction adhesive tape over the contact points in the seat holes to reduce wear and increase smoothness
+- The system includes a design for a [Back Driving Protection Unit](#), which prevents your power supply's protection circuitry from tripping when the motors are back-driven (e.g. by pulling fast on the belts). This is an optional component, but highly recommended. A _zero-soldering solution_ is available, but even the soldered version is very simple to assemble
+- Although the motors and driver board can tolerate up to `24V` supply, I've found that `15V` is a good compromise. Operating at the maximum `24V` is not reccommended, because any voltage spikes risk damaging the motors. Common `19V` laptop power supplies have been tested and work; but the higher the voltage, the greater the risk of damage
+
+## Is It Safe?
+
+This is an open-source project involving powerful motors and moving belts attached to your body.
+
+⚠️ **No claims are made regarding the safety of this device. You are responsible for ensuring its safe use and no liability is accepted by the creator(s) for any damage or injury caused by this device.**
+
+With that said, design measures have been taken with safety in mind. See [SAFETY.md](SAFETY.md) for details.
 
 ## How Do I Get Started?
 
@@ -98,13 +117,3 @@ Read through the [instructions](/INSTRUCTIONS.md) to get a better idea of what's
 > **Note**: Right now I'm working with a couple of early-adpoters to test and revise the design, software and documentation. Therefore everything here is subject to change at any time.
 > 
 > I would suggest **NOT** attempting to replicate this project until we've finished doing so. That will be indicated by the removal of this notice and the release version being `1.0` or higher.
-
-## Anything Else To Note?
-
-Since seat and harness designs vary massively, I cannot provide _belt clamp_ and _belt roller_ designs for every combination. The included belt clamp is intended for 2" wide belts of up to 2MM thickness.
-
-Rollers aren't strictly needed on most seats, but recommended for the smoothest experience. As a simple low-cost solution, you can place UHMW low-friction adhesive tape over the contact points in the seat holes to reduce wear and increase smoothness.
-
-I've settled on `15V` for the power supply as being comfortably in the operational range of the motors and driver board. This works reliably while driving the motors _energetically enough_. Theoretically both will tolerate up to `24V` supply, but I've not tried this. Back-driving the motors (e.g. by pulling fast on the belts) can raise the bus voltage over the supply, which when using a `24V` supply may mean overvolting the board and motors. If you intend to use a higher voltage supply, make sure you add a diode and capacitor between the board and motor to protect both from over-voltage. A `19V` laptop-style power suppply has been tested by early adopters, but I would not recommended this without additional protection circuitry.
-
-A simple design for a protection circuit will be added to this repository as an optional (but recommended) DIY addtion to the system.
