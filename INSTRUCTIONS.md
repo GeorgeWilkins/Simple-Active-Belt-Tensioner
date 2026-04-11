@@ -28,6 +28,8 @@ You can reduce friction (and wear) on your seat's belt loops if you apply some l
 
 If using the tubular brackets, you'll need to order two [2" Truss Clamps](https://www.amazon.co.uk/dp/B07DP1FK33), a pair of [`M10` Nuts](https://www.amazon.co.uk/dp/B0CGQVMP45) and [`M10x16MM` Low-Profile Bolts](https://www.amazon.co.uk/dp/B0DYHY2DHB).
 
+Details of optional [Back-Driving Protection](#back-driving-protection) options are listed later in this document.
+
 ## Assembly
 
 ### Motors
@@ -79,6 +81,61 @@ If using the tubular brackets, you'll need to order two [2" Truss Clamps](https:
 | 3 | Insert `M2.5` nuts into the hexangonal holes on the underside of the lower printed case (as deeply as they will go). | <img alt="Nuts Inserted" src="https://github.com/user-attachments/assets/a611f28a-1c1b-444c-a974-b4a9d2b50296" /> |
 | 4 | Insert the board into the lower half of the printed case. The _Raspberry Pi_ header on the rear may be a tight fit here; push down on the white circles either side of the header to press this in. | <img alt="Board Inserted" src="https://github.com/user-attachments/assets/e3a8817d-76d7-4f4c-a74f-d56d9005a955" /> |
 | 5 | Place the upper half of the case on top and secure with four `M2.5x16` bolts. | <img alt="Case Assembled" src="https://github.com/user-attachments/assets/986af12a-4858-4d80-8412-7975f14e810f" /> |
+
+### Back-Driving Protection
+
+There are a few options if you wish to add back-driving protection to your setup. Which you choose will depend on your background:
+- [Solderless](#solderless-option) (Ideal Diode Module): For users that wish to avoid soldering
+- [Soldered](#soldered-option) (Ideal Diode Module): For users that can (or wish to) solder
+- [DIY](#diy-option) (Discrete Components): For users wanting to make use of existing discrete component they may have
+
+#### Solderless Option
+
+| Guide Price | Part | Description | Example |
+| - | - | - | - |
+| `5 GBP` | Ideal Diode Module | A pre-made diode board with soldered screw terminals | [AliExpress](https://www.aliexpress.com/item/1005009419896467.html) |
+| `5 GBP` | Capacitor | A `2200uF` `35V` electrolytic capacitor (just one; you'll have spares) | [Amazon UK](https://www.amazon.co.uk/dp/B07K87YFP9) |
+| `5 GBP` | DC Cable | A `5.5x2.5mm` DC extension cable (or `XT60` to same) | [Amazon UK](https://www.amazon.co.uk/dp/B004US2X8U) or [Amazon UK](https://www.amazon.co.uk/dp/B0BPKNG672) |
+
+TBC
+
+#### Soldered Option
+
+The instructions are the same for the [#solderless](solderless option); just with the screw terminals replaced by soldered joints.
+
+If you don't need the pre-soldered screw terimnals, these are _many_ 'Ideal Diode' modules available. The one suggested for the solderless option can also be ordered without terminals, but you are not restricted to that model.
+
+The main things you need to ensure of your chosen 'Ideal Diode' module are:
+- The module actually blocks reverse current; not all such modules do (for 'OR-ing' purposes)
+- The current handling exceeds `6A`
+- The voltage handling exceeds `24V` (ideally `30V+`)
+- The board has both positive and GND solder pads to make assembly easier
+
+As long as these requirements are met, the module _should_ do the trick. These are some examples:
+- [Pololu 5382](https://www.pololu.com/product/5382)
+- [Pololu 5383](https://www.pololu.com/product/5383)
+- [Pololu 5388](https://www.pololu.com/product/5388)
+- [Pololu 5389](https://www.pololu.com/product/5389)
+- [Generic LM74700 Module](https://www.amazon.co.uk/dp/B0FNY9MWLX)
+- [Generic 'Solar Diode' Module](https://www.amazon.co.uk/dp/B07QGW5J1H)
+
+TBC
+
+![Back-Driving Protection Circuit Options](https://github.com/user-attachments/assets/f24a7659-ad35-414b-bb51-8aed2730d7b3)
+
+#### DIY Option
+
+If you're a maker and familiar with electronics, a very simple circuit can be made using the same capacitor and any Schottky-like (e.g. SBR, SiC) diode with sufficient ratings. See above for the suggested values.
+
+Strictly speaking this would be a downgrade from the 'Ideal Diode' style boards, but will still do the job just fine. Voltage drop is unlikely to be problematic with that class of diode, and the motors are wide-input.
+
+You could theoretically fashion a debug-bug style inline protection circuit
+
+This is the circuit diagram to replicate:
+
+![Back-Driving Protection Circuit](https://github.com/user-attachments/assets/3c3fe0e1-b896-4fb9-85e4-1e6c63c0aae6)
+
+TBC
 
 ## Adjustment
 
