@@ -26,5 +26,5 @@ The same rules and guidance that apply to _any_ motion system apply here:
 
 ## Electrical Safety
 - Make sure the control box and all wiring is properly insulated and protected from accidental contact, shorting and damage. Ensure the box is securely mounted to the rig and cannot come loose while in use
-- If you have installed the [Back Driving Protection Unit](#), make sure it is inserted correctly, protected from external shorting and secured in place so it cannot come loose. Ensure you do not touch the terminals of the unit while powered or after use, as the capacitor within will hold a charge even after diconnection from a power source
+- If you have installed the [Back Driving Protection Unit](INSTRUCTIONS.md#back-driving-protection), make sure it is inserted correctly, protected from external shorting and secured in place so it cannot come loose. Ensure you do not touch the terminals of the unit while powered or after use, as the capacitor within will hold a charge even after diconnection from a power source
 - Ensure your cables, sockets and fuses are rated appropriately for the total rated draw of the connected devices
