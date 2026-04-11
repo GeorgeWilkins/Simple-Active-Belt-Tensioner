@@ -38,7 +38,7 @@ namespace User.ActiveBeltTensioner
         private bool _isEnabled = false;
         public bool IsEnabled
         {
-            get { return _isEnabled; } // @TODO: Turn off when there is no connection?
+            get { return _isEnabled; }
             set
             {
                 if (_isEnabled != value)
@@ -120,7 +120,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _maximumSurge = 20;
+        private int _maximumSurge = 22;
         public int MaximumSurge
         {
             get { return _maximumSurge; }
@@ -134,7 +134,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _minimumSway = -21;
+        private int _minimumSway = -23;
         public int MinimumSway
         {
             get { return _minimumSway; }
@@ -149,7 +149,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _maximumSway = 21;
+        private int _maximumSway = 23;
         public int MaximumSway
         {
             get { return _maximumSway; }
@@ -205,7 +205,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _smoothingFactor = 400;
+        private int _smoothingFactor = 300;
         public int SmoothingFactor
         {
             get { return _smoothingFactor; }
@@ -302,9 +302,6 @@ namespace User.ActiveBeltTensioner
                 }
             }
         }
-
-
-
 
 
         public bool IsMinimumTensionNonZero

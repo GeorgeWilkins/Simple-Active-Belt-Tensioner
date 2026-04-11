@@ -55,8 +55,7 @@ namespace User.ActiveBeltTensioner
         private readonly AutoResetEvent _hasTelemetryArrived = new AutoResetEvent(false);
         private Thread _controlThread;
         private volatile bool _runControlLoop = false;
-
-        private bool _hasBeenInactive = true;
+        private volatile bool _hasBeenInactive = true;
 
         public struct TelemetrySnapshot
         {
@@ -70,15 +69,13 @@ namespace User.ActiveBeltTensioner
 
         public System.Windows.Controls.Control GetWPFSettingsControl(PluginManager pluginManager)
         {
-            Logging.Current.Info("SABT: GetWPFSettingsControl()...");
-
             return new DeviceControl(this);
         }
 
         /// <summary>Called by SimHub to initialise the plugin</summary>
         public void Init(PluginManager pluginManager)
         {
-            Logging.Current.Info("SABT: Init()...");
+            Logging.Current.Info("SABT: Initialising...");
 
             Settings = this.ReadCommonSettings<DeviceSettings>("GeneralSettings", () => new DeviceSettings());
             Settings.PropertyChanged += OnSettingsChanged;
@@ -92,12 +89,9 @@ namespace User.ActiveBeltTensioner
                 });
             }
 
-
             InitialiseTelemetryGraph();
             UpdateTelemetryGraphThresholds(Settings);
             UpdateTelemetryGraph(0, 0, 0);
-
-
 
             _runControlLoop = true;
             _controlThread = new Thread(ControlLoop)
@@ -111,8 +105,6 @@ namespace User.ActiveBeltTensioner
         /// <summary>Selectively initiates side effects for settings property changes</summary>
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
         {
-            Logging.Current.Info("SABT: OnSettingsChanged(" + e.PropertyName + " = " + Settings.GetType().GetProperty(e.PropertyName).GetValue(Settings, null) + ")...");
-
             if (
                 e.PropertyName == nameof(Settings.SerialPort) ||
                 e.PropertyName == nameof(Settings.IsEnabled)
@@ -320,7 +312,7 @@ namespace User.ActiveBeltTensioner
 
                     if (didUpshift && shiftingStrength > 0.0)
                     {
-                        Logging.Current.Info("UPSHIFT (@" + speed + ")");
+                        Logging.Current.Info("SABT: Upshift Detected (@" + speed + ")");
 
                         // @TODO: A very crude and temporary proof-of-concept (replace with time-controlled muliplier of underlying negative surge force)
                         if (!motorController.IsBusy)
@@ -371,9 +363,9 @@ namespace User.ActiveBeltTensioner
                     {
                         if (!motorController.SetTorques(leftTarget, rightTarget, smoothingFactor))
                         {
-                            Logging.Current.Warn("SABT: Motor communication failure");
+                            Logging.Current.Warn("SABT: Exceeded Motor Communication Failure Limit (Disabling Plugin)");
 
-                            //motorController.Stop();
+                            Settings.IsEnabled = false;
                         }
                     }
                 }
@@ -383,10 +375,6 @@ namespace User.ActiveBeltTensioner
                 }
             }
         }
-
-
-
-
 
         /// <summary>A task wrapper for the <see cref="ActiveBeltTensioner.DevicePlugin" /> instance, allowing logic in this and other classes to asynchronously execute actions</summary>
         public async Task DoWithoutWaiting(Action<DevicePlugin> taskToPerform)

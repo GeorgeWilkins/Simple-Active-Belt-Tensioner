@@ -23,8 +23,6 @@ namespace User.ActiveBeltTensioner
 
         public Action<string> OnSerialPortSelected;
 
-        //public PlotModel TelemetryGraphModel { get; }
-
         public DeviceControl(DevicePlugin plugin)
         {
             Logging.Current.Info("SABT: DeviceControl()...");

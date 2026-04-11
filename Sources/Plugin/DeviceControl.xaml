@@ -149,7 +149,7 @@
                                 <styles:SHSectionSeparator />
                                 <ui:TitledSlider Title="Shifting" Maximum="1000" Minimum="0" Value="{Binding Settings.ShiftingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <Label Content="• Adds a more pronounced release of tension on upshift than standard telemetry offers" />
-                                <Label Content="• Requires 'Tension' > 'Idle Tension' to be greater than zero" />
+                                <Label Content="• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)" />
 
                             </StackPanel>
                         </styles:SHTitledGroup>
