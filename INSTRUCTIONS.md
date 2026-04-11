@@ -85,11 +85,17 @@ Details of optional [Back-Driving Protection](#back-driving-protection) options 
 ### Back-Driving Protection
 
 There are a few options if you wish to add back-driving protection to your setup. Which you choose will depend on your background:
-- [Solderless](#solderless-option) (Ideal Diode Module): For users that wish to avoid soldering
-- [Soldered](#soldered-option) (Ideal Diode Module): For users that can (or wish to) solder
-- [DIY](#diy-option) (Discrete Components): For users wanting to make use of existing discrete component they may have
+- [Solderless + Ideal Diode](#solderless--ideal-diode): Using an ideal diode module with pre-soldered terminals
+- [Soldered + Ideal Diode](#soldered--ideal-diode): Using an ideal diode module without terminals (requires soldering)
+- [Discrete Schottky Diode](#discrete-schottky-diode): Using a discrete Schottky diode (requires _trickier_ soldering)
 
-#### Solderless Option
+![Back Driving Protection Diagrams](https://github.com/user-attachments/assets/7d65ec90-8307-4a7d-be73-07e404dff58c)
+
+![Document](https://github.com/user-attachments/assets/ae016594-efd9-40dc-8bfc-317e9ef1a2aa)
+
+#### Solderless + Ideal Diode
+
+If you're at all uncomfortable with the idea of soldering or don't have the equipment, you can choose this option. You will need to cut and strip some wires, but no soldering is required.
 
 | Guide Price | Part | Description | Example |
 | - | - | - | - |
@@ -97,13 +103,11 @@ There are a few options if you wish to add back-driving protection to your setup
 | `5 GBP` | Capacitor | A `2200uF` `35V` electrolytic capacitor (just one; you'll have spares) | [Amazon UK](https://www.amazon.co.uk/dp/B07K87YFP9) |
 | `5 GBP` | DC Cable | A `5.5x2.5mm` DC extension cable (or `XT60` to same) | [Amazon UK](https://www.amazon.co.uk/dp/B004US2X8U) or [Amazon UK](https://www.amazon.co.uk/dp/B0BPKNG672) |
 
-TBC
+TBC (Awaiting Sample)
 
-#### Soldered Option
+#### Soldered + Ideal Diode
 
-The instructions are the same for the [#solderless](solderless option); just with the screw terminals replaced by soldered joints.
-
-If you don't need the pre-soldered screw terimnals, these are _many_ 'Ideal Diode' modules available. The one suggested for the solderless option can also be ordered without terminals, but you are not restricted to that model.
+The instructions are the same for the [#solderless](solderless option); just with the screw terminals replaced by soldered joints. If you don't need the pre-soldered screw terimnals, these are _many_ 'Ideal Diode' modules available. The one suggested for the solderless option can also be ordered without terminals, but you are not restricted to that model.
 
 The main things you need to ensure of your chosen 'Ideal Diode' module are:
 - The module actually blocks reverse current; not all such modules do (for 'OR-ing' purposes)
@@ -119,23 +123,15 @@ As long as these requirements are met, the module _should_ do the trick. These a
 - [Generic LM74700 Module](https://www.amazon.co.uk/dp/B0FNY9MWLX)
 - [Generic 'Solar Diode' Module](https://www.amazon.co.uk/dp/B07QGW5J1H)
 
-TBC
+This approach makes it easier to position the capactior within the footprint of the ideal diode board, rather than hanging out over the cable.
 
-![Back-Driving Protection Circuit Options](https://github.com/user-attachments/assets/f24a7659-ad35-414b-bb51-8aed2730d7b3)
-
-#### DIY Option
+#### Discrete Schottky Diode
 
 If you're a maker and familiar with electronics, a very simple circuit can be made using the same capacitor and any Schottky-like (e.g. SBR, SiC) diode with sufficient ratings. See above for the suggested values.
 
 Strictly speaking this would be a downgrade from the 'Ideal Diode' style boards, but will still do the job just fine. Voltage drop is unlikely to be problematic with that class of diode, and the motors are wide-input.
 
-You could theoretically fashion a debug-bug style inline protection circuit
-
-This is the circuit diagram to replicate:
-
-![Back-Driving Protection Circuit](https://github.com/user-attachments/assets/3c3fe0e1-b896-4fb9-85e4-1e6c63c0aae6)
-
-TBC
+See the diagrams above for a reference circuit design.
 
 ## Adjustment
 
