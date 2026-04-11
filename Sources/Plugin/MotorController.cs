@@ -229,7 +229,7 @@ namespace User.ActiveBeltTensioner
                     return false;
                 }
 
-                int direction = (this == _controller.GetLeftMotor()) ? 1 : -1;
+                int direction = (this == _controller.GetLeftMotor()) ? -1 : 1;
                 int good = 0;
                 int bad = 0;
 
