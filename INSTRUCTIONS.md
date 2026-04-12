@@ -89,9 +89,7 @@ There are a few options if you wish to add back-driving protection to your setup
 - [Soldered + Ideal Diode](#soldered--ideal-diode): Using an ideal diode module without terminals (requires soldering)
 - [Discrete Schottky Diode](#discrete-schottky-diode): Using a discrete Schottky diode (requires _trickier_ soldering)
 
-![Back Driving Protection Diagrams](https://github.com/user-attachments/assets/7d65ec90-8307-4a7d-be73-07e404dff58c)
-
-![Document](https://github.com/user-attachments/assets/ae016594-efd9-40dc-8bfc-317e9ef1a2aa)
+![Back Driving Protection Options](https://github.com/user-attachments/assets/bac8524d-1063-49b9-a9c6-e798fd1775da)
 
 #### Solderless + Ideal Diode
 
