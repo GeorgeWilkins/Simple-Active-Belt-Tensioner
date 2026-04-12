@@ -84,12 +84,14 @@ Details of optional [Back-Driving Protection](#back-driving-protection) options 
 
 ### Back-Driving Protection
 
+![Back Driving Protection Cable](https://github.com/user-attachments/assets/e4769b5b-ac07-43d1-952b-b270b3140852)
+
 There are a few options if you wish to add back-driving protection to your setup. Which you choose will depend on your background:
 - [Solderless + Ideal Diode](#solderless--ideal-diode): Using an ideal diode module with pre-soldered terminals
 - [Soldered + Ideal Diode](#soldered--ideal-diode): Using an ideal diode module without terminals (requires soldering)
 - [Discrete Schottky Diode](#discrete-schottky-diode): Using a discrete Schottky diode (requires _trickier_ soldering)
 
-![Back Driving Protection Options](https://github.com/user-attachments/assets/bac8524d-1063-49b9-a9c6-e798fd1775da)
+![Back Driving Protection Options](https://github.com/user-attachments/assets/a692c416-b0e0-4845-8425-ca056b65f534)
 
 #### Solderless + Ideal Diode
 
@@ -105,7 +107,7 @@ TBC (Awaiting Sample)
 
 #### Soldered + Ideal Diode
 
-The instructions are the same for the [#solderless](solderless option); just with the screw terminals replaced by soldered joints. If you don't need the pre-soldered screw terimnals, these are _many_ 'Ideal Diode' modules available. The one suggested for the solderless option can also be ordered without terminals, but you are not restricted to that model.
+The instructions are the same for the [solderless option](#solderless---ideal-diode); just with the screw terminals replaced by soldered joints. If you don't need the pre-soldered screw terimnals, these are _many_ 'Ideal Diode' modules available. The one suggested for the solderless option can also be ordered without terminals, but you are not restricted to that model.
 
 The main things you need to ensure of your chosen 'Ideal Diode' module are:
 - The module actually blocks reverse current; not all such modules do (for 'OR-ing' purposes)
