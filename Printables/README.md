@@ -29,6 +29,8 @@ The _through clamp_ is probably the easiest to integrate, with the _end clamp_ b
 
 ## Printables List
 
+<img align="right" width="50%" height="auto" style="margin: 0 0 5% 5%" alt="Printed Parts" src="https://github.com/user-attachments/assets/ad8dff22-55bb-4067-9ee4-b4830107c591" />
+
 Regardless of your choices above, you should end up with:
 - 2x Belt `End`|`Loop`|`Through` Clamp (Front)
 - 2x Belt `End`|`Loop`|`Through` Clamp (Rear)
@@ -39,7 +41,9 @@ Regardless of your choices above, you should end up with:
 - 2x Bearing Pulley (Face)
 - 2x Bearing Pulley (Hub)
 
-<img alt="Printable Parts" src="https://github.com/user-attachments/assets/0f1a7170-193e-4ecd-94d9-9bf6c1afe0a8" />
+If you're making the optional [Back-Driving Protection Unit](/INSTRUCTIONS.md#back-driving-protection) and want to print a case for that, you'll additionally need:
+- 1x Back-Driving Protection Case (Top)
+- 1x Back-Driving Protection Case (Base)
 
 ### Self Printing
 
@@ -65,9 +69,14 @@ The above takes about **8 hours** on my H2S if printing everything at once. It u
 
 There are plenty of hobbyists on eBay offering low-cost FDM printing. Quality will depend very much on the individual seller.
 
-If you want a more professional product, there are companies running SLS/MJF machines which produce Nylon parts for reasonable money:
+If you want a more commercial-looking end result, there are companies running SLS/MJF machines which produce Nylon parts for reasonable money:
 - [3DPrintUK](https://3dprint-uk.co.uk) are a provider of SLS/MJF Nylon parts in the UK. They have an instant quotation system that will give you a price right away (~**90 GBP** at the time of writing)
 - [JLC3DP](https://jlc3dp.com) offer a similar service out of China with delivery to most countries
+
+I've had test prints done in MJF Nylon PA12 (dyed black & shot peened) which came out great, but as with FDM printing, getting the tolerances correct for the press-fit bearings requires some trial and error.
+
+<img alt="FDM PLA (Left) &amp; MJF Nylon (Right)" src="https://github.com/user-attachments/assets/bfac6e96-2e1a-40e1-896b-42d3a9c5b132" />
+<img alt="FDM PLA (Left) &amp; MJF Nylon (Right)" src="https://github.com/user-attachments/assets/4709e92b-cbfa-41a9-ae36-7251c432661b" />
 
 ### CNC Machining
 
