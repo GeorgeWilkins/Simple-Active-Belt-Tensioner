@@ -24,11 +24,11 @@ The rest of the parts can be obtained from virtually anywhere, including [Amazon
 
 ### Optional Items
 
-You can reduce friction (and wear) on your seat's belt loops if you apply some low-friction tape over the contact points. I've had success with [2-3/8" PTFE Tape](https://www.amazon.co.uk/dp/B0F3XKJW2V). The best solution would be a roller, but given the variation in seat designs, you're going to have to implement that yourself.
+You can reduce friction (and wear) on your seat's belt loops if you apply some low-friction tape over the contact points. I've had success with [2-3/8" PTFE Tape](https://www.amazon.co.uk/dp/B0F3XKJW2V). The best solution would be a roller, but given the variation in seat designs, you're going to have to implement that yourself. If looking for an off-the-shelf solution, [Winch Rollers](https://www.amazon.co.uk/s?k=winch+roller) _might_ be a good option, provided your seat offers somewhere to mount them.
 
 If using the tubular brackets, you'll need to order two [2" Truss Clamps](https://www.amazon.co.uk/dp/B07DP1FK33), a pair of [`M10` Nuts](https://www.amazon.co.uk/dp/B0CGQVMP45) and [`M10x16MM` Low-Profile Bolts](https://www.amazon.co.uk/dp/B0DYHY2DHB).
 
-Details of optional [Back-Driving Protection](#back-driving-protection) options are listed later in this document.
+Details of optional (but recommended) [Back-Driving Protection](#back-driving-protection) options are listed later in this document, including a solderless solution.
 
 ## Assembly
 
