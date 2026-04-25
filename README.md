@@ -24,12 +24,12 @@ This project consists of three parts:
 The printable files and software are **completely free** (except the required [SimHub License](https://www.simhubdash.com/get-a-license/)). The printed part designs are `CERN-OHL-P` licensed (open-source), and the software is `MIT` licensed, which essentially means you can do what you like with either; including selling printed/machined parts kits.
 
 ### Design Goals
-- Low Cost
+- Lowest Practical Cost
 - Minimal Parts & Tools
 - No Soldering
 - No Progamming
-- No 'Reclaimed' Motors
-- Direct-Drive (FOC/BLDC) Performance
+- No 'Reclaimed' Parts
+- Direct-Drive (FOC/BLDC) Performance & Flexibility
 
 ## Who Is It For?
 
@@ -37,16 +37,17 @@ Anyone with a sim rig that desires a more immersive experience. It's a plug-and-
 
 Note that you'll need either an _aluminium profile_ (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) or _2" tubular steel_ (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) sim rig frame to mount this using the [available brackets](#). Mounting to other types of rig is possible, but you'll need to design and fabricate your own brackets (or [get in touch](mailto:sabt@georgewilkins.co.uk) with me). _Folding-seat_ rigs (e.g. [Playseat Challenge](https://www.playseat.com/)) are _not suitable_.
 
-I would reccommend installing tactile tranducers (bass shakers) before embarking on belt tensioners and other exotic haptic system. Tranducers are by far the simplest and cheapest way of adding real immersion to your experience.
+I would reccommend installing tactile tranducers (bass shakers) before embarking on belt tensioners and other more exotic haptic systems. Tranducers are by far the simplest and cheapest way of adding real immersion to your experience. They provide detail that belt tensioners cannot (road bumps, curbs, etc), while tensioners provide constant forces that tranduscers cannot (braking, cornering, etc).
 
 ## What Does It Cost?
 
-If you have your own 3D printer, as little as **215 GBP** including taxes. If not, **250~300 GBP** depending on your choices:
+If you have your own 3D printer, as little as **215 GBP** including taxes and delivery. If not, **250~300 GBP** depending on your choice of printed parts supplier.
 
+### Purchased Parts
 | Price (GBP) | Part | Notes |
 | - | - | - |
 | 120 | 2 x Motors | Provides the tensioning force |
-| 20 | Controller | Provides a USB interface for the motors |
+| 20 | Controller | Provides USB control of the motors |
 | 6 | 2 x Bearings | Allows the pulley covers to rotate smoothly |
 | 7 | Screw & Nut Set | Provides every needed fastener in one set (with _many_ spares) |
 | 5 | 1M Cord | A low-friction cord that winds around the pulleys (attached at the other end to your belts) |
@@ -57,15 +58,15 @@ If you have your own 3D printer, as little as **215 GBP** including taxes. If no
 
 There is a [detailed parts list](/INSTRUCTIONS.md#motors-electronics--fixings) with sources in the build guide.
 
-The cost of the printed parts will depend largely on your choice of priting process and material:
-
+### Printing Options
 | Price (GBP) | Method | Notes |
 | - | - | - |
-| 5 | Self-Print | Roughly 200g or 75M of filament |
+| 5~10 | Self-Print | Roughly 200g or 75M of filament |
 | 30~60 | FDM Service | Assuming an _eBay-tier_ printing provider, not a professional company |
 | 60~90 | MJF/SLS Service | [JLC3DP](http://jlc3dp.com/) and [3DPrintUK](http://3dprint-uk.co.uk/) used for reference pricing (nylon dyed black with peening) |
 
-Note that you will need [SimHub Licensed Edition](https://www.simhubdash.com/get-a-license/) (currently **8 EUR** or more) to use this device.
+### Other Costs
+Note that you will also need [SimHub Licensed Edition](https://www.simhubdash.com/get-a-license/) (currently **8 EUR** or more) to use this device. If you're reading this, you almost certainly already have it.
 
 ## How Does It Work?
 
@@ -90,6 +91,8 @@ This is plenty to give extra immersion and feedback, but significantly less than
 
 For comparison, the [QS-BT1](https://qubicsystem.com/product/qs-bt1) claims _"20.5kg per channel"_, but is a considerably larger and costs six times more.
 
+Note that this system conveys progressive constant forces (cornering, braking, etc) rather than fine details (road texture, track kerbs, etc). For the latter, you should install one or more tactile transducers. The two work together to imply the sensation of movement without a costly motion simulator.
+
 ## Where Can I See It In Action?
 
 TBC
@@ -106,7 +109,7 @@ Of particular note:
 
 ## Is It Safe?
 
-This is an open-source project involving powerful motors and moving belts attached to your body.
+This is an open-source project involving powerful motors, pinch points and moving belts attached to your body.
 
 ⚠️ **No claims are made regarding the safety of this device. You are responsible for ensuring its safe use and no liability is accepted by the creator(s) for any damage or injury caused by this device.**
 
