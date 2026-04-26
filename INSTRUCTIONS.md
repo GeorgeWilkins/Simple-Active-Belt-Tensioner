@@ -170,7 +170,7 @@ If you allow the cord to _fully unwind_, the motors will not be able to apply th
 
 If you allow _too much_ cord to wrap around a pulley, it may start binding. If so, reduce the length of your shoulder harness belt. If you cannot do this, reduce the length of the cord; ensuring that there is at least some cord _not_ wrapped around the pulley when the harness is fastened.
 
-[INSERT VIDEO HERE]
+_(Instructional Video TBC)_
 
 ## Software
 
