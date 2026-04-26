@@ -35,7 +35,7 @@ The printable files and software are **completely free** (except the required [S
 
 Anyone with a sim rig that desires a more immersive experience. It's a plug-and-play design that requires no soldering or progamming, so virtually anyone can build it.
 
-Note that you'll need either an _aluminium profile_ (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) or _2" tubular steel_ (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) sim rig frame to mount this using the [available brackets](#). Mounting to other types of rig is possible, but you'll need to design and fabricate your own brackets (or [get in touch](mailto:sabt@georgewilkins.co.uk) with me). _Folding-seat_ rigs (e.g. [Playseat Challenge](https://www.playseat.com/)) are _not suitable_.
+Note that you'll need either an _aluminium profile_ (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) or _2" tubular steel_ (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) sim rig frame to mount this using the available brackets. Mounting to other types of rig is possible, but you'll need to design and fabricate your own brackets (or [get in touch](mailto:sabt@georgewilkins.co.uk) with me). _Folding-seat_ rigs (e.g. [Playseat Challenge](https://www.playseat.com/)) are _not suitable_.
 
 I would reccommend installing tactile tranducers (bass shakers) before embarking on belt tensioners and other more exotic haptic systems. Tranducers are by far the simplest and cheapest way of adding real immersion to your experience. They provide detail that belt tensioners cannot (road bumps, curbs, etc), while tensioners provide constant forces that tranduscers cannot (braking, cornering, etc).
 
@@ -85,7 +85,7 @@ The benefits of this are:
 - Compact & clean design
 - Auto-adjusting of the harness (adjustable idle tension)
 
-The maximum force appliable by these motors with the current pulley design is estimated to be about **8Kgf to 12Kgf per belt**, putting us right around the rated mechanical loading for each motor. Imagine having **~10Kgf of weight** attached to each belt hanging down from the back of your seat, and you'll get the idea.
+The maximum force appliable by these motors with the current pulley design is about **10Kgf per belt**, putting us right around the rated mechanical loading for each motor. Imagine having **~10Kg of weights** attached to each belt hanging down from the back of your seat, and you'll get the idea.
 
 This is plenty to give extra immersion and feedback, but significantly less than you'd feel in a real vehicle at motorsport velocities.
 
