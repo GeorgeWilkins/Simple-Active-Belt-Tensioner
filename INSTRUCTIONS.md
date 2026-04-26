@@ -117,6 +117,8 @@ If you're at all uncomfortable with the idea of soldering or don't have the equi
 
 #### Soldered + Ideal Diode
 
+<img width="350" align="right" alt="Soldered Option" src="https://github.com/user-attachments/assets/8eefe655-81e7-454b-9835-d53c2832d935" />
+
 The instructions are the same for the solderless option; just with the screw terminals replaced by soldered joints. If you don't need the pre-soldered screw terimnals, there are _many_ 'Ideal Diode' modules available. The one suggested for the solderless option can also be ordered without terminals, but you are not restricted to that model.
 
 The main things you need to ensure of your chosen 'Ideal Diode' module are:
@@ -172,8 +174,4 @@ If you allow _too much_ cord to wrap around a pulley, it may start binding. If s
 
 ## Software
 
-TBC
-
-## First Use
-
-TBC
+See the [/Software/](/Software/) directory for the _SimHub Plugin_ download and installation instructions.
