@@ -43,11 +43,11 @@ Details of optional (but recommended) [Back-Driving Protection](#back-driving-pr
 
 | Step | Instructions | Illustration |
 | :-: | :- | :-: |
-| 1 | Assemble the four pulley parts; the bearing, the outer cover, the face plate and hub. | <img alt="Pulley Parts" src="https://github.com/user-attachments/assets/a71e7c59-454f-469d-a038-f88115272059" /> |
+| 1 | Gather the four pulley parts; the bearing, the outer cover, the face plate and hub. | <img alt="Pulley Parts" src="https://github.com/user-attachments/assets/a71e7c59-454f-469d-a038-f88115272059" /> |
 | 2 | Press the bearing into the outer cover. This should be possible by hand. The accuracy/roughness of your print will dictate how easy this is.<br /><br />If the fit is too tight, use a hammer to _gently_ tap it in (alternating sides with each tap) or consider shaving away some material with a knife or file.<br /><br />If the fit is too loose, cut up a drinks can and shim around the edges of the bearing to fill in the gap (ensuring the shims do not protrude). | <img alt="Inserting The Bearing" src="https://github.com/user-attachments/assets/ad074009-27f4-4a20-aeaf-5cc2b9e5fe1e" /><img alt="Inserted Bearing" src="https://github.com/user-attachments/assets/36d34db8-b217-4201-b0ea-c0265f49e00e" /> |
-| 3 | Insert the pulley face from the front so it sits inside the inner ring of the bearing. The notes above regarding fitting tolerances apply here too | <img alt="Face Inserted" src="https://github.com/user-attachments/assets/d301219f-ad1e-46d6-be3b-2027827be9d9" /> |
+| 3 | Insert the pulley face from the front so it sits inside the inner ring of the bearing. The notes above regarding fitting tolerances apply here too. | <img alt="Face Inserted" src="https://github.com/user-attachments/assets/d301219f-ad1e-46d6-be3b-2027827be9d9" /> |
 | 4 | Insert the pulley hub over the top, so that the triangular shape on the face part pushes into the triangular hole of the hub. They may pop together or be loose depending on the tolerances of your print (either is fine). The slot in the hub for the cord should be facing outward. | <img alt="Hub Fitted" src="https://github.com/user-attachments/assets/74074eec-8118-420c-ae5c-088a4f61ddf7" /> |
-| 6 | Cut a `0.5M` length of the _UHMWPE/Dyneema cord_ and tie a tight knot in the end, then remove any excess cord after the knot | <img alt="Knotting The Cord" src="https://github.com/user-attachments/assets/e8b54846-080b-41f7-bd63-63bef5716200" /> |
+| 6 | Cut a `0.5M` length of the _UHMWPE/Dyneema cord_ and tie a tight knot in the end, then remove any excess cord after the knot. | <img alt="Knotting The Cord" src="https://github.com/user-attachments/assets/e8b54846-080b-41f7-bd63-63bef5716200" /> |
 | 5 | Thread one end of the cord through one of the pulley cover holes. When assembling the _Left_ pulley, use the hole marked with `L` inside the pulley cover (or `R` for the _Right_ pulley). Push the knot into the cut-out in the pulley hub. It should stay in place relatively well. | <img alt="Cord Inserted" src="https://github.com/user-attachments/assets/6f4bf1de-827f-4c2a-84de-9a5fa84f8851" /> |
 | 8 | Install the pulley onto the motor hub and insert and tighten three `M2.5x12MM` screws into the face plate. Make sure that the cord stays in the cut-out when doing so. | <img alt="Installing The Pulley" src="https://github.com/user-attachments/assets/ebaff46f-a8b5-4f85-8226-95cd5d5e60f6" /> |
 
@@ -84,14 +84,16 @@ Details of optional (but recommended) [Back-Driving Protection](#back-driving-pr
 
 ### Back-Driving Protection
 
-![Back Driving Protection Cable](https://github.com/user-attachments/assets/e4769b5b-ac07-43d1-952b-b270b3140852)
-
-There are a few options if you wish to add back-driving protection to your setup. Which you choose will depend on your background:
+There are a few options if you wish to add back-driving protection to your setup, which is **strongly recommended**. Which you choose will depend on your background:
 - [Solderless + Ideal Diode](#solderless--ideal-diode): Using an ideal diode module with pre-soldered terminals
 - [Soldered + Ideal Diode](#soldered--ideal-diode): Using an ideal diode module without terminals (requires soldering)
 - [Discrete Schottky Diode](#discrete-schottky-diode): Using a discrete Schottky diode (requires _trickier_ soldering)
 
+The printable case is design to accommodate all of these options.
+
 ![Back Driving Protection Options](https://github.com/user-attachments/assets/a692c416-b0e0-4845-8425-ca056b65f534)
+
+> 📢 **Important:** All of these options add a modest capacitance between the power supply and controller board. If you disconnect this protection unit, the capacitor may remain charged at up to `~15V` for a period of time. Do not touch the terminals at either end of the unit, as doing so **may cause a shock**.
 
 #### Solderless + Ideal Diode
 
@@ -103,17 +105,25 @@ If you're at all uncomfortable with the idea of soldering or don't have the equi
 | `5 GBP` | Capacitor | A `2200uF` `35V` electrolytic capacitor (just one; you'll have spares) | [Amazon UK](https://www.amazon.co.uk/dp/B07K87YFP9) |
 | `5 GBP` | DC Cable | A `5.5x2.5mm` DC extension cable (or `XT60` to same) | [Amazon UK](https://www.amazon.co.uk/dp/B004US2X8U) or [Amazon UK](https://www.amazon.co.uk/dp/B0BPKNG672) |
 
-TBC (Awaiting Sample)
+| Step | Instructions | Illustration |
+| :-: | :- | :-: |
+| 1 | Assemble the protection unit parts; the four `M2.5x16` bolts, four `M2.5` nuts, the capacitor, the diode board, the adapter cable and printed case. Cut the adapter cable in half as shown. | <img alt="The Protection Unit Parts" src="https://github.com/user-attachments/assets/ddfda194-d2f4-4281-981d-05b19c949105" /> |
+| 2 | Bend the capacitor legs as pictured, taking care not to damage the capacitor and noting the oritentation shown. If the legs of the screw terminals protrude significantly from the bottom of the board, take this opportunity to trim them down with some snips. | <img alt="Preparing The Capacitor" src="https://github.com/user-attachments/assets/6e90ebc7-1995-4ca5-8633-d8ee716afb25" /> |
+| 3 | Fully loosen the screw terminals. Insert the capacitor legs into the **output** screw terminals as shown (`GND` and `VOUT` on the board). with the capacitor `-` leg going into the board's `GND` as pictured. Do not tighten the terminals yet. | <img alt="Fitting The Capacitor" src="https://github.com/user-attachments/assets/ac39b922-a48f-485c-b380-bf5970740076" /> |
+| 4 | Trim off roughly `6mm` of sheathing from the adapter cable ends and twist as shown. | <img width="1554" height="1166" alt="image" src="https://github.com/user-attachments/assets/aae038d5-e829-486f-8191-7227fdbdf8bf" /> |
+| 6 | Insert the bare wires into the screw terminals. The `XT60` cable should be on the **output** side and the round DC barrel cable should be on the **input** side. **Black** to `GND` and **red** to `VOUT` and `VIN`. Tighten up the screws as much as they will go. |  <img alt="Inserting The Wires" src="https://github.com/user-attachments/assets/0a9b5a0d-ac72-4451-a24e-41a58c598081" /> |
+| 5 | Check for any stray or loose wires and adjust if needed. Install the unit into the printed case, taking care not to disturb the fitted wires. Make sure that the black outer sheath of the cable goes _completely inside_ the case as shown, so that the case lid can clamp down on it once closed. | <img alt="Fitting Into The Case" src="https://github.com/user-attachments/assets/99450677-ceb3-4b04-8392-2bc96aac6a44" /> |
+| 8 | Install the `M2.5x16MM` screws and nuts into the case and tighten as much as they will reasonably go. Ideally if you happen to have a multimeter, before attempting to power the controller board, check that the `XT60` connector produces the expected `15V` in the correct polarity (the **flat** side should be `+` and the **beveled** side `-`) when the power supply is connected to the dc barrel plug. |  <img alt="The Completed Protection Unit" src="https://github.com/user-attachments/assets/f5234cca-f23d-4a27-9115-615e1edb59dc" /> |
 
 #### Soldered + Ideal Diode
 
-The instructions are the same for the [solderless option](#solderless---ideal-diode); just with the screw terminals replaced by soldered joints. If you don't need the pre-soldered screw terimnals, these are _many_ 'Ideal Diode' modules available. The one suggested for the solderless option can also be ordered without terminals, but you are not restricted to that model.
+The instructions are the same for the solderless option; just with the screw terminals replaced by soldered joints. If you don't need the pre-soldered screw terimnals, there are _many_ 'Ideal Diode' modules available. The one suggested for the solderless option can also be ordered without terminals, but you are not restricted to that model.
 
 The main things you need to ensure of your chosen 'Ideal Diode' module are:
 - The module actually blocks reverse current; not all such modules do (for 'OR-ing' purposes)
 - The current handling exceeds `6A`
 - The voltage handling exceeds `24V` (ideally `30V+`)
-- The board has both positive and GND solder pads to make assembly easier
+- The board has both positive and GND solder pads to make assembly easier (some do not)
 
 As long as these requirements are met, the module _should_ do the trick. These are some examples:
 - [Pololu 5382](https://www.pololu.com/product/5382)
