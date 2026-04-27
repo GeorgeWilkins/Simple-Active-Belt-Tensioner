@@ -31,10 +31,6 @@ The printable files and software are **completely free** (except the required [S
 - No 'Reclaimed' Parts
 - Direct-Drive (FOC/BLDC) Performance & Flexibility
 
-![Kit](https://github.com/user-attachments/assets/428c3be5-585c-48b6-b4c6-0fb4fe79347b)
-
-![Motors In Action](https://github.com/user-attachments/assets/8495272a-16cc-4c07-8b0a-e34acbab7320)
-
 ## Who Is It For?
 
 Anyone with a sim rig that desires a more immersive experience. It's a plug-and-play design that requires no soldering or progamming, so virtually anyone can build it.
@@ -80,6 +76,8 @@ The ends of each shoulder belt are attached to lengths UHMWPE/Dyneema cord, whic
 
 When SimHub sends game telemetry to our plugin, it converts this into torque commands and send them to the motors over a serial connection.
 
+![Motors In Action](https://github.com/user-attachments/assets/8495272a-16cc-4c07-8b0a-e34acbab7320)
+
 ## How Does It Perform?
 
 Since we're using high-quality BLDC/FOC integrated servo motors, the effects are applied directly as _force_ (torque) rather than emulated by moving the belts a fixed distance, as with some DIY tensioners based on RC servos.
@@ -102,6 +100,8 @@ Note that this system conveys progressive constant forces (cornering, braking, e
 ## Where Can I See It In Action?
 
 [Demonstration](https://github.com/user-attachments/assets/2f8e5eab-6a82-4855-a239-53a57ca60228)
+
+I've posted a number of development videos on my [YouTube profile](https://www.youtube.com/@XGEOX) if you're interested in those details.
 
 ## Anything I Should Be Aware Of?
 
