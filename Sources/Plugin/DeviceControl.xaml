@@ -31,7 +31,7 @@
                                 <StackPanel>
                                     <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,20">
                                             <Label Content="Enable Motors" Margin="-5,0,0,0" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsSerialPortValid}" />
                                             <Label Content="Start Automatically" Margin="-5,0,0,0" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.StartAutomatically, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <Label Content="Flip Channels" Margin="-5,0,0,0" />
@@ -46,7 +46,7 @@
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="800" />
+                                        <RowDefinition Height="600" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -66,7 +66,7 @@
                                         </Image.RenderTransform>
                                     </Image>
 
-                                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Source="/User.ActiveBeltTensioner;component/SABT Logo.png" Width="200" Margin="0,0,0,615"/>
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Source="/User.ActiveBeltTensioner;component/SABT Logo.png" Width="150" Margin="0,0,0,460"/>
 
                                     <styles:SHButtonPrimary Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestLeftMotor" Margin="0,0,10,0" IsEnabled="{Binding MotorController.LeftMotorIsConnected}">Test Motor</styles:SHButtonPrimary>
                                     <styles:SHButtonPrimary Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestRightMotor" Margin="10,0,0,0" IsEnabled="{Binding MotorController.RightMotorIsConnected}">Test Motor</styles:SHButtonPrimary>
@@ -75,10 +75,10 @@
                                     <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding MotorController.RightMotorStatus, Mode=OneWay}" Margin="11,15,0,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
 
                                     <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" Margin="2,50,2,20">
-                                        If this is your first-time setting up, you'll need to pick a serial port from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected.
+                                        Select a serial port from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected.
                                         <LineBreak />
                                         <LineBreak />
-                                        Future launches of SimHub should remember your port selection and reconnect automatically.
+                                        Future launches of SimHub should remember your port selection and reconnect automatically. However the 'Enable Motors' option will be reset every launch unless 'Start Automatically' is also enabled.
                                         <LineBreak />
                                         <LineBreak />
                                         If this is your first time setting up, you'll need to then click 'Setup Motors' and follow the instructions given. You'll only need to do this once, as each motor stores its configuration once set.
@@ -169,6 +169,7 @@
 
                                 <Label Content="• The permitted value ranges for incoming telemetry (anything more or less will be clipped)" />
                                 <Label Content="• Set appropriately for the types of vehicles you mostly drive (defaults are fine for most)" />
+                                <Label Content="• Narrower ranges result in more aggressive effects, wider ranges result in greater subtlety" />
                                 <Label Content="• Run a replay to see live telemetry plotted above and to make adjustment easier" />
 
                                 <styles:SHSectionSeparator />

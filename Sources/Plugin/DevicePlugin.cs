@@ -47,6 +47,8 @@ namespace User.ActiveBeltTensioner
 
         public MotorController MotorController;
 
+        private static string _settingsName = "SimpleActiveBeltTensioner";
+
         private readonly object _motorControllerLock = new object();
 
         private readonly object _telemetryLock = new object();
@@ -77,7 +79,7 @@ namespace User.ActiveBeltTensioner
         {
             Logging.Current.Info("SABT: Initialising...");
 
-            Settings = this.ReadCommonSettings<DeviceSettings>("GeneralSettings", () => new DeviceSettings());
+            Settings = this.ReadCommonSettings<DeviceSettings>(_settingsName, () => new DeviceSettings());
             Settings.PropertyChanged += OnSettingsChanged;
 
             MotorController = new MotorController(this);
@@ -184,6 +186,8 @@ namespace User.ActiveBeltTensioner
         /// <summary>Called by SimHub when the plugin is unloaded, allowing the graceful release of connections and resources</summary>
         public void End(PluginManager pluginManager)
         {
+            this.SaveCommonSettings(_settingsName, Settings);
+
             _runControlLoop = false;
             _hasTelemetryArrived.Set();
 
@@ -194,8 +198,6 @@ namespace User.ActiveBeltTensioner
             }
 
             MotorController.Disconnect();
-
-            this.SaveCommonSettings("GeneralSettings", Settings);
         }
 
         /// <summary>Evalulates the <see cref="TelemetrySnapshot"/> propeties and calculates the appropriate effects to apply</summary>
@@ -359,6 +361,8 @@ namespace User.ActiveBeltTensioner
                         if (!motorController.SetTorques(leftTarget, rightTarget, smoothingFactor))
                         {
                             Logging.Current.Warn("SABT: Exceeded Motor Communication Failure Limit (Disabling Plugin)");
+
+                            MessageBox.Show("The device could not be found, or motors did not respond. The 'Enable Motors' option has been automatically switched off", "SABT: Device Communication Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
 
                             Settings.IsEnabled = false;
                         }

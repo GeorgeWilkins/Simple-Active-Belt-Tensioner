@@ -160,7 +160,7 @@ namespace User.ActiveBeltTensioner
                 }
 
                 IsConnected = false;
-                Status = "Failed To Connect";
+                Status = "Communication Failure";
                 Graphic = MotorGraphic.Error;
 
                 return false;
@@ -190,7 +190,7 @@ namespace User.ActiveBeltTensioner
                     }
                 }
 
-                Status = "Failed To Stop";
+                Status = "Communication Failure";
                 Graphic = MotorGraphic.Error;
 
                 return false;
@@ -226,7 +226,7 @@ namespace User.ActiveBeltTensioner
                 if (!Query(true))
                 {
                     IsConnected = false;
-                    Status = "Failed To Test (Disconnected)";
+                    Status = "Communication Failure";
                     Graphic = MotorGraphic.Error;
 
                     return false;
@@ -316,7 +316,7 @@ namespace User.ActiveBeltTensioner
                     }
                 }
 
-                Status = "Failed To Set Identifier";
+                Status = "Communication Failure";
                 Graphic = MotorGraphic.Error;
 
                 return false;
