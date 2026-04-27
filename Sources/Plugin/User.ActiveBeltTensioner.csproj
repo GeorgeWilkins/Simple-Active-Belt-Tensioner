@@ -141,7 +141,14 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="SABT Logo.png" />
     <Resource Include="Channel.png" />
+    <Resource Include="Channel, Connect.png" />
+    <Resource Include="Channel, Connected.png" />
+    <Resource Include="Channel, Disconnected.png" />
+    <Resource Include="Channel, Error.png" />
+    <Resource Include="Channel, Communicating.png" />
+    <Resource Include="GW Logo.png" />
     <Content Include="MenuIcon.png" />
   </ItemGroup>
   <ItemGroup>

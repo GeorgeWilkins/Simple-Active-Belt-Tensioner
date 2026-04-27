@@ -47,6 +47,8 @@ namespace User.ActiveBeltTensioner
 
         public MotorController MotorController;
 
+        private static string _settingsName = "SimpleActiveBeltTensioner";
+
         private readonly object _motorControllerLock = new object();
 
         private readonly object _telemetryLock = new object();
@@ -77,7 +79,7 @@ namespace User.ActiveBeltTensioner
         {
             Logging.Current.Info("SABT: Initialising...");
 
-            Settings = this.ReadCommonSettings<DeviceSettings>("GeneralSettings", () => new DeviceSettings());
+            Settings = this.ReadCommonSettings<DeviceSettings>(_settingsName, () => new DeviceSettings());
             Settings.PropertyChanged += OnSettingsChanged;
 
             MotorController = new MotorController(this);
@@ -122,6 +124,8 @@ namespace User.ActiveBeltTensioner
                 }
                 else
                 {
+                    _hasBeenInactive = true;
+
                     DoWithoutWaiting(devicePlugin =>
                     {
                         devicePlugin.MotorController.Disconnect();
@@ -182,6 +186,8 @@ namespace User.ActiveBeltTensioner
         /// <summary>Called by SimHub when the plugin is unloaded, allowing the graceful release of connections and resources</summary>
         public void End(PluginManager pluginManager)
         {
+            this.SaveCommonSettings(_settingsName, Settings);
+
             _runControlLoop = false;
             _hasTelemetryArrived.Set();
 
@@ -192,8 +198,6 @@ namespace User.ActiveBeltTensioner
             }
 
             MotorController.Disconnect();
-
-            this.SaveCommonSettings("GeneralSettings", Settings);
         }
 
         /// <summary>Evalulates the <see cref="TelemetrySnapshot"/> propeties and calculates the appropriate effects to apply</summary>
@@ -228,20 +232,13 @@ namespace User.ActiveBeltTensioner
                     motorController = MotorController;
                 }
 
-                if (!motorController.LeftMotorIsConnected || !motorController.RightMotorIsConnected)
-                {
-                    _hasBeenInactive = true;
-
-                    continue;
-                }
-
                 if (_hasBeenInactive)
                 {
                     MessageBoxResult result = MessageBoxResult.No;
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        result = MessageBox.Show("The belt tensioner motors will be activated. Are you sure?", "Simple Active Belt Tensioner", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        result = MessageBox.Show("The belt tensioner motors will be activated. Proceed?", "Simple Active Belt Tensioner", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     });
 
                     if (result != MessageBoxResult.Yes)
@@ -364,6 +361,8 @@ namespace User.ActiveBeltTensioner
                         if (!motorController.SetTorques(leftTarget, rightTarget, smoothingFactor))
                         {
                             Logging.Current.Warn("SABT: Exceeded Motor Communication Failure Limit (Disabling Plugin)");
+
+                            MessageBox.Show("The device could not be found, or motors did not respond. The 'Enable Motors' option has been automatically switched off", "SABT: Device Communication Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
 
                             Settings.IsEnabled = false;
                         }

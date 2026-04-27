@@ -25,66 +25,69 @@
 
                 <styles:SHTabControl>
                     <styles:SHTabItem Header="Connection">
-                        <styles:SHTitledGroup Title="Motor Status">
+                        <styles:SHTitledGroup Title="Status &amp; Setup">
                             <StackPanel>
 
+                                <StackPanel>
+                                    <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,20">
+                                            <Label Content="Enable Motors" Margin="-5,0,0,0" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsSerialPortValid}" />
+                                            <Label Content="Start Automatically" Margin="-5,0,0,0" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.StartAutomatically, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Label Content="Flip Channels" Margin="-5,0,0,0" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsFlipped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </TextBlock>
+                                </StackPanel>
+
                                 <Grid>
+
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="3*" />
-                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition Height="70" />
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                        <RowDefinition />
+                                        <RowDefinition Height="600" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
 
-                                    <Image Grid.Column="0" Grid.Row="0" Source="/User.ActiveBeltTensioner;component/Channel.png" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                    <Image Grid.Column="0" Grid.Row="0" Source="{Binding MotorController.LeftMotorGraphic}" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5">
                                         <Image.RenderTransform>
                                             <ScaleTransform ScaleX="1"/>
                                         </Image.RenderTransform>
                                     </Image>
-                                    <StackPanel Grid.Column="1" Grid.Row="0">
-                                        <TextBlock TextWrapping="WrapWithOverflow" Margin="10">
-                                            If this is the first time setting up your tensioner (or you are replacing a motor), you'll need to set which channel each motor belongs to.
-                                            <LineBreak /><LineBreak />
-                                            This is done by connecting a single motor at a time and clicking on 'Set Channel'. This saves a numeric identifier to the motor, which this plugin then addresses commands to.
-                                            <LineBreak /><LineBreak />
-                                            Once that's done for both motors you can plug them both back in and they should be automatically detected.
-                                            <LineBreak /><LineBreak />
-                                            Note that a motor can only be assigned an identifier/channel once per power cycle; you'll have to disconnect the motor and reconnect it if you've set the wrong one. This is an intentional limitation of the motor controller.
-                                            <LineBreak /><LineBreak />
-                                            <Label Content="Enable Plugin" Margin="-5,0,0,0" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <Label Content="Flip Channels" Margin="-5,0,0,0" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsFlipped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        </TextBlock>
-
-                                    </StackPanel>
-                                    <Image Grid.Column="2" Grid.Row="0" Source="/User.ActiveBeltTensioner;component/Channel.png" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                                    <Image Grid.Column="1" Grid.Row="0" Source="{Binding MotorController.RightMotorGraphic}" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5">
                                         <Image.RenderTransform>
                                             <ScaleTransform ScaleX="-1"/>
                                         </Image.RenderTransform>
                                     </Image>
 
-                                    <iconpacks:PackIconMaterial Grid.Column="0" Grid.Row="1" Width="50" Height="50"  Kind="{Binding MotorController.LeftMotorIcon}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                    <iconpacks:PackIconMaterial Grid.Column="2" Grid.Row="1" Width="50" Height="50" Kind="{Binding MotorController.RightMotorIcon}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Source="/User.ActiveBeltTensioner;component/SABT Logo.png" Width="150" Margin="0,0,0,460"/>
 
-                                    <ComboBox Grid.Column="1" Grid.Row="3" ItemsSource="{Binding MotorController.SerialPorts}" SelectedItem="{Binding Settings.SerialPort, UpdateSourceTrigger=PropertyChanged}" Margin="35,10,35,0" />
+                                    <styles:SHButtonPrimary Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestLeftMotor" Margin="0,0,10,0" IsEnabled="{Binding MotorController.LeftMotorIsConnected}">Test Motor</styles:SHButtonPrimary>
+                                    <styles:SHButtonPrimary Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestRightMotor" Margin="10,0,0,0" IsEnabled="{Binding MotorController.RightMotorIsConnected}">Test Motor</styles:SHButtonPrimary>
 
-                                    <styles:SHButtonPrimary Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Click="UpdateSerialPorts" Margin="35,10,35,0">Refresh Serial Ports</styles:SHButtonPrimary>
+                                    <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding MotorController.LeftMotorStatus, Mode=OneWay}" Margin="1,15,10,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding MotorController.RightMotorStatus, Mode=OneWay}" Margin="11,15,0,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
 
-                                    <styles:SHButtonPrimary Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Click="SetLeftMotorIdentifier" Margin="0,10,0,0" IsEnabled="{Binding MotorController.OneMotorIsConnected}">Set Channel</styles:SHButtonPrimary>
-                                    <styles:SHButtonPrimary Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" Click="SetRightMotorIdentifier" Margin="0,10,0,0" IsEnabled="{Binding MotorController.OneMotorIsConnected}">Set Channel</styles:SHButtonPrimary>
+                                    <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" Margin="2,50,2,20">
+                                        Select a serial port from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected.
+                                        <LineBreak />
+                                        <LineBreak />
+                                        Future launches of SimHub should remember your port selection and reconnect automatically. However the 'Enable Motors' option will be reset every launch unless 'Start Automatically' is also enabled.
+                                        <LineBreak />
+                                        <LineBreak />
+                                        If this is your first time setting up, you'll need to then click 'Setup Motors' and follow the instructions given. You'll only need to do this once, as each motor stores its configuration once set.
+                                    </TextBlock>
 
-                                    <styles:SHButtonPrimary Grid.Column="0" Grid.Row="3" HorizontalAlignment="Stretch" Click="TestLeftMotor" Margin="0,10,0,0" IsEnabled="{Binding MotorController.LeftMotorIsConnected}">Test Motor</styles:SHButtonPrimary>
-                                    <styles:SHButtonPrimary Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" Click="TestRightMotor" Margin="0,10,0,0" IsEnabled="{Binding MotorController.RightMotorIsConnected}">Test Motor</styles:SHButtonPrimary>
+                                    <ComboBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding MotorController.SerialPorts}" SelectedItem="{Binding Settings.SerialPort, UpdateSourceTrigger=PropertyChanged}" Margin="-1,10,-1,10" />
 
-                                    <TextBox Grid.Column="0" Grid.Row="4" Text="{Binding MotorController.LeftMotorStatus, Mode=OneWay}" Margin="1,12,0,10" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                                    <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding MotorController.RightMotorStatus, Mode=OneWay}" Margin="1,12,0,10" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                                    <styles:SHButtonPrimary Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Click="SetupMotors" Margin="0,0,0,0" IsEnabled="{Binding Settings.IsSerialPortValid}">Setup Motors</styles:SHButtonPrimary>
+
                                 </Grid>
 
                             </StackPanel>
@@ -166,6 +169,7 @@
 
                                 <Label Content="• The permitted value ranges for incoming telemetry (anything more or less will be clipped)" />
                                 <Label Content="• Set appropriately for the types of vehicles you mostly drive (defaults are fine for most)" />
+                                <Label Content="• Narrower ranges result in more aggressive effects, wider ranges result in greater subtlety" />
                                 <Label Content="• Run a replay to see live telemetry plotted above and to make adjustment easier" />
 
                                 <styles:SHSectionSeparator />
@@ -181,34 +185,36 @@
                             <StackPanel>
 
                                 <TextBlock TextWrapping="WrapWithOverflow" Margin="10">
-                                    'Simple Active Belt Tensioner' hardware and software design by George Wilkins:
+                                    <Image Source="/User.ActiveBeltTensioner;component/GW Logo.png" Width="105" Margin="-3,0,0,8"/>
                                     <LineBreak />
-                                    <Hyperlink NavigateUri="https://georgewilkins.co.uk" Click="OpenHyperlink">georgewilkins.co.uk</Hyperlink>
+                                    Hardware and software design by George Wilkins:
                                     <LineBreak />
-                                    <Hyperlink NavigateUri="mailto:sabt@georgewilkins.co.uk" Click="OpenHyperlink">sabt@georgewilkins.co.uk</Hyperlink>
+                                    <Hyperlink NavigateUri="https://georgewilkins.co.uk" Click="OpenHyperlink">Website</Hyperlink>
                                     <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins" Click="OpenHyperlink">https://github.com/GeorgeWilkins</Hyperlink>
+                                    <Hyperlink NavigateUri="mailto:sabt@georgewilkins.co.uk" Click="OpenHyperlink">E-Mail</Hyperlink>
+                                    <LineBreak />
+                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins" Click="OpenHyperlink">GitHub Profile</Hyperlink>
+                                    <LineBreak />
+                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/LICENSE.md" Click="OpenHyperlink">Project License</Hyperlink>
                                     <LineBreak />
                                     <LineBreak />
                                     SimHub plugin based upon 'SimHub Plugin Demo' by SHWotever:
                                     <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/SHWotever/SimHub/wiki/Plugin-and-extensions-SDKs" Click="OpenHyperlink">https://github.com/SHWotever/SimHub/wiki/Plugin-and-extensions-SDKs</Hyperlink>
+                                    <Hyperlink NavigateUri="https://github.com/SHWotever/SimHub/wiki/Plugin-and-extensions-SDKs" Click="OpenHyperlink">SDK Documentation</Hyperlink>
                                     <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/SHWotever" Click="OpenHyperlink">https://github.com/SHWotever</Hyperlink>
+                                    <Hyperlink NavigateUri="https://github.com/SHWotever" Click="OpenHyperlink">GitHub Profile</Hyperlink>
                                     <LineBreak />
                                     <LineBreak />
                                     Pre-Release Testing &amp; Feedback by TurtleMenace:
                                     <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/turtlemenace" Click="OpenHyperlink">https://github.com/turtlemenace</Hyperlink>
+                                    <Hyperlink NavigateUri="https://github.com/turtlemenace" Click="OpenHyperlink">GitHub Profile</Hyperlink>
                                     <LineBreak />
                                     <LineBreak />
-                                    <LineBreak />
-                                    <LineBreak />
-                                    <iconpacks:PackIconMaterial Grid.Column="0" Width="25" Height="25" Kind="GithubBox" />
+                                    <iconpacks:PackIconMaterial Grid.Column="0" Width="25" Height="25" Margin="0,0,0,8" Kind="GithubBox" />
                                     <LineBreak />
                                     For more information, to report a bug or contribute, consult the project GitHub repository:
                                     <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner" Click="OpenHyperlink">https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner</Hyperlink>
+                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner" Click="OpenHyperlink">GitHub Repository</Hyperlink>
                                 </TextBlock>
 
                             </StackPanel>
