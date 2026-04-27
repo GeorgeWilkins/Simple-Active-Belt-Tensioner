@@ -26,10 +26,10 @@ Note that you do not need a _'Motion License'_ to use this tensioner; that is a 
 3. Grab the key from the e-mail you're sent and enter it into `Settings` > `General` > `Licenses` within SimHub
 4. Once done you should see `Status: Licensed` at the bottom of the SimHub window
 
-## Downloading & InstallingThe Plugin
+## Downloading & Installing The Plugin
 
-1. Go to [/releases/latest/download/plugin.zip](/releases/latest/download/plugin.zip) and download the compressed plugin file
-2. Make sure SimHub is closed before proceeding to the next step
-3. Unzip the downloaded file and copy the `DLL` file within to your SimHub installation directory (e.g. `C:\Program Files\SimHub`)
-4. Open SimHub, which should then reocgnise the plugin and load it
-5. Click on the `Active Belt Tensioner` plugin in the left-hand menu and configure it as you like
+1. Go to [the latest release](https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/releases) and download the `User.ActiveBeltTensioner.dll` file
+2. Make sure _SimHub_ is closed before proceeding to the next step
+3. Copy the `DLL` file within to your SimHub installation directory (e.g. `C:\Program Files\SimHub`)
+4. Open _SimHub_, which should then recognise the plugin and load it
+5. Click on the `Simple Active Belt Tensioner` plugin in the left-hand menu and configure it as you like
