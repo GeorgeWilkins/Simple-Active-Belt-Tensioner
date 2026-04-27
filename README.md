@@ -1,6 +1,6 @@
 > 📢 **Important:** This is a _pre-release_ of the project and considered to be under active development and testing. If you're not prepared to do some tinkering and/or deal with initial usability issues, it is recommended that you do not attempt to build it right now and instead wait for the `v1.0` release
 
-![SABT Logo](https://github.com/user-attachments/assets/34a23ed0-6fa1-4082-affe-bc45beb8aa8f)
+![SABT Logo](https://github.com/user-attachments/assets/768dae61-de1a-435a-945e-86f4a0aaee6d)
 
 ![Diagram](https://github.com/user-attachments/assets/943fe759-e230-4e11-926b-9c8e9f3385c2)
 
