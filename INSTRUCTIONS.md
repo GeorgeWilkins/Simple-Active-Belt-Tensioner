@@ -170,6 +170,10 @@ If you allow the cord to _fully unwind_, the motors will not be able to apply th
 
 If you allow _too much_ cord to wrap around a pulley, it may start binding. If so, reduce the length of your shoulder harness belt. If you cannot do this, reduce the length of the cord; ensuring that there is at least some cord _not_ wrapped around the pulley when the harness is fastened.
 
+It is important that the cord is aligned such that it does not rub against the _sides_ of the pulley housing. The housing is designed to freely rotate with the cord at any angle along the axis of the motor; so if you move your chair backwards or forwards, it doesn't cause a problem. However the motor pulleys must line up perfectly underneath the seat's belt holes to avoid rubbing. In other words, the motor axles must be _perpendicular_ to the cords:
+
+![Pulley Alignment](https://github.com/user-attachments/assets/74b92307-cd40-4cbd-a4ae-80142aa51d28)
+
 _(Instructional Video TBC)_
 
 ## Software
