@@ -1,5 +1,8 @@
 > 📢 **Important:** This is a _pre-release_ of the project and considered to be under active development and testing. If you're not prepared to do some tinkering and/or deal with initial usability issues, it is recommended that you do not attempt to build it right now and instead wait for the `v1.0` release
 
+![SABT Logo](https://github.com/user-attachments/assets/34a23ed0-6fa1-4082-affe-bc45beb8aa8f)
+
+
 ![Diagram](https://github.com/user-attachments/assets/943fe759-e230-4e11-926b-9c8e9f3385c2)
 
 # Simple Active Belt Tensioner
@@ -7,8 +10,6 @@
 A haptic device for sim racing, designed specifically for people who do not have a background in software or electronics.
 
 It requires **no soldering or programming** and can be built for **as little as ~215 GBP** _including the harness_.
-
-<img alt="Belt Clamps" src="https://github.com/user-attachments/assets/431fbec1-53f8-4b44-bab7-e9f08b6276c0" />
 
 ## What Is It?
 
@@ -95,7 +96,7 @@ Note that this system conveys progressive constant forces (cornering, braking, e
 
 ## Where Can I See It In Action?
 
-TBC
+_(Video To Be Added)_
 
 ## Anything I Should Be Aware Of?
 
