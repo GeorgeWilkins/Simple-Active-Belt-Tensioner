@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Drawing.Text;
 using System.IO.Ports;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -20,6 +21,7 @@ namespace User.ActiveBeltTensioner
     public partial class DeviceControl : UserControl
     {
         private readonly DevicePlugin _plugin;
+        private readonly DispatcherTimer _updateSerialPortsTimer;
 
         public Action<string> OnSerialPortSelected;
 
@@ -34,11 +36,22 @@ namespace User.ActiveBeltTensioner
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
 
+            _plugin.Settings.IsEnabled = (_plugin.Settings.IsEnabled && _plugin.Settings.StartAutomatically);
             _plugin.Settings.PropertyChanged += OnPropertyChanged;
+
+            _updateSerialPortsTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(5)
+            };
+            _updateSerialPortsTimer.Tick += UpdateSerialPorts;
         }
  
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            /*if (e.PropertyName == nameof(_plugin.Settings.SerialPort))
+            {
+                _plugin.MotorController.OpenSerialPort();
+            }*/
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -57,46 +70,28 @@ namespace User.ActiveBeltTensioner
                     devicePlugin.MotorController.UpdateSerialPorts();
                 }
             );
+
+            _updateSerialPortsTimer.Start();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             Logging.Current.Info("SABT: OnUnloaded()...");
+
+            _updateSerialPortsTimer.Stop();
         }
 
-        private void UpdateSerialPorts(object sender, RoutedEventArgs e)
+        private void UpdateSerialPorts(object sender, EventArgs e)
         {
-            _plugin.DoWithoutWaiting(
-                devicePlugin =>
-                {
-                    devicePlugin.MotorController.UpdateSerialPorts();
-                }
-            );
-        }
-
-        private void SetLeftMotorIdentifier(object sender, RoutedEventArgs e)
-        {
-            _plugin.DoWithoutWaiting(
-                devicePlugin => {
-                    if (!devicePlugin.MotorController.IsBusy)
+            if (IsLoaded)
+            {
+                _plugin.DoWithoutWaiting(
+                    devicePlugin =>
                     {
-                        devicePlugin.MotorController.SetMotorIdentifier(devicePlugin.MotorController.GetLeftMotor());
+                        devicePlugin.MotorController.UpdateSerialPorts();
                     }
-                }
-            );
-        }
-
-        private void SetRightMotorIdentifier(object sender, RoutedEventArgs e)
-        {
-            _plugin.DoWithoutWaiting(
-                devicePlugin =>
-                {
-                    if (!devicePlugin.MotorController.IsBusy)
-                    {
-                        devicePlugin.MotorController.SetMotorIdentifier(devicePlugin.MotorController.GetRightMotor());
-                    }
-                }
-            );
+                );
+            }
         }
 
         private void TestLeftMotor(object sender, RoutedEventArgs e)
@@ -106,7 +101,7 @@ namespace User.ActiveBeltTensioner
                 {
                     if (!devicePlugin.MotorController.IsBusy)
                     {
-                        devicePlugin.MotorController.TestMotor(devicePlugin.MotorController.GetLeftMotor());
+                        devicePlugin.MotorController.GetLeftMotor().Test();
                     }
                 }
             );
@@ -119,7 +114,20 @@ namespace User.ActiveBeltTensioner
                 {
                     if (!devicePlugin.MotorController.IsBusy)
                     {
-                        devicePlugin.MotorController.TestMotor(devicePlugin.MotorController.GetRightMotor());
+                        devicePlugin.MotorController.GetRightMotor().Test();
+                    }
+                }
+            );
+        }
+
+        private void SetupMotors(object sender, RoutedEventArgs e)
+        {
+            _plugin.DoWithoutWaiting(
+                devicePlugin =>
+                {
+                    if (!devicePlugin.MotorController.IsBusy)
+                    {
+                        devicePlugin.MotorController.Setup();
                     }
                 }
             );

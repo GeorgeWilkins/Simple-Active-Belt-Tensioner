@@ -122,6 +122,8 @@ namespace User.ActiveBeltTensioner
                 }
                 else
                 {
+                    _hasBeenInactive = true;
+
                     DoWithoutWaiting(devicePlugin =>
                     {
                         devicePlugin.MotorController.Disconnect();
@@ -228,20 +230,13 @@ namespace User.ActiveBeltTensioner
                     motorController = MotorController;
                 }
 
-                if (!motorController.LeftMotorIsConnected || !motorController.RightMotorIsConnected)
-                {
-                    _hasBeenInactive = true;
-
-                    continue;
-                }
-
                 if (_hasBeenInactive)
                 {
                     MessageBoxResult result = MessageBoxResult.No;
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        result = MessageBox.Show("The belt tensioner motors will be activated. Are you sure?", "Simple Active Belt Tensioner", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        result = MessageBox.Show("The belt tensioner motors will be activated. Proceed?", "Simple Active Belt Tensioner", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                     });
 
                     if (result != MessageBoxResult.Yes)
