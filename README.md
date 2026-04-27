@@ -4,8 +4,6 @@
 
 ![Diagram](https://github.com/user-attachments/assets/943fe759-e230-4e11-926b-9c8e9f3385c2)
 
-![Kit](https://github.com/user-attachments/assets/428c3be5-585c-48b6-b4c6-0fb4fe79347b)
-
 # Simple Active Belt Tensioner
 
 A haptic device for sim racing, designed specifically for people who do not have a background in software or electronics.
@@ -32,6 +30,10 @@ The printable files and software are **completely free** (except the required [S
 - No Progamming
 - No 'Reclaimed' Parts
 - Direct-Drive (FOC/BLDC) Performance & Flexibility
+
+![Kit](https://github.com/user-attachments/assets/428c3be5-585c-48b6-b4c6-0fb4fe79347b)
+
+![Motors In Action](https://github.com/user-attachments/assets/8495272a-16cc-4c07-8b0a-e34acbab7320)
 
 ## Who Is It For?
 
@@ -95,9 +97,11 @@ For comparison, the [QS-BT1](https://qubicsystem.com/product/qs-bt1) claims _"20
 
 Note that this system conveys progressive constant forces (cornering, braking, etc) rather than fine details (road texture, track kerbs, etc). For the latter, you should install one or more tactile transducers. The two work together to imply the sensation of movement without a costly motion simulator.
 
+[Force Testing.webm](https://github.com/user-attachments/assets/be7b9d7a-be3f-46f7-abf1-9659297854bb)
+
 ## Where Can I See It In Action?
 
-_(Video To Be Added)_
+[Demonstration](https://github.com/user-attachments/assets/2f8e5eab-6a82-4855-a239-53a57ca60228)
 
 ## Anything I Should Be Aware Of?
 
