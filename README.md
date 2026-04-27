@@ -2,8 +2,9 @@
 
 ![SABT Logo](https://github.com/user-attachments/assets/34a23ed0-6fa1-4082-affe-bc45beb8aa8f)
 
-
 ![Diagram](https://github.com/user-attachments/assets/943fe759-e230-4e11-926b-9c8e9f3385c2)
+
+![Kit](https://github.com/user-attachments/assets/428c3be5-585c-48b6-b4c6-0fb4fe79347b)
 
 # Simple Active Belt Tensioner
 
