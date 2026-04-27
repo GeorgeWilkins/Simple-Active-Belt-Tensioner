@@ -41,7 +41,7 @@ Regardless of your choices above, you should end up with:
 - 2x Bearing Pulley (Face)
 - 2x Bearing Pulley (Hub)
 
-If you're making the optional [Back-Driving Protection Unit](/INSTRUCTIONS.md#back-driving-protection) and want to print a case for that, you'll additionally need:
+If you're making the [Back-Driving Protection Unit](/INSTRUCTIONS.md#back-driving-protection) you'll additionally need:
 - 1x Back-Driving Protection Case (Top)
 - 1x Back-Driving Protection Case (Base)
 
@@ -75,8 +75,8 @@ If you want a more commercial-looking end result, there are companies running SL
 
 I've had test prints done in MJF Nylon PA12 (dyed black & shot peened) which came out great, but as with FDM printing, getting the tolerances correct for the press-fit bearings requires some trial and error.
 
-<img alt="FDM PLA (Left) &amp; MJF Nylon (Right)" src="https://github.com/user-attachments/assets/bfac6e96-2e1a-40e1-896b-42d3a9c5b132" />
-<img alt="FDM PLA (Left) &amp; MJF Nylon (Right)" src="https://github.com/user-attachments/assets/4709e92b-cbfa-41a9-ae36-7251c432661b" />
+![FDM PLA (Left) &amp; MJF Nylon (Right)](https://github.com/user-attachments/assets/bfac6e96-2e1a-40e1-896b-42d3a9c5b132)
+![FDM PLA (Left) &amp; MJF Nylon (Right)](https://github.com/user-attachments/assets/4709e92b-cbfa-41a9-ae36-7251c432661b)
 
 ### CNC Machining
 
@@ -84,4 +84,4 @@ At some point I'd love to see machined aluminium parts become available; but the
 
 Some of the parts would need to be adapted considerably to work with the latter process.
 
-If you have the means to do this and want to make them available, please [get in touch](sabt@georgewilkins.co.uk).
+If you have the means to do this and want to make them available, please get in touch.
