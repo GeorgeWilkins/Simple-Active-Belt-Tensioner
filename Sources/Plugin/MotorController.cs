@@ -820,6 +820,8 @@ namespace User.ActiveBeltTensioner
                     {
                         _serialPort.ReadByte();
                     }
+
+                    _serialPort.Write(tx, 0, tx.Length);
                 }
                 catch
                 {
@@ -830,8 +832,6 @@ namespace User.ActiveBeltTensioner
                 {
                     Logging.Current.Info("SABT: Motor TX (" + BitConverter.ToString(tx) + ")");
                 }
-
-                _serialPort.Write(tx, 0, tx.Length);
 
                 long startedAt = System.Diagnostics.Stopwatch.GetTimestamp();
                 long timeoutTicks = (long)(timeout * System.Diagnostics.Stopwatch.Frequency / 1000.0);
