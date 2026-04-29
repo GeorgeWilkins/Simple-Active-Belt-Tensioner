@@ -69,14 +69,14 @@
     <Reference Include="MahApps.Metro.IconPacks.Material">
       <HintPath>$(SIMHUB_INSTALL_PATH)\MahApps.Metro.IconPacks.Material.dll</HintPath>
     </Reference>
-    <Reference Include="OxyPlot, Version=2.2.0.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
+    <Reference Include="OxyPlot, Version=1.0.0.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>S:\SimHub\OxyPlot.dll</HintPath>
+      <HintPath>$(SIMHUB_INSTALL_PATH)\OxyPlot.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="OxyPlot.Wpf, Version=2.2.0.0, Culture=neutral, PublicKeyToken=75e952ba404cdbb0, processorArchitecture=MSIL">
+    <Reference Include="OxyPlot.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=75e952ba404cdbb0, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>S:\SimHub\OxyPlot.Wpf.dll</HintPath>
+      <HintPath>$(SIMHUB_INSTALL_PATH)\OxyPlot.Wpf.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
