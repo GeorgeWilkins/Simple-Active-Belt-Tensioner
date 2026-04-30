@@ -1,11 +1,6 @@
-﻿using MahApps.Metro.IconPacks;
-using SimHub;
-using System;
+﻿using System;
 using System.ComponentModel;
-using System.Runtime;
 using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Threading;
 
 namespace User.ActiveBeltTensioner
 {
@@ -13,7 +8,7 @@ namespace User.ActiveBeltTensioner
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private const string _deviceNotFound = "No Device Found";
+        private const string _deviceNotFound = "N/A";
 
         private void InvokePropertyChange([CallerMemberName] string name = null)
         {

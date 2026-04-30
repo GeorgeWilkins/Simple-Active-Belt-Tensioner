@@ -24,17 +24,17 @@
             <StackPanel>
 
                 <styles:SHTabControl>
-                    <styles:SHTabItem Header="Connection">
-                        <styles:SHTitledGroup Title="Status &amp; Setup">
+                    <styles:SHTabItem Header="{SLoc SABT_Tab_Connection}">
+                        <styles:SHTitledGroup Title="{SLoc SABT_Title_Connection}">
                             <StackPanel>
 
                                 <StackPanel>
                                     <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,20">
-                                            <Label Content="Enable Motors" Margin="-5,0,0,0" />
+                                            <Label Content="{SLoc SABT_Label_EnableMotors}" Margin="-5,0,0,0" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsSerialPortValid}" />
-                                            <Label Content="Start Automatically" Margin="-5,0,0,0" />
+                                            <Label Content="{SLoc SABT_Label_StartAutomatically}" Margin="-5,0,0,0" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.StartAutomatically, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <Label Content="Flip Channels" Margin="-5,0,0,0" />
+                                            <Label Content="{SLoc SABT_Label_FlipChannels}" Margin="-5,0,0,0" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsFlipped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </TextBlock>
                                 </StackPanel>
@@ -68,153 +68,132 @@
 
                                     <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Source="/User.ActiveBeltTensioner;component/SABT Logo.png" Width="150" Margin="0,0,0,460"/>
 
-                                    <styles:SHButtonPrimary Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestLeftMotor" Margin="0,0,10,0" IsEnabled="{Binding MotorController.LeftMotorIsConnected}">Test Motor</styles:SHButtonPrimary>
-                                    <styles:SHButtonPrimary Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestRightMotor" Margin="10,0,0,0" IsEnabled="{Binding MotorController.RightMotorIsConnected}">Test Motor</styles:SHButtonPrimary>
+                                    <styles:SHButtonPrimary Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestLeftMotor" Margin="0,0,10,0" IsEnabled="{Binding MotorController.LeftMotorIsConnected}" Content="{SLoc SABT_Button_TestMotor}" />
+                                    <styles:SHButtonPrimary Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestRightMotor" Margin="10,0,0,0" IsEnabled="{Binding MotorController.RightMotorIsConnected}" Content="{SLoc SABT_Button_TestMotor}" />
 
                                     <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding MotorController.LeftMotorStatus, Mode=OneWay}" Margin="1,15,10,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
                                     <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding MotorController.RightMotorStatus, Mode=OneWay}" Margin="11,15,0,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
 
-                                    <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" TextWrapping="WrapWithOverflow" Margin="2,50,2,20">
-                                        Select a serial port from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected.
-                                        <LineBreak />
-                                        <LineBreak />
-                                        Future launches of SimHub should remember your port selection and reconnect automatically. However the 'Enable Motors' option will be reset every launch unless 'Start Automatically' is also enabled.
-                                        <LineBreak />
-                                        <LineBreak />
-                                        If this is your first time setting up, you'll need to then click 'Setup Motors' and follow the instructions given. You'll only need to do this once, as each motor stores its configuration once set.
-                                    </TextBlock>
+                                    <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" LineHeight="20" TextWrapping="WrapWithOverflow" Margin="2,50,2,20" Text="{SLoc SABT_Label_Connection}" />
 
                                     <ComboBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding MotorController.SerialPorts}" SelectedItem="{Binding Settings.SerialPort, UpdateSourceTrigger=PropertyChanged}" Margin="-1,10,-1,10" />
 
-                                    <styles:SHButtonPrimary Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Click="SetupMotors" Margin="0,0,0,0" IsEnabled="{Binding Settings.IsSerialPortValid}">Setup Motors</styles:SHButtonPrimary>
+                                    <styles:SHButtonPrimary Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Click="SetupMotors" Margin="0,0,0,0" IsEnabled="{Binding Settings.IsSerialPortValid}" Content="{SLoc SABT_Button_SetupMotors}" />
 
                                 </Grid>
 
                             </StackPanel>
                         </styles:SHTitledGroup>
                     </styles:SHTabItem>
-                    <styles:SHTabItem Header="Tension">
-                        <styles:SHTitledGroup Title="Belt Tension Adjustment">
+                    <styles:SHTabItem Header="{SLoc SABT_Tab_Tension}">
+                        <styles:SHTitledGroup Title="{SLoc SABT_Title_Tension}">
                             <StackPanel>
 
-                                <ui:TitledSlider Title="Idle Tension" Maximum="250" Minimum="0" Value="{Binding Settings.IdleTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <Label Content="• Always applied while not driving (no effect while driving)" />
-                                <Label Content="• Behaves like the retraction spring on an interia reel belt" />
-                                <Label Content="• Set to zero to disable; limited to 25% of maximum motor torque" />
+                                <ui:TitledSlider Title="{SLoc SABT_Slider_IdleTension}" Maximum="250" Minimum="0" Value="{Binding Settings.IdleTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Label_IdleTension}" />
 
                                 <styles:SHSectionSeparator />
 
-                                <ui:TitledRangeSlider Title="Driving Tension" Maximum="1000" Minimum="0" LowerValue="{Binding Settings.MinimumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <Label Content="• The minimum and maximum tension to be applied while driving" />
-                                <Label Content="• Increasing the minimum will apply a constant tension and enhance acceleration and jumping effects" />
-                                <Label Content="• Reducing the maximum will result in a reduction of overall tension strength" />
+                                <ui:TitledRangeSlider Title="{SLoc SABT_Slider_DrivingTension}" Maximum="1000" Minimum="0" LowerValue="{Binding Settings.MinimumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Label_DrivingTension}" />
 
                                 <styles:SHSectionSeparator />
 
-                                <ui:TitledSlider Title="Left/Right Bias" Maximum="1000" Minimum="-1000" Value="{Binding Settings.SideBias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <Label Content="• If tension feels unbalanced between sides, adjust this left or right to bias towards that side" />
-                                <Label Content="• Check and correct your belt path and contact points before resorting to using this setting" />
+                                <ui:TitledSlider Title="{SLoc SABT_Slider_LeftRightBias}" Maximum="1000" Minimum="-1000" Value="{Binding Settings.SideBias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Label_LeftRightBias}" />
 
                             </StackPanel>
                         </styles:SHTitledGroup>
                     </styles:SHTabItem>
-                    <styles:SHTabItem Header="Effects">
-                        <styles:SHTitledGroup Title="Effect Strength Adjustment">
+                    <styles:SHTabItem Header="{SLoc SABT_Tab_Effects}">
+                        <styles:SHTitledGroup Title="{SLoc SABT_Title_Effects}">
                             <StackPanel>
 
-                                <ui:TitledSlider Title="Cornering" Maximum="1000" Minimum="0" Value="{Binding Settings.CorneringStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <Label Content="• How much cornering forces should affect the tension differential between the two belts" />
+                                <ui:TitledSlider Title="{SLoc SABT_Slider_Cornering}" Maximum="1000" Minimum="0" Value="{Binding Settings.CorneringStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Label_Cornering}" />
 
                                 <styles:SHSectionSeparator />
 
-                                <ui:TitledSlider Title="Braking" Maximum="1000" Minimum="0" Value="{Binding Settings.BrakingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <Label Content="• How much decceleration forces should increase the tension on both belts" />
+                                <ui:TitledSlider Title="{SLoc SABT_Slider_Braking}" Maximum="1000" Minimum="0" Value="{Binding Settings.BrakingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Label_Braking}" />
 
                                 <styles:SHSectionSeparator />
 
-                                <ui:TitledSlider Title="Acceleration" Maximum="1000" Minimum="0" Value="{Binding Settings.AccelerationStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <!-- IsEnabled="{Binding IsMinimumTensionNonZero}" -->
-                                <Label Content="• How much acceleration forces should decrease the tension on both belts" />
-                                <Label Content="• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)" />
+                                <ui:TitledSlider Title="{SLoc SABT_Slider_Acceleration}" Maximum="1000" Minimum="0" Value="{Binding Settings.AccelerationStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Label_Acceleration}" />
 
                                 <styles:SHSectionSeparator />
 
-                                <ui:TitledSlider Title="Jumping" Maximum="1000" Minimum="0" Value="{Binding Settings.JumpingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <!-- IsEnabled="{Binding IsMinimumTensionNonZero}" -->
-                                <Label Content="• How much jumping should decrease the tension on both belts" />
-                                <Label Content="• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)" />
+                                <ui:TitledSlider Title="{SLoc SABT_Slider_Jumping}" Maximum="1000" Minimum="0" Value="{Binding Settings.JumpingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Label_Jumping}" />
 
                                 <styles:SHSectionSeparator />
 
-                                <ui:TitledSlider Title="Landing" Maximum="1000" Minimum="0" Value="{Binding Settings.LandingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <Label Content="• How much landing should increase the tension on both belts" />
+                                <ui:TitledSlider Title="{SLoc SABT_Slider_Landing}" Maximum="1000" Minimum="0" Value="{Binding Settings.LandingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Label_Landing}" />
 
                                 <styles:SHSectionSeparator />
-                                <ui:TitledSlider Title="Shifting" Maximum="1000" Minimum="0" Value="{Binding Settings.ShiftingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <Label Content="• Adds a more pronounced release of tension on upshift than standard telemetry offers" />
-                                <Label Content="• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)" />
+                                <ui:TitledSlider Title="{SLoc SABT_Slider_Shifting}" Maximum="1000" Minimum="0" Value="{Binding Settings.ShiftingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Label_Shifting}" />
 
                             </StackPanel>
                         </styles:SHTitledGroup>
                     </styles:SHTabItem>
-                    <styles:SHTabItem Header="Tuning">
-                        <styles:SHTitledGroup Title="Telemetry Handling">
+                    <styles:SHTabItem Header="{SLoc SABT_Tab_Tuning}">
+                        <styles:SHTitledGroup Title="{SLoc SABT_Title_Tuning}">
                             <StackPanel>
 
                                 <oxy:PlotView Height="600" HorizontalAlignment="Stretch" Margin="-14,-10,-14,15" Background="#202020" Model="{Binding TelemetryGraphModel}" />
 
-                                <ui:TitledRangeSlider Title="Surge Limits (Acceleration/Braking)" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <ui:TitledRangeSlider Title="Sway Limits (Cornering)" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <ui:TitledRangeSlider Title="Heave Limits (Jumps)" Maximum="100" Minimum="-50" LowerValue="{Binding Settings.MinimumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <ui:TitledRangeSlider Title="{SLoc SABT_Slider_SurgeLimits}" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <ui:TitledRangeSlider Title="{SLoc SABT_Slider_SwayLimits}" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <ui:TitledRangeSlider Title="{SLoc SABT_Slider_HeaveLimits}" Maximum="100" Minimum="-50" LowerValue="{Binding Settings.MinimumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                                <Label Content="• The permitted value ranges for incoming telemetry (anything more or less will be clipped)" />
-                                <Label Content="• Set appropriately for the types of vehicles you mostly drive (defaults are fine for most)" />
-                                <Label Content="• Narrower ranges result in more aggressive effects, wider ranges result in greater subtlety" />
-                                <Label Content="• Run a replay to see live telemetry plotted above and to make adjustment easier" />
+                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Label_TelemetryLimits}" />
 
                                 <styles:SHSectionSeparator />
 
-                                <ui:TitledSlider Title="Smoothing Factor" Maximum="750" Minimum="0" Value="{Binding Settings.SmoothingFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <Label Content="• How much the tension output should be smoothed" />
+                                <ui:TitledSlider Title="{SLoc SABT_Slider_SmoothingFactor}" Maximum="750" Minimum="0" Value="{Binding Settings.SmoothingFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <Label Content="{SLoc SABT_Label_SmoothingFactor}" />
 
                             </StackPanel>
                         </styles:SHTitledGroup>
                     </styles:SHTabItem>
-                    <styles:SHTabItem Header="Credits">
-                        <styles:SHTitledGroup Title="Licensing &amp; Author Information">
+                    <styles:SHTabItem Header="{SLoc SABT_Tab_Credits}">
+                        <styles:SHTitledGroup Title="{SLoc SABT_Title_Credits}">
                             <StackPanel>
 
-                                <TextBlock TextWrapping="WrapWithOverflow" Margin="10">
+                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="10">
                                     <Image Source="/User.ActiveBeltTensioner;component/GW Logo.png" Width="105" Margin="-3,0,0,8"/>
                                     <LineBreak />
-                                    Hardware and software design by George Wilkins:
+                                    <Run Text="{SLoc SABT_Text_Designer}" />
                                     <LineBreak />
-                                    <Hyperlink NavigateUri="https://georgewilkins.co.uk" Click="OpenHyperlink">Website</Hyperlink>
+                                    <Hyperlink NavigateUri="https://georgewilkins.co.uk" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_Website}" /></Hyperlink>
                                     <LineBreak />
-                                    <Hyperlink NavigateUri="mailto:sabt@georgewilkins.co.uk" Click="OpenHyperlink">E-Mail</Hyperlink>
+                                    <Hyperlink NavigateUri="mailto:sabt@georgewilkins.co.uk" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_Email}" /></Hyperlink>
                                     <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins" Click="OpenHyperlink">GitHub Profile</Hyperlink>
+                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_GitHubProfile}" /></Hyperlink>
                                     <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/LICENSE.md" Click="OpenHyperlink">Project License</Hyperlink>
-                                    <LineBreak />
-                                    <LineBreak />
-                                    SimHub plugin based upon 'SimHub Plugin Demo' by SHWotever:
-                                    <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/SHWotever/SimHub/wiki/Plugin-and-extensions-SDKs" Click="OpenHyperlink">SDK Documentation</Hyperlink>
-                                    <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/SHWotever" Click="OpenHyperlink">GitHub Profile</Hyperlink>
+                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/LICENSE.md" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_ProjectLicense}" /></Hyperlink>
                                     <LineBreak />
                                     <LineBreak />
-                                    Pre-Release Testing &amp; Feedback by TurtleMenace:
+                                    <Run Text="{SLoc SABT_Text_SimHub}" />
                                     <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/turtlemenace" Click="OpenHyperlink">GitHub Profile</Hyperlink>
+                                    <Hyperlink NavigateUri="https://github.com/SHWotever/SimHub/wiki/Plugin-and-extensions-SDKs" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_SDKDocumentation}" /></Hyperlink>
+                                    <LineBreak />
+                                    <Hyperlink NavigateUri="https://github.com/SHWotever" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_GitHubProfile}" /></Hyperlink>
+                                    <LineBreak />
+                                    <LineBreak />
+                                    <Run Text="{SLoc SABT_Text_Tester}" />
+                                    <LineBreak />
+                                    <Hyperlink NavigateUri="https://github.com/turtlemenace" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_GitHubProfile}" /></Hyperlink>
                                     <LineBreak />
                                     <LineBreak />
                                     <iconpacks:PackIconMaterial Grid.Column="0" Width="25" Height="25" Margin="0,0,0,8" Kind="GithubBox" />
                                     <LineBreak />
-                                    For more information, to report a bug or contribute, consult the project GitHub repository:
+                                    <Run Text="{SLoc SABT_Text_Repository}" />
                                     <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner" Click="OpenHyperlink">GitHub Repository</Hyperlink>
+                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_GitHubRepository}" /></Hyperlink>
                                 </TextBlock>
 
                             </StackPanel>
