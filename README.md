@@ -12,6 +12,8 @@ It requires **no soldering or programming** and can be built for **as little as 
 
 ## What Is It?
 
+![Pulley Motor](https://github.com/user-attachments/assets/6482c047-358e-4a5b-8aed-ad21be5f4adb)
+
 An _active belt tensioner_ is a device that attaches between your sim rig and the anchor points of your racing harness. It dynamically tensions the harness in response to game telemetry; giving a sense of the forces you'd be experencing in a vehicle when changing speed, braking, cornering and jumping/landing.
 
 It works with **any game fully supported by [SimHub](https://www.simhubdash.com/)**, but the current software is designed primarily for racing games and simluators.
@@ -75,8 +77,6 @@ The two motors are anchored to your rig with printed brackets. A self-orienting 
 The ends of each shoulder belt are attached to lengths UHMWPE/Dyneema cord, which are wrapped around each motor pulley.
 
 When SimHub sends game telemetry to our plugin, it converts this into torque commands and send them to the motors over a serial connection.
-
-![Motors In Action](https://github.com/user-attachments/assets/8495272a-16cc-4c07-8b0a-e34acbab7320)
 
 ## How Does It Perform?
 
