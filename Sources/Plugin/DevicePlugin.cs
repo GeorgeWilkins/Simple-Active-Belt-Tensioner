@@ -1,6 +1,4 @@
-﻿using FMOD.Studio;
-using GameReaderCommon;
-using MahApps.Metro.IconPacks;
+﻿using GameReaderCommon;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
@@ -8,25 +6,12 @@ using OxyPlot.Series;
 using SimHub;
 using SimHub.Plugins;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
-using System.IO.Ports;
-using System.Linq;
-using System.Runtime;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Media3D;
-using static log4net.Appender.ColoredConsoleAppender;
-using static SimHub.Plugins.UI.SupportedGamePicker;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
-using static User.ActiveBeltTensioner.DevicePlugin;
-using static User.ActiveBeltTensioner.MotorController;
+using WoteverLocalization;
 
 
 namespace User.ActiveBeltTensioner
@@ -42,7 +27,7 @@ namespace User.ActiveBeltTensioner
 
         public ImageSource PictureIcon => this.ToIcon(Properties.Resources.MenuIcon);
 
-        public string LeftMenuTitle => "Simple Active Belt Tensioner";
+        public string LeftMenuTitle => SLoc.GetValue("SABT_Plugin");
 
 
         public MotorController MotorController;
@@ -238,7 +223,12 @@ namespace User.ActiveBeltTensioner
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        result = MessageBox.Show("The belt tensioner motors will be activated. Proceed?", "Simple Active Belt Tensioner", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        result = MessageBox.Show(
+                            SLoc.GetValue("SABT_Message_ActivationWarning"),
+                            SLoc.GetValue("SABT_Plugin"),
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Warning
+                        );
                     });
 
                     if (result != MessageBoxResult.Yes)
@@ -309,7 +299,7 @@ namespace User.ActiveBeltTensioner
 
                     if (didUpshift && shiftingStrength > 0.0)
                     {
-                        Logging.Current.Info("SABT: Upshift Detected (@" + speed + ")");
+                        Logging.Current.Info("SABT: Upshift detected (@" + speed + ")");
 
                         // @TODO: A very crude and temporary proof-of-concept (replace with time-controlled muliplier of underlying negative surge force)
                         if (!motorController.IsBusy)
@@ -360,9 +350,14 @@ namespace User.ActiveBeltTensioner
                     {
                         if (!motorController.SetTorques(leftTarget, rightTarget, smoothingFactor))
                         {
-                            Logging.Current.Warn("SABT: Exceeded Motor Communication Failure Limit (Disabling Plugin)");
+                            Logging.Current.Warn("SABT: Exceeded motor communication failure limit (disabling plugin)");
 
-                            MessageBox.Show("The device could not be found, or motors did not respond. The 'Enable Motors' option has been automatically switched off", "SABT: Device Communication Failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            MessageBox.Show(
+                                SLoc.GetValue("SABT_Message_DeviceFailure"),
+                                SLoc.GetValue("SABT_Plugin"),
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning
+                            );
 
                             Settings.IsEnabled = false;
                         }
@@ -468,15 +463,15 @@ namespace User.ActiveBeltTensioner
                 }
             );
 
-            _surgeSeries = AddTelemetryLine("Surge", OxyColors.Red);
+            _surgeSeries = AddTelemetryLine(SLoc.GetValue("SABT_Legend_Surge"), OxyColors.Red);
             _surgeMinimumAnnotation = AddThresholdLine(OxyColors.Red);
             _surgeMaximumAnnotation = AddThresholdLine(OxyColors.Red);
 
-            _swaySeries = AddTelemetryLine("Sway", OxyColors.Green);
+            _swaySeries = AddTelemetryLine(SLoc.GetValue("SABT_Legend_Sway"), OxyColors.Green);
             _swayMinimumAnnotation = AddThresholdLine(OxyColors.Green);
             _swayMaximumAnnotation = AddThresholdLine(OxyColors.Green);
 
-            _heaveSeries = AddTelemetryLine("Heave", OxyColors.Blue);
+            _heaveSeries = AddTelemetryLine(SLoc.GetValue("SABT_Legend_Heave"), OxyColors.Blue);
             _heaveMinimumAnnotation = AddThresholdLine(OxyColors.Blue);
             _heaveMaximumAnnotation = AddThresholdLine(OxyColors.Blue);
         }

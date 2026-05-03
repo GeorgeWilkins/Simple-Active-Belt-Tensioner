@@ -1,27 +1,16 @@
-﻿using MahApps.Metro.IconPacks;
-using SimHub;
-using SimHub.Plugins;
-using SimHub.Plugins.DataPlugins.RGBDriverCommon.Settings;
+﻿using SimHub;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
 using System.Management;
-using System.Runtime;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
-using System.Windows.Threading;
 using WoteverCommon.Extensions;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using WoteverLocalization;
 
 namespace User.ActiveBeltTensioner
 {
@@ -71,7 +60,7 @@ namespace User.ActiveBeltTensioner
                 }
             }
 
-            private string _status = "Disconnected";
+            private string _status = SLoc.GetValue("SABT_Status_Disconnected");
             public string Status
             {
                 get { return _status; }
@@ -120,39 +109,39 @@ namespace User.ActiveBeltTensioner
             public bool Check()
             {
                 IsConnected = false;
-                Status = "Connecting...";
+                Status = SLoc.GetValue("SABT_Status_Connecting");
                 Graphic = MotorGraphic.Disconnected;
 
                 _smoothedTorque = 0;
 
                 if (!_controller.HasSerial)
                 {
-                    Status = "No Device Detected";
+                    Status = SLoc.GetValue("SABT_Status_NoDeviceDetected");
 
                     return false;
                 }
 
                 if (Query(false))
                 {
-                    Status = "Checking Mode...";
+                    Status = SLoc.GetValue("SABT_Status_CheckingMode");
                     Graphic = MotorGraphic.Communicating;
 
                     if (Query(true))
                     {
                         IsConnected = true;
-                        Status = "Connected";
+                        Status = SLoc.GetValue("SABT_Status_Connected");
                         Graphic = MotorGraphic.Connected;
 
                         return true;
                     }
 
-                    Status = "Setting Mode...";
+                    Status = SLoc.GetValue("SABT_Status_SettingMode");
                     Graphic = MotorGraphic.Communicating;
 
                     if (SetMode(_torqueMode))
                     {
                         IsConnected = true;
-                        Status = "Connected";
+                        Status = SLoc.GetValue("SABT_Status_Connected");
                         Graphic = MotorGraphic.Connected;
 
                         return true;
@@ -160,7 +149,7 @@ namespace User.ActiveBeltTensioner
                 }
 
                 IsConnected = false;
-                Status = "Communication Failure";
+                Status = SLoc.GetValue("SABT_Status_CommunicationFailure");
                 Graphic = MotorGraphic.Error;
 
                 return false;
@@ -171,7 +160,7 @@ namespace User.ActiveBeltTensioner
             public bool Stop()
             {
                 IsConnected = false;
-                Status = "Stopping...";
+                Status = SLoc.GetValue("SABT_Status_Stopping");
                 Graphic = MotorGraphic.Communicating;
 
                 _smoothedTorque = 0;
@@ -183,14 +172,14 @@ namespace User.ActiveBeltTensioner
                 {
                     if (_controller.WriteFrameReadFrame(tx, rx))
                     {
-                        Status = "Disconnected";
+                        Status = SLoc.GetValue("SABT_Status_Disconnected");
                         Graphic = MotorGraphic.Disconnected;
 
                         return true;
                     }
                 }
 
-                Status = "Communication Failure";
+                Status = SLoc.GetValue("SABT_Status_CommunicationFailure");
                 Graphic = MotorGraphic.Error;
 
                 return false;
@@ -220,13 +209,13 @@ namespace User.ActiveBeltTensioner
             /// <returns>Whether the motor responded as expected</returns>
             public bool Test(int times = 8, double testTorque = 0.12)
             {
-                Status = "Testing...";
+                SLoc.GetValue("SABT_Status_Testing");
                 Graphic = MotorGraphic.Communicating;
 
                 if (!Query(true))
                 {
                     IsConnected = false;
-                    Status = "Communication Failure";
+                    Status = SLoc.GetValue("SABT_Status_TestFailed");
                     Graphic = MotorGraphic.Error;
 
                     return false;
@@ -265,7 +254,7 @@ namespace User.ActiveBeltTensioner
                     if (good < 1)
                     {
                         IsConnected = false;
-                        Status = "Test Failed (No Response)";
+                        Status = SLoc.GetValue("SABT_Status_TestFailed");
                         Graphic = MotorGraphic.Error;
 
                         return false;
@@ -273,14 +262,14 @@ namespace User.ActiveBeltTensioner
                     }
 
                     IsConnected = true;
-                    Status = "Test Partially Passed (Bad Responses)";
+                    Status = SLoc.GetValue("SABT_Status_TestPartiallyFailed");
                     Graphic = MotorGraphic.Connected;
 
                     return true;
                 }
 
                 IsConnected = true;
-                Status = "Test Passed";
+                Status = SLoc.GetValue("SABT_Status_TestPassed");
                 Graphic = MotorGraphic.Connected;
 
                 return true;
@@ -291,7 +280,7 @@ namespace User.ActiveBeltTensioner
             /// <returns>Whether the motor responded as expected</returns>
             public bool SetIdentifier()
             {
-                Status = "Setting Identifier...";
+                Status = SLoc.GetValue("SABT_Status_SettingIdentifier");
                 Graphic = MotorGraphic.Communicating;
 
                 byte[] tx = BuildFrame(0xAA, 0x55, 0x53, Identifier, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
@@ -309,14 +298,14 @@ namespace User.ActiveBeltTensioner
                 {
                     if (SetMode(_torqueMode))
                     {
-                        Status = "Identifier Set (Connected)";
+                        Status = SLoc.GetValue("SABT_Status_IdentifierSet");
                         Graphic = MotorGraphic.Connected;
 
                         return true;
                     }
                 }
 
-                Status = "Communication Failure";
+                Status = SLoc.GetValue("SABT_Status_CommunicationFailure");
                 Graphic = MotorGraphic.Error;
 
                 return false;
@@ -358,7 +347,7 @@ namespace User.ActiveBeltTensioner
                 {
                     _commandFailures++;
                     
-                    Logging.Current.Warn("SABT: " + this.Label + " Motor Communication Failure (" + _commandFailures + "/" + _maximumConsecutiveFailures  + " Allowed)");
+                    Logging.Current.Warn("SABT: " + this.Label + " Motor communication failure (" + _commandFailures + "/" + _maximumConsecutiveFailures  + " Allowed)");
 
                     return (_commandFailures < _maximumConsecutiveFailures);
                 }
@@ -393,10 +382,10 @@ namespace User.ActiveBeltTensioner
             get { return GetRightMotor()?.IsConnected ?? false; }
         }
         public string LeftMotorStatus {
-            get { return GetLeftMotor()?.Status ?? "Not Connected"; }
+            get { return GetLeftMotor()?.Status ?? SLoc.GetValue("SABT_Status_Disconnected"); }
         }
         public string RightMotorStatus {
-            get { return GetRightMotor()?.Status ?? "Not Connected"; }
+            get { return GetRightMotor()?.Status ?? SLoc.GetValue("SABT_Status_Disconnected"); }
         }
         public string LeftMotorGraphic
         {
@@ -469,14 +458,24 @@ namespace User.ActiveBeltTensioner
         {
             if (_serialPort == null)
             {
-                MessageBox.Show("No device detected. You must select a serial device before performing setup!", "SABT: Select A Device", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(
+                    SLoc.GetValue("SABT_Message_NoDeviceDetected"),
+                    SLoc.GetValue("SABT_Plugin"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation
+                );
 
                 return false;
             }
 
             if (GetLeftMotor().IsConnected && GetRightMotor().IsConnected)
             {
-                MessageBox.Show("You appear to already be set up correctly (both motors are connected)!", "SABT: Already Set Up", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                MessageBox.Show(
+                    SLoc.GetValue("SABT_Message_Setup_AlreadySetUp"),
+                    SLoc.GetValue("SABT_Plugin"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation
+                );
 
                 return false;
             }
@@ -484,27 +483,27 @@ namespace User.ActiveBeltTensioner
             Motor leftMotor = GetLeftMotor();
             Motor rightMotor = GetRightMotor();
 
-            leftMotor.Status = "Disconnected";
+            leftMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
             leftMotor.Graphic = MotorGraphic.Disconnected;
 
-            rightMotor.Status = "Disconnected";
+            rightMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
             rightMotor.Graphic = MotorGraphic.Disconnected;
 
             if (
                 MessageBox.Show(
-                    "We'll now set up the motors. The first step is to TURN OFF THE POWER to the tensioner. Have you done this?",
-                    "SABT: Turn Off Tensioner Power",
+                    SLoc.GetValue("SABT_Message_Setup_TurnOffPower"),
+                    SLoc.GetValue("SABT_Plugin"),
                     MessageBoxButton.YesNoCancel,
                     MessageBoxImage.Information
                 ) == MessageBoxResult.Yes
             ) {
-                leftMotor.Status = "Awaiting Connection...";
+                leftMotor.Status = SLoc.GetValue("SABT_Status_AwaitingConnection");
                 leftMotor.Graphic = MotorGraphic.Connect;
 
                 if (
                     MessageBox.Show(
-                        "Now we need to PLUG IN THE LEFT MOTOR ONLY. Any of the ports on the controller will do. Once connected, plug in the power. Have you done this?",
-                        "SABT: Plug In Left Motor",
+                        SLoc.GetValue("SABT_Message_Setup_PlugInLeftMotor"),
+                        SLoc.GetValue("SABT_Plugin"),
                         MessageBoxButton.YesNoCancel,
                         MessageBoxImage.Information
                     ) == MessageBoxResult.Yes
@@ -512,18 +511,23 @@ namespace User.ActiveBeltTensioner
                 {
                     if (!GetLeftMotor().SetIdentifier())
                     {
-                        MessageBox.Show("Failed to set identifier for the LEFT MOTOR. Please ensure only one motor is plugged in and powered", "SABT: Left Motor Setup Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(
+                            SLoc.GetValue("SABT_Message_Setup_FailToSetLeftMotor"),
+                            SLoc.GetValue("SABT_Plugin"),
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error
+                        );
 
                         return false;
                     }
 
-                    rightMotor.Status = "Awaiting Connection...";
+                    rightMotor.Status = SLoc.GetValue("SABT_Status_AwaitingConnection");
                     rightMotor.Graphic = MotorGraphic.Connect;
 
                     if (
                         MessageBox.Show(
-                            "Great, the LEFT MOTOR has been configured. Now PLUG IN THE RIGHT MOTOR, leaving the other motor still connected. Have you done this?",
-                            "SABT: Plug In Right Motor",
+                            SLoc.GetValue("SABT_Message_Setup_PlugInRightMotor"),
+                            SLoc.GetValue("SABT_Plugin"),
                             MessageBoxButton.YesNoCancel,
                             MessageBoxImage.Information
                         ) == MessageBoxResult.Yes
@@ -531,14 +535,19 @@ namespace User.ActiveBeltTensioner
                     {
                         if (!GetRightMotor().SetIdentifier())
                         {
-                            MessageBox.Show("Failed to set identifier for the RIGHT MOTOR. Please ensure both motors are plugged in and powered", "SABT: Right Motor Setup Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                            MessageBox.Show(
+                                SLoc.GetValue("SABT_Message_Setup_FailToSetLeftMotor"),
+                                SLoc.GetValue("SABT_Plugin"),
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error
+                            );
 
                             return false;
                         }
 
                         MessageBox.Show(
-                            "Great, the RIGHT MOTOR has been configured. Both motors are now ready to go...",
-                            "SABT: Setup Complete",
+                            SLoc.GetValue("SABT_Message_Setup_Complete"),
+                            SLoc.GetValue("SABT_Plugin"),
                             MessageBoxButton.OK,
                             MessageBoxImage.Information
                         );
@@ -613,7 +622,11 @@ namespace User.ActiveBeltTensioner
             {
                 _hasNotifiedOfLicense = true;
 
-                MessageBox.Show("Your installation of SimHub is not licensed, so telemetry updates will be limited to 10Hz", "SABT: SimHub License Suggested", MessageBoxButton.OK);
+                MessageBox.Show(
+                    SLoc.GetValue("SABT_Message_SimHubLicenseRequired"),
+                    SLoc.GetValue("SABT_Plugin"),
+                    MessageBoxButton.OK
+                );
             }
 
             string action = StartAction();
@@ -872,7 +885,7 @@ namespace User.ActiveBeltTensioner
 
                 if (!isValid)
                 {
-                    Logging.Current.Warn("SABT: Invalid Motor Response Checksum (" + given.ToString("X2") + " != " + checksum.ToString("X2") + ")");
+                    Logging.Current.Warn("SABT: Invalid motor response checksum (" + given.ToString("X2") + " != " + checksum.ToString("X2") + ")");
 
                     return false;
                 }

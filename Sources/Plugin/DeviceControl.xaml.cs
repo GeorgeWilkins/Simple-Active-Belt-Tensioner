@@ -1,19 +1,10 @@
-﻿using OxyPlot;
-using SimHub;
-using SimHub.Plugins;
-using SimHub.Plugins.Devices;
-using SimHub.Plugins.Styles;
+﻿using SimHub;
 using System;
 using System.ComponentModel;
-using System.Drawing.Text;
-using System.IO.Ports;
-using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Threading;
-using System.Xml.Linq;
 using WoteverLocalization;
 
 namespace User.ActiveBeltTensioner
