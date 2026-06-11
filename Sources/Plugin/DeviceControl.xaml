@@ -10,6 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:styles="clr-namespace:SimHub.Plugins.Styles;assembly=SimHub.Plugins"
     xmlns:ui="clr-namespace:SimHub.Plugins.UI;assembly=SimHub.Plugins"
+    xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:oxy="http://oxyplot.org/wpf"
     d:DataContext="{d:DesignInstance Type=local:DeviceViewModel}"
     mc:Ignorable="d"
@@ -169,6 +170,14 @@
 
                                 <ui:TitledSlider Title="{SLoc SABT_Label_LeftRightBias}" Maximum="1000" Minimum="-1000" Value="{Binding Settings.SideBias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_LeftRightBias}" />
+
+                                <styles:SHSectionSeparator />
+
+                                <DockPanel Margin="5,4,5,4">
+                                    <mah:NumericUpDown DockPanel.Dock="Right" Width="100" Minimum="10" Maximum="200" Value="{Binding Settings.TensionStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{SLoc SABT_Label_StepSize}" VerticalAlignment="Center" />
+                                </DockPanel>
+                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_TensionStep}" />
 
                             </StackPanel>
                         </styles:SHTitledGroup>

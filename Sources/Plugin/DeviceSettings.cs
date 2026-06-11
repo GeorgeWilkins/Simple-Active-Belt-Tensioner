@@ -120,7 +120,10 @@ namespace User.ActiveBeltTensioner
             {
                 if (_idleTension != value)
                 {
-                    _idleTension = value;
+                    _idleTension = Math.Min(
+                        Math.Max(value, 0),
+                        250
+                    );
                     InvokePropertyChange(nameof(IdleTension));
                 }
             }
@@ -134,7 +137,10 @@ namespace User.ActiveBeltTensioner
             {
                 if (_minimumTension != value)
                 {
-                    _minimumTension = Math.Min(value, _maximumTension);
+                    _minimumTension = Math.Min(
+                        Math.Max(value, 0),
+                        _maximumTension - _tensionStep
+                    );
                     InvokePropertyChange(nameof(MinimumTension));
                     InvokePropertyChange(nameof(IsMinimumTensionNonZero));
                 }
@@ -149,8 +155,28 @@ namespace User.ActiveBeltTensioner
             {
                 if (_maximumTension != value)
                 {
-                    _maximumTension = Math.Max(value, _minimumTension);
+                    _maximumTension = Math.Min(
+                        Math.Max(value, _minimumTension + _tensionStep),
+                        1000
+                    );
                     InvokePropertyChange(nameof(MaximumTension));
+                }
+            }
+        }
+
+        private int _tensionStep = 10;
+        public int TensionStep
+        {
+            get { return _tensionStep; }
+            set
+            {
+                if (_tensionStep != value)
+                {
+                    _tensionStep = Math.Min(
+                        Math.Max(value, 1),
+                        200
+                    );
+                    InvokePropertyChange(nameof(TensionStep));
                 }
             }
         }

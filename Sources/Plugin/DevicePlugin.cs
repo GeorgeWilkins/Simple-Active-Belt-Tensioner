@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 using WoteverLocalization;
 
 
@@ -240,20 +241,101 @@ namespace User.ActiveBeltTensioner
             pluginManager.AddAction(
                 actionName: "SABT.ToggleMotors",
                 actionStart: (PluginManager manager, string input) => {
-                    Logging.Current.Info("SABT: Toggling motors from external input");
-                    _hasBypassedActivationWarning = false;
-                    IsEnabled = !IsEnabled;
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Toggling motors from external input");
+
+                        devicePlugin._hasBypassedActivationWarning = false;
+                        devicePlugin.IsEnabled = !devicePlugin.IsEnabled;
+                    });
+                }
+            );
+            pluginManager.AddAction(
+                actionName: "SABT.ToggleMotorsWithoutWarning",
+                actionStart: (PluginManager manager, string input) => {
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Toggling motors from external input (without warning)");
+
+                        devicePlugin._hasBypassedActivationWarning = devicePlugin.IsEnabled ? false : true;
+                        devicePlugin.IsEnabled = !devicePlugin.IsEnabled;
+                    });
                 }
             );
 
             pluginManager.AddAction(
-                actionName: "SABT.ToggleMotorsWithoutWarning",
+                actionName: "SABT.IncreaseIdleTension",
                 actionStart: (PluginManager manager, string input) => {
-                    Logging.Current.Info("SABT: Toggling motors from external input (without warning)");
-                    _hasBypassedActivationWarning = IsEnabled ? false : true;
-                    IsEnabled = !IsEnabled;
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Increasing idle tension from external input");
+
+                        devicePlugin.Settings.IdleTension += devicePlugin.Settings.TensionStep;
+                    });
                 }
             );
+            pluginManager.AddAction(
+                actionName: "SABT.DecreaseIdleTension",
+                actionStart: (PluginManager manager, string input) => {
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Decreasing idle tension from external input");
+
+                        devicePlugin.Settings.IdleTension -= devicePlugin.Settings.TensionStep;
+                    });
+                }
+            );
+
+            pluginManager.AddAction(
+                actionName: "SABT.IncreaseMinimumTension",
+                actionStart: (PluginManager manager, string input) => {
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Increasing minimum tension from external input");
+
+                        devicePlugin.Settings.MinimumTension += devicePlugin.Settings.TensionStep;
+                    });
+                }
+            );
+            pluginManager.AddAction(
+                actionName: "SABT.DecreaseMinimumTension",
+                actionStart: (PluginManager manager, string input) => {
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Decreasing minimum tension from external input");
+
+                        devicePlugin.Settings.MinimumTension -= devicePlugin.Settings.TensionStep;
+                    });
+                }
+            );
+
+            pluginManager.AddAction(
+                actionName: "SABT.IncreaseMaximumTension",
+                actionStart: (PluginManager manager, string input) => {
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Increasing maximum tension from external input");
+                        devicePlugin.Settings.MaximumTension += devicePlugin.Settings.TensionStep;
+                    });
+                }
+            );
+            pluginManager.AddAction(
+                actionName: "SABT.DecreaseMaximumTension",
+                actionStart: (PluginManager manager, string input) => {
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Decreasing maximum tension from external input");
+
+                        devicePlugin.Settings.MaximumTension -= devicePlugin.Settings.TensionStep;
+                    });
+                }
+            );
+
+            // Expose Properties
+            pluginManager.AttachDelegate("SABT.IsEnabled", typeof(DevicePlugin), () => IsEnabled);
+            pluginManager.AttachDelegate("SABT.IdleTension", typeof(DevicePlugin), () => Settings.IdleTension / 10.0);
+            pluginManager.AttachDelegate("SABT.MinimumTension", typeof(DevicePlugin), () => Settings.MinimumTension / 10.0);
+            pluginManager.AttachDelegate("SABT.MaximumTension", typeof(DevicePlugin), () => Settings.MaximumTension / 10.0);
 
             // Initialise Motor Controller
             MotorController = new MotorController(this);
@@ -600,10 +682,28 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        /// <summary>A task wrapper for the <see cref="ActiveBeltTensioner.DevicePlugin" /> instance, allowing logic in this and other classes to asynchronously execute actions</summary>
-        public async Task DoWithoutWaiting(Action<DevicePlugin> taskToPerform)
+        /// <summary>An action wrapper for executing logic asynchronously</summary>
+        public async Task DoWithoutWaiting(Action<DevicePlugin> actionToPerform)
         {
-            await Task.Run(() => taskToPerform(this));
+            await Task.Run(() => actionToPerform(this));
+        }
+
+        /// <summary>An action wrapper for executing logic on the main thread (where triggering logic may not be)</summary>
+        private void DoOnMainThread(Action<DevicePlugin> actionToPerform)
+        {
+            Dispatcher dispatcher = Application.Current?.Dispatcher;
+
+            if (dispatcher == null || dispatcher.CheckAccess())
+            {
+                actionToPerform(this);
+
+                return;
+            }
+
+            dispatcher.BeginInvoke(
+                new Action(() => actionToPerform(this)),
+                DispatcherPriority.Send
+            );
         }
 
         /// <summary>A utility method for converting the 10x/100x/1000x integers used in the settings sliders with decimal values</summary>

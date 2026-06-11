@@ -359,6 +359,10 @@
 • Augmenter le minimum applique une tension constante et renforce les effets d'accélération et de saut
 • Réduire le maximum diminue l'intensité globale de tension</value>
   </data>
+  <data name="SABT_Text_TensionStep" xml:space="preserve">
+    <value>• De combien les valeurs de tension ci-dessus changent lorsqu'elles sont ajustées via les 'Actions' de SimHub
+• Utile lors de l'utilisation de matériel de contrôle comme des encodeurs rotatifs avec un nombre de pas variable</value>
+  </data>
   <data name="SABT_Text_LeftRightBias" xml:space="preserve">
     <value>• Si la tension semble déséquilibrée, ajustez vers la gauche ou la droite
 • Vérifiez d'abord le cheminement de la ceinture et les points de contact avant d'utiliser ce réglage</value>
@@ -410,6 +414,9 @@
   </data>
   <data name="SABT_Label_DrivingTension" xml:space="preserve">
     <value>Tension en conduite</value>
+  </data>
+  <data name="SABT_Label_StepSize" xml:space="preserve">
+    <value>Taille du pas</value>
   </data>
   <data name="SABT_Label_LeftRightBias" xml:space="preserve">
     <value>Équilibre gauche/droite</value>

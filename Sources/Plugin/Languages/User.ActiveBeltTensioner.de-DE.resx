@@ -359,6 +359,10 @@
 • Ein höheres Minimum erzeugt eine konstante Spannung und verstärkt Beschleunigungs- und Sprungeffekte
 • Ein niedrigeres Maximum reduziert die gesamte Spannungsstärke</value>
   </data>
+  <data name="SABT_Text_TensionStep" xml:space="preserve">
+    <value>• Um wie viel sich die oben genannten Spannungswerte ändern, wenn sie über SimHub 'Actions' angepasst werden
+• Nützlich bei der Verwendung von Steuerungshardware wie Encoder-Drehreglern mit variabler Schrittanzahl</value>
+  </data>
   <data name="SABT_Text_LeftRightBias" xml:space="preserve">
     <value>• Wenn die Spannung zwischen den Seiten unausgewogen wirkt, nach links oder rechts anpassen
 • Prüfen und korrigieren Sie zuerst den Gurtverlauf und die Kontaktpunkte, bevor Sie diese Einstellung verwenden</value>
@@ -410,6 +414,9 @@
   </data>
   <data name="SABT_Label_DrivingTension" xml:space="preserve">
     <value>Fahrspannung</value>
+  </data>
+  <data name="SABT_Label_StepSize" xml:space="preserve">
+    <value>Schrittgröße</value>
   </data>
   <data name="SABT_Label_LeftRightBias" xml:space="preserve">
     <value>Links/Rechts-Balance</value>
