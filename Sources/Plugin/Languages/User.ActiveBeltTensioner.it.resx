@@ -132,9 +132,8 @@
   <data name="SABT_Title_Tuning" xml:space="preserve">
     <value>Gestione telemetria</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SABT_Title_Temperatures" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Title_Temperatures" xml:space="preserve">
+    <value>Temperature</value>
   </data>
   <data name="SABT_Title_Profiles" xml:space="preserve">
     <value>Profili</value>
@@ -397,8 +396,10 @@
 • 'Auto-Switching' verrà automaticamente disabilitato quando si utilizza la funzione di regolazione automatica
 • 'Auto-Tuning' verrà automaticamente disabilitato se il profilo attivo cambia</value>
   </data>
-  <data name="SABT_Text_Temperatures" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_Temperatures" xml:space="preserve">
+    <value>• In circostanze normali i motori non dovrebbero surriscaldarsi; ma sono in grado di operare fino a 80°C
+• A seconda della scelta del filamento, le parti stampate potrebbero cedere a temperature molto più basse (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
+• Impostare soglie di temperatura ragionevoli di seguito per proteggere le parti stampate dai danni termici</value>
   </data>
   <data name="SABT_Text_Telemetry" xml:space="preserve">
     <value>• Gli intervalli di valori consentiti per la telemetria in ingresso (qualsiasi valore superiore o inferiore verrà limitato, risultando in un'uscita motore nulla o massima)
@@ -442,17 +443,21 @@
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
     <value>Limiti sway (Curva)</value>
   </data>
-  <data name="SABT_Label_ReducedOutputTemperature" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_ReducedOutputTemperature" xml:space="preserve">
+    <value>Temperatura di Uscita Ridotta °C</value>
   </data>
-  <data name="SABT_Text_ReducedOutputTemperature" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_ReducedOutputTemperature" xml:space="preserve">
+    <value>• La temperatura alla quale i motori ridurranno automaticamente la loro potenza per evitare il surriscaldamento
+• I motori continueranno a funzionare, ma la coppia erogata sarà ridotta proporzionalmente a quanto superano la soglia di temperatura
+• Questa dovrebbe essere inferiore alla temperatura di transizione vetrosa del filamento (Tg °C)</value>
   </data>
-  <data name="SABT_Label_StoppedOutputTemperature" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_StoppedOutputTemperature" xml:space="preserve">
+    <value>Temperatura Uscita Fermata °C</value>
   </data>
-  <data name="SABT_Text_StoppedOutputTemperature" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_StoppedOutputTemperature" xml:space="preserve">
+    <value>• La temperatura alla quale i motori cesseranno automaticamente di funzionare completamente per evitare il surriscaldamento
+• I motori non erogeranno alcuna coppia oltre questa temperatura
+• Questa dovrebbe essere inferiore alla temperatura di transizione vetrosa del filamento (Tg °C)</value>
   </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
     <value>Limiti heave (Salti)</value>

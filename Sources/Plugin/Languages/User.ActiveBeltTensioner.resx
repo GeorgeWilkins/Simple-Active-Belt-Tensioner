@@ -449,7 +449,7 @@
   <data name="SABT_Text_ReducedOutputTemperature" xml:space="preserve">
     <value>• The temperature at which motors will automatically reduce their output to avoid overheating
 • Motors will continue operating, but torque output will be reduced proportionally to how far over the temperature threshold they are
-• This should be much lower than your filament's glass transition temperature (Tg °C)</value>
+• This should be lower than your filament's glass transition temperature (Tg °C)</value>
   </data>
   <data name="SABT_Label_StoppedOutputTemperature" xml:space="preserve">
     <value>Stopped Output Temperature °C</value>
@@ -457,7 +457,7 @@
   <data name="SABT_Text_StoppedOutputTemperature" xml:space="preserve">
     <value>• The temperature at which motors will automatically cease output entirely to avoid overheating
 • Motors will not output any torque over this temperature
-• This should be slightly lower than your filament's glass transition temperature (Tg °C)</value>
+• This should be lower than your filament's glass transition temperature (Tg °C)</value>
   </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
     <value>Heave Limits (Jumps)</value>
