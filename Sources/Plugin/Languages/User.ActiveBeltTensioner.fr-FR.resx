@@ -132,6 +132,10 @@
   <data name="SABT_Title_Tuning" xml:space="preserve">
     <value>Gestion de la télémétrie</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SABT_Title_Temperatures" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Title_Profiles" xml:space="preserve">
     <value>Profils</value>
   </data>
@@ -389,6 +393,9 @@
 • Le 'Changement automatique' sera automatiquement désactivé lors de l'utilisation de la fonction de réglage automatique
 • Le 'Réglage automatique' sera automatiquement désactivé si le profil actif change</value>
   </data>
+  <data name="SABT_Text_Temperatures" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Text_Telemetry" xml:space="preserve">
     <value>• Les plages de valeurs autorisées pour la télémétrie entrante (toute valeur supérieure ou inférieure sera écrêtée, résultant en une sortie moteur nulle ou maximale)
 • Des plages plus étroites produisent des effets plus agressifs, des plages plus larges produisent une plus grande subtilité
@@ -427,6 +434,18 @@
   </data>
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
     <value>Limites Sway (Virage)</value>
+  </data>
+  <data name="SABT_Label_ReducedOutputTemperature" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Text_ReducedOutputTemperature" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Label_StoppedOutputTemperature" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Text_StoppedOutputTemperature" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
     <value>Limites Heave (Sauts)</value>

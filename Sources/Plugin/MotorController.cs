@@ -88,6 +88,34 @@ namespace User.ActiveBeltTensioner
                 }
             }
 
+            private byte _temperature = 0;
+            public byte Temperature
+            {
+                get { return _temperature; }
+                set
+                {
+                    if (_temperature != value)
+                    {
+                        _temperature = value;
+                        InvokePropertyChange();
+                    }
+                }
+            }
+
+            private byte _error = 0;
+            public byte Error
+            {
+                get { return _error; }
+                set
+                {
+                    if (_error != value)
+                    {
+                        _error = value;
+                        InvokePropertyChange();
+                    }
+                }
+            }
+
             private const short _maximumConsecutiveFailures = 10;
             private const byte _torqueMode = 0x01;
             private const short _torqueLimit = 12000;
@@ -196,8 +224,11 @@ namespace User.ActiveBeltTensioner
                 {
                     if (rx[0] != Identifier) { return false; }
                     if (isInTorqueMode && rx[1] != _torqueMode) { return false; }
-                    if (rx[6] >= 60) { return false; } // Temperature
-                    if (rx[8] != 0x00) { return false; } // Error
+                    if (rx[6] >= 90) { return false; } // Temperature Out Of Range
+                    if (rx[8] != 0x00) { return false; } // Error Code Present
+
+                    Temperature = rx[6];
+                    Error = rx[8];
 
                     return true;
                 }
@@ -395,6 +426,14 @@ namespace User.ActiveBeltTensioner
         {
             get { return GetRightMotor()?.Graphic ?? MotorGraphic.Disconnected; }
         }
+        public string LeftMotorTemperature
+        {
+            get { return (GetLeftMotor()?.Temperature > 0) ? (GetLeftMotor()?.Temperature.ToString() + "°C") : ""; }
+        }
+        public string RightMotorTemperature
+        {
+            get { return (GetRightMotor()?.Temperature > 0) ? (GetRightMotor()?.Temperature.ToString() + "°C") : ""; }
+        }
 
         private string[] _serialPorts = new string[0];
         public string[] SerialPorts
@@ -422,6 +461,8 @@ namespace User.ActiveBeltTensioner
 
         private readonly long _motorCommandTicks;
         private long _lastCommandTicks = 0;
+        private readonly long _motorQueryTicks;
+        private long _lastQueryTicks = 0;
 
         public MotorController(DevicePlugin plugin)
         {
@@ -438,6 +479,7 @@ namespace User.ActiveBeltTensioner
             }
 
             _motorCommandTicks = (long)(16.67 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 60Hz
+            _motorQueryTicks = (long)(5000.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 5s
         }
 
         private void MotorPropertyChanged(object origin, PropertyChangedEventArgs e)
@@ -684,6 +726,24 @@ namespace User.ActiveBeltTensioner
             return didConnect;
         }
 
+        /// <summary>Invokes the <see cref="Motor.Query()" /> method on each motor</summary>
+        /// <returns>Whether all motors responded as expected</returns>
+        public bool Query(bool isInTorqueMode = true)
+        {
+            StartAction(out string action);
+
+            bool didRespond = true;
+
+            foreach (Motor motor in Motors)
+            {
+                didRespond = motor.Query(isInTorqueMode) && didRespond;
+            }
+
+            EndAction(action);
+
+            return didRespond;
+        }
+
         /// <summary>Invokes the <see cref="Motor.Stop()" /> method on each motor then closes the serial port</summary>
         public void Disconnect()
         {
@@ -734,6 +794,13 @@ namespace User.ActiveBeltTensioner
 
             bool didSet = true;
             long currentTicks = System.Diagnostics.Stopwatch.GetTimestamp();
+
+            if (currentTicks - _lastQueryTicks >= _motorQueryTicks)
+            {
+                Query(true);
+
+                _lastQueryTicks = currentTicks;
+            }
 
             if (currentTicks - _lastCommandTicks >= _motorCommandTicks)
             {
