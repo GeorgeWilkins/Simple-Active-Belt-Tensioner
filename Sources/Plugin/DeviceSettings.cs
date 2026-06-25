@@ -93,6 +93,20 @@ namespace User.ActiveBeltTensioner
             }
         }
 
+        private bool _isReversed = false;
+        public bool IsReversed
+        {
+            get { return _isReversed; }
+            set
+            {
+                if (_isReversed != value)
+                {
+                    _isReversed = value;
+                    InvokePropertyChange(nameof(IsReversed));
+                }
+            }
+        }
+
         private bool _isAutomaticallySwitching = true;
         public bool IsAutomaticallySwitching
         {

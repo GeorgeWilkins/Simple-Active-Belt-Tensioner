@@ -19,6 +19,6 @@ using System.Runtime.InteropServices;
  * format `{major}.{minor}.{build}.{revision}`, so just add `.0` to the end of the
  * actual release version number...
  */
-[assembly: AssemblyVersion("0.6.2.0")]
-[assembly: AssemblyFileVersion("0.6.2.0")]
-[assembly: AssemblyInformationalVersion("0.6.2")]
+[assembly: AssemblyVersion("0.6.3.0")]
+[assembly: AssemblyFileVersion("0.6.3.0")]
+[assembly: AssemblyInformationalVersion("0.6.3")]
