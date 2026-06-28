@@ -181,7 +181,19 @@
     <value>Jetzt müssen Sie NUR DEN LINKEN MOTOR ANSCHLIESSEN. Jeder Anschluss am Controller ist geeignet. Schalten Sie danach die Stromversorgung ein. Haben Sie das getan?</value>
   </data>
   <data name="SABT_Message_Setup_PlugInRightMotor" xml:space="preserve">
-    <value>Super, der LINKE MOTOR wurde konfiguriert. Schließen Sie jetzt den RECHTEN MOTOR an und lassen Sie den anderen Motor weiterhin verbunden. Haben Sie das getan?</value>
+      <value>Sehr gut, der LINKE MOTOR wurde konfiguriert. Als nächstes SCHALTEN SIE DEN STROM AB, STECKEN Sie den LINKEN MOTOR ab und verbinden NUR DEN RECHTEN MOTOR. Danach schalten Sie den Strom wieder an. Erledigt?</value>
+  </data>
+  <data name="SABT_Message_Setup_PowerCycleToSwap" xml:space="preserve">
+    <value>Beide Motoren wurden einzeln konfiguriert. Danach STROM ABSCHALTEN, BEIDE MOTOREN anstecken, Strom wieder anschalten. Erledigt?</value>
+  </data>
+  <data name="SABT_Message_Setup_NoMotorOnBus" xml:space="preserve">
+    <value>Kein Motor wurde über den Bus erkannt. Dies könnte bedeuten, dass kein Motor verbunden ist, oder, dass zwei Motoren, die dieselbe ID besitzen, im Konflikt stehen. Stellen Sie sicher, dass genau EIN Motor verbunden und angeschalten ist. Drücken Sie anschließend OK, um die Suche erneut zu starten.</value>
+  </data>
+  <data name="SABT_Message_Setup_MultipleMotorsOnBus" xml:space="preserve">
+    <value>Mehrere Motoren wurden über den Bus gefunden. Stellen Sie sicher, dass nur EIN Motor zu diesem Zeitpunkt angeschlossen ist. Drücken Sie anschließend OK, um die Suche erneut zu starten.</value>
+  </data>
+  <data name="SABT_Message_Setup_VerifyFailed" xml:space="preserve">
+    <value>Abschließende Verifizierung gescheitert - Kein Motor hat die erwarteten IDs ausgegeben. Bitte starten Sie das Setup erneut. </value>
   </data>
   <data name="SABT_Message_Setup_AlreadySetUp" xml:space="preserve">
     <value>Es scheint bereits alles korrekt eingerichtet zu sein (beide Motoren sind verbunden)!</value>

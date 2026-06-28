@@ -456,12 +456,52 @@ namespace User.ActiveBeltTensioner
         /// <returns>Whether the process succeeded</returns>
         public bool Setup()
         {
+            StartAction(out string action);
+
+            try
+            {
+                return DoSetup();
+            }
+            finally
+            {
+                EndAction(action);
+            }
+        }
+
+        private bool DoSetup()
+        {
+            // Disable motors and disconnect cleanly before doing anything —
+            // prevents the control loop from interleaving commands during setup
             _plugin.IsEnabled = false;
+            Disconnect();
 
-            Connect();
+            if (!_plugin.Settings.IsSerialPortValid || !Connect())
+            {
+                MessageBox.Show(
+                    SLoc.GetValue("SABT_Message_NoDeviceDetected"),
+                    SLoc.GetValue("SABT_Plugin"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation
+                );
 
-            Motor leftMotor = GetLeftMotor();
-            Motor rightMotor = GetRightMotor();
+                return false;
+            }
+
+            if (Motors.All(m => m.IsConnected))
+            {
+                MessageBox.Show(
+                    SLoc.GetValue("SABT_Message_Setup_AlreadySetUp"),
+                    SLoc.GetValue("SABT_Plugin"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Exclamation
+                );
+
+                return false;
+            }
+
+            // Always use physical labels during setup — flip is a runtime mapping, not a wiring fact
+            Motor leftMotor = Motors.FirstOrDefault(m => m.Label == "Left");
+            Motor rightMotor = Motors.FirstOrDefault(m => m.Label == "Right");
 
             leftMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
             leftMotor.Graphic = MotorGraphic.Disconnected;
@@ -469,81 +509,164 @@ namespace User.ActiveBeltTensioner
             rightMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
             rightMotor.Graphic = MotorGraphic.Disconnected;
 
-            if (
+            if (MessageBox.Show(
+                SLoc.GetValue("SABT_Message_Setup_TurnOffPower"),
+                SLoc.GetValue("SABT_Plugin"),
+                MessageBoxButton.YesNoCancel,
+                MessageBoxImage.Information
+            ) != MessageBoxResult.Yes) return false;
+
+            leftMotor.Status = SLoc.GetValue("SABT_Status_AwaitingConnection");
+            leftMotor.Graphic = MotorGraphic.Connect;
+
+            if (MessageBox.Show(
+                SLoc.GetValue("SABT_Message_Setup_PlugInLeftMotor"),
+                SLoc.GetValue("SABT_Plugin"),
+                MessageBoxButton.YesNoCancel,
+                MessageBoxImage.Information
+            ) != MessageBoxResult.Yes) return false;
+
+            if (!WaitForSingleMotor()) return false;
+
+            if (!leftMotor.SetIdentifier())
+            {
                 MessageBox.Show(
-                    SLoc.GetValue("SABT_Message_Setup_TurnOffPower"),
+                    SLoc.GetValue("SABT_Message_Setup_FailedToSetLeftMotor"),
                     SLoc.GetValue("SABT_Plugin"),
-                    MessageBoxButton.YesNoCancel,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+
+                return false;
+            }
+
+            List<byte> afterLeft = ScanBus();
+
+            if (afterLeft.Count != 1 || afterLeft[0] != leftMotor.Identifier)
+            {
+                MessageBox.Show(
+                    SLoc.GetValue("SABT_Message_Setup_FailedToSetLeftMotor"),
+                    SLoc.GetValue("SABT_Plugin"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+
+                return false;
+            }
+
+            rightMotor.Status = SLoc.GetValue("SABT_Status_AwaitingConnection");
+            rightMotor.Graphic = MotorGraphic.Connect;
+
+            if (MessageBox.Show(
+                SLoc.GetValue("SABT_Message_Setup_PlugInRightMotor"),
+                SLoc.GetValue("SABT_Plugin"),
+                MessageBoxButton.YesNoCancel,
+                MessageBoxImage.Information
+            ) != MessageBoxResult.Yes) return false;
+
+            if (!WaitForSingleMotor()) return false;
+
+            if (!rightMotor.SetIdentifier())
+            {
+                MessageBox.Show(
+                    SLoc.GetValue("SABT_Message_Setup_FailedToSetRightMotor"),
+                    SLoc.GetValue("SABT_Plugin"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+
+                return false;
+            }
+
+            List<byte> afterRight = ScanBus();
+
+            if (afterRight.Count != 1 || afterRight[0] != rightMotor.Identifier)
+            {
+                MessageBox.Show(
+                    SLoc.GetValue("SABT_Message_Setup_FailedToSetRightMotor"),
+                    SLoc.GetValue("SABT_Plugin"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+
+                return false;
+            }
+
+            if (MessageBox.Show(
+                SLoc.GetValue("SABT_Message_Setup_PowerCycleToSwap"),
+                SLoc.GetValue("SABT_Plugin"),
+                MessageBoxButton.YesNoCancel,
+                MessageBoxImage.Information
+            ) != MessageBoxResult.Yes) return false;
+
+            List<byte> finalScan = ScanBus();
+            bool verified = finalScan.Count == 2
+                && finalScan.Contains(leftMotor.Identifier)
+                && finalScan.Contains(rightMotor.Identifier);
+
+            if (verified)
+            {
+                MessageBox.Show(
+                    SLoc.GetValue("SABT_Message_Setup_Complete"),
+                    SLoc.GetValue("SABT_Plugin"),
+                    MessageBoxButton.OK,
                     MessageBoxImage.Information
-                ) == MessageBoxResult.Yes
-            ) {
-                leftMotor.Status = SLoc.GetValue("SABT_Status_AwaitingConnection");
-                leftMotor.Graphic = MotorGraphic.Connect;
+                );
 
-                if (
-                    MessageBox.Show(
-                        SLoc.GetValue("SABT_Message_Setup_PlugInLeftMotor"),
-                        SLoc.GetValue("SABT_Plugin"),
-                        MessageBoxButton.YesNoCancel,
-                        MessageBoxImage.Information
-                    ) == MessageBoxResult.Yes
-                )
+                return true;
+            }
+
+            MessageBox.Show(
+                SLoc.GetValue("SABT_Message_Setup_VerifyFailed"),
+                SLoc.GetValue("SABT_Plugin"),
+                MessageBoxButton.OK,
+                MessageBoxImage.Error
+            );
+
+            return false;
+        }
+
+        /// <summary>Scans the bus until exactly one motor responds, prompting the user to correct the connection on each failure; returns false if the user cancels</summary>
+        private bool WaitForSingleMotor()
+        {
+            while (true)
+            {
+                List<byte> found = ScanBus();
+
+                if (found.Count == 1) return true;
+
+                string key = found.Count == 0
+                    ? "SABT_Message_Setup_NoMotorOnBus"
+                    : "SABT_Message_Setup_MultipleMotorsOnBus";
+
+                if (MessageBox.Show(
+                    SLoc.GetValue(key),
+                    SLoc.GetValue("SABT_Plugin"),
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Warning
+                ) != MessageBoxResult.OK) return false;
+            }
+        }
+
+        /// <summary>Queries each motor ID from 1 to <paramref name="maxId" /> and returns the IDs that respond with a valid status frame</summary>
+        private List<byte> ScanBus(byte maxId = 4)
+        {
+            List<byte> responders = new List<byte>();
+
+            for (byte id = 0; id <= maxId; id++)
+            {
+                FlushSerialBuffer();
+
+                byte[] tx = BuildFrame(id, 0x74);
+                byte[] rx = new byte[10];
+
+                if (WriteFrameReadFrame(tx, rx, 300, true, true) && rx[0] == id)
                 {
-                    if (!GetLeftMotor().SetIdentifier())
-                    {
-                        MessageBox.Show(
-                            SLoc.GetValue("SABT_Message_Setup_FailedToSetLeftMotor"),
-                            SLoc.GetValue("SABT_Plugin"),
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error
-                        );
-
-                        return false;
-                    }
-
-                    rightMotor.Status = SLoc.GetValue("SABT_Status_AwaitingConnection");
-                    rightMotor.Graphic = MotorGraphic.Connect;
-
-                    if (
-                        MessageBox.Show(
-                            SLoc.GetValue("SABT_Message_Setup_PlugInRightMotor"),
-                            SLoc.GetValue("SABT_Plugin"),
-                            MessageBoxButton.YesNoCancel,
-                            MessageBoxImage.Information
-                        ) == MessageBoxResult.Yes
-                    )
-                    {
-                        if (!GetRightMotor().SetIdentifier())
-                        {
-                            MessageBox.Show(
-                                SLoc.GetValue("SABT_Message_Setup_FailedToSetRightMotor"),
-                                SLoc.GetValue("SABT_Plugin"),
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error
-                            );
-
-                            return false;
-                        }
-
-                        MessageBox.Show(
-                            SLoc.GetValue("SABT_Message_Setup_Complete"),
-                            SLoc.GetValue("SABT_Plugin"),
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information
-                        );
-
-                        return true;
-                    }
+                    responders.Add(id);
                 }
             }
 
-            leftMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
-            leftMotor.Graphic = MotorGraphic.Disconnected;
-
-            rightMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
-            rightMotor.Graphic = MotorGraphic.Disconnected;
-
-            return false;
+            return responders;
         }
 
         /// <summary>Opens the selected serial port; checking motor communication automatically if enabled</summary>
