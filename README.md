@@ -2,7 +2,7 @@
 
 ![SABT Logo](https://github.com/user-attachments/assets/b6603db9-19e0-4a30-8c0e-a23675a9797a)
 
-![Diagram](https://github.com/user-attachments/assets/943fe759-e230-4e11-926b-9c8e9f3385c2)
+![Diagram](https://github.com/user-attachments/assets/2df94a31-df9a-4b21-928e-0c55b43f01dc)
 
 # Simple Active Belt Tensioner
 
@@ -108,7 +108,7 @@ There is considerable variation in rig, seat and harness designs, so I cannot an
 
 Of particular note:
 - The belt clamp designs are intended for 2" wide belts of up to 2MM thickness. If your belts are wider or thicker than this, you will need to modify the design (or let me know and I'll create additional designs)
-- Rollers aren't strictly needed on most seats, but recommended for the smoothest experience. Because of the huge variation in seats, I cannot provide a one-size-fits-all roller design. As a simple low-cost solution, you can place UHMW low-friction adhesive tape over the contact points in the seat holes to reduce wear and increase smoothness
+- The need for belt rollers depends on the seat design. In many cases applying low-friction tape is sufficient. A 'universal' [Belt Roller](INSTRUCTIONS.md#belt-rollers) design is included should you wish to use it
 - The system includes a design for a [Back Driving Protection Unit](INSTRUCTIONS.md#back-driving-protection), which prevents your power supply's protection circuitry from tripping when the motors are back-driven (e.g. by pulling fast on the belts). This is an optional component, but highly recommended. A _zero-soldering solution_ is available, but even the soldered version is very simple to assemble
 - Although the motors and driver board can tolerate up to `24V` supply, I've found that `15V` is a good compromise. Operating at the maximum `24V` is not reccommended, because any voltage spikes risk damaging the motors. Common `19V` laptop power supplies have been tested and work; but the higher the voltage, the greater the risk of damage
 
