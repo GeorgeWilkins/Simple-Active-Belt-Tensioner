@@ -26,6 +26,13 @@ Check the existing assignments before working on an issue; as there may already 
 - If you'd like to share in-progress work, create it as _Draft Pull Request_
 - Do not add superfluous files unrelated to the _Issue_ being addressed (including OS-specific metadata and temporary files)
 
+## Versioning & Builds
+I'm following [SEMVER](https://semver.org/) rationale for versioning of the _SimHub Plugin_. The version number is only incremented (and [released](https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/releases)) where the plugin has been changed. Other contributions, such as changes to the FreeCAD/STEP printable files, do not require this and are silently merged into `main`.
+
+While you're encouraged to test your code contributions by compiling the plugin and physically testing your changes on a sim rig, this is not strictly necessary. I always test and rebuild such contributions myself before merging anything.
+
+When doing so I will also set appropriate version numbers, so you don't need to worry about this.
+
 ## LLM/AI/Agent Generated Content
 Using the assistance of coding support agents (e.g. CoPilot) is absoutely fine. However submissions that are _entirely_ or _mostly_ agent-generated will not be accepted.
 
