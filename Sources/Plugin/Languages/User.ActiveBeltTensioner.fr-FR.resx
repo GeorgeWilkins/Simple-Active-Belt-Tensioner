@@ -132,6 +132,9 @@
   <data name="SABT_Title_Tuning" xml:space="preserve">
     <value>Gestion de la télémétrie</value>
   </data>
+  <data name="SABT_Title_Temperatures" xml:space="preserve">
+    <value>Températures</value>
+  </data>
   <data name="SABT_Title_Profiles" xml:space="preserve">
     <value>Profils</value>
   </data>
@@ -393,6 +396,11 @@
 • Le 'Changement automatique' sera automatiquement désactivé lors de l'utilisation de la fonction de réglage automatique
 • Le 'Réglage automatique' sera automatiquement désactivé si le profil actif change</value>
   </data>
+  <data name="SABT_Text_Temperatures" xml:space="preserve">
+    <value>• Dans des circonstances normales, les moteurs ne devraient pas chauffer ; mais ils sont capables de fonctionner jusqu'à 80°C
+• Selon votre choix de filament, vos pièces imprimées peuvent défaillir à des températures beaucoup plus basses (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
+• Définissez des seuils de température raisonnables ci-dessous pour protéger vos pièces imprimées des dommages thermiques</value>
+  </data>
   <data name="SABT_Text_Telemetry" xml:space="preserve">
     <value>• Les plages de valeurs autorisées pour la télémétrie entrante (toute valeur supérieure ou inférieure sera écrêtée, résultant en une sortie moteur nulle ou maximale)
 • Des plages plus étroites produisent des effets plus agressifs, des plages plus larges produisent une plus grande subtilité
@@ -434,6 +442,22 @@
   </data>
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
     <value>Limites Sway (Virage)</value>
+  </data>
+  <data name="SABT_Label_ReducedOutputTemperature" xml:space="preserve">
+    <value>Température de sortie réduite °C</value>
+  </data>
+  <data name="SABT_Text_ReducedOutputTemperature" xml:space="preserve">
+    <value>• La température à laquelle les moteurs réduiront automatiquement leur puissance pour éviter la surchauffe
+• Les moteurs continueront à fonctionner, mais le couple de sortie sera réduit proportionnellement au dépassement du seuil de température
+• Celle-ci doit être inférieure à la température de transition vitreuse de votre filament (Tg °C)</value>
+  </data>
+  <data name="SABT_Label_StoppedOutputTemperature" xml:space="preserve">
+    <value>Température de sortie arrêtée °C</value>
+  </data>
+  <data name="SABT_Text_StoppedOutputTemperature" xml:space="preserve">
+    <value>• La température à laquelle les moteurs cesseront automatiquement toute sortie pour éviter la surchauffe
+• Les moteurs ne produiront aucun couple au-delà de cette température
+• Cette température devrait être inférieure à la température de transition vitreuse de votre filament (Tg °C)</value>
   </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
     <value>Limites Heave (Sauts)</value>

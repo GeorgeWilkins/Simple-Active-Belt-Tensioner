@@ -146,13 +146,15 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Motor, Overheated.png" />
+    <Resource Include="Motor, Overheating.png" />
     <Resource Include="SABT Logo.png" />
-    <Resource Include="Channel.png" />
-    <Resource Include="Channel, Connect.png" />
-    <Resource Include="Channel, Connected.png" />
-    <Resource Include="Channel, Disconnected.png" />
-    <Resource Include="Channel, Error.png" />
-    <Resource Include="Channel, Communicating.png" />
+    <Resource Include="Motor.png" />
+    <Resource Include="Motor, Connect.png" />
+    <Resource Include="Motor, Connected.png" />
+    <Resource Include="Motor, Disconnected.png" />
+    <Resource Include="Motor, Error.png" />
+    <Resource Include="Motor, Communicating.png" />
     <Resource Include="GW Logo.png" />
     <Content Include="MenuIcon.png" />
   </ItemGroup>

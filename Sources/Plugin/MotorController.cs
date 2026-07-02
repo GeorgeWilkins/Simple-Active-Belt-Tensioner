@@ -19,11 +19,14 @@ namespace User.ActiveBeltTensioner
     {
         public static class MotorGraphic
         {
-            public const string Disconnected = "/User.ActiveBeltTensioner;component/Channel, Disconnected.png";
-            public const string Connect = "/User.ActiveBeltTensioner;component/Channel, Connect.png";
-            public const string Communicating = "/User.ActiveBeltTensioner;component/Channel, Communicating.png";
-            public const string Connected = "/User.ActiveBeltTensioner;component/Channel, Connected.png";
-            public const string Error = "/User.ActiveBeltTensioner;component/Channel, Error.png";
+            public const string Disconnected = "/User.ActiveBeltTensioner;component/Motor, Disconnected.png";
+            public const string Connect = "/User.ActiveBeltTensioner;component/Motor, Connect.png";
+            public const string Communicating = "/User.ActiveBeltTensioner;component/Motor, Communicating.png";
+            public const string Connected = "/User.ActiveBeltTensioner;component/Motor, Connected.png";
+            public const string Error = "/User.ActiveBeltTensioner;component/Motor, Error.png";
+
+            public const string Overheating = "/User.ActiveBeltTensioner;component/Motor, Overheating.png";
+            public const string Overheated = "/User.ActiveBeltTensioner;component/Motor, Overheated.png";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -88,6 +91,34 @@ namespace User.ActiveBeltTensioner
                 }
             }
 
+            private byte _temperature = 0;
+            public byte Temperature
+            {
+                get { return _temperature; }
+                set
+                {
+                    if (_temperature != value)
+                    {
+                        _temperature = value;
+                        InvokePropertyChange();
+                    }
+                }
+            }
+
+            private byte _error = 0;
+            public byte Error
+            {
+                get { return _error; }
+                set
+                {
+                    if (_error != value)
+                    {
+                        _error = value;
+                        InvokePropertyChange();
+                    }
+                }
+            }
+
             private const short _maximumConsecutiveFailures = 10;
             private const byte _torqueMode = 0x01;
             private const short _torqueLimit = 12000;
@@ -117,6 +148,8 @@ namespace User.ActiveBeltTensioner
                 if (!_controller.HasSerial)
                 {
                     Status = SLoc.GetValue("SABT_Status_NoDeviceDetected");
+                    Temperature = 0;
+                    Error = 0;
 
                     return false;
                 }
@@ -151,6 +184,8 @@ namespace User.ActiveBeltTensioner
                 IsConnected = false;
                 Status = SLoc.GetValue("SABT_Status_CommunicationFailure");
                 Graphic = MotorGraphic.Error;
+                Temperature = 0;
+                Error = 0;
 
                 return false;
             }
@@ -174,6 +209,8 @@ namespace User.ActiveBeltTensioner
                     {
                         Status = SLoc.GetValue("SABT_Status_Disconnected");
                         Graphic = MotorGraphic.Disconnected;
+                        Temperature = 0;
+                        Error = 0;
 
                         return true;
                     }
@@ -181,6 +218,9 @@ namespace User.ActiveBeltTensioner
 
                 Status = SLoc.GetValue("SABT_Status_CommunicationFailure");
                 Graphic = MotorGraphic.Error;
+
+                Temperature = 0;
+                Error = 0;
 
                 return false;
             }
@@ -192,15 +232,21 @@ namespace User.ActiveBeltTensioner
                 byte[] tx = BuildFrame(Identifier, 0x74);
                 byte[] rx = new byte[10];
 
-                if (_controller.WriteFrameReadFrame(tx, rx, 300, true, true))
+                if (_controller.WriteFrameReadFrame(tx, rx, 300, true))
                 {
                     if (rx[0] != Identifier) { return false; }
                     if (isInTorqueMode && rx[1] != _torqueMode) { return false; }
-                    if (rx[6] >= 60) { return false; } // Temperature
-                    if (rx[8] != 0x00) { return false; } // Error
+                    if (rx[6] >= 90) { return false; } // Temperature Out Of Range
+                    if (rx[8] != 0x00) { return false; } // Error Code Present
+
+                    Temperature = rx[6];
+                    Error = rx[8];
 
                     return true;
                 }
+
+                Temperature = 0;
+                Error = 0;
 
                 return false;
             }
@@ -318,7 +364,7 @@ namespace User.ActiveBeltTensioner
                 byte[] tx = BuildFrame(Identifier, 0xA0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, mode);
                 byte[] rx = new byte[10];
 
-                _controller.WriteFrameReadFrame(tx, rx, 200, false, true);
+                _controller.WriteFrameReadFrame(tx, rx, 200, false);
                 
                 return Query(true);
             }
@@ -369,11 +415,9 @@ namespace User.ActiveBeltTensioner
         public bool BothMotorsAreConnected {
             get { return GetLeftMotor().IsConnected && GetRightMotor().IsConnected; }
         }
-
         public bool OneMotorIsConnected {
             get { return GetLeftMotor().IsConnected != GetRightMotor().IsConnected; }
         }
-
         public bool LeftMotorIsConnected {
             get { return GetLeftMotor()?.IsConnected ?? false; }
         }
@@ -394,6 +438,28 @@ namespace User.ActiveBeltTensioner
         public string RightMotorGraphic
         {
             get { return GetRightMotor()?.Graphic ?? MotorGraphic.Disconnected; }
+        }
+        public byte LeftMotorTemperature
+        {
+            get { return GetLeftMotor()?.Temperature ?? 0; }
+        }
+        public byte RightMotorTemperature
+        {
+            get { return GetRightMotor()?.Temperature ?? 0; }
+        }
+
+        private string _warningGraphic;
+        public string WarningGraphic
+        {
+            get { return _warningGraphic; }
+            private set
+            {
+                if (_warningGraphic != value)
+                {
+                    _warningGraphic = value;
+                    InvokePropertyChange(nameof(WarningGraphic));
+                }
+            }
         }
 
         private string[] _serialPorts = new string[0];
@@ -422,6 +488,8 @@ namespace User.ActiveBeltTensioner
 
         private readonly long _motorCommandTicks;
         private long _lastCommandTicks = 0;
+        private readonly long _motorQueryTicks;
+        private long _lastQueryTicks = 0;
 
         public MotorController(DevicePlugin plugin)
         {
@@ -438,6 +506,7 @@ namespace User.ActiveBeltTensioner
             }
 
             _motorCommandTicks = (long)(16.67 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 60Hz
+            _motorQueryTicks = (long)(5000.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 5s
         }
 
         private void MotorPropertyChanged(object origin, PropertyChangedEventArgs e)
@@ -670,6 +739,24 @@ namespace User.ActiveBeltTensioner
             return didConnect;
         }
 
+        /// <summary>Invokes the <see cref="Motor.Query()" /> method on each motor</summary>
+        /// <returns>Whether all motors responded as expected</returns>
+        public bool Query(bool isInTorqueMode = true)
+        {
+            StartAction(out string action);
+
+            bool didRespond = true;
+
+            foreach (Motor motor in Motors)
+            {
+                didRespond = motor.Query(isInTorqueMode) && didRespond;
+            }
+
+            EndAction(action);
+
+            return didRespond;
+        }
+
         /// <summary>Invokes the <see cref="Motor.Stop()" /> method on each motor then closes the serial port</summary>
         public void Disconnect()
         {
@@ -707,6 +794,7 @@ namespace User.ActiveBeltTensioner
 
         /// <summary>Sends the given torque values (as fractions of maximum torque) to the two motors, alternating between motors at 30Hz per motor (60Hz overall)</summary>
         /// <returns>Whether the motor commands were sent successfully (if applicable)</returns>
+        /// <remarks>Checks the motor temperatures and reduces output if thresholds are exceeded</remarks>
         public bool SetTorques(double left, double right, double smoothingFactor = 0.0)
         {
             StartAction(out string action);
@@ -721,8 +809,49 @@ namespace User.ActiveBeltTensioner
             bool didSet = true;
             long currentTicks = System.Diagnostics.Stopwatch.GetTimestamp();
 
+            if (currentTicks - _lastQueryTicks >= _motorQueryTicks)
+            {
+                Query(true);
+
+                _lastQueryTicks = currentTicks;
+            }
+
             if (currentTicks - _lastCommandTicks >= _motorCommandTicks)
             {
+                // Apply Temperature-Based Output Reduction
+                int reductionRange = _plugin.Settings.StoppedOutputTemperature - _plugin.Settings.ReducedOutputTemperature;
+                double outputReduction = 1.0;
+                string warningGraphic = String.Empty;
+
+                foreach (Motor motor in Motors)
+                {
+                    if (motor.Temperature >= _plugin.Settings.ReducedOutputTemperature)
+                    {
+                        warningGraphic = MotorGraphic.Overheating;
+
+                        double motorReduction = Math.Max(0.0, Math.Min(1.0,
+                            (_plugin.Settings.StoppedOutputTemperature - motor.Temperature) / (double)reductionRange
+                        ));
+
+                        outputReduction = Math.Min(outputReduction, motorReduction);
+                    }
+
+                    if (motor.Temperature >= _plugin.Settings.StoppedOutputTemperature)
+                    {
+                        warningGraphic = MotorGraphic.Overheated;
+
+                        outputReduction = 0.0;
+
+                        break;
+                    }
+                }
+
+                WarningGraphic = warningGraphic;
+
+                left *= outputReduction;
+                right *= outputReduction;
+
+                // Apply Smoothing & Output
                 didSet = _motorCommandSwitch
                     ? GetLeftMotor().SetTorque(left, smoothingFactor)
                     : GetRightMotor().SetTorque(right * -1, smoothingFactor);
