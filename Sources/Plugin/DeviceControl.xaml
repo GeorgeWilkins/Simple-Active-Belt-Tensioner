@@ -37,6 +37,15 @@
             </Setter>
             <EventSetter Event="MouseLeftButtonUp" Handler="SelectProfile" />
         </Style>
+        <Style x:Key="MotorTemperatureStyle" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="Width" Value="18" />
+            <Setter Property="Padding" Value="0,0,0,0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="15" />
+        </Style>
     </UserControl.Resources>
     
     <ScrollViewer>
@@ -50,67 +59,106 @@
 
                 <styles:SHTabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <styles:SHTabItem Header="{SLoc SABT_Tab_Connection}" d:Header="Tab">
-                        <styles:SHTitledGroup Title="{SLoc SABT_Title_Connection}" d:Title="Title">
-                            <StackPanel>
-
+                        <StackPanel>
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Connection}" d:Title="Title">
                                 <StackPanel>
-                                    <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,20">
-                                        <Label Content="{SLoc SABT_Label_EnableMotors}" Margin="-5,0,0,0" />
-                                        <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsSerialPortValid}" />
-                                        <Label Content="{SLoc SABT_Label_StartAutomatically}" Margin="-5,0,0,0" />
-                                        <styles:SHToggleCheckbox IsChecked="{Binding Settings.StartAutomatically, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <Label Content="{SLoc SABT_Label_FlipChannels}" Margin="-5,0,0,0" />
-                                        <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsFlipped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <Label Content="{SLoc SABT_Label_ReverseDirection}" Margin="-5,0,0,0" />
-                                        <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsReversed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    </TextBlock>
+
+                                    <StackPanel>
+                                        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,20">
+                                            <Label Content="{SLoc SABT_Label_EnableMotors}" Margin="-5,0,0,0" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsSerialPortValid}" />
+                                            <Label Content="{SLoc SABT_Label_StartAutomatically}" Margin="-5,0,0,0" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.StartAutomatically, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Label Content="{SLoc SABT_Label_FlipChannels}" Margin="-5,0,0,0" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsFlipped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Label Content="{SLoc SABT_Label_ReverseDirection}" Margin="-5,0,0,0" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsReversed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </TextBlock>
+                                    </StackPanel>
+
+                                    <Grid>
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="600" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+
+                                        <Grid Grid.Column="0" Grid.Row="0">
+                                            <Image Source="{Binding MotorController.LeftMotorGraphic}" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5">
+                                                <Image.RenderTransform>
+                                                    <ScaleTransform ScaleX="1"/>
+                                                </Image.RenderTransform>
+                                            </Image>
+                                            <Image Source="{Binding MotorController.WarningGraphic}" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5">
+                                                <Image.RenderTransform>
+                                                    <ScaleTransform ScaleX="1"/>
+                                                </Image.RenderTransform>
+                                            </Image>
+                                            <TextBlock Style="{StaticResource MotorTemperatureStyle}" HorizontalAlignment="Right" TextAlignment="Right" Margin="0,0,50,62" Text="{Binding MotorController.LeftMotorTemperature, Mode=OneWay}" />
+                                            <TextBlock Style="{StaticResource MotorTemperatureStyle}" HorizontalAlignment="Right" TextAlignment="Left" Margin="0,0,30,62" Text="°C" />
+                                        </Grid>
+
+                                        <Grid Grid.Column="1" Grid.Row="0">
+                                            <Image Source="{Binding MotorController.RightMotorGraphic}" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5">
+                                                <Image.RenderTransform>
+                                                    <ScaleTransform ScaleX="-1"/>
+                                                </Image.RenderTransform>
+                                            </Image>
+
+                                            <Image Source="{Binding MotorController.WarningGraphic}" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5">
+                                                <Image.RenderTransform>
+                                                    <ScaleTransform ScaleX="-1"/>
+                                                </Image.RenderTransform>
+                                            </Image>
+                                            <TextBlock Style="{StaticResource MotorTemperatureStyle}" HorizontalAlignment="Left" TextAlignment="Right" Margin="30,0,0,62" Text="{Binding MotorController.RightMotorTemperature, Mode=OneWay}" />
+                                            <TextBlock Style="{StaticResource MotorTemperatureStyle}" HorizontalAlignment="Left" TextAlignment="Left" Margin="50,0,0,62" Text="°C" />
+                                        </Grid>
+
+                                        <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Source="/User.ActiveBeltTensioner;component/SABT Logo.png" Width="150" Margin="0,0,0,460"/>
+
+                                        <styles:SHButtonPrimary Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestLeftMotor" Margin="0,10,10,0" IsEnabled="{Binding MotorController.LeftMotorIsConnected}" Content="{SLoc SABT_Button_TestMotor}" />
+                                        <styles:SHButtonPrimary Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestRightMotor" Margin="10,10,0,0" IsEnabled="{Binding MotorController.RightMotorIsConnected}" Content="{SLoc SABT_Button_TestMotor}" />
+
+                                        <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding MotorController.LeftMotorStatus, Mode=OneWay}" Margin="1,15,10,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                                        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding MotorController.RightMotorStatus, Mode=OneWay}" Margin="11,15,0,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+
+                                        <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" LineHeight="20" TextWrapping="WrapWithOverflow" Margin="2,50,2,20" Text="{SLoc SABT_Text_Connection}" />
+
+                                        <ComboBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding MotorController.SerialPorts}" SelectedItem="{Binding Settings.SerialPort, UpdateSourceTrigger=PropertyChanged}" Margin="-1,10,-1,10" />
+
+                                        <styles:SHButtonPrimary Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Click="SetupMotors" Margin="0,0,0,0" IsEnabled="{Binding Settings.IsSerialPortValid}" Content="{SLoc SABT_Button_SetupMotors}" />
+
+                                    </Grid>
+
                                 </StackPanel>
+                            </styles:SHTitledGroup>
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Temperatures}" d:Title="Title">
+                                <StackPanel>
 
-                                <Grid>
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Temperatures}" />
 
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="600" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
+                                    <styles:SHSectionSeparator />
 
-                                    <Image Grid.Column="0" Grid.Row="0" Source="{Binding MotorController.LeftMotorGraphic}" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5">
-                                        <Image.RenderTransform>
-                                            <ScaleTransform ScaleX="1"/>
-                                        </Image.RenderTransform>
-                                    </Image>
-                                    <Image Grid.Column="1" Grid.Row="0" Source="{Binding MotorController.RightMotorGraphic}" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5">
-                                        <Image.RenderTransform>
-                                            <ScaleTransform ScaleX="-1"/>
-                                        </Image.RenderTransform>
-                                    </Image>
+                                    <ui:TitledSlider Title="{SLoc SABT_Label_ReducedOutputTemperature}" Maximum="80" Minimum="45" Value="{Binding Settings.ReducedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_ReducedOutputTemperature}" />
 
-                                    <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Source="/User.ActiveBeltTensioner;component/SABT Logo.png" Width="150" Margin="0,0,0,460"/>
+                                    <styles:SHSectionSeparator />
 
-                                    <styles:SHButtonPrimary Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestLeftMotor" Margin="0,0,10,0" IsEnabled="{Binding MotorController.LeftMotorIsConnected}" Content="{SLoc SABT_Button_TestMotor}" />
-                                    <styles:SHButtonPrimary Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestRightMotor" Margin="10,0,0,0" IsEnabled="{Binding MotorController.RightMotorIsConnected}" Content="{SLoc SABT_Button_TestMotor}" />
+                                    <ui:TitledSlider Title="{SLoc SABT_Label_StoppedOutputTemperature}" Maximum="80" Minimum="45" Value="{Binding Settings.StoppedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_StoppedOutputTemperature}" />
 
-                                    <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding MotorController.LeftMotorStatus, Mode=OneWay}" Margin="1,15,10,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                                    <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding MotorController.RightMotorStatus, Mode=OneWay}" Margin="11,15,0,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-
-                                    <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" LineHeight="20" TextWrapping="WrapWithOverflow" Margin="2,50,2,20" Text="{SLoc SABT_Text_Connection}" />
-
-                                    <ComboBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding MotorController.SerialPorts}" SelectedItem="{Binding Settings.SerialPort, UpdateSourceTrigger=PropertyChanged}" Margin="-1,10,-1,10" />
-
-                                    <styles:SHButtonPrimary Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Click="SetupMotors" Margin="0,0,0,0" IsEnabled="{Binding Settings.IsSerialPortValid}" Content="{SLoc SABT_Button_SetupMotors}" />
-
-                                </Grid>
-
-                            </StackPanel>
-                        </styles:SHTitledGroup>
+                                </StackPanel>
+                            </styles:SHTitledGroup>
+                        </StackPanel>
                     </styles:SHTabItem>
                     <styles:SHTabItem Header="{SLoc SABT_Tab_Tension}" d:Header="Tab">
                         <styles:SHTitledGroup Title="{SLoc SABT_Title_Tension}" d:Title="Title">
