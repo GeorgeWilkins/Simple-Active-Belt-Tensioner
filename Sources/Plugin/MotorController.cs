@@ -808,6 +808,7 @@ namespace User.ActiveBeltTensioner
 
             bool didSet = true;
             long currentTicks = System.Diagnostics.Stopwatch.GetTimestamp();
+            double direction = _plugin.Settings.IsReversed ? -1.0 : 1.0;
 
             if (currentTicks - _lastQueryTicks >= _motorQueryTicks)
             {
@@ -853,8 +854,8 @@ namespace User.ActiveBeltTensioner
 
                 // Apply Smoothing & Output
                 didSet = _motorCommandSwitch
-                    ? GetLeftMotor().SetTorque(left, smoothingFactor)
-                    : GetRightMotor().SetTorque(right * -1, smoothingFactor);
+                    ? GetLeftMotor().SetTorque(left * direction, smoothingFactor)
+                    : GetRightMotor().SetTorque(right * direction * -1, smoothingFactor);
 
                 _lastCommandTicks = currentTicks;
                 _motorCommandSwitch = !_motorCommandSwitch;

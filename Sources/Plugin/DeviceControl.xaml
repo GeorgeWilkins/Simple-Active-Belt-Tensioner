@@ -71,6 +71,8 @@
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.StartAutomatically, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <Label Content="{SLoc SABT_Label_FlipChannels}" Margin="-5,0,0,0" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsFlipped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Label Content="{SLoc SABT_Label_ReverseDirection}" Margin="-5,0,0,0" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsReversed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </TextBlock>
                                     </StackPanel>
 

@@ -210,6 +210,9 @@
   <data name="SABT_Label_FlipChannels" xml:space="preserve">
     <value>Kanäle tauschen</value>
   </data>
+  <data name="SABT_Label_ReverseDirection" xml:space="preserve">
+    <value>Richtung umkehren</value>
+  </data>
   <data name="SABT_Label_StartAutomatically" xml:space="preserve">
     <value>Automatisch starten</value>
   </data>
