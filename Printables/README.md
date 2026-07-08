@@ -45,7 +45,7 @@ Regardless of your choices above, you should end up with:
 - 2x Belt `End`|`Loop`|`Through` Clamp (Front)
 - 2x Belt `End`|`Loop`|`Through` Clamp (Rear)
 - 1x Controller Case (Top)
-- 1x Controller Case (Base)
+- 1x Controller Case (Base With `Side`|`End` Tabs)
 - 2x `Corner`|`Flat`|`Tube` Motor Bracket
 - 2x Bearing Pulley (Cover)
 - 2x Bearing Pulley (Face)

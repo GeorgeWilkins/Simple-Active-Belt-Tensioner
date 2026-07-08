@@ -6,7 +6,7 @@ These files are the original [FreeCAD](https://www.freecad.org/) design files fr
 
 | File | Part | Description |
 | - | - | - |
-| [Controller Case.FCStd](Controller%20Case.FCStd) | Electronics Case | The two halves of the **controller case** |
+| [Controller Case.FCStd](Controller%20Case.FCStd) | Electronics Case | The two halves of the **controller case** (including two mounting variations of the base) |
 | [Back-Driving Protection Case.FCStd](Back-Driving%20Protection%20Case.FCStd) | Electronics Case | The two halves of the **back-driving protection unit case** |
 | [Belt Roller.FCStd](Belt%20Roller.FCStd) | Belt Roller | The **belt roller** assembly |
 | [Belt End Clamp.FCStd](Belt%20End%20Clamp.FCStd) | Belt Clamp | The two halves of a **belt clamp** (suitable for clamping the plain end of a 2" belt) |
