@@ -20,7 +20,12 @@ If you have a **tubular frame**, choose from the `For {Size} Tube...` bracket de
 
 Alternatively there may be a _brand-specific_ bracket design available for your frame, where non-standard fitment is required.
 
-You only need to print _two_ of a single type of bracket. Many bracket designs are symmetrical, _but not all_. Check the orientation in your slicer before printing. It should be obvious whether mirroring one of the brackets is required or not.
+You only need to print _two_ of a single type of bracket; though some designs have multiple parts (the tube clamps in particular). Many bracket designs are symmetrical, _but not all_. Non-symmertical designs require one of the printed brackets to be flipped in your slicer, so check the orientation in your slicer before printing.
+
+Here are the various bracket options plated up in a slicer so you can see the intended printing orientations:
+
+![Bracket Designs](https://github.com/user-attachments/assets/7a57f8bd-5f96-40a3-8217-5ff12b6b8618)
+
 
 ### Choosing Your Belt Clamps
 
