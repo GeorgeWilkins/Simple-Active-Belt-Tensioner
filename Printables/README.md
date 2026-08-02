@@ -20,7 +20,7 @@ If you have a **tubular frame**, choose from the `For {Size} Tube...` bracket de
 
 Alternatively there may be a _brand-specific_ bracket design available for your frame, where non-standard fitment is required.
 
-You only need to print _two_ of a single type of bracket; though some designs have multiple parts (the tube clamps in particular). Many bracket designs are symmetrical, _but not all_. Non-symmertical designs require one of the printed brackets to be flipped in your slicer, so check the orientation in your slicer before printing.
+You only need to print _two_ of a single type of bracket; though some designs have multiple parts (the tube clamps in particular). Many bracket designs are symmetrical, _but not all_. Non-symmertical designs require one of the printed brackets to be mirrored in your slicer, so check this before printing.
 
 Here are the various bracket options plated up in a slicer so you can see the intended printing orientations:
 
@@ -36,6 +36,11 @@ Since there are a variety of belt types and terminations, a few options are avai
 
 The [Belt Passthrough](/Printables/Belt%20Clamps/For%20Belt%20Passthrough/) option is probably the easiest to integrate, while the [Belt Ends](/Printables/Belt%20Clamps/For%20Belt%20Ends/) option is the neatest; but needing the belts to be shortened specifically for the tensioner (or shortened non-destructively with buckles).
 
+Here are the various clamp options plated up in a slicer so you can see the intended printing orientations:
+
+![Clamp Designs](https://github.com/user-attachments/assets/9ea6e941-5708-461f-a7fb-e527a2807cee)
+
+
 ### Opting For Belt Rollers
 
 There's a lot of variation in seat design. In cases where the belt guides have horizontal bottom surfaces (perpendicular to your pulley cords), you don't _need_ belt rollers; the belts will just slide through the guides without issue. In this case low-friction tape _is_ recommended for a smoother experience and to protect your belt guides.
@@ -47,8 +52,8 @@ These will not work well with curved belt guides (where they match the curvature
 ## Printables List
 
 Regardless of your choices above, you should end up with:
-- 2x Belt Clamps > For Belt `End`|`Loop`|`Passthrough` > **Front**
-- 2x Belt Clamps > For Belt `End`|`Loop`|`Passthrough` > **Rear**
+- 2x Belt Clamps > For Belt `Ends`|`Loops`|`Passthrough` > **Front**
+- 2x Belt Clamps > For Belt `Ends`|`Loops`|`Passthrough` > **Rear**
 - 1x Controller Case > **Base** With `Side`|`End` Tabs
 - 1x Controller Case > **Top**
 - 2x Motor Brackets > _Parts Vary_
