@@ -1,4 +1,4 @@
-# Printables
+ # Printables
 
 The files in this directory and its sub-directories are what you need to print (or to have printed by a third party) to complete the kit.
 
@@ -8,28 +8,28 @@ Since there are a couple of options to choose from, you should read this before 
 
 <img align="right" width="30%" height="auto" style="margin: 0 0 0 5%" alt="Flat Motor Bracket (30~40mm Hole Spacing)" src="https://github.com/user-attachments/assets/121acdba-215d-4968-9570-e6a5bc9e8709" />
 
-There are two main types of sim rig frame; _tubular_ and _profile_ (also known as _aluminium extrustion_):
-- **Profile rigs** (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) typically use `40-Series` aluminium extrusion that is bolted together in a modular fashion
-- **Tubular frames** (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) typically use `2"` steel tubing that is mandrel-bent into shape and welded together
+There are two main types of sim rig frame:
+- **Profile / Extrusion** (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) typically use `40-Series` aluminium extrusion that is bolted together in a modular fashion
+- **Tubular** (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) typically use `2"` steel tubing that is mandrel-bent into shape and welded together. Lighter foldable frames may use `1"` tubing instead
 
-If you have a _profile rig_, choose from the `Corner` or `Flat` profile bracket designs. In the latter case:
-- The smaller `30~40mm Hole Spacing` version is suitable for most standard `30-series` and `40-series` profile
-- The larger `50~90mm Hole Spacing` version is intended for larger or more unusual profiles
+If you have a **profile frame**, choose from the `For Aluminium Profile...` bracket designs; selecting from `Edge` or `Face` mounting options with the appropriate hole spacing for your particular size of aluminium profile. If you're uncertain, load them up into your preferred slicer and use the measuring tool to check the dimensions.
 
-There are optional `Extra Tall` variants that provide an additional `50mm` distance between the motor and the mounting surface, for situations where you need to clear obstructions. These obviously use more material and will flex more under load. Use the standard height versions if you can.
+Most bracket options have `Short` and `Tall` variants to choose from. Use the latter only if you need additional clearance.
 
-If you have a _tubular frame_, choose the `Tube` clamp bracket design (which integrates with a commercial [truss clamp](https://www.amazon.co.uk/dp/B07DP1FK33) to attach to the tube).
+If you have a **tubular frame**, choose from the `For {Size} Tube...` bracket designs.
 
-You only need to print _two_ of a single type of bracket. The designs are all symetrical.
+Alternatively there may be a _brand-specific_ bracket design available for your frame, where non-standard fitment is required.
+
+You only need to print _two_ of a single type of bracket. Many bracket designs are symmetrical, _but not all_. Check the orientation in your slicer before printing. It should be obvious whether mirroring one of the brackets is required or not.
 
 ### Choosing Your Belt Clamps
 
 Since there are a variety of belt types and terminations, a few options are available:
-- **End Clamp**: This is designed to clamp the plain end of an unterminated 2" belt (suitable for bare belt ends, or belts you are happy to shorten to the ideal length)
-- **Loop Clamp**: This is designed to loop through a 2" belt (up to 4mm thick) and secure back on itself using a standard belt buckle (likely to have come with your hanress)
-- **Through Clamp**: This is designed to clamp anywhere along a 2" belt without needing to shorten or terminate the belt itself
+- [For Belt Ends](/Printables/Belt%20Clamps/For%20Belt%20Ends/): This is designed to clamp the plain end of an unterminated 2" belt (suitable for bare belt ends, or belts you are happy to shorten to the ideal length)
+- [For Belt Loops](/Printables/Belt%20Clamps/For%20Belt%20Loops/): This is designed to loop through a 2" belt (up to 4mm thick) and secure back on itself using a standard belt buckle (likely to have come with your hanress)
+- [For Belt Passthrough](/Printables/Belt%20Clamps/For%20Belt%20Passthrough/): This is designed to clamp anywhere along a 2" belt without needing to shorten or terminate the belt itself
 
-The **Through Clamp** is probably the easiest to integrate, while the **End Clamp** is the neatest; but needing the belts to be shortened specifically for the tensioner (or shortened non-destructively with buckles).
+The [Belt Passthrough](/Printables/Belt%20Clamps/For%20Belt%20Passthrough/) option is probably the easiest to integrate, while the [Belt Ends](/Printables/Belt%20Clamps/For%20Belt%20Ends/) option is the neatest; but needing the belts to be shortened specifically for the tensioner (or shortened non-destructively with buckles).
 
 ### Opting For Belt Rollers
 
@@ -42,24 +42,24 @@ These will not work well with curved belt guides (where they match the curvature
 ## Printables List
 
 Regardless of your choices above, you should end up with:
-- 2x Belt `End`|`Loop`|`Through` Clamp (Front)
-- 2x Belt `End`|`Loop`|`Through` Clamp (Rear)
-- 1x Controller Case (Top)
-- 1x Controller Case (Base With `Side`|`End` Tabs)
-- 2x `Corner`|`Flat`|`Tube` Motor Bracket
-- 2x Bearing Pulley (Cover)
-- 2x Bearing Pulley (Face)
-- 2x Bearing Pulley (Hub)
+- 2x Belt Clamps > For Belt `End`|`Loop`|`Passthrough` > **Front**
+- 2x Belt Clamps > For Belt `End`|`Loop`|`Passthrough` > **Rear**
+- 1x Controller Case > **Base** With `Side`|`End` Tabs
+- 1x Controller Case > **Top**
+- 2x Motor Brackets > _Parts Vary_
+- 2x Pulleys > **Cover**
+- 2x Pulleys > **Face**
+- 2x Pulleys > **Hub**
 
 If you're making the [Back-Driving Protection Unit](/INSTRUCTIONS.md#back-driving-protection) you'll additionally need:
-- 1x Back-Driving Protection Case (Top)
-- 1x Back-Driving Protection Case (Base)
+- 1x Back-Driving Protection Case > **Base**
+- 1x Back-Driving Protection Case > **Top**
 
 If you're making the [Belt Rollers](/Belt%20Rollers) you'll additionally need:
-- 2x Belt Roller (Bracket)
-- 2x Belt Roller (Plate)
-- 2x Belt Roller (Roller)
-- 4~8x Belt Roller (Spacer) \*
+- 2x Belt Rollers > **Bracket**
+- 2x Belt Rollers > **Plate**
+- 2x Belt Rollers > **Roller**
+- 4~8x Belt Rollers > **Spacer** \*
 
 \* These are intended to be vertically scaled in your slicer software to be slightly shorter (by `~0.5mm`) than the depth of your belt guide (usually `12~40mm`). They help to prevent the bracket and plate from bending once clamped and also protect your belt guide plastics from the screw threads. It is recommended that you print the rollers and spacers together (in a vertical orientation) and the bracket and plate together (in a horizontal orientation).
 
@@ -67,7 +67,11 @@ If you're making the [Belt Rollers](/Belt%20Rollers) you'll additionally need:
 
 Obviously if you have your own 3D printer, you can print these yourself. These parts have been designed with hobby FDM printers in mind (not SLA/DLP/MSLA/LCD resin printers).
 
-I've used [DEEPLE PLA Plus](https://www.amazon.co.uk/dp/B0F66H47J8) on my Bambu H2S for all of my own parts; but virtually _any_ strong PLA/ABS/PETG filament should be fine. Fibre-reinforced filament is okay for the mounting brackets but _not reccommended_ for the pulley parts.
+All parts have been designed to avoid overhangs where possible, making them printable without supports. The only exceptions are parts with counterbored bolt & nut holes, which may need supports depending on how well-tuned your printer is and the selected slicing settings.
+
+The default orientation of the STEP files likely won't be appropriate when imported into your slicer; so use the auto-orient feature or manually rotate the parts to be flat on the print bed. The preferred orientation will be obvious from the geometry of the parts.
+
+I've used [DEEPLE PLA Plus](https://www.amazon.co.uk/dp/B0F66H47J8) on my Bambu H2S for all of my own prints; but virtually _any_ strong PLA/ABS/PETG filament should be fine. Fibre-reinforced filament is okay for the mounting brackets but _not reccommended_ for the pulley parts due to abrasion concerns.
 
 As for printing settings, I would suggest:
 | Setting | Value |
