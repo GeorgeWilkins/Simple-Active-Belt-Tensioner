@@ -27,7 +27,7 @@ The rest of the parts can be obtained from virtually anywhere, including [Amazon
 > - The `DDSM115` motors are _sometimes_ sold in **pairs**. Make sure you're only buying _two motors_, not _two sets of two_
 > - There are multiple motor models in the `DDSMXXX` series. Make sure you're buying the [DDSM115](https://www.waveshare.com/wiki/DDSM115)
 > - There are multiple control board models of similar appearance. Make sure you're buying the [DDSM Driver HAT (A)](https://www.waveshare.com/wiki/DDSM_Driver_HAT_(A))
-> - If using the _tubular_ brackets, you'll need to order two [2" Truss Clamps](https://www.amazon.co.uk/dp/B07DP1FK33), a pair of [`M10` Nuts](https://www.amazon.co.uk/dp/B0CGQVMP45) and [`M10x16MM` Low-Profile Bolts](https://www.amazon.co.uk/dp/B0DYHY2DHB)
+> - If using the _tubular_ motor brackets, you'll need [M5x25mm Clamping Knobs](https://www.amazon.co.uk/dp/B0CP2GQLQJ) and [M5 Nuts (8mm Hex)](https://www.amazon.co.uk/dp/B0FMRFPWJ3) to secure them to the tubing
 
 ### Belt Rollers
 
@@ -97,6 +97,8 @@ As long as these requirements are met, the module _should_ do the trick. These a
 - [Pololu 5389](https://www.pololu.com/product/5389)
 - [Generic LM74700 Module](https://www.amazon.co.uk/dp/B0FNY9MWLX)
 - [Generic 'Solar Diode' Module](https://www.amazon.co.uk/dp/B07QGW5J1H)
+
+If you try any of these out or find others that work, please let me know and I'll add them to the list.
 
 #### Discrete Schottky Diode
 
