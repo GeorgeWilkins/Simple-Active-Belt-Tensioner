@@ -16,7 +16,7 @@ from flask import jsonify, make_response
 REPO_OWNER = os.environ.get("REPO_OWNER", "GeorgeWilkins")
 REPO_NAME = os.environ.get("REPO_NAME", "Simple-Active-Belt-Tensioner")
 REPO_REF = os.environ.get("REPO_REF", "main")
-REPO_PRINTABLES_PATH = os.environ.get("REPO_PRINTABLES_PATH", "Printables")
+REPO_PRINTABLES_PATH = os.environ.get("REPO_PRINTABLES_PATH", "Sources/Printables")
 FCSTD_CACHE_DIR = os.environ.get("FCSTD_CACHE_DIR", "/tmp/fcstd-cache")
 
 
@@ -236,29 +236,29 @@ def _collect_vars(request):
 
 def _validate_source_path(source_rel_path):
     if not source_rel_path:
-        raise ValueError("Missing required query parameter: source")
+        raise ValueError("Missing required query parameter: Source")
 
     text = str(source_rel_path).strip()
     lowered = text.lower()
 
     if lowered.startswith("http://") or lowered.startswith("https://"):
-        raise ValueError("source must be a relative path, not a URL")
+        raise ValueError("Source must be a relative path, not a URL")
 
     if text.startswith("/") or text.startswith("\\"):
-        raise ValueError("source must be relative to the Printables directory")
+        raise ValueError("Source must be relative to the Printables directory")
 
     if ":" in text.split("/")[0]:
-        raise ValueError("source must be a relative path without a drive prefix")
+        raise ValueError("Source must be a relative path without a drive prefix")
 
     normalized = posixpath.normpath(text.replace("\\", "/"))
     if normalized in ("", "."):
-        raise ValueError("source path is empty")
+        raise ValueError("Source path is empty")
 
     if normalized.startswith("../") or normalized == "..":
-        raise ValueError("source cannot escape the Printables directory")
+        raise ValueError("Source cannot escape the Printables directory")
 
     if not normalized.lower().endswith(".fcstd"):
-        raise ValueError("source must reference an .FCStd file")
+        raise ValueError("Source must reference an .FCStd file")
 
     return normalized
 
@@ -307,7 +307,7 @@ def _cached_source_file(validated_rel_path):
 @functions_framework.http
 def generate(request):
     request_values = _collect_vars(request)
-    source_param = request_values.pop("source", None)
+    source_param = request_values.pop("Source", None)
 
     try:
         source_rel_path = _validate_source_path(source_param)
