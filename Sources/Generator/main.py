@@ -132,13 +132,47 @@ FREECAD_SCRIPT = textwrap.dedent(
 
 
     def _find_export_objects(doc):
-        exportable = []
+        # Prefer finished PartDesign bodies; exporting intermediate features causes
+        # overlapping solids that visually fill in concave regions.
+        bodies = []
         for obj in doc.Objects:
-            if hasattr(obj, "Shape") and not obj.Shape.isNull():
-                exportable.append(obj)
-        if not exportable:
+            type_id = getattr(obj, "TypeId", "")
+            if "PartDesign::Body" in type_id:
+                body_shape = getattr(obj, "Shape", None)
+                if body_shape is not None and not body_shape.isNull():
+                    bodies.append(obj)
+
+        if bodies:
+            return bodies
+
+        # Fallback for templates that do not use PartDesign bodies: export only
+        # top-level visible shape objects that are not nested under another shape-bearing
+        # object.
+        candidates = []
+        shape_objects = []
+        for obj in doc.Objects:
+            shape = getattr(obj, "Shape", None)
+            if shape is not None and not shape.isNull():
+                shape_objects.append(obj)
+
+        if not shape_objects:
             raise RuntimeError("No exportable shape objects found in document")
-        return exportable
+
+        shape_ids = {id(obj) for obj in shape_objects}
+        nested_ids = set()
+        for obj in shape_objects:
+            for child in getattr(obj, "OutList", []):
+                if id(child) in shape_ids:
+                    nested_ids.add(id(child))
+
+        for obj in shape_objects:
+            if id(obj) not in nested_ids:
+                candidates.append(obj)
+
+        if not candidates:
+            candidates = shape_objects
+
+        return candidates
 
 
     def main():
