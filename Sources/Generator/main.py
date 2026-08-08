@@ -18,6 +18,7 @@ REPO_NAME = os.environ.get("REPO_NAME", "Simple-Active-Belt-Tensioner")
 REPO_REF = os.environ.get("REPO_REF", "main")
 REPO_PRINTABLES_PATH = os.environ.get("REPO_PRINTABLES_PATH", "Sources/Printables")
 FCSTD_CACHE_DIR = os.environ.get("FCSTD_CACHE_DIR", "/tmp/fcstd-cache")
+REPORT_JSON = os.environ.get("REPORT_JSON", "/tmp/report.json")
 
 
 FREECAD_SCRIPT = textwrap.dedent(
@@ -119,6 +120,65 @@ FREECAD_SCRIPT = textwrap.dedent(
             return bool(actual) == expected
 
         return str(actual) == str(expected)
+
+
+    def _readable_value(value):
+        if hasattr(value, "UserString"):
+            try:
+                return str(value.UserString)
+            except Exception:
+                pass
+        return str(value)
+
+
+    def _combined_bounding_box(objects):
+        if not objects:
+            return None
+
+        min_x = None
+        min_y = None
+        min_z = None
+        max_x = None
+        max_y = None
+        max_z = None
+
+        for obj in objects:
+            shape = getattr(obj, "Shape", None)
+            if shape is None or shape.isNull():
+                continue
+            bb = shape.BoundBox
+            if min_x is None:
+                min_x, min_y, min_z = bb.XMin, bb.YMin, bb.ZMin
+                max_x, max_y, max_z = bb.XMax, bb.YMax, bb.ZMax
+                continue
+            min_x = min(min_x, bb.XMin)
+            min_y = min(min_y, bb.YMin)
+            min_z = min(min_z, bb.ZMin)
+            max_x = max(max_x, bb.XMax)
+            max_y = max(max_y, bb.YMax)
+            max_z = max(max_z, bb.ZMax)
+
+        if min_x is None:
+            return None
+
+        return {
+            "xmin": min_x,
+            "ymin": min_y,
+            "zmin": min_z,
+            "xmax": max_x,
+            "ymax": max_y,
+            "zmax": max_z,
+            "xlen": max_x - min_x,
+            "ylen": max_y - min_y,
+            "zlen": max_z - min_z,
+        }
+
+
+    def _write_report(report):
+        if not REPORT_JSON:
+            return
+        with open(REPORT_JSON, "w", encoding="utf-8") as report_file:
+            json.dump(report, report_file)
 
 
     def _var_exists(varset, key):
@@ -233,6 +293,19 @@ FREECAD_SCRIPT = textwrap.dedent(
             doc.recompute()
 
             exportable = _find_export_objects(doc)
+            report = {
+                "requested": vars_dict,
+                "applied": applied,
+                "skipped": skipped,
+                "failed": failed,
+                "effective_values": {
+                    key: _readable_value(getattr(varset, key))
+                    for key in vars_dict.keys()
+                    if hasattr(varset, key)
+                },
+                "bounding_box": _combined_bounding_box(exportable),
+            }
+            _write_report(report)
             Part.export(exportable, output_step)
         finally:
             FreeCAD.closeDocument(doc.Name)
@@ -327,6 +400,12 @@ def _cached_source_file(validated_rel_path):
 def generate(request):
     request_values = _collect_vars(request)
 
+    debug = False
+    for key in list(request_values.keys()):
+        if str(key).lower() == "debug":
+            debug = str(request_values.pop(key)).strip().lower() in ("1", "true", "yes", "on")
+            break
+
     source_key = None
     for key in list(request_values.keys()):
         if str(key).lower() == "source":
@@ -377,6 +456,7 @@ def generate(request):
     with tempfile.TemporaryDirectory(prefix="freecad-job-") as temp_dir:
         script_path = os.path.join(temp_dir, "freecad_job.py")
         output_step = os.path.join(temp_dir, f"output-{uuid.uuid4().hex}.step")
+        report_json = os.path.join(temp_dir, "report.json")
 
         with open(script_path, "w", encoding="utf-8") as script_file:
             script_file.write(FREECAD_SCRIPT)
@@ -391,6 +471,7 @@ def generate(request):
         env["TEMPLATE_FCSTD"] = template_fcstd
         env["OUTPUT_STEP"] = output_step
         env["VARS_JSON"] = json.dumps(vars_dict)
+        env["REPORT_JSON"] = report_json
 
         try:
             run = subprocess.run(
@@ -440,10 +521,37 @@ def generate(request):
         with open(output_step, "rb") as file_handle:
             step_bytes = file_handle.read()
 
+        report_data = None
+        if os.path.isfile(report_json):
+            try:
+                with open(report_json, "r", encoding="utf-8") as report_file:
+                    report_data = json.load(report_file)
+            except Exception:
+                report_data = None
+
+        if debug:
+            return make_response(
+                jsonify(
+                    {
+                        "source": source_rel_path,
+                        "vars": vars_dict,
+                        "report": report_data,
+                        "stdout": run.stdout,
+                        "stderr": run.stderr,
+                    }
+                ),
+                200,
+            )
+
     response = make_response(step_bytes)
     response.headers["Content-Type"] = "application/step"
     response.headers["Content-Disposition"] = "attachment; filename=generated.step"
     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
+    if report_data and report_data.get("bounding_box"):
+        bbox = report_data["bounding_box"]
+        response.headers["X-Model-X"] = f"{bbox.get('xlen', 0):.6f}"
+        response.headers["X-Model-Y"] = f"{bbox.get('ylen', 0):.6f}"
+        response.headers["X-Model-Z"] = f"{bbox.get('zlen', 0):.6f}"
     return response
