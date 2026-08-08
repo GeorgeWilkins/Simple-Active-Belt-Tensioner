@@ -39,6 +39,45 @@ FREECAD_SCRIPT = textwrap.dedent(
             return text
 
 
+    def _property_type(varset, key):
+        if hasattr(varset, "getTypeIdOfProperty"):
+            try:
+                return str(varset.getTypeIdOfProperty(key) or "")
+            except Exception:
+                return ""
+        return ""
+
+
+    def _is_distance_property(property_type):
+        return (
+            "PropertyLength" in property_type
+            or "PropertyDistance" in property_type
+            or "PropertyLengthConstraint" in property_type
+        )
+
+
+    def _coerce_value_for_property(varset, key, raw):
+        property_type = _property_type(varset, key)
+
+        # For length/distance properties, keep and validate FreeCAD quantity strings
+        # such as "10 mm", "2.5 in", or "1 m".
+        if _is_distance_property(property_type):
+            if isinstance(raw, (int, float)):
+                return raw
+
+            text = str(raw).strip()
+            try:
+                FreeCAD.Units.Quantity(text)
+            except Exception as error:
+                raise RuntimeError(
+                    f"Invalid distance value for '{key}': '{text}'. "
+                    "Use a FreeCAD quantity string like '10 mm'."
+                ) from error
+            return text
+
+        return _convert_value(raw)
+
+
     def _var_exists(varset, key):
         properties = set(getattr(varset, "PropertiesList", []))
         if key in properties:
@@ -73,7 +112,7 @@ FREECAD_SCRIPT = textwrap.dedent(
                 skipped.append(key)
                 continue
 
-            value = _convert_value(raw_value)
+            value = _coerce_value_for_property(varset, key, raw_value)
 
             if hasattr(varset, key):
                 setattr(varset, key, value)
@@ -174,7 +213,7 @@ def generate(request):
             500,
         )
 
-    freecad_cmd = os.environ.get("FREECAD_CMD", "freecadcmd")
+    freecad_cmd = os.environ.get("FREECAD_CMD", "/usr/local/bin/FreeCADCMD")
 
     with tempfile.TemporaryDirectory(prefix="freecad-job-") as temp_dir:
         script_path = os.path.join(temp_dir, "freecad_job.py")
@@ -203,8 +242,9 @@ def generate(request):
             return make_response(
                 jsonify(
                     {
-                        "error": "`freecadcmd` not found in container",
-                        "hint": "Install FreeCAD 1.1.3 in the Cloud Run image and/or set FREECAD_CMD",
+                        "error": "FreeCAD command not found in container",
+                        "attempted_command": freecad_cmd,
+                        "hint": "Install FreeCAD 1.1.3 in the Cloud Run image and/or set FREECAD_CMD to the full executable path",
                     }
                 ),
                 500,

@@ -2,6 +2,7 @@ FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
+    FREECAD_CMD=/usr/local/bin/FreeCADCMD \
     PORT=8080
 
 # Install runtime libraries commonly required by FreeCAD AppImage.
@@ -39,9 +40,10 @@ RUN mkdir -p /opt/freecad \
         '  echo "FreeCADCmd binary not found in AppImage extract" >&2' \
         '  exit 1' \
         'fi' \
-        'exec "${FC_CMD}" "$@"' \
+        'exec "${FC_CMD}" "$@"' \.
         > /usr/local/bin/FreeCADCMD \
-    && chmod +x /usr/local/bin/FreeCADCMD
+    && chmod +x /usr/local/bin/FreeCADCMD \
+    && ln -sf /usr/local/bin/FreeCADCMD /usr/local/bin/freecadcmd
 
 COPY . .
 
