@@ -1,12 +1,23 @@
 import json
 import os
+import posixpath
 import subprocess
 import tempfile
 import textwrap
+import urllib.error
+import urllib.parse
+import urllib.request
 import uuid
 
 import functions_framework
 from flask import jsonify, make_response
+
+
+REPO_OWNER = os.environ.get("REPO_OWNER", "GeorgeWilkins")
+REPO_NAME = os.environ.get("REPO_NAME", "Simple-Active-Belt-Tensioner")
+REPO_REF = os.environ.get("REPO_REF", "main")
+REPO_PRINTABLES_PATH = os.environ.get("REPO_PRINTABLES_PATH", "Printables")
+FCSTD_CACHE_DIR = os.environ.get("FCSTD_CACHE_DIR", "/tmp/fcstd-cache")
 
 
 FREECAD_SCRIPT = textwrap.dedent(
@@ -223,31 +234,118 @@ def _collect_vars(request):
     return {}
 
 
+def _validate_source_path(source_rel_path):
+    if not source_rel_path:
+        raise ValueError("Missing required query parameter: source")
+
+    text = str(source_rel_path).strip()
+    lowered = text.lower()
+
+    if lowered.startswith("http://") or lowered.startswith("https://"):
+        raise ValueError("source must be a relative path, not a URL")
+
+    if text.startswith("/") or text.startswith("\\"):
+        raise ValueError("source must be relative to the Printables directory")
+
+    if ":" in text.split("/")[0]:
+        raise ValueError("source must be a relative path without a drive prefix")
+
+    normalized = posixpath.normpath(text.replace("\\", "/"))
+    if normalized in ("", "."):
+        raise ValueError("source path is empty")
+
+    if normalized.startswith("../") or normalized == "..":
+        raise ValueError("source cannot escape the Printables directory")
+
+    if not normalized.lower().endswith(".fcstd"):
+        raise ValueError("source must reference an .FCStd file")
+
+    return normalized
+
+
+def _source_download_url(validated_rel_path):
+    base = (
+        f"https://raw.githubusercontent.com/{REPO_OWNER}/{REPO_NAME}/{REPO_REF}"
+        f"/{REPO_PRINTABLES_PATH.strip('/')}"
+    )
+    encoded_parts = [urllib.parse.quote(part, safe="") for part in validated_rel_path.split("/")]
+    return f"{base}/{'/'.join(encoded_parts)}"
+
+
+def _cached_source_file(validated_rel_path):
+    cache_root = os.path.abspath(FCSTD_CACHE_DIR)
+    local_path = os.path.abspath(os.path.join(cache_root, *validated_rel_path.split("/")))
+    if os.path.commonpath([cache_root, local_path]) != cache_root:
+        raise ValueError("source resolves outside of cache directory")
+
+    if os.path.isfile(local_path):
+        return local_path
+
+    os.makedirs(os.path.dirname(local_path), exist_ok=True)
+    source_url = _source_download_url(validated_rel_path)
+
+    try:
+        with urllib.request.urlopen(source_url, timeout=30) as response:
+            data = response.read()
+    except urllib.error.HTTPError as error:
+        if error.code == 404:
+            raise FileNotFoundError(
+                f"Source not found in repository Printables path: {validated_rel_path}"
+            ) from error
+        raise RuntimeError(f"Failed to download source file (HTTP {error.code})") from error
+    except urllib.error.URLError as error:
+        raise RuntimeError(f"Failed to download source file: {error.reason}") from error
+
+    temp_path = f"{local_path}.tmp-{uuid.uuid4().hex}"
+    with open(temp_path, "wb") as file_handle:
+        file_handle.write(data)
+    os.replace(temp_path, local_path)
+
+    return local_path
+
+
 @functions_framework.http
 def generate(request):
-    vars_dict = _collect_vars(request)
-    if not vars_dict:
+    request_values = _collect_vars(request)
+    source_param = request_values.pop("source", None)
+
+    try:
+        source_rel_path = _validate_source_path(source_param)
+    except ValueError as error:
         return make_response(
             jsonify(
                 {
-                    "error": "No query parameters provided",
-                    "how_to_use": "/?VarA=123&VarB=456",
+                    "error": str(error),
+                    "how_to_use": "/?source=Directory/Model.FCStd&VarA=123mm&VarB=456mm",
                 }
             ),
             400,
         )
 
-    template_fcstd = os.path.join(os.path.dirname(__file__), "template.FCStd")
-    if not os.path.isfile(template_fcstd):
+    try:
+        template_fcstd = _cached_source_file(source_rel_path)
+    except FileNotFoundError as error:
         return make_response(
             jsonify(
                 {
-                    "error": "Template file not found",
-                    "expected_path": template_fcstd,
+                    "error": str(error),
+                    "source": source_rel_path,
+                }
+            ),
+            404,
+        )
+    except Exception as error:
+        return make_response(
+            jsonify(
+                {
+                    "error": str(error),
+                    "source": source_rel_path,
                 }
             ),
             500,
         )
+
+    vars_dict = request_values
 
     freecad_cmd = os.environ.get("FREECAD_CMD", "/usr/local/bin/FreeCADCMD")
 
