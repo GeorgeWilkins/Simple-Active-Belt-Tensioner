@@ -115,6 +115,17 @@ FREECAD_SCRIPT = textwrap.dedent(
         return False
 
 
+    def _resolve_spreadsheet_target(varset, key):
+        if hasattr(varset, "getCellFromAlias"):
+            try:
+                cell = varset.getCellFromAlias(str(key))
+                if cell:
+                    return str(cell)
+            except Exception:
+                pass
+        return str(key)
+
+
     def _apply_vars(varset, vars_dict):
         applied = []
         skipped = []
@@ -133,7 +144,8 @@ FREECAD_SCRIPT = textwrap.dedent(
 
             # Spreadsheet fallback for aliases/cells.
             if hasattr(varset, "set"):
-                varset.set(str(key), str(value))
+                target = _resolve_spreadsheet_target(varset, key)
+                varset.set(target, str(value))
                 applied.append(key)
                 continue
 
