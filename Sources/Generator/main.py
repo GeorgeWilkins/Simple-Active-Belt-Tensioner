@@ -243,18 +243,48 @@ FREECAD_SCRIPT = textwrap.dedent(
             state = getattr(obj, "State", [])
             return any(str(item).lower() == "invalid" for item in state)
 
-        def _last_valid_body_feature(body):
-            for feature in reversed(getattr(body, "Group", [])):
+        def _last_valid_before_invalid(body):
+            group = list(getattr(body, "Group", []))
+            if not group:
+                return None, []
+
+            invalid_features = [
+                getattr(feature, "Name", "")
+                for feature in group
+                if _is_invalid(feature)
+            ]
+
+            # If no feature is invalid, return the latest shape-bearing feature.
+            if not invalid_features:
+                for feature in reversed(group):
+                    shape = getattr(feature, "Shape", None)
+                    if shape is not None and not shape.isNull():
+                        return feature, invalid_features
+                return None, invalid_features
+
+            # Find the first invalid feature in build order and roll back to the
+            # latest valid shape before that point.
+            first_invalid_index = None
+            for index, feature in enumerate(group):
+                if _is_invalid(feature):
+                    first_invalid_index = index
+                    break
+
+            if first_invalid_index is None:
+                return None, invalid_features
+
+            for feature in reversed(group[:first_invalid_index]):
                 if _is_invalid(feature):
                     continue
                 shape = getattr(feature, "Shape", None)
                 if shape is not None and not shape.isNull():
-                    return feature
-            return None
+                    return feature, invalid_features
 
-        # Prefer finished PartDesign bodies. If a body is invalid (often due to
-        # topological naming issues in late features like fillets), fall back to
-        # the last valid feature in that body so export still succeeds.
+            return None, invalid_features
+
+        # Prefer finished PartDesign bodies. If the body or any feature in its
+        # build chain is invalid, roll back to the latest valid upstream feature
+        # to avoid exporting stale/default-like geometry.
         bodies = []
         for obj in doc.Objects:
             type_id = getattr(obj, "TypeId", "")
@@ -263,19 +293,28 @@ FREECAD_SCRIPT = textwrap.dedent(
 
         if bodies:
             exportables = []
+            fallback_details = []
             for body in bodies:
-                if not _is_invalid(body):
+                fallback_feature, invalid_features = _last_valid_before_invalid(body)
+
+                if not _is_invalid(body) and not invalid_features:
                     body_shape = getattr(body, "Shape", None)
                     if body_shape is not None and not body_shape.isNull():
                         exportables.append(body)
                         continue
 
-                fallback_feature = _last_valid_body_feature(body)
                 if fallback_feature is not None:
                     exportables.append(fallback_feature)
+                    fallback_details.append(
+                        {
+                            "body": getattr(body, "Name", ""),
+                            "invalid_features": invalid_features,
+                            "fallback_feature": getattr(fallback_feature, "Name", ""),
+                        }
+                    )
 
             if exportables:
-                return exportables
+                return exportables, fallback_details
 
         # Fallback for templates that do not use PartDesign bodies: export only
         # top-level visible shape objects that are not nested under another shape-bearing
@@ -304,7 +343,7 @@ FREECAD_SCRIPT = textwrap.dedent(
         if not candidates:
             candidates = shape_objects
 
-        return candidates
+        return candidates, []
 
 
     def main():
@@ -359,7 +398,7 @@ FREECAD_SCRIPT = textwrap.dedent(
             if suppressed_features:
                 doc.recompute()
 
-            exportable = _find_export_objects(doc)
+            exportable, export_fallbacks = _find_export_objects(doc)
             report = {
                 "requested": vars_dict,
                 "applied": applied,
@@ -381,6 +420,7 @@ FREECAD_SCRIPT = textwrap.dedent(
                     }
                     for obj in exportable
                 ],
+                "export_fallbacks": export_fallbacks,
                 "bounding_box": _combined_bounding_box(exportable),
             }
             _write_report(report)
