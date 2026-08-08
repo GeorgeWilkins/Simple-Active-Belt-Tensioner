@@ -215,6 +215,29 @@ FREECAD_SCRIPT = textwrap.dedent(
         return applied, skipped, failed
 
 
+    def _suppress_invalid_dressups(doc):
+        suppressed = []
+        for obj in doc.Objects:
+            type_id = getattr(obj, "TypeId", "")
+            if "PartDesign::" not in type_id:
+                continue
+            if "Fillet" not in type_id and "Chamfer" not in type_id and "DressUp" not in type_id:
+                continue
+
+            state = [str(item).lower() for item in getattr(obj, "State", [])]
+            if "invalid" not in state:
+                continue
+
+            if hasattr(obj, "Suppressed"):
+                try:
+                    setattr(obj, "Suppressed", True)
+                    suppressed.append(getattr(obj, "Name", type_id))
+                except Exception:
+                    pass
+
+        return suppressed
+
+
     def _find_export_objects(doc):
         def _is_invalid(obj):
             state = getattr(obj, "State", [])
@@ -317,7 +340,18 @@ FREECAD_SCRIPT = textwrap.dedent(
                 raise RuntimeError(
                     "VarSet parameters failed to apply: " + ", ".join(sorted(failed))
                 )
+
+            original_values = {
+                key: _readable_value(getattr(varset, key))
+                for key in vars_dict.keys()
+                if hasattr(varset, key)
+            }
+
             doc.recompute()
+
+            suppressed_features = _suppress_invalid_dressups(doc)
+            if suppressed_features:
+                doc.recompute()
 
             exportable = _find_export_objects(doc)
             report = {
@@ -325,11 +359,21 @@ FREECAD_SCRIPT = textwrap.dedent(
                 "applied": applied,
                 "skipped": skipped,
                 "failed": failed,
+                "original_values": original_values,
                 "effective_values": {
                     key: _readable_value(getattr(varset, key))
                     for key in vars_dict.keys()
                     if hasattr(varset, key)
                 },
+                "suppressed_features": suppressed_features,
+                "export_objects": [
+                    {
+                        "name": getattr(obj, "Name", ""),
+                        "label": getattr(obj, "Label", ""),
+                        "type_id": getattr(obj, "TypeId", ""),
+                    }
+                    for obj in exportable
+                ],
                 "bounding_box": _combined_bounding_box(exportable),
             }
             _write_report(report)
