@@ -22,3 +22,12 @@ These files are the original [FreeCAD](https://www.freecad.org/) design files fr
 | [Motor Brackets > For 2-Inch Tube.FCStd](Motor%20Brackets/For%202-Inch%20Tube.FCStd) | Motor Bracket | A motor bracket designed to be **clamp-mounted** to `2"` tube |
 | [Motor Brackets > For Playseat Challenge.FCStd](Motor%20Brackets/For%20Playseat%20Challenge.FCStd) | Motor Bracket | A motor bracket designed specifically for the [Playseat Challenge](https://www.playseat.com/en-gb/products/playseat-challenge-actifit) (experimental) |
 | [Pulleys.FCStd](Pulleys.FCStd) | Pulley Assembly | The **pulley** cover, hub and face parts |
+
+## Online Customisation
+Due to requests for various versions of the motor brackets (and other parts), I've created an online tool that allows you to generate your own custom `.STEP` files from the FreeCAD source files without installing or understanding FreeCAD...
+
+[Generate STEP Files]()
+
+https://simple-active-belt-tensioner-step-generator-287288570077.europe-west1.run.app?Source=Motor%20Brackets%2FFor%20Aluminium%20Profile%20Face%20(Parametric).FCStd&DesiredClearanceHeight=100mm&ProfileHoleDiameter=8mm&ProfileHoleSpacing=90mm&ProfileOuterWidth=120mm
+
+> 📢 **Important:** This feature is considered to be _BETA_ and may behave strangely with some parameter combinations. Brackets created by this tool should do the job fine, but may not be as strong or as pretty as the original designs. Print and use at your own risk.
