@@ -12,10 +12,11 @@ from flask import jsonify, make_response
 FREECAD_SCRIPT = textwrap.dedent(
     """
     import json
+    import os
     import sys
 
     import FreeCAD
-    import Import
+    import Part
 
 
     def _convert_value(raw):
@@ -141,14 +142,15 @@ FREECAD_SCRIPT = textwrap.dedent(
 
 
     def main():
-        if len(sys.argv) != 4:
+        template_fcstd = os.environ.get("TEMPLATE_FCSTD")
+        output_step = os.environ.get("OUTPUT_STEP")
+        vars_json = os.environ.get("VARS_JSON")
+
+        if not template_fcstd or not output_step or not vars_json:
             raise RuntimeError(
-                "Usage: freecad_job.py <template_fcstd> <output_step> <vars_json>"
+                "Missing TEMPLATE_FCSTD, OUTPUT_STEP, or VARS_JSON environment variables"
             )
 
-        template_fcstd = sys.argv[1]
-        output_step = sys.argv[2]
-        vars_json = sys.argv[3]
         vars_dict = json.loads(vars_json)
 
         doc = FreeCAD.openDocument(template_fcstd)
@@ -167,7 +169,7 @@ FREECAD_SCRIPT = textwrap.dedent(
             doc.recompute()
 
             exportable = _find_export_objects(doc)
-            Import.export(exportable, output_step)
+            Part.export(exportable, output_step)
         finally:
             FreeCAD.closeDocument(doc.Name)
 
@@ -225,10 +227,12 @@ def generate(request):
         command = [
             freecad_cmd,
             script_path,
-            template_fcstd,
-            output_step,
-            json.dumps(vars_dict),
         ]
+
+        env = os.environ.copy()
+        env["TEMPLATE_FCSTD"] = template_fcstd
+        env["OUTPUT_STEP"] = output_step
+        env["VARS_JSON"] = json.dumps(vars_dict)
 
         try:
             run = subprocess.run(
@@ -237,6 +241,7 @@ def generate(request):
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
+                env=env,
             )
         except FileNotFoundError:
             return make_response(
