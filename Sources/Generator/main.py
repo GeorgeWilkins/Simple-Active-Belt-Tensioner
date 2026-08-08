@@ -75,17 +75,16 @@ FREECAD_SCRIPT = textwrap.dedent(
         # such as "10 mm", "2.5 in", or "1 m".
         if _is_distance_property(property_type):
             if isinstance(raw, (int, float)):
-                return raw
+                return FreeCAD.Units.Quantity(str(raw))
 
             text = str(raw).strip()
             try:
-                FreeCAD.Units.Quantity(text)
+                return FreeCAD.Units.Quantity(text)
             except Exception as error:
                 raise RuntimeError(
                     f"Invalid distance value for '{key}': '{text}'. "
                     "Use a FreeCAD quantity string like '10 mm'."
                 ) from error
-            return text
 
         return _convert_value(raw)
 
@@ -107,6 +106,11 @@ FREECAD_SCRIPT = textwrap.dedent(
                 continue
 
             value = _coerce_value_for_property(varset, key, raw_value)
+
+            if hasattr(varset, "setPropertyByName"):
+                varset.setPropertyByName(str(key), value)
+                applied.append(key)
+                continue
 
             if hasattr(varset, key):
                 setattr(varset, key, value)
