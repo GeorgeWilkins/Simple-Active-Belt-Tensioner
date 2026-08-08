@@ -210,7 +210,11 @@ FREECAD_SCRIPT = textwrap.dedent(
             if varset is None:
                 raise RuntimeError("Could not find object named/labelled 'VarSet'")
 
-            _apply_vars(varset, vars_dict)
+            applied, skipped = _apply_vars(varset, vars_dict)
+            if skipped:
+                raise RuntimeError(
+                    "Unknown or non-writable VarSet parameters: " + ", ".join(sorted(skipped))
+                )
             doc.recompute()
 
             exportable = _find_export_objects(doc)
@@ -307,7 +311,13 @@ def _cached_source_file(validated_rel_path):
 @functions_framework.http
 def generate(request):
     request_values = _collect_vars(request)
-    source_param = request_values.pop("Source", None)
+
+    source_key = None
+    for key in list(request_values.keys()):
+        if str(key).lower() == "source":
+            source_key = key
+            break
+    source_param = request_values.pop(source_key, None) if source_key else None
 
     try:
         source_rel_path = _validate_source_path(source_param)
@@ -418,4 +428,7 @@ def generate(request):
     response = make_response(step_bytes)
     response.headers["Content-Type"] = "application/step"
     response.headers["Content-Disposition"] = "attachment; filename=generated.step"
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
     return response
