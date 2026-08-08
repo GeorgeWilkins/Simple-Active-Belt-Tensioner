@@ -1,0 +1,50 @@
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PORT=8080
+
+# Install runtime libraries commonly required by FreeCAD AppImage.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    libglib2.0-0 \
+    libglu1-mesa \
+    libsm6 \
+    libx11-6 \
+    libxext6 \
+    libxrender1 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install FreeCADCMD v1.1.3 via official AppImage release.
+# If release naming changes, override FREECAD_URL at build time.
+ARG FREECAD_VERSION=1.1.3
+ARG FREECAD_URL=https://github.com/FreeCAD/FreeCAD/releases/download/${FREECAD_VERSION}/FreeCAD_${FREECAD_VERSION}-Linux-x86_64.AppImage
+
+RUN mkdir -p /opt/freecad \
+    && curl -fsSL "${FREECAD_URL}" -o /opt/freecad/FreeCAD.AppImage \
+    && chmod +x /opt/freecad/FreeCAD.AppImage \
+    && cd /opt/freecad \
+    && ./FreeCAD.AppImage --appimage-extract \
+    && rm -f /opt/freecad/FreeCAD.AppImage \
+    && printf '%s\n' '#!/usr/bin/env bash' \
+        'set -euo pipefail' \
+        'FC_CMD="$(find /opt/freecad/squashfs-root -type f \( -name FreeCADCmd -o -name freecadcmd \) | head -n 1)"' \
+        'if [[ -z "${FC_CMD}" ]]; then' \
+        '  echo "FreeCADCmd binary not found in AppImage extract" >&2' \
+        '  exit 1' \
+        'fi' \
+        'exec "${FC_CMD}" "$@"' \
+        > /usr/local/bin/FreeCADCMD \
+    && chmod +x /usr/local/bin/FreeCADCMD
+
+COPY . .
+
+EXPOSE 8080
+
+CMD ["functions-framework", "--target=generate", "--host=0.0.0.0", "--port=8080"]
