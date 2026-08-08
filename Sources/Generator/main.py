@@ -624,6 +624,45 @@ def generate(request):
                 500,
             )
 
+        report_data = None
+        if os.path.isfile(report_json):
+            try:
+                with open(report_json, "r", encoding="utf-8") as report_file:
+                    report_data = json.load(report_file)
+            except Exception:
+                report_data = None
+
+        # Strict mode: never return STEP output when FreeCAD reported any errors.
+        if run.stderr and run.stderr.strip():
+            return make_response(
+                jsonify(
+                    {
+                        "error": "FreeCAD reported errors; STEP output suppressed",
+                        "stdout": run.stdout,
+                        "stderr": run.stderr,
+                        "report": report_data,
+                    }
+                ),
+                500,
+            )
+
+        # Also treat internal fallback/suppression as an error condition.
+        if report_data:
+            suppressed = report_data.get("suppressed_features") or []
+            fallbacks = report_data.get("export_fallbacks") or []
+            if suppressed or fallbacks:
+                return make_response(
+                    jsonify(
+                        {
+                            "error": "Model required recovery operations; STEP output suppressed",
+                            "stdout": run.stdout,
+                            "stderr": run.stderr,
+                            "report": report_data,
+                        }
+                    ),
+                    500,
+                )
+
         if not os.path.isfile(output_step):
             return make_response(
                 jsonify(
@@ -638,14 +677,6 @@ def generate(request):
 
         with open(output_step, "rb") as file_handle:
             step_bytes = file_handle.read()
-
-        report_data = None
-        if os.path.isfile(report_json):
-            try:
-                with open(report_json, "r", encoding="utf-8") as report_file:
-                    report_data = json.load(report_file)
-            except Exception:
-                report_data = None
 
         if debug:
             return make_response(
