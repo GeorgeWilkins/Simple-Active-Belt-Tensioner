@@ -18,7 +18,6 @@ REPO_NAME = os.environ.get("REPO_NAME", "Simple-Active-Belt-Tensioner")
 REPO_REF = os.environ.get("REPO_REF", "main")
 REPO_PRINTABLES_PATH = os.environ.get("REPO_PRINTABLES_PATH", "Sources/Printables")
 FCSTD_CACHE_DIR = os.environ.get("FCSTD_CACHE_DIR", "/tmp/fcstd-cache")
-REPORT_JSON = os.environ.get("REPORT_JSON", "/tmp/report.json")
 
 
 FREECAD_SCRIPT = textwrap.dedent(
@@ -29,6 +28,9 @@ FREECAD_SCRIPT = textwrap.dedent(
 
     import FreeCAD
     import Part
+
+
+    REPORT_JSON = os.environ.get("REPORT_JSON", "/tmp/report.json")
 
 
     def _convert_value(raw):
@@ -214,18 +216,43 @@ FREECAD_SCRIPT = textwrap.dedent(
 
 
     def _find_export_objects(doc):
-        # Prefer finished PartDesign bodies; exporting intermediate features causes
-        # overlapping solids that visually fill in concave regions.
+        def _is_invalid(obj):
+            state = getattr(obj, "State", [])
+            return any(str(item).lower() == "invalid" for item in state)
+
+        def _last_valid_body_feature(body):
+            for feature in reversed(getattr(body, "Group", [])):
+                if _is_invalid(feature):
+                    continue
+                shape = getattr(feature, "Shape", None)
+                if shape is not None and not shape.isNull():
+                    return feature
+            return None
+
+        # Prefer finished PartDesign bodies. If a body is invalid (often due to
+        # topological naming issues in late features like fillets), fall back to
+        # the last valid feature in that body so export still succeeds.
         bodies = []
         for obj in doc.Objects:
             type_id = getattr(obj, "TypeId", "")
             if "PartDesign::Body" in type_id:
-                body_shape = getattr(obj, "Shape", None)
-                if body_shape is not None and not body_shape.isNull():
-                    bodies.append(obj)
+                bodies.append(obj)
 
         if bodies:
-            return bodies
+            exportables = []
+            for body in bodies:
+                if not _is_invalid(body):
+                    body_shape = getattr(body, "Shape", None)
+                    if body_shape is not None and not body_shape.isNull():
+                        exportables.append(body)
+                        continue
+
+                fallback_feature = _last_valid_body_feature(body)
+                if fallback_feature is not None:
+                    exportables.append(fallback_feature)
+
+            if exportables:
+                return exportables
 
         # Fallback for templates that do not use PartDesign bodies: export only
         # top-level visible shape objects that are not nested under another shape-bearing
