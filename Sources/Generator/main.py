@@ -89,6 +89,38 @@ FREECAD_SCRIPT = textwrap.dedent(
         return _convert_value(raw)
 
 
+    def _quantity_value(raw):
+        if hasattr(raw, "Value"):
+            try:
+                return float(raw.Value)
+            except Exception:
+                pass
+        try:
+            return float(FreeCAD.Units.Quantity(str(raw)).Value)
+        except Exception:
+            return None
+
+
+    def _value_applied(varset, key, expected):
+        try:
+            actual = getattr(varset, str(key))
+        except Exception:
+            return False
+
+        property_type = _property_type(varset, key)
+        if _is_distance_property(property_type):
+            expected_q = _quantity_value(expected)
+            actual_q = _quantity_value(actual)
+            if expected_q is None or actual_q is None:
+                return False
+            return abs(expected_q - actual_q) < 1e-9
+
+        if isinstance(expected, bool):
+            return bool(actual) == expected
+
+        return str(actual) == str(expected)
+
+
     def _var_exists(varset, key):
         properties = set(getattr(varset, "PropertiesList", []))
         if str(key) in properties:
@@ -99,6 +131,7 @@ FREECAD_SCRIPT = textwrap.dedent(
     def _apply_vars(varset, vars_dict):
         applied = []
         skipped = []
+        failed = []
 
         for key, raw_value in vars_dict.items():
             if not _var_exists(varset, key):
@@ -107,19 +140,17 @@ FREECAD_SCRIPT = textwrap.dedent(
 
             value = _coerce_value_for_property(varset, key, raw_value)
 
-            if hasattr(varset, "setPropertyByName"):
-                varset.setPropertyByName(str(key), value)
-                applied.append(key)
-                continue
-
             if hasattr(varset, key):
                 setattr(varset, key, value)
+                if not _value_applied(varset, key, value):
+                    failed.append(key)
+                    continue
                 applied.append(key)
                 continue
 
             skipped.append(key)
 
-        return applied, skipped
+        return applied, skipped, failed
 
 
     def _find_export_objects(doc):
@@ -190,10 +221,14 @@ FREECAD_SCRIPT = textwrap.dedent(
             if varset is None:
                 raise RuntimeError("Could not find object named/labelled 'VarSet'")
 
-            applied, skipped = _apply_vars(varset, vars_dict)
+            applied, skipped, failed = _apply_vars(varset, vars_dict)
             if skipped:
                 raise RuntimeError(
                     "Unknown or non-writable VarSet parameters: " + ", ".join(sorted(skipped))
+                )
+            if failed:
+                raise RuntimeError(
+                    "VarSet parameters failed to apply: " + ", ".join(sorted(failed))
                 )
             doc.recompute()
 
