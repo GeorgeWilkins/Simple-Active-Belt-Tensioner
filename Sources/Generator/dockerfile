@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Install FreeCADCMD v1.1.3 via official AppImage release.
 # If release naming changes, override FREECAD_URL at build time.
 ARG FREECAD_VERSION=1.1.3
-ARG FREECAD_URL=https://github.com/FreeCAD/FreeCAD/releases/download/${FREECAD_VERSION}/FreeCAD_${FREECAD_VERSION}-Linux-x86_64.AppImage
+ARG FREECAD_URL=https://github.com/FreeCAD/FreeCAD/releases/download/${FREECAD_VERSION}/FreeCAD_${FREECAD_VERSION}-Linux-x86_64-py311.AppImage
 
 RUN mkdir -p /opt/freecad \
     && curl -fsSL "${FREECAD_URL}" -o /opt/freecad/FreeCAD.AppImage \
