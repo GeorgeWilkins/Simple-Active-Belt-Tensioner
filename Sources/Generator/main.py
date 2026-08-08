@@ -226,7 +226,8 @@ def generate(request):
 
         command = [
             freecad_cmd,
-            script_path,
+            "-c",
+            f"import runpy; runpy.run_path({json.dumps(script_path)}, run_name='__main__')",
         ]
 
         env = os.environ.copy()
