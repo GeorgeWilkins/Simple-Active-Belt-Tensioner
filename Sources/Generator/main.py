@@ -331,6 +331,12 @@ FREECAD_SCRIPT = textwrap.dedent(
             if varset is None:
                 raise RuntimeError("Could not find object named/labelled 'VarSet'")
 
+            original_values = {
+                key: _readable_value(getattr(varset, key))
+                for key in vars_dict.keys()
+                if hasattr(varset, key)
+            }
+
             applied, skipped, failed = _apply_vars(varset, vars_dict)
             if skipped:
                 raise RuntimeError(
@@ -341,7 +347,7 @@ FREECAD_SCRIPT = textwrap.dedent(
                     "VarSet parameters failed to apply: " + ", ".join(sorted(failed))
                 )
 
-            original_values = {
+            values_after_apply = {
                 key: _readable_value(getattr(varset, key))
                 for key in vars_dict.keys()
                 if hasattr(varset, key)
@@ -360,6 +366,7 @@ FREECAD_SCRIPT = textwrap.dedent(
                 "skipped": skipped,
                 "failed": failed,
                 "original_values": original_values,
+                "values_after_apply": values_after_apply,
                 "effective_values": {
                     key: _readable_value(getattr(varset, key))
                     for key in vars_dict.keys()
