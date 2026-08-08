@@ -92,38 +92,9 @@ FREECAD_SCRIPT = textwrap.dedent(
 
     def _var_exists(varset, key):
         properties = set(getattr(varset, "PropertiesList", []))
-        if key in properties:
+        if str(key) in properties:
             return True
-
-        # Spreadsheet alias support (if VarSet is a Spreadsheet object).
-        if hasattr(varset, "getCellFromAlias"):
-            try:
-                cell = varset.getCellFromAlias(str(key))
-                if cell:
-                    return True
-            except Exception:
-                pass
-
-        # Spreadsheet cell reference support (e.g. A1).
-        if hasattr(varset, "get"):
-            try:
-                varset.get(str(key))
-                return True
-            except Exception:
-                pass
-
         return False
-
-
-    def _resolve_spreadsheet_target(varset, key):
-        if hasattr(varset, "getCellFromAlias"):
-            try:
-                cell = varset.getCellFromAlias(str(key))
-                if cell:
-                    return str(cell)
-            except Exception:
-                pass
-        return str(key)
 
 
     def _apply_vars(varset, vars_dict):
@@ -139,13 +110,6 @@ FREECAD_SCRIPT = textwrap.dedent(
 
             if hasattr(varset, key):
                 setattr(varset, key, value)
-                applied.append(key)
-                continue
-
-            # Spreadsheet fallback for aliases/cells.
-            if hasattr(varset, "set"):
-                target = _resolve_spreadsheet_target(varset, key)
-                varset.set(target, str(value))
                 applied.append(key)
                 continue
 
