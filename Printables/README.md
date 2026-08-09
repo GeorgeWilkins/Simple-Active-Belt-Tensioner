@@ -1,4 +1,4 @@
- # Printables
+# Printables
 
 The files in this directory and its sub-directories are what you need to print (or to have printed by a third party) to complete the kit.
 
@@ -48,6 +48,11 @@ There's a lot of variation in seat design. In cases where the belt guides have h
 However with irregular or angled belt guides, you may run into issues with the belts bunching up in the corners of the guides and not sliding smoothly. For such cases, you can print and assemble two 'universal' [belt rollers](/Printables/Belt%20Roller/), which have been designed with an array of mounting holes to accommodate most belt guide shapes and angles.
 
 These will not work well with curved belt guides (where they match the curvature of the seat). In such cases you may need to design your own version of the roller. You can use the [FreeCAD source file](/Sources/Printables/Belt%20Roller.FCStd) as a reference and starting point if so.
+
+## Online Customisation
+Due to various requests for modified versions of the parts (mostly motor brackets), I've created an [online tool](https://georgewilkins.github.io/Simple-Active-Belt-Tensioner) that allows you to generate your own custom `.STEP` files from the source files without installing or understanding FreeCAD.
+
+> 📢 **Important:** This feature is considered to be _BETA_ and may behave strangely with some parameter combinations. Brackets created by this tool should do the job fine, but may not be as strong or as efficient to print as the original designs. Print and use at your own risk.
 
 ## Printables List
 

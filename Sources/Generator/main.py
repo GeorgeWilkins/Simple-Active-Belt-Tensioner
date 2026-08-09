@@ -12,12 +12,59 @@ import functions_framework
 from flask import jsonify, make_response
 
 
-REPO_OWNER = os.environ.get("REPO_OWNER", "GeorgeWilkins")
-REPO_NAME = os.environ.get("REPO_NAME", "Simple-Active-Belt-Tensioner")
-REPO_REF = os.environ.get("REPO_REF", "main")
-REPO_PRINTABLES_PATH = os.environ.get("REPO_PRINTABLES_PATH", "Sources/Printables")
-FCSTD_CACHE_DIR = os.environ.get("FCSTD_CACHE_DIR", "/tmp/fcstd-cache")
-FREECAD_SCRIPT = "freecad.py"
+REPOSITORY_OWNER = os.environ.get("REPOSITORY_OWNER", "GeorgeWilkins")
+REPOSITORY_NAME = os.environ.get("REPOSITORY_NAME", "Simple-Active-Belt-Tensioner")
+REPOSITORY_BRANCH = os.environ.get("REPOSITORY_BRANCH", "main")
+REPOSITORY_PRINTABLES_PATH = os.environ.get("REPOSITORY_PRINTABLES_PATH", "Sources/Printables")
+SOURCE_CACHE_PATH = os.environ.get("SOURCE_CACHE_PATH", "/tmp/freecad-sources")
+FREECAD_SCRIPT = os.environ.get("FREECAD_SCRIPT", "freecad.py")
+ALLOWED_ORIGIN = os.environ.get("ALLOWED_ORIGIN", "https://georgewilkins.github.io")
+
+
+def _is_origin_allowed(origin):
+    if not origin:
+        return False
+
+    try:
+        parsed = urllib.parse.urlparse(origin)
+    except Exception:
+        return False
+
+    scheme = (parsed.scheme or "").lower()
+    host = (parsed.hostname or "").lower()
+
+    if scheme not in ("http", "https") or not host:
+        return False
+
+    normalized_origin = f"{scheme}://{host}"
+    if parsed.port:
+        normalized_origin = f"{normalized_origin}:{parsed.port}"
+
+    if normalized_origin == ALLOWED_ORIGIN:
+        return True
+
+    if host in ("localhost", "127.0.0.1"):
+        return True
+
+    return False
+
+
+def _with_cors(response, request):
+    origin = (request.headers.get("Origin") or "").strip()
+
+    if _is_origin_allowed(origin):
+        response.headers["Vary"] = "Origin"
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Methods"] = "GET, OPTIONS"
+        response.headers["Access-Control-Max-Age"] = "3600"
+
+        request_headers = request.headers.get("Access-Control-Request-Headers")
+        if request_headers:
+            response.headers["Access-Control-Allow-Headers"] = request_headers
+        else:
+            response.headers["Access-Control-Allow-Headers"] = "Accept, Content-Type"
+
+    return response
 
 
 def _collect_vars(request):
@@ -37,7 +84,7 @@ def _validate_source_path(source_path):
     lowered_path = raw_path.lower()
 
     if lowered_path.startswith("http://") or lowered_path.startswith("https://") or lowered_path.startswith("/") or lowered_path.startswith("\\"):
-        raise ValueError(f"`Source` parameter must be a path relative to `{REPO_PRINTABLES_PATH}`")
+        raise ValueError(f"`Source` parameter must be a path relative to `{REPOSITORY_PRINTABLES_PATH}`")
 
     if ":" in raw_path.split("/")[0]:
         raise ValueError("`Source` parameter cannot contain a drive prefix")
@@ -58,15 +105,15 @@ def _validate_source_path(source_path):
 
 def _source_download_url(validated_path):
     base_url = (
-        f"https://raw.githubusercontent.com/{REPO_OWNER}/{REPO_NAME}/{REPO_REF}"
-        f"/{REPO_PRINTABLES_PATH.strip('/')}"
+        f"https://raw.githubusercontent.com/{REPOSITORY_OWNER}/{REPOSITORY_NAME}/{REPOSITORY_BRANCH}"
+        f"/{REPOSITORY_PRINTABLES_PATH.strip('/')}"
     )
     encoded_parts = [urllib.parse.quote(part, safe="") for part in validated_path.split("/")]
     return f"{base_url}/{'/'.join(encoded_parts)}"
 
 
 def _cached_source_file(validated_path):
-    cache_root = os.path.abspath(FCSTD_CACHE_DIR)
+    cache_root = os.path.abspath(SOURCE_CACHE_PATH)
     local_path = os.path.abspath(os.path.join(cache_root, *validated_path.split("/")))
 
     if os.path.commonpath([cache_root, local_path]) != cache_root:
@@ -100,6 +147,12 @@ def _cached_source_file(validated_path):
 
 @functions_framework.http
 def generate(request):
+    def respond(response):
+        return _with_cors(response, request)
+
+    if request.method == "OPTIONS":
+        return respond(make_response("", 204))
+
     request_values = _collect_vars(request)
 
     is_debugging = False
@@ -118,7 +171,7 @@ def generate(request):
     try:
         source_path = _validate_source_path(source_parameter)
     except ValueError as error:
-        return make_response(
+        return respond(make_response(
             jsonify(
                 {
                     "error": str(error),
@@ -126,12 +179,12 @@ def generate(request):
                 }
             ),
             400,
-        )
+        ))
 
     try:
         source_file = _cached_source_file(source_path)
     except FileNotFoundError as error:
-        return make_response(
+        return respond(make_response(
             jsonify(
                 {
                     "error": str(error),
@@ -139,9 +192,9 @@ def generate(request):
                 }
             ),
             404,
-        )
+        ))
     except Exception as error:
-        return make_response(
+        return respond(make_response(
             jsonify(
                 {
                     "error": str(error),
@@ -149,12 +202,12 @@ def generate(request):
                 }
             ),
             500,
-        )
+        ))
 
     freecad_cmd = os.environ.get("FREECAD_CMD", "/usr/local/bin/FreeCADCMD")
     freecad_script = os.path.join(os.path.dirname(__file__), FREECAD_SCRIPT)
     if not os.path.isfile(freecad_script):
-        return make_response(
+        return respond(make_response(
             jsonify(
                 {
                     "error": "FreeCAD script was not found",
@@ -162,7 +215,7 @@ def generate(request):
                 }
             ),
             500,
-        )
+        ))
 
     with tempfile.TemporaryDirectory(prefix="freecad-job-") as temp_dir:
         output_file = os.path.join(temp_dir, f"output-{uuid.uuid4().hex}.step")
@@ -190,7 +243,7 @@ def generate(request):
                 env=env,
             )
         except FileNotFoundError:
-            return make_response(
+            return respond(make_response(
                 jsonify(
                     {
                         "error": "FreeCAD was not found",
@@ -199,9 +252,9 @@ def generate(request):
                     }
                 ),
                 500,
-            )
+            ))
         except subprocess.CalledProcessError as error:
-            return make_response(
+            return respond(make_response(
                 jsonify(
                     {
                         "error": "FreeCAD export process failed",
@@ -211,7 +264,7 @@ def generate(request):
                     }
                 ),
                 500,
-            )
+            ))
 
         report_data = None
         if os.path.isfile(report_json):
@@ -222,7 +275,7 @@ def generate(request):
                 report_data = None
 
         if run.stderr and run.stderr.strip():
-            return make_response(
+            return respond(make_response(
                 jsonify(
                     {
                         "error": "FreeCAD export process failed",
@@ -232,13 +285,13 @@ def generate(request):
                     }
                 ),
                 500,
-            )
+            ))
 
         if report_data:
             suppressed_features = report_data.get("suppressed_features") or []
             export_fallbacks = report_data.get("export_fallbacks") or []
             if suppressed_features or export_fallbacks:
-                return make_response(
+                return respond(make_response(
                     jsonify(
                         {
                             "error": "FreeCAD failed to resolve all features for export",
@@ -249,10 +302,10 @@ def generate(request):
                         }
                     ),
                     500,
-                )
+                ))
 
         if not os.path.isfile(output_file):
-            return make_response(
+            return respond(make_response(
                 jsonify(
                     {
                         "error": "FreeCAD export succeeded, but `STEP` file could not be stored",
@@ -261,13 +314,13 @@ def generate(request):
                     }
                 ),
                 500,
-            )
+            ))
 
         with open(output_file, "rb") as file_handle:
             output_bytes = file_handle.read()
 
         if is_debugging:
-            return make_response(
+            return respond(make_response(
                 jsonify(
                     {
                         "source": source_path,
@@ -278,7 +331,7 @@ def generate(request):
                     }
                 ),
                 200,
-            )
+            ))
 
     response = make_response(output_bytes)
     response.headers["Content-Type"] = "application/step"
@@ -287,4 +340,4 @@ def generate(request):
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "0"
 
-    return response
+    return respond(response)

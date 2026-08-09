@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>SABT Printables Generator</title>
 	<style>
-		/*@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap");*/
+
         @import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 
 		:root {
@@ -21,7 +21,18 @@
 
 		* {
 			box-sizing: border-box;
+            line-height: 1.5;
 		}
+
+        a {
+            color: var(--brand);
+            text-decoration: underline dotted;
+        }
+
+        a:hover, a:focus, a:active, a:visited {
+            color: var(--brand-hover);
+            text-decoration: underline solid;
+        }
 
 		body {
 			margin: 0;
@@ -40,7 +51,7 @@
 			padding: 2rem 1rem 3rem;
 		}
 
-        bold {
+        strong {
             font-weight: 700;
         }
 
@@ -50,14 +61,22 @@
             text-align: center;
 		}
 
+        ul {
+            margin: 0 0 0 1rem;
+            padding: 0;
+        }
+
+        ul li {
+            margin: 0.5rem 0;
+        }
+
 		.intro {
 			color: var(--muted);
 			margin-top: 0.75rem;
-			line-height: 1.5;
             text-align: justify;
 		}
 
-		.model-form {
+		section {
 			margin-top: 1.5rem;
 			background: var(--surface);
 			border: 1px solid var(--stroke);
@@ -66,27 +85,21 @@
 			padding: 1.25rem;
 		}
 
-		.model-form h2 {
+		section h2 {
 			margin: 0;
 			font-size: 1.15rem;
 		}
 
-        .model-form img {
+        section img {
             float: right;
             width: 30%;
             margin: 0.75rem 0;
         }
 
-		.source-note {
+		.source {
 			margin: 0.5rem 0 1rem;
 			color: var(--muted);
 			word-break: break-word;
-			line-height: 1.45;
-		}
-
-		.source-note a {
-			color: #84d7ff;
-			text-decoration-thickness: 1px;
 		}
 
 		.grid {
@@ -161,7 +174,30 @@
 			color: var(--muted);
 			border-top: 1px dashed var(--stroke);
 			padding-top: 0.8rem;
-			line-height: 1.45;
+		}
+
+		form .notice {
+			display: none;
+			margin: 1.5rem 0 0 0;
+			padding: 0.7rem 0.85rem;
+			border-radius: 10px;
+			font-size: 0.92rem;
+			line-height: 1.4;
+			border: 1px solid transparent;
+		}
+
+		form .notice.error {
+			display: block;
+			background: rgba(211, 47, 47, 0.16);
+			border-color: rgba(211, 47, 47, 0.45);
+			color: #ffc2c2;
+		}
+
+		form .notice.success {
+			display: block;
+			background: rgba(46, 125, 50, 0.18);
+			border-color: rgba(46, 125, 50, 0.45);
+			color: #b9e6bb;
 		}
 
         code {
@@ -178,18 +214,21 @@
 	<main>
 		<img class="title-logo" src="logo.svg" alt="Simple Active Belt Tensioner logo">
 		<h1>Printables Generator</h1>
-		<p class="intro">If you need to customise any of the <bold>SABT</bold> parts for your rig, you can do so here without needing to install or learn <bold>FreeCAD</bold>. Enter the desired measurements and a <code>.STEP</code> file will be generated and downloaded automatically.</p>
+		<p class="intro">If you need to customise <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner" target="_blank" rel="noopener noreferrer">SABT</a> parts for your rig, you can do so here without needing to install or learn <a href="https://www.freecad.org/" target="_blank" rel="noreferrer">FreeCAD</a>. Enter the desired measurements below and a <code>.STEP</code> file will be generated and downloaded automatically.</p>
 
-		<section class="model-form">
-            <img src="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/Sources/Printables/Motor%20Brackets/For%20Aluminium%20Profile%20Face%20(Parametric).png" alt="Preview" />
+		<section>
+            <img src="https://raw.githubusercontent.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/issue-76/Sources/Printables/Motor%20Brackets/For%20Aluminium%20Profile%20Face%20(Parametric).png" alt="Preview" />
 			<h2>Motor Bracket for Aluminium Profile Face</h2>
-            <p>This is the bracket that attaches each tensioner motor to your aluminium profile.</p>
-            <p>It is designed to attached to the <bold>face</bold> of the aluminium profile and requires a minimum of two parallel T-slots</p>
-			<p class="source-note">
-				Source File:
-				<strong>
-					<a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/Sources/Printables/Motor%20Brackets/For%20Aluminium%20Profile%20Face%20(Parametric).FCStd" target="_blank" rel="noopener noreferrer">Motor Brackets/For Aluminium Profile Face (Parametric).FCStd</a>
-				</strong>
+            <p>This is the bracket that attaches each tensioner motor to your <strong>aluminium profile</strong>.</p>
+            <p>It is designed to attached to the <strong>face</strong> of the aluminium profile and requires a minimum of <strong>two parallel T-slots</strong> to bolt onto.</p>
+            <ul>
+                <li><strong>Cord Clearance Height:</strong> How far off the face of the aluminium profile the cord should exit the motor pulley (at least <code>50mm</code> for motor drum clearance)</li>
+                <li><strong>Hole Diameter:</strong> The size of the bolt holes (typically <code>8mm</code> for <code>M8</code>)</li>
+                <li><strong>Hole Spacing:</strong>  The centre-to-centre distance between the mounting holes; equal to the distance between your profile slots</li>
+                <li><strong>Bracket Width:</strong> How wide the bracket should be (typically equal to the profile's width)</li>
+            </ul>
+			<p class="source">
+				Source File: <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/issue-76/Sources/Printables/Motor%20Brackets/For%20Aluminium%20Profile%20Face%20(Parametric).FCStd" target="_blank" rel="noreferrer">Motor Brackets/For Aluminium Profile Face (Parametric).FCStd</a>
 			</p>
 
 			<form
@@ -200,21 +239,19 @@
 
 				<div class="grid">
 					<div>
-						<label for="DesiredClearanceHeight">Cord Clearance Height <span>(50~200mm)</span></label>
+						<label>Cord Clearance Height <span>(50~200mm)</span></label>
 						<input
-							id="DesiredClearanceHeight"
-							name="DesiredClearanceHeight"
+							name="CordClearanceHeight"
 							type="text"
-							value="100mm"
+							value="50mm"
 							required
 						>
 					</div>
 
 					<div>
-						<label for="ProfileHoleDiameter">Hole Diameter <span>(6~12mm)</span></label>
+						<label>Hole Diameter <span>(6~10mm)</span></label>
 						<input
-							id="ProfileHoleDiameter"
-							name="ProfileHoleDiameter"
+							name="HoleDiameter"
 							type="text"
 							value="8mm"
 							required
@@ -222,23 +259,21 @@
 					</div>
 
 					<div>
-						<label for="ProfileHoleSpacing">Hole Spacing <span>(>=30mm)</span></label>
+						<label>Hole Spacing <span>(>=30mm)</span></label>
 						<input
-							id="ProfileHoleSpacing"
-							name="ProfileHoleSpacing"
+							name="HoleSpacing"
 							type="text"
-							value="90mm"
+							value="40mm"
 							required
 						>
 					</div>
 
 					<div>
-						<label for="ProfileOuterWidth">Profile Outer Width <span>(>=40mm)</span></label>
+						<label>Bracket Width <span>(>=60mm)</span></label>
 						<input
-							id="ProfileOuterWidth"
-							name="ProfileOuterWidth"
+							name="BracketWidth"
 							type="text"
-							value="120mm"
+							value="80mm"
 							required
 						>
 					</div>
@@ -248,15 +283,172 @@
 					<button type="submit">Generate Printable File</button>
 					<p class="hint">A <code>.STEP</code> file will be downloaded, which can be used in 3D printer slicer software</p>
 				</div>
-			</form>
 
-			<p class="notes">
-				More parts from the project will be added here as they are updated to offer parametric input. If you find
-                you cannot customise a part in a way that you need, please 
-                <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/discussions">start a discussion</a>
-                on the GitHub repository.
-			</p>
+				<p class="notice" role="status" aria-live="polite"></p>
+			</form>
 		</section>
+
+		<section>
+            <img src="https://raw.githubusercontent.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/issue-76/Sources/Printables/Motor%20Brackets/For%20Aluminium%20Profile%20Edge%20(Parametric).png" alt="Preview" />
+			<h2>Motor Bracket for Aluminium Profile Edge</h2>
+            <p>This is the bracket that attaches each tensioner motor to your <strong>aluminium profile</strong>.</p>
+            <p>It is designed to attached to the <strong>edge</strong> of the aluminium profile and requires a minimum of <strong>two parallel T-slots</strong> to bolt onto.</p>
+            <ul>
+                <li><strong>Cord Clearance Height:</strong> How far diagonally from the edge of the aluminium profile the cord should exit the motor pulley (at least <code>50mm</code> for motor drum clearance)</li>
+                <li><strong>Hole Diameter:</strong> The size of the bolt holes (typically <code>8mm</code> for <code>M8</code>)</li>
+                <li><strong>Hole Inset:</strong> How far from the edge the mounting holes are inset (typically half the profile's slot/hole spacing)</li>
+                <li><strong>Bracket Width:</strong> How wide the bracket legs should be (typically half or equal to the profile's width or depth)</li>
+            </ul>
+			<p class="source">
+				Source File: <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/issue-76/Sources/Printables/Motor%20Brackets/For%20Aluminium%20Profile%20Edge%20(Parametric).FCStd" target="_blank" rel="noreferrer">Motor Brackets/For Aluminium Profile Edge (Parametric).FCStd</a>
+			</p>
+
+			<form
+				action="https://simple-active-belt-tensioner-step-generator-287288570077.europe-west1.run.app"
+				method="get"
+			>
+				<input type="hidden" name="Source" value="Motor Brackets/For Aluminium Profile Face (Parametric).FCStd">
+
+				<div class="grid">
+					<div>
+						<label>Cord Clearance Height <span>(50~200mm)</span></label>
+						<input
+							name="CordClearanceHeight"
+							type="text"
+							value="50mm"
+							required
+						>
+					</div>
+
+					<div>
+						<label>Hole Diameter <span>(6~10mm)</span></label>
+						<input
+							name="HoleDiameter"
+							type="text"
+							value="8mm"
+							required
+						>
+					</div>
+
+					<div>
+						<label>Hole Inset <span>(>=15mm)</span></label>
+						<input
+							name="HoleInset"
+							type="text"
+							value="20mm"
+							required
+						>
+					</div>
+
+					<div>
+						<label>Bracket Width <span>(>=30mm)</span></label>
+						<input
+							name="BracketWidth"
+							type="text"
+							value="40mm"
+							required
+						>
+					</div>
+				</div>
+
+				<div class="actions">
+					<button type="submit">Generate Printable File</button>
+					<p class="hint">A <code>.STEP</code> file will be downloaded, which can be used in 3D printer slicer software</p>
+				</div>
+
+				<p class="notice" role="status" aria-live="polite"></p>
+			</form>
+		</section>
+
 	</main>
+	<script>
+		(function () {
+			const forms = document.querySelectorAll("form");
+
+			if (!forms.length) {
+				return;
+			}
+
+			function setNotice(notice, type, message) {
+				notice.className = "notice " + type;
+				notice.textContent = message;
+			}
+
+			function clearNotice(notice) {
+				notice.className = "notice";
+				notice.textContent = "";
+			}
+
+			for (const form of forms) {
+				form.addEventListener("submit", async function (event) {
+					event.preventDefault();
+
+					const currentForm = event.currentTarget;
+					const notice = currentForm.querySelector(".notice");
+					const submitButton = event.submitter || currentForm.querySelector("button[type='submit']");
+
+					if (!(currentForm instanceof HTMLFormElement) || !notice || !submitButton) {
+						return;
+					}
+
+					clearNotice(notice);
+
+					submitButton.disabled = true;
+
+					const previousText = submitButton.textContent;
+
+                    submitButton.textContent = "Generating Printable File...";
+
+					const actionUrl = currentForm.getAttribute("action") || "";
+					const formData = new FormData(currentForm);
+					const query = new URLSearchParams(formData);
+					const requestUrl = actionUrl + "?" + query.toString();
+
+					try {
+						const response = await fetch(requestUrl, {
+							method: "GET",
+							headers: {
+								"Accept": "application/step, application/json"
+							}
+						});
+
+						if (!response.ok) {
+							let errorMessage = "Generation failed. Please check your values and try again.";
+							try {
+								const errorData = await response.json();
+								if (errorData && typeof errorData.error === "string" && errorData.error.trim()) {
+									errorMessage = errorData.error.trim();
+								}
+							} catch (jsonError) {
+								void jsonError;
+							}
+							setNotice(notice, "error", errorMessage);
+							return;
+						}
+
+						const stepBlob = await response.blob();
+						const blobUrl = URL.createObjectURL(stepBlob);
+						const downloadLink = document.createElement("a");
+
+                        downloadLink.href = blobUrl;
+						downloadLink.download = "generated.step";
+						document.body.appendChild(downloadLink);
+						downloadLink.click();
+						document.body.removeChild(downloadLink);
+
+						URL.revokeObjectURL(blobUrl);
+
+						setNotice(notice, "success", "Your download will begin automatically. Check that your browser doesn't block downloads");
+					} catch (error) {
+						setNotice(notice, "error", "The generation service did not respond. Please try again later");
+						void error;
+					} finally {
+						submitButton.disabled = false;
+						submitButton.textContent = previousText;
+					}
+				});
+			}
+		})();
+	</script>
 </body>
 </html>
