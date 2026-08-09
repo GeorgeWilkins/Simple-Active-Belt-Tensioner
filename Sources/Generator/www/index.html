@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SABT Printables Generator</title>
+	<style>
+		/*@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap");*/
+        @import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+
+		:root {
+			--bg: #0f1115;
+			--surface: #171b22;
+			--ink: #e8edf2;
+			--muted: #a8b1bd;
+			--brand: #2a9d8f;
+			--brand-hover: #39b8a7;
+			--stroke: #2b3240;
+			--shadow: rgba(0, 0, 0, 0.45);
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			font-family: "Urbanist", "Segoe UI", sans-serif;
+			color: var(--ink);
+			background:
+				radial-gradient(circle at 20% 10%, #1e2a35 0%, transparent 45%),
+				radial-gradient(circle at 85% 70%, #1e2a35 00%, transparent 60%),
+				var(--bg);
+			min-height: 100vh;
+		}
+
+		main {
+			max-width: 920px;
+			margin: 0 auto;
+			padding: 2rem 1rem 3rem;
+		}
+
+        bold {
+            font-weight: 700;
+        }
+
+		h1 {
+			margin: 0;
+			font-size: clamp(1.8rem, 4vw, 2.8rem);
+            text-align: center;
+		}
+
+		.intro {
+			color: var(--muted);
+			margin-top: 0.75rem;
+			line-height: 1.5;
+            text-align: justify;
+		}
+
+		.model-form {
+			margin-top: 1.5rem;
+			background: var(--surface);
+			border: 1px solid var(--stroke);
+			border-radius: 16px;
+			box-shadow: 0 14px 30px var(--shadow);
+			padding: 1.25rem;
+		}
+
+		.model-form h2 {
+			margin: 0;
+			font-size: 1.15rem;
+		}
+
+        .model-form img {
+            float: right;
+            width: 30%;
+            margin: 0.75rem 0;
+        }
+
+		.source-note {
+			margin: 0.5rem 0 1rem;
+			color: var(--muted);
+			word-break: break-word;
+			line-height: 1.45;
+		}
+
+		.source-note a {
+			color: #84d7ff;
+			text-decoration-thickness: 1px;
+		}
+
+		.grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+			gap: 0.9rem;
+		}
+
+		label {
+			display: block;
+			font-size: 0.92rem;
+			font-weight: 500;
+			margin-bottom: 0.35rem;
+		}
+
+        label span {
+            font-weight: 400;
+            color: var(--muted);
+        }
+
+		input[type="text"] {
+			width: 100%;
+			border: 1px solid #3b4658;
+			border-radius: 10px;
+			padding: 0.62rem 0.7rem;
+			font: inherit;
+			background: #10151d;
+			color: var(--ink);
+		}
+
+		input[type="text"]:focus {
+			outline: 2px solid #8ecae6;
+			outline-offset: 1px;
+			border-color: #8ecae6;
+		}
+
+		.actions {
+			margin-top: 1rem;
+			display: flex;
+			gap: 0.75rem;
+			flex-wrap: wrap;
+			align-items: center;
+		}
+
+		button {
+			appearance: none;
+			border: 0;
+			border-radius: 999px;
+			background: var(--brand);
+			color: #ffffff;
+			font: inherit;
+			font-weight: 700;
+			letter-spacing: 0.01em;
+			padding: 0.66rem 1.1rem;
+			cursor: pointer;
+			transition: background-color 120ms ease;
+		}
+
+		button:hover {
+			background: var(--brand-hover);
+		}
+
+		.hint {
+			margin: 0;
+			color: var(--muted);
+			font-size: 0.92rem;
+		}
+
+		.notes {
+			margin-top: 1rem;
+			font-size: 0.9rem;
+			color: var(--muted);
+			border-top: 1px dashed var(--stroke);
+			padding-top: 0.8rem;
+			line-height: 1.45;
+		}
+
+        code {
+            font-family: monospace;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.1rem 0.25rem 0.1rem 0.1rem;
+            border-radius: 4px;
+            vertical-align: 0.04em;
+        }
+
+	</style>
+</head>
+<body>
+	<main>
+		<img class="title-logo" src="logo.svg" alt="Simple Active Belt Tensioner logo">
+		<h1>Printables Generator</h1>
+		<p class="intro">If you need to customise any of the <bold>SABT</bold> parts for your rig, you can do so here without needing to install or learn <bold>FreeCAD</bold>. Enter the desired measurements and a <code>.STEP</code> file will be generated and downloaded automatically.</p>
+
+		<section class="model-form">
+            <img src="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/Sources/Printables/Motor%20Brackets/For%20Aluminium%20Profile%20Face%20(Parametric).png" alt="Preview" />
+			<h2>Motor Bracket for Aluminium Profile Face</h2>
+			<p class="source-note">
+				Parametric Source File:
+				<strong>
+					<a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/Sources/Printables/Motor%20Brackets/For%20Aluminium%20Profile%20Face%20(Parametric).FCStd" target="_blank" rel="noopener noreferrer">Motor Brackets/For Aluminium Profile Face (Parametric).FCStd</a>
+				</strong>
+			</p>
+
+			<form
+				action="https://simple-active-belt-tensioner-step-generator-287288570077.europe-west1.run.app"
+				method="get"
+			>
+				<input type="hidden" name="Source" value="Motor Brackets/For Aluminium Profile Face (Parametric).FCStd">
+
+				<div class="grid">
+					<div>
+						<label for="DesiredClearanceHeight">Desired Clearance Height <span>(50~200mm)</span></label>
+						<input
+							id="DesiredClearanceHeight"
+							name="DesiredClearanceHeight"
+							type="text"
+							value="100mm"
+							required
+						>
+					</div>
+
+					<div>
+						<label for="ProfileHoleDiameter">Profile Hole Diameter <span>(6~12mm)</span></label>
+						<input
+							id="ProfileHoleDiameter"
+							name="ProfileHoleDiameter"
+							type="text"
+							value="8mm"
+							required
+						>
+					</div>
+
+					<div>
+						<label for="ProfileHoleSpacing">Profile Hole Spacing <span>(>=30mm)</span></label>
+						<input
+							id="ProfileHoleSpacing"
+							name="ProfileHoleSpacing"
+							type="text"
+							value="90mm"
+							required
+						>
+					</div>
+
+					<div>
+						<label for="ProfileOuterWidth">Profile Outer Width <span>(>=40mm)</span></label>
+						<input
+							id="ProfileOuterWidth"
+							name="ProfileOuterWidth"
+							type="text"
+							value="120mm"
+							required
+						>
+					</div>
+				</div>
+
+				<div class="actions">
+					<button type="submit">Generate Printable File</button>
+					<p class="hint">A <code>.STEP</code> file will be downloaded, which can be used in 3D printer slicer software</p>
+				</div>
+			</form>
+
+			<p class="notes">
+				More parts from the project will be added here as they are updated to offer parametric input. If you find
+                you cannot customise a part in a way that you need, please 
+                <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/discussions">start a discussion</a>
+                on the GitHub repository.
+			</p>
+		</section>
+	</main>
+</body>
+</html>
