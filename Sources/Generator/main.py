@@ -21,6 +21,23 @@ FREECAD_SCRIPT = os.environ.get("FREECAD_SCRIPT", "freecad.py")
 ALLOWED_ORIGIN = os.environ.get("ALLOWED_ORIGIN", "https://georgewilkins.github.io")
 
 
+def _stderr_has_fatal_error(stderr_text):
+    if not stderr_text:
+        return False
+
+    text = str(stderr_text)
+    lowered = text.lower()
+
+    fatal_markers = (
+        "traceback (most recent call last)",
+        "<class 'runtimeerror'>",
+        "runtimeerror:",
+        "<class 'exception'>",
+        "exception:",
+    )
+    return any(marker in lowered for marker in fatal_markers)
+
+
 def _is_origin_allowed(origin):
     if not origin:
         return False
@@ -274,7 +291,7 @@ def generate(request):
             except Exception:
                 report_data = None
 
-        if run.stderr and run.stderr.strip():
+        if _stderr_has_fatal_error(run.stderr):
             return respond(make_response(
                 jsonify(
                     {
