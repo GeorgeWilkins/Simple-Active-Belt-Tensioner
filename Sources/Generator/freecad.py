@@ -44,19 +44,39 @@ def _is_distance_property(property_type):
     )
 
 
+def _is_angle_property(property_type):
+    return (
+        "PropertyAngle" in property_type
+        or "PropertyAngleConstraint" in property_type
+    )
+
+
+def _is_quantity_property(property_type):
+    return _is_distance_property(property_type) or _is_angle_property(property_type)
+
+
+def _normalize_quantity_string(string_value):
+    normalized = string_value.strip()
+    if normalized.endswith("°"):
+        normalized = f"{normalized[:-1].strip()} deg"
+    return normalized
+
+
 def _coerce_value_for_property(freecad_varset, key, raw_value):
     property_type = _property_type(freecad_varset, key)
 
-    if _is_distance_property(property_type):
+    if _is_quantity_property(property_type):
         if isinstance(raw_value, (int, float)):
             return FreeCAD.Units.Quantity(str(raw_value))
 
-        string_value = str(raw_value).strip()
+        string_value = _normalize_quantity_string(str(raw_value))
         try:
             return FreeCAD.Units.Quantity(string_value)
         except Exception as error:
+            expected = "distance" if _is_distance_property(property_type) else "angle"
             raise RuntimeError(
-                f"Parameter `{key}` is not a valid FreeCAD format (expects values like `10 mm`, `1.5 in`, `2 cm`)"
+                f"Parameter `{key}` is not a valid FreeCAD {expected} format "
+                f"(examples: `10 mm`, `1.5 in`, `2 cm`, `90 deg`, `90°`)"
             ) from error
 
     return _convert_value(raw_value)
@@ -81,7 +101,7 @@ def _value_applied(freecad_varset, key, expected_value):
         return False
 
     property_type = _property_type(freecad_varset, key)
-    if _is_distance_property(property_type):
+    if _is_quantity_property(property_type):
         expected_quantity = _quantity_value(expected_value)
         actual_quantity = _quantity_value(actual_value)
 
