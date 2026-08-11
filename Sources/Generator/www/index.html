@@ -238,16 +238,16 @@
 	<main>
 		<img class="title-logo" src="logo.svg" alt="Simple Active Belt Tensioner logo">
 		<h1>Printables Generator</h1>
-		<p class="intro">If you need to customise <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner" target="_blank" rel="noreferrer">SABT</a> parts for your rig, you can do so here without needing to install or learn <a href="https://www.freecad.org/" target="_blank" rel="noreferrer">FreeCAD</a>. Pick a part to customise from the list below and enter the values that match your rig design. More parts and customisation options will be added over time...</p>
+		<p class="intro">If you need to customise <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner" target="_blank" rel="noreferrer">SABT</a> parts for your sim rig, you can do so here without needing to install or learn <a href="https://www.freecad.org/" target="_blank" rel="noreferrer">FreeCAD</a>. Pick a part to customise from the list below and enter the values that match your requirements. More parts and customisation options will be added over time...</p>
 
 		<section>
             <img src="Motor%20Brackets%20For%20Aluminium%20Profile/Preview.png" alt="Preview" />
-			<h2><strong>Motor Bracket</strong> for <strong>Aluminium Profile</strong></h2>
-            <p>This is the bracket that attaches each tensioner motor to your <strong>aluminium profile</strong>. You'll need to print <strong>two</strong> of these.</p>
-            <p>The design can be customised to be mounted to the <strong>face</strong> or <strong>edge</strong>/<strong>corner</strong> of your aluminium profile. In both cases it requires <strong>two T-slots</strong> to bolt onto; either on the same or perpendicular faces.</p>
+			<h2><strong>Motor Bracket</strong> for <strong>Aluminium Profile</strong> Frames</h2>
+            <p>This is the bracket that attaches each tensioner motor to your <strong>aluminium profile</strong>. You'll need to print <strong>two</strong> of these, but they are symmetrical; so there is no need to mirror one of the prints.</p>
+            <p>The design can be customised to be mounted to the <strong>face</strong> or <strong>edge</strong>/<strong>corner</strong> of your aluminium profile. In both cases it requires <strong>two T-slots</strong> to bolt onto; either on the same or perpendicular faces, depending on your chosen mounting option.</p>
 			<p>Once you've entered and submitted the appropriate values, a <code>.STEP</code> file will be downloaded. This can be used in most 3D printer slicer software.</p>
 			<p class="source">
-				Source File: <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/issue-76/Sources/Printables/Motor%20Brackets/For%20Aluminium%20Profile%20(Parametric).FCStd" target="_blank" rel="noreferrer">Motor Brackets/For Aluminium Profile (Parametric).FCStd</a>
+				Source File: <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/Sources/Printables/Motor%20Brackets/For%20Aluminium%20Profile%20(Parametric).FCStd" target="_blank" rel="noreferrer">Motor Brackets/For Aluminium Profile (Parametric).FCStd</a>
 			</p>
 
 			<form
@@ -261,12 +261,12 @@
 						<img src="Motor%20Brackets%20For%20Aluminium%20Profile/Base%20Angle.svg" alt="Base Angle" />
 						<h3>
 							Base Angle <span class="range"> (90~180°)</span>
-							<span class="presets">
+							<!--<span class="presets">
 								<button type="button" class="preset-button" onclick="this.closest('.variable').querySelector('input[name=BaseAngle]').value = '90°';">Set For Edge Mounting</button>
 								<button type="button" class="preset-button" onclick="this.closest('.variable').querySelector('input[name=BaseAngle]').value = '180°';">Set For Face Mounting</button>
-							</span>
+							</span>-->
 						</h3>
-						<p class="hint">This bracket supports two types of mounting. Use <code>90°</code> for <strong>edge</strong>/<strong>corner</strong> mounting and <code>180°</code> for <strong>face</strong> mounting. Alternatively use any angle within that range for more unusual rig frames with angled profile</p>
+						<p class="hint">This bracket supports two types of mounting. Use <code>90°</code> for <strong>edge</strong>/<strong>corner</strong> mounting and <code>180°</code> for <strong>face</strong> mounting. Alternatively use any angle within that range for more unusual rig frames with <strong>angled profile</strong></p>
 						<input
 							name="BaseAngle"
 							type="text"
@@ -288,30 +288,6 @@
 						>
 					</div>
 					<div class="variable">
-						<img src="Motor%20Brackets%20For%20Aluminium%20Profile/Clearance%20Height.svg" alt="Clearance Height" />
-						<h3>Clearance Height <span class="range">(50~200mm)</span></h3>
-						<p class="hint">How far from the profile the cord should exit the motor pulley. This must be at least <code>50mm</code> for motor drum clearance; higher values will create weaker brackets unless <strong>Base Width</strong> is also increased (and even then, maximum height is limited)</p>
-						<input
-							name="ClearanceHeight"
-							type="text"
-							aria-label="Clearance Height"
-							value="50mm"
-							required
-						>
-					</div>
-					<div class="variable">
-						<img src="Motor%20Brackets%20For%20Aluminium%20Profile/Hole%20Diameter.svg" alt="Hole Diameter" />
-						<h3>Hole Diameter <span class="range">(6~10mm)</span></h3>
-						<p class="hint">The size of the bolt holes for mounting (typically <code>8mm</code> for <code>M8</code>). A modest <code>0.2mm</code> clearance is automatically added when generating the holes, so you don't need to include that in the value you provide</p>
-						<input
-							name="HoleDiameter"
-							type="text"
-							aria-label="Hole Diameter"
-							value="8mm"
-							required
-						>
-					</div>
-					<div class="variable">
 						<img src="Motor%20Brackets%20For%20Aluminium%20Profile/Hole%20Spacing.svg" alt="Hole Spacing" />
 						<h3>Hole Spacing <span class="range">(>=30mm)</span></h3>
 						<p class="hint">The distance between the mounting holes. For <strong>face</strong> mounting this is usually equal to the profile slot spacing. For <strong>edge</strong>/<strong>corner</strong> mounting this is measured <em>around the corner</em>, so the <strong>hole inset</strong> from the profile edge is <code>Hole Spacing x 0.5</code></p>
@@ -323,6 +299,30 @@
 							required
 						>
 					</div>
+					<div class="variable">
+						<img src="Motor%20Brackets%20For%20Aluminium%20Profile/Hole%20Diameter.svg" alt="Hole Diameter" />
+						<h3>Hole Diameter <span class="range">(6~10mm)</span></h3>
+						<p class="hint">The size of the bolt holes for mounting (typically <code>8mm</code> for <code>M8</code>). A modest <code>0.2mm</code> clearance is automatically added when generating the holes (for printer inaccuracies), so you don't need to account for that in the value you provide</p>
+						<input
+							name="HoleDiameter"
+							type="text"
+							aria-label="Hole Diameter"
+							value="8mm"
+							required
+						>
+					</div>
+					<div class="variable">
+						<img src="Motor%20Brackets%20For%20Aluminium%20Profile/Clearance%20Height.svg" alt="Clearance Height" />
+						<h3>Clearance Height <span class="range">(50~200mm)</span></h3>
+						<p class="hint">How far from the profile the cord should exit the motor pulley. This must be at least <code>50mm</code> for the motor drum to clear the profile; higher values will create weaker brackets unless <code>Base Width</code> is also increased (and even then, greater heights will flex under load)</p>
+						<input
+							name="ClearanceHeight"
+							type="text"
+							aria-label="Clearance Height"
+							value="50mm"
+							required
+						>
+					</div>
 				</div>
 
 				<div class="actions">
@@ -331,6 +331,20 @@
 
 				<p class="notice" role="status" aria-live="polite"></p>
 			</form>
+		</section>
+
+		<section>
+			<h2><strong>Motor Bracket</strong> for <strong>Tubular Steel</strong> Frames</h2>
+			<p class="source">
+				Under Development; for now please use the <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/Printables">premade designs</a>
+			</p>
+		</section>
+
+		<section>
+			<h2><strong>Belt Roller</strong> for Seat Belt Guide Holes</h2>
+			<p class="source">
+				Under Development; for now please use the <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/Printables">premade designs</a>
+			</p>
 		</section>
 
 	</main>
