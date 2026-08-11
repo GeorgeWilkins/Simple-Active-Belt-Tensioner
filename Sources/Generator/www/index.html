@@ -206,6 +206,7 @@
 			border-radius: 10px;
 			font-size: 0.92rem;
 			line-height: 1.4;
+			white-space: pre-line;
 			border: 1px solid transparent;
 		}
 
@@ -257,40 +258,39 @@
 
 				<div>
 					<div class="variable">
-						<img src="Motor%20Brackets%20For%20Aluminium%20Profile/Leg%20Angle.svg" alt="Leg Angle" />
+						<img src="Motor%20Brackets%20For%20Aluminium%20Profile/Base%20Angle.svg" alt="Base Angle" />
 						<h3>
-							Leg Angle <span class="range"> (90~180°)</span>
+							Base Angle <span class="range"> (90~180°)</span>
 							<span class="presets">
-								<button type="button" class="preset-button" onclick="this.closest('.variable').querySelector('input[name=LegAngle]').value = '90°';">Set For Edge Mounting</button>
-								<button type="button" class="preset-button" onclick="this.closest('.variable').querySelector('input[name=LegAngle]').value = '180°';">Set For Face Mounting</button>
+								<button type="button" class="preset-button" onclick="this.closest('.variable').querySelector('input[name=BaseAngle]').value = '90°';">Set For Edge Mounting</button>
+								<button type="button" class="preset-button" onclick="this.closest('.variable').querySelector('input[name=BaseAngle]').value = '180°';">Set For Face Mounting</button>
 							</span>
 						</h3>
 						<p class="hint">This bracket supports two types of mounting. Use <code>90°</code> for <strong>edge</strong>/<strong>corner</strong> mounting and <code>180°</code> for <strong>face</strong> mounting. Alternatively use any angle within that range for more unusual rig frames with angled profile</p>
 						<input
-							id="LegAngle"
-							name="LegAngle"
+							name="BaseAngle"
 							type="text"
-							aria-label="Leg Angle"
+							aria-label="Base Angle"
 							value="180°"
 							required
 						>
 					</div>
 					<div class="variable">
-						<img src="Motor%20Brackets%20For%20Aluminium%20Profile/Leg%20Width.svg" alt="Leg Width" />
-						<h3>Leg Width <span class="range">(>=30mm)</span></h3>
-						<p class="hint">How wide each bracket leg should be. For either mounting type, this would typically be <em>equal to</em> your <strong>Hole Spacing</strong> value. For <strong>edge</strong>/<strong>corner</strong> mounting this may be equal to the total width or depth of your profile</p>
+						<img src="Motor%20Brackets%20For%20Aluminium%20Profile/Base%20Width.svg" alt="Base Width" />
+						<h3>Base Width <span class="range">(>=60mm)</span></h3>
+						<p class="hint">How wide the bracket base should be. For <strong>face</strong> mounting this is often equal to your outer profile width. For <strong>edge</strong>/<strong>corner</strong> mounting this is measured <em>around the corner</em>, rather than directly between the tips of the legs (such that each leg is <code>Base Width x 0.5</code> wide)</p>
 						<input
-							name="LegWidth"
+							name="BaseWidth"
 							type="text"
-							aria-label="Leg Width"
-							value="40mm"
+							aria-label="Base Width"
+							value="60mm"
 							required
 						>
 					</div>
 					<div class="variable">
 						<img src="Motor%20Brackets%20For%20Aluminium%20Profile/Clearance%20Height.svg" alt="Clearance Height" />
 						<h3>Clearance Height <span class="range">(50~200mm)</span></h3>
-						<p class="hint">How far from the profile the cord should exit the motor pulley. This must be at least <code>50mm</code> for motor drum clearance; higher values will create weaker brackets unless <strong>Leg Width</strong> is also increased (and even then, maximum height is limited)</p>
+						<p class="hint">How far from the profile the cord should exit the motor pulley. This must be at least <code>50mm</code> for motor drum clearance; higher values will create weaker brackets unless <strong>Base Width</strong> is also increased (and even then, maximum height is limited)</p>
 						<input
 							name="ClearanceHeight"
 							type="text"
@@ -314,12 +314,12 @@
 					<div class="variable">
 						<img src="Motor%20Brackets%20For%20Aluminium%20Profile/Hole%20Spacing.svg" alt="Hole Spacing" />
 						<h3>Hole Spacing <span class="range">(>=30mm)</span></h3>
-						<p class="hint">The centre-to-centre distance between the mounting holes. For <strong>face</strong> mounting this is usually the slot spacing of your aluminium profile. For <strong>edge</strong>/<strong>corner</strong> mounting this is measured <em>around the corner</em>, rather than directly between the holes</p>
+						<p class="hint">The distance between the mounting holes. For <strong>face</strong> mounting this is usually equal to the profile slot spacing. For <strong>edge</strong>/<strong>corner</strong> mounting this is measured <em>around the corner</em>, so the <strong>hole inset</strong> from the profile edge is <code>Hole Spacing x 0.5</code></p>
 						<input
 							name="HoleSpacing"
 							type="text"
 							aria-label="Hole Spacing"
-							value="40mm"
+							value="30mm"
 							required
 						>
 					</div>
@@ -350,6 +350,25 @@
 			function clearNotice(notice) {
 				notice.className = "notice";
 				notice.textContent = "";
+			}
+
+			function _stripAnsi(text) {
+				return String(text).replace(/\u001b\[[0-9;]*m/g, "");
+			}
+
+			function _extractStderr(errorData) {
+				if (!errorData || typeof errorData.stderr !== "string") {
+					return "";
+				}
+
+				const cleaned = _stripAnsi(errorData.stderr).trim();
+				if (!cleaned) {
+					return "";
+				}
+
+				const maxLength = 1000;
+				const clipped = cleaned.length > maxLength ? cleaned.slice(0, maxLength).trimEnd() + "..." : cleaned;
+				return clipped;
 			}
 
 			for (const form of forms) {
@@ -387,13 +406,19 @@
 
 						if (!response.ok) {
 							let errorMessage = "Generation failed. Please check your values and try again.";
+							let stderrMessage = "";
 							try {
 								const errorData = await response.json();
 								if (errorData && typeof errorData.error === "string" && errorData.error.trim()) {
 									errorMessage = errorData.error.trim();
 								}
+								stderrMessage = _extractStderr(errorData);
 							} catch (jsonError) {
 								void jsonError;
+							}
+
+							if (stderrMessage) {
+								errorMessage += "\n\nStderr:\n" + stderrMessage;
 							}
 							setNotice(notice, "error", errorMessage);
 							return;
