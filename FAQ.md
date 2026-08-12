@@ -18,7 +18,7 @@ Builders also have technical questions about the setup and operation of the kit,
     - [Which USB port should I use?](#which-usb-port-should-i-use)
     - [Which power connector should I use?](#which-power-connector-should-i-use)
     - [Which position should the switch on the control board be in?](#which-position-should-the-switch-on-the-control-board-be-in)
-    - [Which serial/COM port should I select in the SimHub plugin?](#which-serial--com-port-should-i-select-in-the-simhub-plugin)
+    - [Which serial/COM port should I select in the SimHub plugin?](#which-serial-or-com-port-should-i-select-in-the-simhub-plugin)
     - [Why are the motors not being detected by the plugin?](#why-are-the-motors-not-being-detected-by-the-plugin)
 - [Performance & Effects](#performance--effects)
     - [I'm not getting much force from the belts](#im-not-getting-much-force-from-the-belts)
@@ -105,7 +105,7 @@ It is most likely that you have a power supply with a DC barrel plug, so that is
 
 The small sliding switch near the centre of the control board is used to select whether the motors are controlled by the onboard ESP32 microcontroller or by the host computer (via the USB port). For our purposes, it should be set to the `USB` position; sliding it over to the position closest to the USB and power ports.
 
-### Which serial/COM port should I select in the SimHub plugin?
+### Which serial or COM port should I select in the SimHub plugin?
 
 The plugin will attempt to automatically identify and select your control board's serial port.
 
