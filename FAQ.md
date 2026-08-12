@@ -1,11 +1,15 @@
 # Frequently Asked Questions
 
-Naturally potential SABT builders have questions about the kit before committing to ordering the parts.
+Naturally potential **SABT** builders have questions about the kit before committing to a build.
 
 Builders also have technical questions about the setup and operation of the kit, or may encounter issues during assembly or use.
 
 - [General Pre-Build Queries](#general-pre-build-queries)
     - [How long does it take to build the kit?](#how-long-does-it-take-to-build-the-kit)
+    - [How does it perform compared to other belt tensioners?](#how-does-it-perform-compared-to-other-belt-tensioners)
+    - [What is the latency like?](#what-is-the-latency-like)
+    - [How long will it last?](#how-long-will-it-last)
+    - [Who are you and what is your background?](#who-are-you-and-what-is-your-background)
 - [Component Selection](#component-selection)
     - [Can I use a different type of motor?](#can-i-use-a-different-type-of-motor)
     - [Can I use a different control board?](#can-i-use-a-different-control-board)
@@ -40,13 +44,55 @@ SABT was designed with non-technical builders in mind, so the parts count was de
 
 The SimHub plugin takes care of all of the software, and is simply copy+pasted into your SimHub installation folder.
 
+### How does it perform compared to other belt tensioners?
+
+**SABT** is a _force-based_ system which directly maps telemetry forces to output, so should provide a more realistic experience than _position/angle-based_ systems.
+
+It is also _direct-drive_, so operates silently and smoothly. This permits it to act with a 'spring' effect and auto-tension the belts, meaning you don't have to pre-tighten your harness.
+
+The maximum force output of **SABT** is roughly 10Kg per belt. This is roughly half that of the [QS BT-1](https://qubicsystem.com/product/qs-bt1).
+
+Some other DIY options offer considerably more power; particularly those using larger geared NEMA-format motors.
+
+Remember that **SABT** is designed to be _low-cost_ and _easy-to-build_. It is not intended to compete with high-end options costing many times more. If you are seeking maximum performance, you should consider other options.
+
+### What is the latency like?
+
+Testing this accurately requires equipment I do not have; but I _have_ created a simple [demonstration video](https://youtube.com/shorts/pNn5PLNhad8) that uses the audible 'clack' of my shifter paddles to illustrate how quickly the motors respond to the change in acceleration caused by the gear-change.
+
+The video shows this taking _roughly_ two frames at 60fps, which equates to `33ms`.
+
+However that period is measured from the very start of the audible 'clack' waveform, which is some time _before_ the input is sent to the game and the resulting telemetry is made available by SimHub. Therefore the actual latency will be lower than that.
+
+Total latency will vary depending on the game and your particular system.
+
+The minimum achievable latency is constrained by _SimHub's_ telemetry update rate. For the (required) _licensed version_ this is `60Hz` (or `16.6ms`).
+
+### How long will it last?
+
+At the time of writing the project has only been public a few months, so long-term reliability is unknown. The **SABT** SimHub plugin _does not_ track usage, so I have no idea how heavily it is being used by the community.
+
+There are at least **thirty** builds in the wild and I have yet to receive reports of any motor or controller failures. We are theoretically using them within their rated specifications, but probably not in the intended manner.
+
+Motor or controller failures _may_ potentially be covered under your retailer's returns policy or manufacturer's warranty; but I would not rely on that being the case. Obviously as an open-source project, the authors provide absolutely no warranty, guarantees, compensation or responsibility for failed parts.
+
+Assume that you may lose your investment; if that is not acceptable to you, I suggest paying a much higher price up-front for a commercial turnkey product with a full warranty and support.
+
+### Who are you and what is your background?
+
+My name is _George Wilkins_. I'm located in the United Kingdom and have been a professional software developer (web technology) for 20 years. One of my interests is hobby engineering and I'm always working on multiple projects across various disciplines. I recently got back into sim racing (after a couple decades away) and  noticed a few gaps in the peripherals market while building [my own rig](https://photos.app.goo.gl/Egvd6EPmVJsZK7Hn9).
+
+I developed the [BDH Active Shifter](https://bdhracesim.com/uk/products/active/), which started off as a modification of the [BDH H1](https://bdhracesim.com/uk/products/h1/) and turned into a formal collaboration with BDH.
+
+Towards the end of that project I started independently developing **SABT**, with the goal of making _active belt tensioning_ more accessible to the sim racing community.
+
 ## Component Selection
 
 ### Can I use a different type of motor?
 
 The BOM states the [Waveshare DDSM115](https://www.waveshare.com/wiki/DDSM115) or [DFRobot M0601](https://www.dfrobot.com/product-3077.html) motors should be used. These are both rebranded versions of the same [Direct Drive Tech](https://shop.directdrive.com) motor, which appears to be designated the [M0601C-111](https://shop.directdrive.com/products/m0601c-111-direct-drive-motor).
 
-I developed the SABT kit using the `DDSM115`. Other builders have since reported success with the `M0601`. There may be other rebrands of the same motor available, but they have not been tested. If you find one; let me know.
+I developed the **SABT** kit using the `DDSM115`. Other builders have since reported success with the `M0601`. There may be other rebrands of the same motor available, but they have not been tested. If you find one; let me know.
 
 As for other types of motors; the printed parts, electronics and SimHub plugin are designed to work _only_ with the two motors noted above. You would have to modify or replace _all_ of these to make the tensioner work with other motor hardware.
 
@@ -87,7 +133,7 @@ Various designs are available in the [Printables](/Printables/Motor%20Brackets) 
 
 ### Which USB port should I use?
 
-The Waveshare control board has two USB ports, but only one of them is used for the SABT kit.
+The Waveshare control board has two USB ports, but only one of them is used for the **SABT** kit.
 
 The port we use is essentially a direct connection to the motor drivers via a USB to RS485 adapter that's built into the Waveshare control board. It allows a host PC to send commands directly to the motor drivers.
 
