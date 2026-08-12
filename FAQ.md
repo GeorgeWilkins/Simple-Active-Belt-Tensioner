@@ -18,7 +18,7 @@ Builders also have technical questions about the setup and operation of the kit,
     - [Which USB port should I use?](#which-usb-port-should-i-use)
     - [Which power connector should I use?](#which-power-connector-should-i-use)
     - [Which position should the switch on the control board be in?](#which-position-should-the-switch-on-the-control-board-be-in)
-    - [Which serial/COM port should I select in the SimHub plugin?](#which-serialcom-port-should-i-select-in-the-simhub-plugin)
+    - [Which serial/COM port should I select in the SimHub plugin?](#which-serial--com-port-should-i-select-in-the-simhub-plugin)
     - [Why are the motors not being detected by the plugin?](#why-are-the-motors-not-being-detected-by-the-plugin)
 - [Performance & Effects](#performance--effects)
     - [I'm not getting much force from the belts](#im-not-getting-much-force-from-the-belts)
@@ -30,7 +30,7 @@ These are common and anticipated questions and their answers. If you have a ques
 
 ## General Pre-Build Queries
 
-> How long does it take to build the kit?
+### How long does it take to build the kit?
 
 Printing the parts can take several hours, depending on your printer and chosen options.
 
@@ -42,7 +42,7 @@ The SimHub plugin takes care of all of the software, and is simply copy+pasted i
 
 ## Component Selection
 
-> Can I use a different type of motor?
+### Can I use a different type of motor?
 
 The BOM states the [Waveshare DDSM115](https://www.waveshare.com/wiki/DDSM115) or [DFRobot M0601](https://www.dfrobot.com/product-3077.html) motors should be used. These are both rebranded versions of the same [Direct Drive Tech](https://shop.directdrive.com) motor, which appears to be designated the [M0601C-111](https://shop.directdrive.com/products/m0601c-111-direct-drive-motor).
 
@@ -52,7 +52,7 @@ As for other types of motors; the printed parts, electronics and SimHub plugin a
 
 If there is demand, a version of the kit for more powerful motors could be developed; but you'd lose the plug-and-play nature of the current design, requiring a custom PCB to control them.
 
-> Can I use a different control board?
+### Can I use a different control board?
 
 It would be possible to control the DDSM115 motors with a generic RS485-USB adapter board. In fact, that's one of the approaches I considered when designing the kit. However you'd need two of those adapters to run the motors separately (or add custom electonics to support both motors on a single adapter), and the SimHub plugin would need to be modified to support the different control hardware.
 
@@ -62,7 +62,7 @@ If the project becomes particularly popular there's a good chance I'll look at d
 
 ## Assembly & Adjustment
 
-> My pulley covers are not spinning freely
+### My pulley covers are not spinning freely
 
 
 Most likely the bearings are not seated correctly in the pulley covers, or the end of the cord is not quite inside the slot/hole in the centre of the pulley and it's pushing the cover out of alignment. One way to check is to remove the cords and re-attach the covers to see if they spin freely without the cords in place. If they do, then the cords were being pinched somewhere inside the pulleys.
@@ -71,11 +71,11 @@ Reassemble the pulleys and make sure the cords are seated correctly in the pulle
 
 In rare cases, your printed pulley parts may be warped or undersized; in which case you will likely need to reprint them. I suggest [getting in touch](/discussions/new/choose) before doing so, as there may be a simple fix or adjustment that can be made to avoid reprinting.
 
-> The cords are tangling up when not under tension
+### The cords are tangling up when not under tension
 
 With some UHMWPE/Dyneema cords, it is quite easy to twist them during installation. If done excessively, the cords will try to return to their untwisted state when the tensioner is not under load, which can cause them to tangle up. Remove the cords from the pulleys, straighten them out and re-install them, taking care not to twist them during installation.
 
-> The cords or belts are rubbing against the back of my seat
+### The cords or belts are rubbing against the back of my seat
 
 You'll need to print taller motor brackets or add a spacer between your existing brackets and your mounting surface.
 
@@ -83,9 +83,9 @@ Various designs are available in the [Printables](/Printables/Motor%20Brackets) 
 
 ## Setup & Connectivity
 
-> Why are there two USB ports on the control board?
+### Why are there two USB ports on the control board?
 
-> Which USB port should I use?
+### Which USB port should I use?
 
 The Waveshare control board has two USB ports, but only one of them is used for the SABT kit.
 
@@ -95,23 +95,23 @@ The other port connects to an ESP32 microcontroller embedded on the control boar
 
 In our case the SimHub plugin does the telemetry and force calculations needed for our belt tensioning, so we don't need to use the ESP32 at all.
 
-> Which power connector should I use?
+### Which power connector should I use?
 
 There are two power connectors on the controller board; a `5.5x2.5mm` DC barrel jack and an `XT60` socket. They are electrically commoned together, so it makes no electrical difference which one you use.
 
 It is most likely that you have a power supply with a DC barrel plug, so that is what you'll use. The `XT60` connector is a better choice otherwise, as it is less likely to come loose when exposed to vibration and movement. However if you make sure to zip-tie (or otherwise secure) the power cable close to the control board, neither connection should be a problem.
 
-> Which position should the switch on the control board be in?
+### Which position should the switch on the control board be in?
 
 The small sliding switch near the centre of the control board is used to select whether the motors are controlled by the onboard ESP32 microcontroller or by the host computer (via the USB port). For our purposes, it should be set to the `USB` position; sliding it over to the position closest to the USB and power ports.
 
-> Which serial/COM port should I select in the SimHub plugin?
+### Which serial/COM port should I select in the SimHub plugin?
 
 The plugin will attempt to automatically identify and select your control board's serial port.
 
 However you may find _multiple_ serial/COM ports listed in the SimHub plugin. If so, it means another device is using the same serial bridge chip as our control board. That's not a problem; just unplug the control board briefly to see which port disappears from the list, then plug it back in and select that port in the plugin when it reappears in the list.
 
-> Why are the motors not being detected by the plugin?
+### Why are the motors not being detected by the plugin?
 
 Most connectivity problems happen while first setting up the motors. Once they're detected and configured, things should work reliably.
 
@@ -129,9 +129,9 @@ You can verify that the motors are powered by trying to turn them manually (by t
 
 ## Performance & Effects
 
-> I'm not getting much force from the belts
+### I'm not getting much force from the belts
 
-> Force effects seem to be sluggish or muted
+### Force effects seem to be sluggish or muted
 
 Have a look at the [adjustment instructions](INSTRUCTIONS.md#adjustment) and then:
 - Check that the cords are coming out of the pulleys at a perpendicular angle to the motor axles. They should not be touching the sides of the hole in the pulley (viewed from the side of the motor)
@@ -139,13 +139,13 @@ Have a look at the [adjustment instructions](INSTRUCTIONS.md#adjustment) and the
 - Check if your cord or belts are snagging on anything; consider adding low-friction tape to your seat's belt holes to reduce belt friction or add the [Belt Rollers](INSTRUCTIONS.md#belt-rollers) for a smoother experience
 - Re-tune the telemetry handling and effects settings for the game (and potentially specific vehicle class) in the SimHub plugin
 
-> Are flight sims supported?
+### Are flight sims supported?
 
 Strictly speaking _any_ games fully supported by SimHub are automatically supported by the SABT plugin, as it uses the normalised telemetry data from SimHub's API. However the plugin is primarily designed for sim racing (cars, trucks, etc). The UI and effects sliders are all designed with that in mind and flight-specific effects are not currently implemented.
 
 This may change in a future release; but that will likely be a new major version with a sigificant rework of the plugin's UI and effects handling. If you are interested in this, please [add your voice](https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/issues/38) to the existing issue regarding this functionality. The more interest there is, the higher priority it will be given.
 
-> Why can't I feel engine vibrations or kerb hits?
+### Why can't I feel engine vibrations or kerb hits?
 
 The tensioner is designed to simulate sustained forces such as braking, acceleration and cornering. It can also simulate large impactful _heave_ events (such as jumps or dips). However it is not intended to simulate high-frequency vibrations or small bumps. That is the job of tactile transducers (or "bass shakers") which are designed specifically to create those effects.
 
