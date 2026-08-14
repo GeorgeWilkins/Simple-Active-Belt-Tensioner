@@ -21,7 +21,7 @@ The rest of the parts can be obtained from virtually anywhere, including [Amazon
 | `7 GBP` | `M2.5` Screw & Nut Set | Eight `M2.5x16` (or `M2.5x18`) + eight `M2.5x10` + six `M2.5x12` + six `M2.5x20` + sixteen `M2.5` nuts | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
 | `5 GBP` | `~1M` UHMWPE/Dyneema Cord | The low-friction high-strength cord for the pulleys (`1.6~2.0MM` Diameter) | (any by-the-metre seller; eBay, etc) |
 | `20 GBP` | `15V` `90W` DC Power Supply | The power supply for the board and motors (standard `5.5x2.5MM` centre-positive barrel plug) | [Amazon UK](https://www.amazon.co.uk/dp/B09RHC7QG9) |
-| `25 GBP` | 5-Point `2"` Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
+| `25 GBP` | 4/5/6-Point `2"` Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
 
 > 📢 **Important:**
 > - The `DDSM115` and `M0601` motors are the same OEM motor, but rebranded versions
