@@ -13,6 +13,7 @@ Builders also have technical questions about the setup and operation of the kit,
 - [Component Selection](#component-selection)
     - [Can I use a different type of motor?](#can-i-use-a-different-type-of-motor)
     - [Can I use a different control board?](#can-i-use-a-different-control-board)
+    - [What ype of harness do I need?](#what-type-of-harness-do-i-need)
 - [Assembly & Adjustment](#assembly--adjustment)
     - [My pulley covers are not spinning freely](#my-pulley-covers-are-not-spinning-freely)
     - [The cords are tangling up when not under tension](#the-cords-are-tangling-up-when-not-under-tension)
@@ -105,6 +106,14 @@ It would be possible to control the DDSM115 motors with a generic RS485-USB adap
 Generally it would be more expensive and complicated than just using the Waveshare control board.
 
 If the project becomes particularly popular there's a good chance I'll look at designing and manufacturing a custom board that integrates everything we need (including the back-driving protection circuitry), but for now the Waveshare board is a good off-the-shelf solution.
+
+### What type of harness do I need?
+
+Conventional wisdom with _active belt tensioners_ is that a five or six-point harness is required to prevent the belts from pulling _upwards_ rather than _into_ your body, with the 'anti-submarine' belt(s) anchoring the harness into the lap (rather than serving as a safety feature in a real vehicle). This is certainly a more realistic setup for simulating race-specification vehicles, but obviously overkill road vehicles that would be fitted with inertia-reel seatbelts.
+
+A number of builders have reported good performance with four-point configurations; specifically 'backpack' style setups where the shoulder straps are anchored directly to the sides of the seat, with nothing connecting each side and no anti-submarine belt. This has been reported to actually enhance the tensioning effects while reducing the hassle and discomfort of a five or six-point harness.
+
+Regardless of your chosen harness configuration, a `2"` (`50mm`) belt width is recommended; as this should pass through all seat belt guide holes, minimises friction and can be accommodated by the project's included belt roller design.
 
 ## Assembly & Adjustment
 
