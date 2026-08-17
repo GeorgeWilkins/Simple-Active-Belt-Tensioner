@@ -94,6 +94,42 @@ def _quantity_value(raw_value):
         return None
 
 
+def _quantity_unit(property_type):
+    if _is_angle_property(property_type):
+        return "deg"
+    return "mm"
+
+
+def _intermediate_quantities(freecad_varset, key, target_value):
+    property_type = _property_type(freecad_varset, key)
+    if not _is_quantity_property(property_type):
+        return [target_value]
+
+    current_value = _quantity_value(getattr(freecad_varset, key))
+    target_numeric_value = _quantity_value(target_value)
+    if current_value is None or target_numeric_value is None:
+        return [target_value]
+
+    difference = target_numeric_value - current_value
+    if abs(difference) <= 5:
+        return [target_value]
+
+    direction = 1 if difference > 0 else -1
+    unit = _quantity_unit(property_type)
+    intermediate_values = []
+    next_value = current_value + direction * 5
+    while (direction > 0 and next_value < target_numeric_value) or (
+        direction < 0 and next_value > target_numeric_value
+    ):
+        intermediate_values.append(
+            FreeCAD.Units.Quantity(f"{next_value} {unit}")
+        )
+        next_value += direction * 5
+
+    intermediate_values.append(target_value)
+    return intermediate_values
+
+
 def _value_applied(freecad_varset, key, expected_value):
     try:
         actual_value = getattr(freecad_varset, str(key))
@@ -138,7 +174,7 @@ def _variable_exists(freecad_varset, key):
     return False
 
 
-def _apply_variables(freecad_varset, variables):
+def _apply_variables(document, freecad_varset, variables):
     applied_variables = []
     skipped_variables = []
     failed_variables = []
@@ -151,7 +187,12 @@ def _apply_variables(freecad_varset, variables):
         coerced_value = _coerce_value_for_property(freecad_varset, key, raw_value)
 
         if hasattr(freecad_varset, key):
-            setattr(freecad_varset, key, coerced_value)
+            for value in _intermediate_quantities(
+                freecad_varset, key, coerced_value
+            ):
+                setattr(freecad_varset, key, value)
+                document.recompute()
+
             if not _value_applied(freecad_varset, key, coerced_value):
                 failed_variables.append(key)
                 continue
@@ -314,7 +355,9 @@ def main():
             if hasattr(freecad_varset, key)
         }
 
-        applied, skipped, failed = _apply_variables(freecad_varset, variables)
+        applied, skipped, failed = _apply_variables(
+            document, freecad_varset, variables
+        )
         if skipped:
             raise RuntimeError(
                 "Unknown or non-writable VarSet parameters: " + ", ".join(sorted(skipped))
