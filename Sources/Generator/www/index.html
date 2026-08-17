@@ -96,7 +96,7 @@
 
 		input[type="text"] {
 			width: 100%;
-			border: 1px solid #3b4658;
+			border: 1px solid #344052;
 			border-radius: 10px;
 			padding: 0.62rem 0.7rem;
 			font: inherit;
@@ -105,9 +105,7 @@
 		}
 
 		input[type="text"]:focus {
-			outline: 2px solid #8ecae6;
-			outline-offset: 1px;
-			border-color: #8ecae6;
+			outline: 2px solid var(--brand);
 		}
 
 		.actions {
@@ -245,11 +243,9 @@
 			<h2><strong>Motor Bracket</strong> for <strong>Aluminium Profile</strong> Frames</h2>
             <p>This is the bracket that attaches each tensioner motor to your <strong>aluminium profile</strong>. You'll need to print <strong>two</strong> of these, but they are symmetrical; so there is no need to mirror one of the prints.</p>
             <p>The design can be customised to be mounted to the <strong>face</strong> or <strong>edge</strong>/<strong>corner</strong> of your aluminium profile. In both cases it requires <strong>two T-slots</strong> to bolt onto; either on the same or perpendicular faces, depending on your chosen mounting option.</p>
-			<p>Once you've entered and submitted the appropriate values, a <code>.STEP</code> file will be downloaded. This can be used in most 3D printer slicer software.</p>
 			<p class="source">
 				Source File: <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/Sources/Printables/Motor%20Brackets/For%20Aluminium%20Profile%20(Parametric).FCStd" target="_blank" rel="noreferrer">Motor Brackets/For Aluminium Profile (Parametric).FCStd</a>
 			</p>
-
 			<form
 				action="https://simple-active-belt-tensioner-step-generator-287288570077.europe-west1.run.app"
 				method="get"
@@ -313,13 +309,13 @@
 					</div>
 					<div class="variable">
 						<img src="Motor%20Brackets%20For%20Aluminium%20Profile/Clearance%20Height.svg" alt="Clearance Height" />
-						<h3>Clearance Height <span class="range">(50~200mm)</span></h3>
-						<p class="hint">How far from the profile the cord should exit the motor pulley. This must be at least <code>50mm</code> for the motor drum to clear the profile; higher values will create weaker brackets unless <code>Base Width</code> is also increased (and even then, greater heights will flex under load)</p>
+						<h3>Clearance Height <span class="range">(55~200mm)</span></h3>
+						<p class="hint">How far from the profile the cord should exit the motor pulley. This must be at least <code>55mm</code> for the motor drum to clear the profile; higher values will create weaker brackets unless <code>Base Width</code> is also increased (and even then, greater heights will flex under load)</p>
 						<input
 							name="ClearanceHeight"
 							type="text"
 							aria-label="Clearance Height"
-							value="50mm"
+							value="55mm"
 							required
 						>
 					</div>
@@ -334,10 +330,53 @@
 		</section>
 
 		<section>
-			<h2><strong>Motor Bracket</strong> for <strong>Tubular Steel</strong> Frames</h2>
+			<img src="Motor%20Brackets%20For%20Tube/Preview.png" alt="Preview" />
+			<h2><strong>Motor Bracket</strong> for <strong>Tube</strong> Frames</h2>
+            <p>This is the bracket that attaches each tensioner motor to your <strong>tubular frame</strong>. You'll need to print <strong>two</strong> of these; one of which <strong>must be mirrored</strong> in your slicer.</p>
+            <p>The design can be customised to the exact <strong>diameter</strong> of your frame tubing, which is typically <code>50mm</code>, <code>2"</code>, <code>25mm</code> or <code>1"</code>.</p>
+			<p>For frame designs where the rear tube touches the floor (supporting the frame weight), this bracket design incorporates a foot to distribute the load.</p>
 			<p class="source">
-				Under Development; for now please use the <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/Printables">premade designs</a>
+				Source File: <a href="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/Sources/Printables/Motor%20Brackets/For%20Tube%20(Parametric).FCStd" target="_blank" rel="noreferrer">Motor Brackets/For Tube (Parametric).FCStd</a>
 			</p>
+			<form
+				action="https://simple-active-belt-tensioner-step-generator-287288570077.europe-west1.run.app"
+				method="get"
+			>
+				<input type="hidden" name="Source" value="Motor Brackets/For Tube (Parametric).FCStd">
+
+				<div>
+					<div class="variable">
+						<img src="Motor%20Brackets%20For%20Tube/Tube%20Diameter.svg" alt="Tube Diameter" />
+						<h3>Tube Diameter <span class="range">(20~51mm)</span></h3>
+						<p class="hint">The outer diameter of your tubing. Ideally you should measure this accurately rather than relying on the manufacturer's stated value.</p>
+						<input
+							name="TubeDiameter"
+							type="text"
+							aria-label="Tube Diameter"
+							value="50mm"
+							required
+						>
+					</div>
+					<div class="variable">
+						<img src="Motor%20Brackets%20For%20Tube/Clearance%20Height.svg" alt="Clearance Height" />
+						<h3>Clearance Height <span class="range">(55~200mm)</span></h3>
+						<p class="hint">How far from the tube the cord should exit the motor pulley. This must be at least <code>55mm</code> for the motor drum to clear the tube.</p>
+						<input
+							name="ClearanceHeight"
+							type="text"
+							aria-label="Clearance Height"
+							value="55mm"
+							required
+						>
+					</div>
+				</div>
+
+				<div class="actions">
+					<button type="submit">Generate Printable File</button>
+				</div>
+
+				<p class="notice" role="status" aria-live="polite"></p>
+			</form>
 		</section>
 
 		<section>
