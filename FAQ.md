@@ -13,6 +13,7 @@ Builders also have technical questions about the setup and operation of the kit,
 - [Component Selection](#component-selection)
     - [Can I use a different type of motor?](#can-i-use-a-different-type-of-motor)
     - [Can I use a different control board?](#can-i-use-a-different-control-board)
+    - [Can I use higher voltages?](#can-i-use-higher-voltages)
     - [What ype of harness do I need?](#what-type-of-harness-do-i-need)
 - [Assembly & Adjustment](#assembly--adjustment)
     - [My pulley covers are not spinning freely](#my-pulley-covers-are-not-spinning-freely)
@@ -106,6 +107,22 @@ It would be possible to control the DDSM115 motors with a generic RS485-USB adap
 Generally it would be more expensive and complicated than just using the Waveshare control board.
 
 If the project becomes particularly popular there's a good chance I'll look at designing and manufacturing a custom board that integrates everything we need (including the back-driving protection circuitry), but for now the Waveshare board is a good off-the-shelf solution.
+
+### Can I use higher voltages?
+
+The recommended `15V` was chosen to protect your motors. I would strongly suggest no more than `19V`.
+
+The motors are _"wide-input"_, meaning they will accept a variety of input voltages between `12V` and `24V`. The _"rated voltage"_ is given as `18V` and `5S LiPo`, because as part of a robotics platform, they're intended to be powered by a battery pack. The control board simply passes the supply voltage through to the motors, so the motors will run at whatever voltage you supply to the board.
+
+Since we're running from an SMPS, we have to pick from the commonly available voltages (e.g. `12V`, `15V`, `19V` or `24V`). Higher voltages for these _FOC_ servo motors result in a more energetic response, but not more torque. In practice, SABT builders have also reported higher operating temperatures at higher voltages.
+
+An additional consideration is _back-driving_ of the motors. This is a situation where the motors are turned by the belts (for example, by you moving forward in your seat, or pulling the belts over your shoulder to fit your harness). The motors convert that mechanical movement into electrical energy, which must be dissipated somewhere (manifesting as a voltage spike).
+
+In a battery-driven application, this is not a problem as the battery can absorb the energy (in effect, _regenerative braking_). In our SMPS-driven setup, without any extra protection circuitry this will typically trigger the OVP/RC features of the power supply. The [back-driving protection unit](INSTRUCTIONS.md#back-driving-protection) was devised to prevent this from happening. However it doesn't _stop_ the voltage spike; it simply blocks it from returning to the supply and instead dumps it into a capacitor. Once the voltage spike has been absorbed and the external mechanical input ceased, the motors draw this back down to the supply voltage and continue as normal.
+
+Running your motors at a higher voltage means any relative spike that occurs will also be higher; potentially exceeding the voltage limits of the motors. This is why I would never run my motors at the maximum `24V` and chose `15V` as a recommended safe operating voltage.
+
+However there is an argument to be made for running at `19V`. This is a _very common_ voltage for laptop power supplies; which means many highy-quality supplies are available for virtually nothing. You probably already have at least one in your home from an old device. A number of SABT builders have reported good results running at `19V`, but this is typically joined by higher operating temperatures. While there are temperature-throttling features built into the plugin software, you may wish to look into active cooling of the motors if you intend to run at this voltage. You'll also want to use suitable filaments for the printed parts, such as PETG or ABS, which are more heat-resistant than PLA.
 
 ### What type of harness do I need?
 
