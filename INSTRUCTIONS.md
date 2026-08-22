@@ -15,19 +15,21 @@ The rest of the parts can be obtained from virtually anywhere, including [Amazon
 
 | Guide Price | Part | Description | Example |
 | - | - | - | - |
-| `60 GBP` `x2` | 2 x `DDSM115` Motors | Waveshare BLDC FOC servo motors | [PiHut UK](https://thepihut.com/products/ddsm115-direct-drive-servo-motor) |
-| `20 GBP` | `DDSM Driver HAT (A)` | Waveshare Controller Board (Version 'A' For `DDSM115` and `DDSM210`) | [PiHut UK](https://thepihut.com/products/ddsm-hub-motor-driver-board) |
+| `60 GBP` `x2` | 2 x `DDSM115` _or_ `M0601` Motors | Waveshare or DFRobot servo motors | [PiHut UK](https://thepihut.com/products/ddsm115-direct-drive-servo-motor) / [Waveshare](https://www.waveshare.com/ddsm115.htm) / [DFRobot](https://www.dfrobot.com/product-3077.html) |
+| `20 GBP` | `DDSM Driver HAT (A)` | Waveshare Controller Board (Version `A`) | [PiHut UK](https://thepihut.com/products/ddsm-hub-motor-driver-board) |
 | `6 GBP` | 2 x `6706` Bearings | `30x37x4mm` bearings for the pulleys | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DN3RW8) |
 | `7 GBP` | `M2.5` Screw & Nut Set | Eight `M2.5x16` (or `M2.5x18`) + eight `M2.5x10` + six `M2.5x12` + six `M2.5x20` + sixteen `M2.5` nuts | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
 | `5 GBP` | `~1M` UHMWPE/Dyneema Cord | The low-friction high-strength cord for the pulleys (`1.6~2.0MM` Diameter) | (any by-the-metre seller; eBay, etc) |
 | `20 GBP` | `15V` `90W` DC Power Supply | The power supply for the board and motors (standard `5.5x2.5MM` centre-positive barrel plug) | [Amazon UK](https://www.amazon.co.uk/dp/B09RHC7QG9) |
-| `25 GBP` | 5-Point `2"` Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
+| `25 GBP` | 4/5/6-Point `2"` Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
 
 > 📢 **Important:**
-> - The `DDSM115` motors are _sometimes_ sold in **pairs**. Make sure you're only buying _two motors_, not _two sets of two_
+> - The `DDSM115` and `M0601` motors are the same OEM motor, but rebranded versions
+> - The motors are _sometimes_ sold in **pairs**. Make sure you're only buying _two motors_, not _two sets of two_
 > - There are multiple motor models in the `DDSMXXX` series. Make sure you're buying the [DDSM115](https://www.waveshare.com/wiki/DDSM115)
-> - There are multiple control board models of similar appearance. Make sure you're buying the [DDSM Driver HAT (A)](https://www.waveshare.com/wiki/DDSM_Driver_HAT_(A))
+> - There are multiple control board models of similar appearance. Make sure you're buying the [DDSM Driver HAT (A)](https://www.waveshare.com/wiki/DDSM_Driver_HAT_(A)) (irrespective of which brand of motor you buy)
 > - If using the _tubular_ motor brackets, you'll need [M5x25mm Clamping Knobs](https://www.amazon.co.uk/dp/B0CP2GQLQJ) and [M5 Nuts (8mm Hex)](https://www.amazon.co.uk/dp/B0FMRFPWJ3) to secure them to the tubing
+> - `15V` is the currently recommended voltage, but some builders are using `19V` (commonly offered by laptop supplies)
 
 ### Belt Rollers
 
@@ -49,9 +51,9 @@ If _not_ using rollers, you can reduce friction (and wear) on your seat's belt l
 
 ### Back-Driving Protection
 
-You are _strongly encouraged_ to assemble and use this, as without it any rapid pulling on the belts may trigger the OVP/OCP within your power supply (as the motors act as _generators_ in this scenario) and disable tensioner functionality until time passes or a manual power supply reset is performed. There are a number of assembly and parts options detailed below. The [printable case](Printables/Back-Driving%20Protection%20Case) is designed to accommodate all of these options.
+You are _strongly encouraged_ to assemble and use this, as without it any rapid pulling on the belts may trigger the OVP/OCP within your power supply (as the motors act as _generators_ in this scenario), disabling tensioner functionality until time passes or a manual power supply reset is performed. There are a number of protection options detailed below. The [printable case](Printables/Back-Driving%20Protection%20Case) is designed to accommodate all of these.
 
-> ⚡ **Warning:** All of these options add a modest capacitance between the power supply and controller board. If you disconnect the protection unit, the capacitor may remain charged at up to `~15V` for a period of time. Do not touch or short the terminals at either end of the unit, as doing so **may cause a shock or damage equipment**.
+> ⚡ **Warning:** All of these options add a modest capacitance between the power supply and controller board. If you disconnect the protection unit, the capacitor may remain charged at your supply voltage for a period of time. Do not touch or short the terminals at either end of the unit, as doing so **may cause a shock or damage equipment**.
 
 The parts required will depend on your chosen option, but none should exceed `15 GBP` in cost:
 - [Solderless + Ideal Diode](#solderless--ideal-diode): Using an ideal diode module with pre-soldered terminals
@@ -249,3 +251,7 @@ _(Instructional Video TBC)_
 ## Software
 
 See the [/Software/](/Software/) directory for the _SimHub_ plugin download and installation instructions.
+
+## Troubleshooting
+
+See the [FAQ.md](FAQ.md) document for common issues and their solutions. If you have any questions or need further assistance, please reach out via [a new discussion](/discussions/new/choose) or [create a new issue](/issues/new) describing your problem or request.
