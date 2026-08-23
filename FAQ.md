@@ -204,12 +204,13 @@ You can verify that the motors are powered by trying to turn them manually (by t
 
 Yes, SimHub has a `Controls & Events` feature that allows the mapping of any input device to any action exposed by a plugin; and the **SABT** plugin exposes various actions:
 1. Select `Controls & Events` on the left-hand SimHub menu
-2. Enter `sabt` into the `Target` filter to find the new actions
+2. Enter `sabt` into the `Target` filter to find the available actions
 3. Select the desired action
 4. Choose your input device and buttons under `Source`
-5. Set the `Input Mode` to `ShortPress` or `LongPressNoAutoRepeat` (latter recommended if using the `...WithoutWarning` variations of actions)
+5. Set the `Input Mode` to `ShortPress` or `LongPressNoAutoRepeat` (the latter is recommended if using the `...WithoutWarning` variations of actions)
 
-The `...WithoutWarning` variations of actions explicitly bypass any on-screen warnings related to powering-on the motors, so use with care.
+> ⚠️ **Warning:**
+> The `...WithoutWarning` variations of actions explicitly bypass any on-screen warnings related to powering-on the motors, so use with care.
 
 ## Performance & Effects
 
