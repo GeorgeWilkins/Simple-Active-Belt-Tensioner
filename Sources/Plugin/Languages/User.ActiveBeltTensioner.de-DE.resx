@@ -273,9 +273,8 @@
   <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
     <value>• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
   </data>
-  <data name="SABT_Label_Shifting" xml:space="preserve">
-    <value>• Fügt beim Hochschalten eine stärkere Entlastung der Spannung hinzu, als die Standard-Telemetrie bietet
-• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
+  <data name="SABT_Label_Upshifting" xml:space="preserve">
+    <value>Hochschalten</value>
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Website</value>
@@ -386,6 +385,14 @@
   <data name="SABT_Text_Landing" xml:space="preserve">
     <value>• Wie stark Landungen die Spannung auf beiden Gurten erhöhen sollen</value>
   </data>
+  <data name="SABT_Text_Engine" xml:space="preserve">
+    <value>• Wie stark die Motordrehzahl durch die Gurte spürbar sein sollte
+• Dieser Effekt basiert auf der gemeldeten Motordrehzahl</value>
+  </data>
+  <data name="SABT_Text_Upshifting" xml:space="preserve">
+    <value>• Fügt einen stärker ausgeprägten Spannungsimpuls beim Hochschalten hinzu
+• Setzen Sie die minimale 'Fahrspannung' für beste Ergebnisse auf einen Wert ungleich null (siehe Registerkarte 'Spannung')</value>
+  </data>
   <data name="SABT_Text_Profiles" xml:space="preserve">
     <value>• Mit aktiviertem 'Auto-Switching' werden Tuning-Profile automatisch für das aktuelle Spiel (und die Fahrzeugklasse, falls bekannt) geladen, wobei das spezifischste Profil Vorrang hat
 • Das Kopieren eines vorhandenen Profils führt dazu, dass dessen Tuning-Parameter in ein neues Profil für das aktuell aktive Spiel (und die Fahrzeugklasse, falls bekannt) geladen werden
@@ -439,6 +446,9 @@
   </data>
   <data name="SABT_Label_Landing" xml:space="preserve">
     <value>Landung</value>
+  </data>
+  <data name="SABT_Label_Engine" xml:space="preserve">
+    <value>Motordrehzahl</value>
   </data>
   <data name="SABT_Label_SurgeLimits" xml:space="preserve">
     <value>Surge-Grenzen (Beschleunigung/Bremsen)</value>

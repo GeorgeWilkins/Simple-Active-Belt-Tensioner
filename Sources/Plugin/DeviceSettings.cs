@@ -426,16 +426,30 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _shiftingStrength = 0;
-        public int ShiftingStrength
+        private int _engineStrength = 0;
+        public int EngineStrength
         {
-            get { return _shiftingStrength; }
+            get { return _engineStrength; }
             set
             {
-                if (_shiftingStrength != value)
+                if (_engineStrength != value)
                 {
-                    _shiftingStrength = value;
-                    InvokePropertyChange(nameof(ShiftingStrength));
+                    _engineStrength = value;
+                    InvokePropertyChange(nameof(EngineStrength));
+                }
+            }
+        }
+
+        private int _upshiftingStrength = 0;
+        public int UpshiftingStrength
+        {
+            get { return _upshiftingStrength; }
+            set
+            {
+                if (_upshiftingStrength != value)
+                {
+                    _upshiftingStrength = value;
+                    InvokePropertyChange(nameof(UpshiftingStrength));
                 }
             }
         }

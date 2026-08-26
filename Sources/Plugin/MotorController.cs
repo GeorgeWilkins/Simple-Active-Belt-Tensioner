@@ -253,7 +253,7 @@ namespace User.ActiveBeltTensioner
 
             /// <summary>Sends a series of torque commands to the motor to oscillate it, while updating its status indicators</summary>
             /// <returns>Whether the motor responded as expected</returns>
-            public bool Test(int times = 10, double testTorque = 0.4)
+            public bool Test(int times = 100, double testTorque = 0.6)
             {
                 SLoc.GetValue("SABT_Status_Testing");
                 Graphic = MotorGraphic.Communicating;
@@ -281,7 +281,8 @@ namespace User.ActiveBeltTensioner
                     byte[] tx = BuildFrame(Identifier, 0x64, highByte, lowByte);
                     byte[] rx = new byte[10];
 
-                    if (_controller.WriteFrameReadFrame(tx, rx, 20, true, true))
+                    //if (_controller.WriteFrameReadFrame(tx, rx, 20, true, true))
+                    if (_controller.WriteFrameReadFrame(tx, rx, 3, true, true))
                     {
                         good++;
                     }
@@ -290,12 +291,14 @@ namespace User.ActiveBeltTensioner
                         bad++;
                     }
 
-                    Thread.Sleep(150);
+                    Thread.Sleep(TimeSpan.FromMilliseconds(20));
 
-                    torque = (short)((torque != 0) ? 0 : (testTorque * direction * _torqueLimit));
+                    torque = (short)(testTorque * direction * _torqueLimit);
+
+                    direction *= -1;
                 }
 
-                if (bad > 0)
+                if (bad > times * 0.1)
                 {
                     if (good < 1)
                     {
@@ -308,7 +311,7 @@ namespace User.ActiveBeltTensioner
                     }
 
                     IsConnected = true;
-                    Status = SLoc.GetValue("SABT_Status_TestPartiallyFailed");
+                    Status = SLoc.GetValue("SABT_Status_TestPartiallyFailed") + " (" + bad + "/" + times + ")";
                     Graphic = MotorGraphic.Connected;
 
                     return true;
@@ -389,7 +392,8 @@ namespace User.ActiveBeltTensioner
                 byte[] tx = BuildFrame(Identifier, 0x64, highByte, lowByte);
                 byte[] rx = new byte[10];
 
-                if (!_controller.WriteFrameReadFrame(tx, rx, 10))
+                //if (!_controller.WriteFrameReadFrame(tx, rx))
+                if (!_controller.WriteFrameReadFrame(tx, rx, 5, false))
                 {
                     _commandFailures++;
                     
@@ -505,8 +509,10 @@ namespace User.ActiveBeltTensioner
                 motor.PropertyChanged += MotorPropertyChanged;
             }
 
-            _motorCommandTicks = (long)(16.67 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 60Hz
-            _motorQueryTicks = (long)(5000.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 5s
+            //_motorCommandTicks = (long)(16.67 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 60Hz
+            //_motorCommandTicks = (long)(5.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 200Hz
+            _motorCommandTicks = (long)(3.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0);
+            _motorQueryTicks = (long)(10000.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 5s
         }
 
         private void MotorPropertyChanged(object origin, PropertyChangedEventArgs e)
@@ -962,7 +968,7 @@ namespace User.ActiveBeltTensioner
         /// <summary>Sends the given bytes over the serial port connection, then waits for a response and populates the given response buffer</summary>
         /// <remarks>The timeout may be customised and the verification of the checksum can be disabled if needed</remarks>
         /// <returns>Whether the motor responded as expected</returns>
-        public bool WriteFrameReadFrame(byte[] tx, byte[] rx, int timeout = 10, bool shouldValidate = true, bool shouldLog = false)
+        public bool WriteFrameReadFrame(byte[] tx, byte[] rx, int timeout = 5, bool shouldValidate = true, bool shouldLog = false)
         {
             if (_serialPort == null || !_serialPort.IsOpen)
             {

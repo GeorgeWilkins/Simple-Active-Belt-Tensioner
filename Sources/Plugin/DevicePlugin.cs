@@ -7,6 +7,7 @@ using SimHub;
 using SimHub.Plugins;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -44,11 +45,21 @@ namespace User.ActiveBeltTensioner
 
         private static string _settingsName = "SimpleActiveBeltTensioner";
 
+        private static readonly (double timeOffset, double tensionModifier)[] _upshiftModifierCurve =
+        {
+            // Milliseconds, Tension Modifier
+            (   0.0,  1.0), // Deceleration From Power Loss
+            ( 150.0,  1.0), // ...
+            ( 200.0, -1.0), // Acceleration From Power Restoration
+            (1500.0,  0.0), // ...
+        };
+
         private readonly object _motorControllerLock = new object();
         private readonly object _telemetryLock = new object();
         private TelemetrySnapshot _latestTelemetry;
 
         private readonly AutoResetEvent _hasTelemetryArrived = new AutoResetEvent(false);
+        private const int _controlLoopInterval = 3; // Milliseconds;
         private Thread _controlThread;
         private volatile bool _runControlLoop = false;
         private volatile bool _hasBeenInactive = true;
@@ -60,6 +71,7 @@ namespace User.ActiveBeltTensioner
             public double? Sway;
             public double? Heave;
             public double? Speed;
+            public double? Revolutions;
             public bool DidUpshift;
             public bool IsActive;
         }
@@ -423,7 +435,8 @@ namespace User.ActiveBeltTensioner
                 Sway = data.NewData?.AccelerationSway,
                 Heave = data.NewData?.AccelerationHeave,
                 Speed = data.NewData?.SpeedKmh,
-                DidUpshift = inGear && (oldGear < newGear),
+                Revolutions = data.NewData?.Rpms,
+                DidUpshift = inGear && (newGear > oldGear),
                 IsActive = (data.GameRunning && !data.GameInMenu) || data.GameReplay
             };
 
@@ -471,6 +484,14 @@ namespace User.ActiveBeltTensioner
             double[] telemetryHeaveBuffer = new double[telemetryBufferSize];
             int telemetryBufferIndex = 0;
 
+            // Initialise Upshift Timer
+            Stopwatch upshiftStopwatch = Stopwatch.StartNew();
+            upshiftStopwatch.Reset();
+
+            // Initialise Oscillation State (For Engine RPM Effects)
+            int oscillationDirection = 1;
+            Stopwatch oscillationStopwatch = Stopwatch.StartNew();
+
             while (_runControlLoop)
             {
                 if (!_runControlLoop)
@@ -478,7 +499,7 @@ namespace User.ActiveBeltTensioner
                     break;
                 }
 
-                _hasTelemetryArrived.WaitOne();
+                _hasTelemetryArrived.WaitOne(_controlLoopInterval); // Time-out Aggressively (For >60Hz Effects)
 
                 TelemetrySnapshot telemetrySnapshot;
                 lock (_telemetryLock)
@@ -499,7 +520,8 @@ namespace User.ActiveBeltTensioner
                     double brakingStrength = ConvertToFraction(Settings.BrakingStrength);
                     double jumpingStrength = ConvertToFraction(Settings.JumpingStrength);
                     double landingStrength = ConvertToFraction(Settings.LandingStrength);
-                    double shiftingStrength = ConvertToFraction(Settings.ShiftingStrength);
+                    double engineStrength = ConvertToFraction(Settings.EngineStrength);
+                    double upshiftingStrength = ConvertToFraction(Settings.UpshiftingStrength);
 
                     // Handle Tuning & Telemetry
                     int minimumSurge = Settings.MinimumSurge;
@@ -515,8 +537,9 @@ namespace User.ActiveBeltTensioner
                     double sway = (ConvertToFractionOfRange(telemetrySnapshot.Sway ?? 0.0, minimumSway, maximumSway) * 2.0) - 1.0;
                     double heave = telemetrySnapshot.Heave ?? 0.0;
                     double speed = telemetrySnapshot.Speed ?? 0.0;
+                    double revolutions = telemetrySnapshot.Revolutions ?? 0.0;
 
-                    // Calculate Effects
+                    // Calculate Forces
                     double braking = ConvertToFractionOfRange(surge, 0, maximumSurge);
                     double acceleration = 1.0 - ConvertToFractionOfRange(surge, minimumSurge, 0);
                     double landing = ConvertToFractionOfRange(heave, 0, maximumHeave);
@@ -541,7 +564,7 @@ namespace User.ActiveBeltTensioner
                     increasingModifierLeft = Math.Max(increasingModifierLeft, (sway <= 0.0) ? (Math.Abs(sway * corneringStrength)) : 0.0);
                     increasingModifierRight = Math.Max(increasingModifierRight, (sway > 0.0) ? (Math.Abs(sway * corneringStrength)) : 0.0);
 
-                    // Combinator
+                    // Combine Modifiers
                     double totalModifierLeft = increasingModifierLeft - decreasingModifierLeft;
                     double totalModifierRight = increasingModifierRight - decreasingModifierRight;
 
@@ -562,6 +585,37 @@ namespace User.ActiveBeltTensioner
                         rightTarget = minimumTension + (totalModifierRight * (maximumTension - minimumTension));
                     }
 
+                    // Upshift Blip
+                    if (didUpshift && upshiftingStrength > 0.0)
+                    {
+                        upshiftStopwatch.Restart();
+                    }
+
+                    if (upshiftStopwatch.IsRunning)
+                    {
+                        double upshiftDuration = upshiftStopwatch.Elapsed.TotalMilliseconds;
+
+                        if (upshiftDuration >= _upshiftModifierCurve[_upshiftModifierCurve.Length - 1].timeOffset)
+                        {
+                            upshiftStopwatch.Stop();
+                        }
+                        else
+                        {
+                            double upshiftModifier = GetUpshiftModifier(upshiftDuration) * upshiftingStrength;
+
+                            if (upshiftModifier > 0.0)
+                            {
+                                leftTarget  += upshiftModifier * (maximumTension - leftTarget);
+                                rightTarget += upshiftModifier * (maximumTension - rightTarget);
+                            }
+                            else if (upshiftModifier < 0.0)
+                            {
+                                leftTarget  += upshiftModifier * leftTarget;
+                                rightTarget += upshiftModifier * rightTarget;
+                            }
+                        }
+                    }
+
                     // Map To Range (Minimum ~ Maximum Tension)
                     leftTarget = ClampTo(leftTarget, 0.0, maximumTension);
                     rightTarget = ClampTo(rightTarget, 0.0, maximumTension);
@@ -571,6 +625,32 @@ namespace User.ActiveBeltTensioner
                     {
                         leftTarget = idleTension;
                         rightTarget = idleTension;
+                    }
+
+                    // Engine Revolutions
+                    if (revolutions > 0.0 && engineStrength > 0.0)
+                    {
+                        double oscillationIntervalSeconds = (30.0 / revolutions);
+
+                        if (oscillationStopwatch.Elapsed.TotalSeconds >= oscillationIntervalSeconds)
+                        {
+                            oscillationDirection *= -1;
+                            oscillationStopwatch.Restart();
+                        }
+
+                        double revolutionsFraction = ConvertToFractionOfRange(revolutions, 0, 6000);
+                        double adjustedEngineStrength = (1.0 - (revolutionsFraction * revolutionsFraction * revolutionsFraction)) * engineStrength * 0.5; // Cubic Curve
+
+                        if (oscillationDirection > 0)
+                        {
+                            leftTarget = ClampTo(leftTarget + (adjustedEngineStrength * (maximumTension - leftTarget)), 0.0, maximumTension);
+                            rightTarget = ClampTo(rightTarget - (adjustedEngineStrength * rightTarget), 0.0, maximumTension);
+                        }
+                        else
+                        {
+                            rightTarget = ClampTo(rightTarget + (adjustedEngineStrength * (maximumTension - rightTarget)), 0.0, maximumTension);
+                            leftTarget = ClampTo(leftTarget - (adjustedEngineStrength * leftTarget), 0.0, maximumTension);
+                        }
                     }
 
                     // Side Bias
@@ -733,6 +813,37 @@ namespace User.ActiveBeltTensioner
             return value;
         }
 
+        /// <summary>Returns the appropriate tension modifier for the given <paramref name="upshiftOffset"/> time</summary>
+        private static double GetUpshiftModifier(double upshiftOffset)
+        {
+            if (upshiftOffset <= _upshiftModifierCurve[0].timeOffset)
+            {
+                return _upshiftModifierCurve[0].tensionModifier;
+            }
+
+            if (upshiftOffset >= _upshiftModifierCurve[_upshiftModifierCurve.Length - 1].timeOffset)
+            {
+                return 0.0;
+            }
+
+            for (int i = 0; i < _upshiftModifierCurve.Length - 1; i++)
+            {
+                double fromTime  = _upshiftModifierCurve[i].timeOffset;
+                double fromValue = _upshiftModifierCurve[i].tensionModifier;
+                double toTime    = _upshiftModifierCurve[i + 1].timeOffset;
+                double toValue   = _upshiftModifierCurve[i + 1].tensionModifier;
+
+                if (upshiftOffset >= fromTime && upshiftOffset < toTime)
+                {
+                    double t = (upshiftOffset - fromTime) / (toTime - fromTime);
+
+                    return fromValue + t * (toValue - fromValue);
+                }
+            }
+
+            return 0.0;
+        }
+
         /// <summary>Updates the telemetry value buffer and returns the averaged value</summary>
         private int GetAveragedTelemetryValue(double[] buffer, double newValue, int bufferIndex)
         {
@@ -782,7 +893,7 @@ namespace User.ActiveBeltTensioner
         private const string _targetAxisKey = "targetAxis";
 
         private DateTime _lastPlotRefresh = DateTime.MinValue;
-        private static readonly TimeSpan PlotRefreshInterval = TimeSpan.FromMilliseconds(33);
+        private static readonly TimeSpan PlotRefreshInterval = TimeSpan.FromMilliseconds(33); // 33
 
         /// <summary>Initialises the telemetry graph instance and configures its styling and legends</summary>
         private void InitialiseTelemetryGraph()

@@ -216,6 +216,16 @@
                                     <ui:TitledSlider Title="{SLoc SABT_Label_Landing}" Maximum="1000" Minimum="0" Value="{Binding Settings.LandingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Landing}" />
 
+                                    <styles:SHSectionSeparator />
+
+                                    <ui:TitledSlider Title="{SLoc SABT_Label_Engine}" Maximum="1000" Minimum="0" Value="{Binding Settings.EngineStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Engine}" />
+
+                                    <styles:SHSectionSeparator />
+
+                                    <ui:TitledSlider Title="{SLoc SABT_Label_Upshifting}" Maximum="1000" Minimum="0" Value="{Binding Settings.UpshiftingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Upshifting}" />
+
                                 </StackPanel>
                             </styles:SHTitledGroup>
                         </StackPanel>

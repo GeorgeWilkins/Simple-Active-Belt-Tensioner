@@ -273,9 +273,8 @@
   <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
     <value>• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>
   </data>
-  <data name="SABT_Label_Shifting" xml:space="preserve">
-    <value>• Adds a more pronounced release of tension on upshift than standard telemetry offers
-• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>
+  <data name="SABT_Label_Upshifting" xml:space="preserve">
+    <value>Upshifting</value>
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Website</value>
@@ -386,6 +385,14 @@
   <data name="SABT_Text_Landing" xml:space="preserve">
     <value>• How much landing should increase the tension on both belts</value>
   </data>
+  <data name="SABT_Text_Engine" xml:space="preserve">
+    <value>• To what extent engine RPM should be felt through the belts
+• This effect is based upon the reported engine speed</value>
+  </data>
+  <data name="SABT_Text_Upshifting" xml:space="preserve">
+    <value>• Adds a more pronounced tension blip on upshift
+• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>
+  </data>
   <data name="SABT_Text_Profiles" xml:space="preserve">
     <value>• With 'Auto-Switching' enabled, tuning profiles are automatically loaded for the current game (and vehicle class, where known), with the most specific profile taking priority
 • Copying an existing profile will result in its tuning parameters being loaded into a new profile for the currently active game (and vehicle class, where known)
@@ -439,6 +446,9 @@
   </data>
   <data name="SABT_Label_Landing" xml:space="preserve">
     <value>Landing</value>
+  </data>
+  <data name="SABT_Label_Engine" xml:space="preserve">
+    <value>Engine RPM</value>
   </data>
   <data name="SABT_Label_SurgeLimits" xml:space="preserve">
     <value>Surge Limits (Acceleration/Braking)</value>

@@ -273,9 +273,8 @@
   <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
     <value>• Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
   </data>
-  <data name="SABT_Label_Shifting" xml:space="preserve">
-    <value>• Ajoute un relâchement de tension plus marqué lors des passages de rapport que la télémétrie standard
-• Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
+  <data name="SABT_Label_Upshifting" xml:space="preserve">
+    <value>Passage de vitesse supérieure</value>
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Site web</value>
@@ -386,6 +385,14 @@
   <data name="SABT_Text_Landing" xml:space="preserve">
     <value>• Intensité de l'augmentation de tension sur les deux ceintures lors des réceptions</value>
   </data>
+  <data name="SABT_Text_Engine" xml:space="preserve">
+    <value>• Dans quelle mesure le régime moteur doit être ressenti à travers les ceintures
+• Cet effet est basé sur le régime moteur indiqué</value>
+  </data>
+  <data name="SABT_Text_Upshifting" xml:space="preserve">
+    <value>• Ajoute un pic de tension plus prononcé lors du passage au rapport supérieur
+• Définir le minimum de 'Tension de conduite' à une valeur non nulle pour de meilleurs résultats (voir l'onglet 'Tension')</value>
+  </data>
   <data name="SABT_Text_Profiles" xml:space="preserve">
     <value>• Avec le 'Changement automatique' activé, les profils de réglage sont automatiquement chargés pour le jeu actuel (et la classe de véhicule, si connue), le profil le plus spécifique ayant la priorité
 • La copie d'un profil existant entraînera le chargement de ses paramètres de réglage dans un nouveau profil pour le jeu actuellement actif (et la classe de véhicule, si connue)
@@ -439,6 +446,9 @@
   </data>
   <data name="SABT_Label_Landing" xml:space="preserve">
     <value>Atterrissage</value>
+  </data>
+  <data name="SABT_Label_Engine" xml:space="preserve">
+    <value>Régime moteur</value>
   </data>
   <data name="SABT_Label_SurgeLimits" xml:space="preserve">
     <value>Limites Surge (Accélération/Freinage)</value>
