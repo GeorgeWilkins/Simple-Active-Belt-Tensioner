@@ -26,6 +26,7 @@ Builders also have technical questions about the setup and operation of the kit,
     - [Which position should the switch on the control board be in?](#which-position-should-the-switch-on-the-control-board-be-in)
     - [Which serial/COM port should I select in the SimHub plugin?](#which-serial-or-com-port-should-i-select-in-the-simhub-plugin)
     - [Why are the motors not being detected by the plugin?](#why-are-the-motors-not-being-detected-by-the-plugin)
+    - [Can I control the tensioner with buttons?](#can-i-control-the-tensioner-with-buttons)
 - [Performance & Effects](#performance--effects)
     - [I'm not getting much force from the belts](#im-not-getting-much-force-from-the-belts)
     - [Force effects seem to be sluggish or muted](#force-effects-seem-to-be-sluggish-or-muted)
@@ -198,6 +199,18 @@ If the motors are not being detected or the guided setup process is failing, che
 - Check that _Device Manager_ can see a `USB-Enhanced-SERIAL CH343` device (under `Ports (COM & LPT)`) when the control board is connected
 
 You can verify that the motors are powered by trying to turn them manually (by their shells, not the pulleys or cords). If they are powered, you should feel very noticable resistance. If they turn freely, the motors are not being powered.
+
+### Can I control the tensioner with buttons?
+
+Yes, SimHub has a `Controls & Events` feature that allows the mapping of any input device to any action exposed by a plugin; and the **SABT** plugin exposes various actions:
+1. Select `Controls & Events` on the left-hand SimHub menu
+2. Enter `sabt` into the `Target` filter to find the available actions
+3. Select the desired action
+4. Choose your input device and buttons under `Source`
+5. Set the `Input Mode` to `ShortPress` or `LongPressNoAutoRepeat` (the latter is recommended if using the `...WithoutWarning` variations of actions)
+
+> ⚠️ **Warning:**
+> The `...WithoutWarning` variations of actions explicitly bypass any on-screen warnings related to powering-on the motors, so use with care.
 
 ## Performance & Effects
 
