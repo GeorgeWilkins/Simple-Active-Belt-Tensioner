@@ -19,8 +19,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir \
+    'functions-framework==3.*' \
+    'Flask>=2.3,<4'
 
 # Install FreeCADCMD v1.1.3 via official AppImage release.
 # If release naming changes, override FREECAD_URL at build time.
