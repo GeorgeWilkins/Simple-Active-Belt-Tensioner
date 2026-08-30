@@ -173,6 +173,7 @@
     </Content>
     <Content Include="Languages\User.ActiveBeltTensioner.it.resx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

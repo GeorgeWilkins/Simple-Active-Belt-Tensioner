@@ -198,9 +198,6 @@
   <data name="SABT_Message_NoDeviceDetected" xml:space="preserve">
     <value>Kein Gerät erkannt. Sie müssen ein serielles Gerät auswählen, bevor Sie die Einrichtung starten.</value>
   </data>
-  <data name="SABT_Message_DeviceFailure" xml:space="preserve">
-    <value>Das Gerät wurde nicht gefunden oder die Motoren haben nicht reagiert. Die Option „Motoren aktivieren“ wurde automatisch ausgeschaltet</value>
-  </data>
   <data name="SABT_Plugin" xml:space="preserve">
     <value>Simple Active Belt Tensioner</value>
   </data>
@@ -231,6 +228,9 @@
   <data name="SABT_Title_Credits" xml:space="preserve">
     <value>Lizenz- und Autoreninformationen</value>
   </data>
+  <data name="SABT_Title_Diagnostics" xml:space="preserve">
+    <value>Diagnose</value>
+  </data>
   <data name="SABT_Tab_Tension" xml:space="preserve">
     <value>Spannung</value>
   </data>
@@ -245,6 +245,9 @@
   </data>
   <data name="SABT_Button_TestMotor" xml:space="preserve">
     <value>Motor testen</value>
+  </data>
+  <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
+    <value>Diagnose zurücksetzen</value>
   </data>
   <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
     <value>⧉ Spiel &amp; Fahrzeug</value>
@@ -467,5 +470,20 @@
   </data>
   <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
     <value>Glättungsfaktor</value>
+  </data>
+  <data name="SABT_Label_Motor" xml:space="preserve">
+    <value>Motor</value>
+  </data>
+  <data name="SABT_Label_LowestTemperature" xml:space="preserve">
+    <value>Niedrigste Temperatur</value>
+  </data>
+  <data name="SABT_Label_HighestTemperature" xml:space="preserve">
+    <value>Höchste Temperatur</value>
+  </data>
+  <data name="SABT_Label_MostConsecutiveFaults" xml:space="preserve">
+    <value>Meiste aufeinanderfolgende Fehler</value>
+  </data>
+  <data name="SABT_Text_Diagnostics" xml:space="preserve">
+    <value>Wenn Sie Verbindungs-, Wärme- oder Zuverlässigkeitsprobleme mit Ihrer Installation haben, können die nachstehenden Daten hilfreich sein. Beachten Sie, dass Werte unter 10 bei 'Meiste aufeinanderfolgende Fehler' als normal gelten und den Betrieb der Spannvorrichtung nicht beeinträchtigen. Höhere Werte können jedoch auf ein Problem mit dem Netzteil, USB-Kabel oder Hub, Motoranschlüssen usw. hinweisen</value>
   </data>
 </root>

@@ -200,6 +200,16 @@ namespace User.ActiveBeltTensioner
             );
         }
 
+        private void ResetDiagnostics(object sender, RoutedEventArgs e)
+        {
+            _plugin.DoWithoutWaiting(
+                devicePlugin =>
+                {
+                    devicePlugin.MotorController.ResetDiagnostics();
+                }
+            );
+        }
+
         private void OpenHyperlink(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start(((Hyperlink)sender).NavigateUri.ToString());
