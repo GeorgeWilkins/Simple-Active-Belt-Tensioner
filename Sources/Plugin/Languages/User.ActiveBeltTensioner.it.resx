@@ -198,9 +198,6 @@
   <data name="SABT_Message_NoDeviceDetected" xml:space="preserve">
     <value>Nessun dispositivo rilevato. Devi selezionare una porta seriale prima di avviare la configurazione.</value>
   </data>
-  <data name="SABT_Message_DeviceFailure" xml:space="preserve">
-    <value>Il dispositivo non è stato trovato oppure i motori non hanno risposto. L'opzione 'Abilita motori' è stata disattivata automaticamente</value>
-  </data>
   <data name="SABT_Plugin" xml:space="preserve">
     <value>Simple Active Belt Tensioner</value>
   </data>
@@ -231,6 +228,9 @@
   <data name="SABT_Title_Credits" xml:space="preserve">
     <value>Licenze e informazioni autore</value>
   </data>
+  <data name="SABT_Title_Diagnostics" xml:space="preserve">
+    <value>Diagnostica</value>
+  </data>
   <data name="SABT_Tab_Tension" xml:space="preserve">
     <value>Tensione</value>
   </data>
@@ -245,6 +245,9 @@
   </data>
   <data name="SABT_Button_TestMotor" xml:space="preserve">
     <value>Test motore</value>
+  </data>
+  <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
+    <value>Ripristina diagnostica</value>
   </data>
   <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
     <value>⧉ Gioco &amp; Veicolo</value>
@@ -467,5 +470,20 @@
   </data>
   <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
     <value>Fattore di smoothing</value>
+  </data>
+  <data name="SABT_Label_Motor" xml:space="preserve">
+    <value>Motore</value>
+  </data>
+  <data name="SABT_Label_LowestTemperature" xml:space="preserve">
+    <value>Temperatura minima</value>
+  </data>
+  <data name="SABT_Label_HighestTemperature" xml:space="preserve">
+    <value>Temperatura massima</value>
+  </data>
+  <data name="SABT_Label_MostConsecutiveFaults" xml:space="preserve">
+    <value>Più falli consecutivi</value>
+  </data>
+  <data name="SABT_Text_Diagnostics" xml:space="preserve">
+    <value>Se si verificano problemi di connettività, termici o di affidabilità con l'installazione, i dati seguenti potrebbero essere utili. Si noti che i numeri 'Guasti Consecutivi Massimi' inferiori a 10 sono considerati normali e non influiscono sul funzionamento del tenditore. Tuttavia, numeri più elevati potrebbero indicare un problema con l'alimentatore, il cavo USB o l'hub, i connettori del motore, ecc.</value>
   </data>
 </root>
