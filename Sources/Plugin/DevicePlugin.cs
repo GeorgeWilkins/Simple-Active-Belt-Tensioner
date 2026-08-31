@@ -1,4 +1,5 @@
 ﻿using GameReaderCommon;
+using Newtonsoft.Json.Linq;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
@@ -9,11 +10,13 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using WoteverCommon.RawInput.Win32;
 using WoteverLocalization;
 
 
@@ -46,7 +49,7 @@ namespace User.ActiveBeltTensioner
 
         private static string _settingsName = "SimpleActiveBeltTensioner";
 
-        private (int timeOffset, double tensionModifier)[] _upshiftModifierCurve = ParseUpshiftModifierCurve(null);
+        private (int timeOffset, int tensionModifier)[] _upshiftModifierCurve = ParseUpshiftingModifiers(null);
 
         private readonly object _motorControllerLock = new object();
         private readonly object _telemetryLock = new object();
@@ -241,7 +244,7 @@ namespace User.ActiveBeltTensioner
             Settings.PropertyChanged += OnSettingsChanged;
             Settings.Initialise(this);
 
-            _upshiftModifierCurve = ParseUpshiftModifierCurve(Settings.UpshiftingTiming);
+            _upshiftModifierCurve = ParseUpshiftingModifiers(Settings.UpshiftingModifiers);
 
             IsEnabled = IsEnabled || Settings.StartAutomatically;
 
@@ -384,9 +387,9 @@ namespace User.ActiveBeltTensioner
                 return;
             }
 
-            if (e.PropertyName == nameof(Settings.UpshiftingTiming))
+            if (e.PropertyName == nameof(Settings.UpshiftingModifiers))
             {
-                _upshiftModifierCurve = ParseUpshiftModifierCurve(Settings.UpshiftingTiming);
+                _upshiftModifierCurve = ParseUpshiftingModifiers(Settings.UpshiftingModifiers);
 
                 return;
             }
@@ -598,23 +601,26 @@ namespace User.ActiveBeltTensioner
                     {
                         double upshiftDuration = upshiftStopwatch.Elapsed.TotalMilliseconds;
 
-                        if (upshiftDuration >= _upshiftModifierCurve[_upshiftModifierCurve.Length - 1].timeOffset)
+                        if (_upshiftModifierCurve != null)
                         {
-                            upshiftStopwatch.Stop();
-                        }
-                        else
-                        {
-                            double upshiftModifier = GetUpshiftModifier(upshiftDuration) * upshiftingStrength;
-
-                            if (upshiftModifier > 0.0)
+                            if (upshiftDuration >= _upshiftModifierCurve[_upshiftModifierCurve.Length - 1].timeOffset)
                             {
-                                leftTarget  += upshiftModifier * (maximumTension - leftTarget);
-                                rightTarget += upshiftModifier * (maximumTension - rightTarget);
+                                upshiftStopwatch.Stop();
                             }
-                            else if (upshiftModifier < 0.0)
+                            else
                             {
-                                leftTarget  += upshiftModifier * leftTarget;
-                                rightTarget += upshiftModifier * rightTarget;
+                                double upshiftModifier = GetUpshiftModifier(upshiftDuration) * upshiftingStrength;
+
+                                if (upshiftModifier > 0.0)
+                                {
+                                    leftTarget += upshiftModifier * (maximumTension - leftTarget);
+                                    rightTarget += upshiftModifier * (maximumTension - rightTarget);
+                                }
+                                else if (upshiftModifier < 0.0)
+                                {
+                                    leftTarget += upshiftModifier * leftTarget;
+                                    rightTarget += upshiftModifier * rightTarget;
+                                }
                             }
                         }
                     }
@@ -814,7 +820,7 @@ namespace User.ActiveBeltTensioner
         {
             if (upshiftOffset <= _upshiftModifierCurve[0].timeOffset)
             {
-                return _upshiftModifierCurve[0].tensionModifier;
+                return _upshiftModifierCurve[0].tensionModifier / 100.0;
             }
 
             if (upshiftOffset >= _upshiftModifierCurve[_upshiftModifierCurve.Length - 1].timeOffset)
@@ -825,9 +831,9 @@ namespace User.ActiveBeltTensioner
             for (int i = 0; i < _upshiftModifierCurve.Length - 1; i++)
             {
                 double fromTime  = _upshiftModifierCurve[i].timeOffset;
-                double fromValue = _upshiftModifierCurve[i].tensionModifier;
+                double fromValue = _upshiftModifierCurve[i].tensionModifier / 100.0;
                 double toTime    = _upshiftModifierCurve[i + 1].timeOffset;
-                double toValue   = _upshiftModifierCurve[i + 1].tensionModifier;
+                double toValue   = _upshiftModifierCurve[i + 1].tensionModifier / 100.0;
 
                 if (upshiftOffset >= fromTime && upshiftOffset < toTime)
                 {
@@ -840,43 +846,107 @@ namespace User.ActiveBeltTensioner
             return 0.0;
         }
 
-        /// <summary>Parses a "milliseconds:torque,milliseconds:torque,..." formatted string into an upshift modifier parsedCurve, falling back to the default parsedCurve if the string is missing or malformed</summary>
-        private static (int timeOffset, double tensionModifier)[] ParseUpshiftModifierCurve(string unparsedCurve)
+        /// <summary>Validates a "milliseconds:torque,milliseconds:torque,..." formatted upshifting time/torque modifier string</summary>
+        public static bool ValidateUpshiftingModifiers(string upshiftingModifiers)
         {
-            (int timeOffset, double tensionModifier)[] defaultCurve =
-            {
-                (   0,  1.0), // Deceleration From Power Loss
-                ( 150,  1.0), // ...
-                ( 200, -1.0), // Acceleration From Power Restoration
-                (1500,  0.0), // ...
-            };
+            return ParseUpshiftingModifiers(upshiftingModifiers) != null;
+        }
 
-            if (string.IsNullOrWhiteSpace(unparsedCurve))
+        /// <summary>Parses a "milliseconds:torque,milliseconds:torque,..." formatted upshifting time/torque modifier string, returning the parsed values or null if it is invalid</summary>
+        private static (int timeOffset, int tensionModifier)[] ParseUpshiftingModifiers(string upshiftingModifiers)
+        {
+            if (string.IsNullOrWhiteSpace(upshiftingModifiers))
             {
-                return defaultCurve;
+                Logging.Current.Warn("SABT: The 'Upshifting Timing' field cannot be empty");
+
+                return null;
             }
 
-            try
+            Regex modifierPattern = new Regex(
+                @"(?<timeOffset>\d+)ms:(?<tensionModifier>\d+)%",
+                RegexOptions.Compiled
+            );
+
+            string[] modifierPairs = upshiftingModifiers.Split(' ');
+
+            if (modifierPairs.Length < 2)
             {
-                string[] entries = unparsedCurve.Split(',');
-                var parsedCurve = new (int timeOffset, double tensionModifier)[entries.Length];
+                Logging.Current.Warn("SABT: The 'Upshifting Timing' field must contain at least two '{milliseconds}ms:{torque}%' pairs, separated by spaces");
 
-                for (int i = 0; i < entries.Length; i++)
+                return null;
+            }
+
+            const int earliestAllowedTime = 0;
+            const int latestAllowedTime = 5000;
+            const int lowestAllowedModifier = 0;
+            const int highestAllowedModifier = 100;
+
+            var parsedModifiers = new (int timeOffset, int tensionModifier)[modifierPairs.Length];
+            int priorTimeOffset = -1;
+            bool hasMaximumModifier = false;
+
+            for (int i = 0; i < modifierPairs.Length; i++)
+            {
+                Match modifierMatch = modifierPattern.Match(modifierPairs[i]);
+
+                if (!modifierMatch.Success)
                 {
-                    string[] parts = entries[i].Split(':');
+                    Logging.Current.Warn($"SABT: Modifier {i + 1} within the 'Upshifting Timing' field must be in the format '{{milliseconds}}ms:{{torque}}%' ('{modifierPairs[i]}' given)");
 
-                    parsedCurve[i] = (
-                        int.Parse(parts[0], CultureInfo.InvariantCulture),
-                        double.Parse(parts[1], CultureInfo.InvariantCulture)
-                    );
+                    return null;
                 }
 
-                return parsedCurve;
+                if (
+                    !int.TryParse(modifierMatch.Groups["timeOffset"].Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int timeOffset) ||
+                    !int.TryParse(modifierMatch.Groups["tensionModifier"].Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int tensionModifier)
+                )
+                {
+                    Logging.Current.Warn($"SABT: Modifier {i + 1} within the 'Upshifting Timing' field could not be parsed ('{modifierPairs[i]}' given)");
+
+                    return null;
+                }
+
+                if (timeOffset < earliestAllowedTime || timeOffset > latestAllowedTime)
+                {
+                    Logging.Current.Warn($"SABT: Modifier {i + 1} within the 'Upshifting Timing' field has a milliseconds value outside the allowed range of {earliestAllowedTime} to {latestAllowedTime} ({timeOffset}ms given)");
+
+                    return null;
+                }
+
+                if (timeOffset <= priorTimeOffset)
+                {
+                    Logging.Current.Warn($"SABT: Modifier {i + 1} within the 'Upshifting Timing' field has a milliseconds value smaller than the prior modifier ({timeOffset} given, >{priorTimeOffset}ms required)");
+
+                    return null;
+                }
+
+                if (tensionModifier < lowestAllowedModifier || tensionModifier > highestAllowedModifier)
+                {
+                    Logging.Current.Warn($"SABT: Modifier {i + 1} within the 'Upshifting Timing' field has a torque value outside the allowed range of {lowestAllowedModifier}% to {highestAllowedModifier}% ({tensionModifier}% given)");
+
+                    return null;
+                }
+
+                hasMaximumModifier = hasMaximumModifier || tensionModifier == highestAllowedModifier;
+                priorTimeOffset = timeOffset;
+                parsedModifiers[i] = (timeOffset, tensionModifier);
             }
-            catch
+
+            if (parsedModifiers[parsedModifiers.Length - 1].tensionModifier != 0)
             {
-                return defaultCurve;
+                Logging.Current.Warn($"SABT: The final modifier within the 'Upshifting Timing' field must have a torque value of 0% ({parsedModifiers[parsedModifiers.Length - 1].tensionModifier}% given)");
+
+                return null;
             }
+
+            if (!hasMaximumModifier)
+            {
+                Logging.Current.Warn($"SABT: The 'Upshifting Timing' field must contain at least one modifier with a torque value of 100% (use the 'Upshifting Strength' to adjust overall effect strength)");
+
+                return null;
+            }
+
+            return parsedModifiers;
         }
 
         /// <summary>Updates the telemetry value buffer and returns the averaged value</summary>

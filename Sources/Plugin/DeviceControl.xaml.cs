@@ -215,6 +215,11 @@ namespace User.ActiveBeltTensioner
             System.Diagnostics.Process.Start(((Hyperlink)sender).NavigateUri.ToString());
         }
 
+        private void ResizeTelemetryGraph(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            _plugin.Settings.TelemetryGraphHeight += e.VerticalChange;
+        }
+
         private static T FindParent<T>(DependencyObject current) where T : DependencyObject
         {
             while (current != null)

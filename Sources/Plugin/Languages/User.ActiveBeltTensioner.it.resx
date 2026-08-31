@@ -389,12 +389,15 @@
     <value>• Quanto l'atterraggio deve aumentare la tensione su entrambe le cinture</value>
   </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
-    <value>• In che misura il regime motore dovrebbe essere percepito attraverso le cinture
-• Questo effetto si basa sul regime motore riportato</value>
+    <value>• In che misura le vibrazioni al minimo e in stallo del motore a bassa velocità dovrebbero essere percepite attraverso le cinghie
+• Questo effetto si basa sul numero di giri motore rilevato ed è limitato al di sotto di 5000 RPM a causa delle limitazioni del motore</value>
   </data>
   <data name="SABT_Text_Upshifting" xml:space="preserve">
-    <value>• Aggiunge un impulso di tensione più pronunciato durante la scalata
-• Imposta 'Tensione di guida' minima su un valore diverso da zero per risultati ottimali (vedi scheda 'Tensione')</value>
+    <value>• Aggiunge un picco di tensione più pronunciato durante il cambio marcia in salita
+• Personalizza l'effetto fornendo una sequenza di valori `{milliseconds}:{torque%}` separati da spazi nel campo sopra
+• I valori dei millisecondi sono relativi all'inizio del cambio, mentre i valori di coppia vanno da 0 a 100 (%)
+• `0ms:100% 200ms:100% 500ms:0%` equivarrebbe a `Inizia al 100% di coppia, rimani lì fino a 200ms, poi scendi gradualmente a 0% di coppia tra 200ms e 500ms`
+• `0ms:0% 100ms:100% 300ms:100% 600ms:0%` equivarrebbe a `Inizia a 0% di coppia, sali gradualmente al 100% a 100ms, mantieni fino a 300ms, poi scendi gradualmente a 0% di coppia tra 300ms e 500ms`</value>
   </data>
   <data name="SABT_Text_Profiles" xml:space="preserve">
     <value>• Con 'Cambio automatico' abilitato, i profili di regolazione vengono caricati automaticamente per il gioco corrente (e la classe di veicolo, se nota), con priorità al profilo più specifico

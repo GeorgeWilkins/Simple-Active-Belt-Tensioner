@@ -389,12 +389,15 @@
     <value>• Wie stark Landungen die Spannung auf beiden Gurten erhöhen sollen</value>
   </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
-    <value>• Wie stark die Motordrehzahl durch die Gurte spürbar sein sollte
-• Dieser Effekt basiert auf der gemeldeten Motordrehzahl</value>
+    <value>• Inwieweit Leerlauf- und Abwürgevibrationen bei niedriger Motordrehzahl über die Gurte spürbar sein sollten
+• Dieser Effekt basiert auf der gemeldeten Motordrehzahl und ist aufgrund von Motorbeschränkungen auf unter 5000 U/min begrenzt</value>
   </data>
   <data name="SABT_Text_Upshifting" xml:space="preserve">
-    <value>• Fügt einen stärker ausgeprägten Spannungsimpuls beim Hochschalten hinzu
-• Setzen Sie die minimale 'Fahrspannung' für beste Ergebnisse auf einen Wert ungleich null (siehe Registerkarte 'Spannung')</value>
+    <value>• Fügt beim Hochschalten einen ausgeprägteren Spannungsimpuls hinzu
+• Passen Sie den Effekt an, indem Sie eine Sequenz von durch Leerzeichen getrennten `{milliseconds}:{torque%}` Werten in das obige Feld eingeben
+• Millisekunden-Werte sind relativ zum Beginn der Schaltung, während Drehmomentwerte 0 bis 100 (%) sind
+• `0ms:100% 200ms:100% 500ms:0%` würde bedeuten `Start bei 100% Drehmoment, dort bleiben bis 200ms, dann abfallen auf 0% Drehmoment zwischen 200ms und 500ms`
+• `0ms:0% 100ms:100% 300ms:100% 600ms:0%` würde bedeuten `Start bei 0% Drehmoment, ansteigen auf 100% bei 100ms, halten bis 300ms, dann abfallen auf 0% Drehmoment zwischen 300ms und 500ms`</value>
   </data>
   <data name="SABT_Text_Profiles" xml:space="preserve">
     <value>• Mit aktiviertem 'Auto-Switching' werden Tuning-Profile automatisch für das aktuelle Spiel (und die Fahrzeugklasse, falls bekannt) geladen, wobei das spezifischste Profil Vorrang hat

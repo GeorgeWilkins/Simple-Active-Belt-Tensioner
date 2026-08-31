@@ -332,9 +332,19 @@
                                         <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,20" LineHeight="20" Text="{SLoc SABT_Text_Tuning}" />
                                     </StackPanel>
 
-                                    <oxy:PlotView Height="700" HorizontalAlignment="Stretch" Margin="-14,-10,-14,15" Background="#202020" Model="{Binding TelemetryGraphModel}" />
+                                    <oxy:PlotView Height="{Binding Settings.TelemetryGraphHeight, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="-14,-10,-14,0" Background="#202020" Model="{Binding TelemetryGraphModel}" />
 
-                                    <StackPanel Orientation="Horizontal" Margin="-14,-15,-14,14" Background="#202020">
+                                    <Thumb x:Name="TelemetryGraphResizeHandle" Height="14" HorizontalAlignment="Stretch" Margin="-14,0,-14,0" Background="#202020" Cursor="SizeNS" DragDelta="ResizeTelemetryGraph">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="{TemplateBinding Background}">
+                                                    <Rectangle Height="3" Width="32" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="#808080" RadiusX="1.5" RadiusY="1.5" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+
+                                    <StackPanel Orientation="Horizontal" Margin="-14,0,-14,14" Background="#202020">
                                         <StackPanel Orientation="Horizontal" Margin="50,0,0,15">
                                             <Label Content="{SLoc SABT_Legend_Surge}" d:Content="Plot" Foreground="#f44336" VerticalAlignment="Center" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.ShowSurgePlot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -372,7 +382,31 @@
                                     <styles:SHSectionSeparator />
 
                                     <ui:TitledSlider Title="{SLoc SABT_Label_Upshifting}" Maximum="1000" Minimum="0" Value="{Binding Settings.UpshiftingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBox Text="{Binding Settings.UpshiftingTiming, Mode=TwoWay}" Margin="5,0,5,15" />
+                                    <Grid Margin="5,0,5,15">
+                                        <TextBox Text="{Binding Settings.UpshiftingModifiers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="4,4,26,4" />
+                                        <TextBlock Text="&#10003;" FontWeight="Bold" Foreground="#4CAF50" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0" IsHitTestVisible="False">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Settings.AreUpshiftingModifiersValid}" Value="False">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <TextBlock Text="&#10007;" FontWeight="Bold" Foreground="#F44336" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0" IsHitTestVisible="False">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Settings.AreUpshiftingModifiersValid}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Grid>
                                     <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Upshifting}" />
 
                                 </StackPanel>

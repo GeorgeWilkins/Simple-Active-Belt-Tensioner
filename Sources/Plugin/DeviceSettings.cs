@@ -454,19 +454,23 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private string _upshiftingTiming = "0:1.0,150:1.0,500:0.0";
-        public string UpshiftingTiming
+        private string _upshiftingModifiers = null;
+        public string UpshiftingModifiers
         {
-            get { return _upshiftingTiming; }
+            get { return _upshiftingModifiers; }
             set
             {
-                if (_upshiftingTiming != value)
+                if (_upshiftingModifiers != value)
                 {
-                    _upshiftingTiming = value;
-                    InvokePropertyChange(nameof(UpshiftingTiming));
+                    _upshiftingModifiers = value;
+                    InvokePropertyChange(nameof(UpshiftingModifiers));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AreUpshiftingModifiersValid)));
                 }
             }
         }
+
+        [JsonIgnore]
+        public bool AreUpshiftingModifiersValid => DevicePlugin.ValidateUpshiftingModifiers(_upshiftingModifiers);
 
         private bool _showSurgePlot = true;
         public bool ShowSurgePlot
@@ -481,6 +485,7 @@ namespace User.ActiveBeltTensioner
                 }
             }
         }
+
 
         private bool _showSwayPlot = true;
         public bool ShowSwayPlot
@@ -520,6 +525,22 @@ namespace User.ActiveBeltTensioner
                 {
                     _showTorquePlot = value;
                     InvokePropertyChange(nameof(ShowTorquePlot));
+                }
+            }
+        }
+
+        private double _telemetryGraphHeight = 500.0;
+        public double TelemetryGraphHeight
+        {
+            get { return _telemetryGraphHeight; }
+            set
+            {
+                double clampedValue = Math.Max(200.0, Math.Min(1200.0, value));
+
+                if (_telemetryGraphHeight != clampedValue)
+                {
+                    _telemetryGraphHeight = clampedValue;
+                    InvokePropertyChange(nameof(TelemetryGraphHeight));
                 }
             }
         }
@@ -600,6 +621,7 @@ namespace User.ActiveBeltTensioner
             SmoothingFactor = profile.SmoothingFactor;
             EngineStrength = profile.EngineStrength;
             UpshiftingStrength = profile.UpshiftingStrength;
+            UpshiftingModifiers = profile.UpshiftingModifiers ?? "0ms:100% 150ms:100% 300ms:0%";
 
             profile.IsActive = true;
 
@@ -795,7 +817,7 @@ namespace User.ActiveBeltTensioner
         public int SmoothingFactor { get; set; }
         public int EngineStrength { get; set; }
         public int UpshiftingStrength { get; set; }
-
+        public string UpshiftingModifiers { get; set; }
 
         public GameTuningProfile(string game, string vehicle, bool promptForLabels = false)
         {
@@ -844,7 +866,8 @@ namespace User.ActiveBeltTensioner
                 MaximumHeave = settings.MaximumHeave,
                 SmoothingFactor = settings.SmoothingFactor,
                 EngineStrength = settings.EngineStrength,
-                UpshiftingStrength = settings.UpshiftingStrength
+                UpshiftingStrength = settings.UpshiftingStrength,
+                UpshiftingModifiers = settings.UpshiftingModifiers
             };
         }
 
@@ -863,7 +886,8 @@ namespace User.ActiveBeltTensioner
                 MaximumHeave = this.MaximumHeave,
                 SmoothingFactor = this.SmoothingFactor,
                 EngineStrength = this.EngineStrength,
-                UpshiftingStrength = this.UpshiftingStrength
+                UpshiftingStrength = this.UpshiftingStrength,
+                UpshiftingModifiers = this.UpshiftingModifiers
             };
         }
 

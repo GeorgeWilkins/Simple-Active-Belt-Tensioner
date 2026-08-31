@@ -389,12 +389,15 @@
     <value>• Intensité de l'augmentation de tension sur les deux ceintures lors des réceptions</value>
   </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
-    <value>• Dans quelle mesure le régime moteur doit être ressenti à travers les ceintures
-• Cet effet est basé sur le régime moteur indiqué</value>
+    <value>• Dans quelle mesure les vibrations de ralenti moteur à bas régime et de calage doivent être ressenties à travers les ceintures
+• Cet effet est basé sur le régime moteur indiqué et est limité à moins de 5000 tr/min en raison des limitations du moteur</value>
   </data>
   <data name="SABT_Text_Upshifting" xml:space="preserve">
-    <value>• Ajoute un pic de tension plus prononcé lors du passage au rapport supérieur
-• Définir le minimum de 'Tension de conduite' à une valeur non nulle pour de meilleurs résultats (voir l'onglet 'Tension')</value>
+    <value>• Ajoute un à-coup de tension plus prononcé lors de la montée de rapport
+• Personnalisez l'effet en fournissant une séquence de valeurs `{millisecondes}:{couple%}` séparées par des espaces dans le champ ci-dessus
+• Les valeurs en millisecondes sont relatives au début du changement de vitesse, tandis que les valeurs de couple vont de 0 à 100 (%)
+• `0ms:100% 200ms:100% 500ms:0%` équivaudrait à `Commencer à 100% de couple, y rester jusqu'à 200ms, puis diminuer progressivement jusqu'à 0% de couple entre 200ms et 500ms`
+• `0ms:0% 100ms:100% 300ms:100% 600ms:0%` équivaudrait à `Commencer à 0% de couple, augmenter progressivement jusqu'à 100% à 100ms, maintenir jusqu'à 300ms, puis diminuer progressivement jusqu'à 0% de couple entre 300ms et 500ms`</value>
   </data>
   <data name="SABT_Text_Profiles" xml:space="preserve">
     <value>• Avec le 'Changement automatique' activé, les profils de réglage sont automatiquement chargés pour le jeu actuel (et la classe de véhicule, si connue), le profil le plus spécifique ayant la priorité
