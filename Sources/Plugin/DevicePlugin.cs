@@ -8,6 +8,7 @@ using SimHub.Plugins;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -45,14 +46,7 @@ namespace User.ActiveBeltTensioner
 
         private static string _settingsName = "SimpleActiveBeltTensioner";
 
-        private static readonly (double timeOffset, double tensionModifier)[] _upshiftModifierCurve =
-        {
-            // Milliseconds, Tension Modifier
-            (   0.0,  1.0), // Deceleration From Power Loss
-            ( 150.0,  1.0), // ...
-            ( 200.0, -1.0), // Acceleration From Power Restoration
-            (1500.0,  0.0), // ...
-        };
+        private (int timeOffset, double tensionModifier)[] _upshiftModifierCurve = ParseUpshiftModifierCurve(null);
 
         private readonly object _motorControllerLock = new object();
         private readonly object _telemetryLock = new object();
@@ -247,6 +241,8 @@ namespace User.ActiveBeltTensioner
             Settings.PropertyChanged += OnSettingsChanged;
             Settings.Initialise(this);
 
+            _upshiftModifierCurve = ParseUpshiftModifierCurve(Settings.UpshiftingTiming);
+
             IsEnabled = IsEnabled || Settings.StartAutomatically;
 
             // Register Actions (For External Control)
@@ -384,6 +380,13 @@ namespace User.ActiveBeltTensioner
             )
             {
                 IsEnabled = false;
+
+                return;
+            }
+
+            if (e.PropertyName == nameof(Settings.UpshiftingTiming))
+            {
+                _upshiftModifierCurve = ParseUpshiftModifierCurve(Settings.UpshiftingTiming);
 
                 return;
             }
@@ -807,7 +810,7 @@ namespace User.ActiveBeltTensioner
         }
 
         /// <summary>Returns the appropriate tension modifier for the given <paramref name="upshiftOffset"/> time</summary>
-        private static double GetUpshiftModifier(double upshiftOffset)
+        private double GetUpshiftModifier(double upshiftOffset)
         {
             if (upshiftOffset <= _upshiftModifierCurve[0].timeOffset)
             {
@@ -835,6 +838,45 @@ namespace User.ActiveBeltTensioner
             }
 
             return 0.0;
+        }
+
+        /// <summary>Parses a "milliseconds:torque,milliseconds:torque,..." formatted string into an upshift modifier parsedCurve, falling back to the default parsedCurve if the string is missing or malformed</summary>
+        private static (int timeOffset, double tensionModifier)[] ParseUpshiftModifierCurve(string unparsedCurve)
+        {
+            (int timeOffset, double tensionModifier)[] defaultCurve =
+            {
+                (   0,  1.0), // Deceleration From Power Loss
+                ( 150,  1.0), // ...
+                ( 200, -1.0), // Acceleration From Power Restoration
+                (1500,  0.0), // ...
+            };
+
+            if (string.IsNullOrWhiteSpace(unparsedCurve))
+            {
+                return defaultCurve;
+            }
+
+            try
+            {
+                string[] entries = unparsedCurve.Split(',');
+                var parsedCurve = new (int timeOffset, double tensionModifier)[entries.Length];
+
+                for (int i = 0; i < entries.Length; i++)
+                {
+                    string[] parts = entries[i].Split(':');
+
+                    parsedCurve[i] = (
+                        int.Parse(parts[0], CultureInfo.InvariantCulture),
+                        double.Parse(parts[1], CultureInfo.InvariantCulture)
+                    );
+                }
+
+                return parsedCurve;
+            }
+            catch
+            {
+                return defaultCurve;
+            }
         }
 
         /// <summary>Updates the telemetry value buffer and returns the averaged value</summary>

@@ -454,6 +454,20 @@ namespace User.ActiveBeltTensioner
             }
         }
 
+        private string _upshiftingTiming = "0:1.0,150:1.0,500:0.0";
+        public string UpshiftingTiming
+        {
+            get { return _upshiftingTiming; }
+            set
+            {
+                if (_upshiftingTiming != value)
+                {
+                    _upshiftingTiming = value;
+                    InvokePropertyChange(nameof(UpshiftingTiming));
+                }
+            }
+        }
+
         private bool _showSurgePlot = true;
         public bool ShowSurgePlot
         {
@@ -584,6 +598,8 @@ namespace User.ActiveBeltTensioner
             MinimumHeave = profile.MinimumHeave;
             MaximumHeave = profile.MaximumHeave;
             SmoothingFactor = profile.SmoothingFactor;
+            EngineStrength = profile.EngineStrength;
+            UpshiftingStrength = profile.UpshiftingStrength;
 
             profile.IsActive = true;
 
@@ -777,6 +793,9 @@ namespace User.ActiveBeltTensioner
         public int MinimumHeave { get; set; }
         public int MaximumHeave { get; set; }
         public int SmoothingFactor { get; set; }
+        public int EngineStrength { get; set; }
+        public int UpshiftingStrength { get; set; }
+
 
         public GameTuningProfile(string game, string vehicle, bool promptForLabels = false)
         {
@@ -823,7 +842,9 @@ namespace User.ActiveBeltTensioner
                 MaximumSway = settings.MaximumSway,
                 MinimumHeave = settings.MinimumHeave,
                 MaximumHeave = settings.MaximumHeave,
-                SmoothingFactor = settings.SmoothingFactor
+                SmoothingFactor = settings.SmoothingFactor,
+                EngineStrength = settings.EngineStrength,
+                UpshiftingStrength = settings.UpshiftingStrength
             };
         }
 
@@ -840,7 +861,9 @@ namespace User.ActiveBeltTensioner
                 MaximumSway = this.MaximumSway,
                 MinimumHeave = this.MinimumHeave,
                 MaximumHeave = this.MaximumHeave,
-                SmoothingFactor = this.SmoothingFactor
+                SmoothingFactor = this.SmoothingFactor,
+                EngineStrength = this.EngineStrength,
+                UpshiftingStrength = this.UpshiftingStrength
             };
         }
 
