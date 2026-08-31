@@ -746,13 +746,6 @@ namespace User.ActiveBeltTensioner
                         {
                             Logging.Current.Warn("SABT: Exceeded motor communication failure limit (disabling plugin)");
 
-                            MessageBox.Show(
-                                SLoc.GetValue("SABT_Message_DeviceFailure"),
-                                SLoc.GetValue("SABT_Plugin"),
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Warning
-                            );
-
                             IsEnabled = false;
                         }
                     }

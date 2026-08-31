@@ -60,7 +60,7 @@ If you have your own 3D printer, as little as **215 GBP** including taxes and de
 | 5 | 1M Cord | A low-friction cord that winds around the pulleys (attached at the other end to your belts) |
 | 20 | Power Supply | Provides DC power to the motors |
 | 12 | Back Driving Protection Unit | Prevents power-supply resets if the motors are back-driven (**optional but recommended**) |
-| 25 | 5-Point 2" Harness | A low-cost Aliexpress model or used/expired FIA harness |
+| 25 | 4/5/6-Point 2" Harness | A low-cost Aliexpress model or used/expired FIA harness |
 | **215** | **Total** | ...excluding printables |
 
 There is a [detailed parts list](/INSTRUCTIONS.md#motors-electronics--fixings) with sources in the build guide.

@@ -102,6 +102,61 @@ namespace User.ActiveBeltTensioner
                         _temperature = value;
                         InvokePropertyChange();
                     }
+
+                    if (value > 0)
+                    {
+                        if (LowestTemperature == null || value < LowestTemperature)
+                        {
+                            LowestTemperature = value;
+                        }
+
+                        if (HighestTemperature == null || value > HighestTemperature)
+                        {
+                            HighestTemperature = value;
+                        }
+                    }
+                }
+            }
+
+            private byte? _lowestTemperature = null;
+            public byte? LowestTemperature
+            {
+                get { return _lowestTemperature; }
+                private set
+                {
+                    if (_lowestTemperature != value)
+                    {
+                        _lowestTemperature = value;
+                        InvokePropertyChange();
+                    }
+                }
+            }
+
+            private byte? _highestTemperature = null;
+            public byte? HighestTemperature
+            {
+                get { return _highestTemperature; }
+                private set
+                {
+                    if (_highestTemperature != value)
+                    {
+                        _highestTemperature = value;
+                        InvokePropertyChange();
+                    }
+                }
+            }
+
+            private int _mostConsecutiveFaults = 0;
+            public int MostConsecutiveFaults
+            {
+                get { return _mostConsecutiveFaults; }
+                private set
+                {
+                    if (_mostConsecutiveFaults != value)
+                    {
+                        _mostConsecutiveFaults = value;
+                        InvokePropertyChange();
+                    }
                 }
             }
 
@@ -119,7 +174,7 @@ namespace User.ActiveBeltTensioner
                 }
             }
 
-            private const short _maximumConsecutiveFailures = 10;
+            private const short _maximumConsecutiveFaults = 100;
             private const byte _torqueMode = 0x01;
             private const short _torqueLimit = 12000;
             private MotorController _controller;
@@ -133,6 +188,14 @@ namespace User.ActiveBeltTensioner
 
                 Identifier = identifier;
                 Label = label;
+            }
+
+            /// <summary>Resets the session diagnostic data for the motor</summary>
+            public void ResetDiagnostics()
+            {
+                LowestTemperature = null;
+                HighestTemperature = null;
+                MostConsecutiveFaults = 0;
             }
 
             /// <summary>Invokes various methods to ascertain the status of the motor, while updating its status indicators</summary>
@@ -281,7 +344,6 @@ namespace User.ActiveBeltTensioner
                     byte[] tx = BuildFrame(Identifier, 0x64, highByte, lowByte);
                     byte[] rx = new byte[10];
 
-                    //if (_controller.WriteFrameReadFrame(tx, rx, 20, true, true))
                     if (_controller.WriteFrameReadFrame(tx, rx, 3, true, true))
                     {
                         good++;
@@ -392,16 +454,23 @@ namespace User.ActiveBeltTensioner
                 byte[] tx = BuildFrame(Identifier, 0x64, highByte, lowByte);
                 byte[] rx = new byte[10];
 
-                //if (!_controller.WriteFrameReadFrame(tx, rx))
-                if (!_controller.WriteFrameReadFrame(tx, rx, 5, false))
+                if (!_controller.WriteFrameReadFrame(tx, rx, 5))
                 {
                     _commandFailures++;
-                    
-                    Logging.Current.Warn("SABT: " + this.Label + " Motor communication failure (" + _commandFailures + "/" + _maximumConsecutiveFailures  + " Allowed)");
 
-                    return (_commandFailures < _maximumConsecutiveFailures);
+                    if (_commandFailures > MostConsecutiveFaults)
+                    {
+                        MostConsecutiveFaults = _commandFailures;
+                    }
+
+                    if (_commandFailures > 1)
+                    {
+                        Logging.Current.Warn("SABT: " + this.Label + " Motor communication failure (" + _commandFailures + "/" + _maximumConsecutiveFaults + " Allowed)");
+                    }
+
+                    return (_commandFailures < _maximumConsecutiveFaults);
                 }
-                
+
                 _commandFailures = 0;
 
                 return true;
@@ -525,6 +594,15 @@ namespace User.ActiveBeltTensioner
 
             InvokePropertyChange(nameof(BothMotorsAreConnected));
             InvokePropertyChange(nameof(OneMotorIsConnected));
+        }
+
+        /// <summary>Resets the session diagnostic data for every connected motor</summary>
+        public void ResetDiagnostics()
+        {
+            foreach (Motor motor in Motors)
+            {
+                motor.ResetDiagnostics();
+            }
         }
 
         /// <summary>Performs the motor configuration process via a series of guided prompts</summary>

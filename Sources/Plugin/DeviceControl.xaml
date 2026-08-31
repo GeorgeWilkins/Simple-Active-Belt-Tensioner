@@ -39,7 +39,7 @@
         </Style>
         <Style x:Key="MotorTemperatureStyle" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Bottom" />
-            <Setter Property="Width" Value="18" />
+            <Setter Property="Width" Value="30" />
             <Setter Property="Padding" Value="0,0,0,0" />
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="Foreground" Value="White" />
@@ -103,8 +103,7 @@
                                                     <ScaleTransform ScaleX="1"/>
                                                 </Image.RenderTransform>
                                             </Image>
-                                            <TextBlock Style="{StaticResource MotorTemperatureStyle}" HorizontalAlignment="Right" TextAlignment="Right" Margin="0,0,50,62" Text="{Binding MotorController.LeftMotorTemperature, Mode=OneWay}" />
-                                            <TextBlock Style="{StaticResource MotorTemperatureStyle}" HorizontalAlignment="Right" TextAlignment="Left" Margin="0,0,30,62" Text="°C" />
+                                            <TextBlock Style="{StaticResource MotorTemperatureStyle}" HorizontalAlignment="Right" TextAlignment="Center" Margin="0,0,35,62" Text="{Binding MotorController.LeftMotorTemperature, Mode=OneWay, StringFormat={}{0}°C, TargetNullValue=-}" />
                                         </Grid>
 
                                         <Grid Grid.Column="1" Grid.Row="0">
@@ -119,8 +118,7 @@
                                                     <ScaleTransform ScaleX="-1"/>
                                                 </Image.RenderTransform>
                                             </Image>
-                                            <TextBlock Style="{StaticResource MotorTemperatureStyle}" HorizontalAlignment="Left" TextAlignment="Right" Margin="30,0,0,62" Text="{Binding MotorController.RightMotorTemperature, Mode=OneWay}" />
-                                            <TextBlock Style="{StaticResource MotorTemperatureStyle}" HorizontalAlignment="Left" TextAlignment="Left" Margin="50,0,0,62" Text="°C" />
+                                            <TextBlock Style="{StaticResource MotorTemperatureStyle}" HorizontalAlignment="Left" TextAlignment="Center" Margin="35,0,0,62" Text="{Binding MotorController.RightMotorTemperature, Mode=OneWay, StringFormat={}{0}°C, TargetNullValue=-}" />
                                         </Grid>
 
                                         <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Source="/User.ActiveBeltTensioner;component/SABT Logo.png" Width="150" Margin="0,0,0,460"/>
@@ -155,6 +153,49 @@
 
                                     <ui:TitledSlider Title="{SLoc SABT_Label_StoppedOutputTemperature}" Maximum="80" Minimum="45" Value="{Binding Settings.StoppedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_StoppedOutputTemperature}" />
+
+                                </StackPanel>
+                            </styles:SHTitledGroup>
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Diagnostics}" d:Title="Title">
+                                <StackPanel>
+
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Diagnostics}" />
+
+                                    <Grid Margin="5,10,5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Grid.Column="0" FontWeight="SemiBold" Text="{SLoc SABT_Label_Motor}" />
+                                        <TextBlock Grid.Column="1" FontWeight="SemiBold" Text="{SLoc SABT_Label_LowestTemperature}" />
+                                        <TextBlock Grid.Column="2" FontWeight="SemiBold" Text="{SLoc SABT_Label_HighestTemperature}" />
+                                        <TextBlock Grid.Column="3" FontWeight="SemiBold" Text="{SLoc SABT_Label_MostConsecutiveFaults}" />
+                                    </Grid>
+
+                                    <ItemsControl ItemsSource="{Binding MotorController.Motors}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="5,5,5,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBlock Grid.Column="0" Text="{Binding Identifier, StringFormat=ID {0}}" />
+                                                    <TextBlock Grid.Column="1" Text="{Binding LowestTemperature, StringFormat={}{0}°C, TargetNullValue=-}" />
+                                                    <TextBlock Grid.Column="2" Text="{Binding HighestTemperature, StringFormat={}{0}°C, TargetNullValue=-}" />
+                                                    <TextBlock Grid.Column="3" Text="{Binding MostConsecutiveFaults}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                    <styles:SHButtonPrimary HorizontalAlignment="Stretch" Click="ResetDiagnostics" Margin="0,20,0,0" Content="{SLoc SABT_Button_ResetDiagnostics}" />
 
                                 </StackPanel>
                             </styles:SHTitledGroup>
