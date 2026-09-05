@@ -17,6 +17,7 @@
 >
     
     <UserControl.Resources>
+        
         <Style x:Key="ProfileListBoxItemStyle" TargetType="ListBoxItem">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
@@ -37,6 +38,7 @@
             </Setter>
             <EventSetter Event="MouseLeftButtonUp" Handler="SelectProfile" />
         </Style>
+        
         <Style x:Key="MotorTemperatureStyle" TargetType="TextBlock">
             <Setter Property="VerticalAlignment" Value="Bottom" />
             <Setter Property="Width" Value="30" />
@@ -46,6 +48,43 @@
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="FontSize" Value="15" />
         </Style>
+
+        <Style x:Key="SettingStyle" TargetType="ContentControl">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Grid Margin="0,0,0,5">
+                            <Border x:Name="ContentBorder" BorderBrush="#292929" BorderThickness="2" CornerRadius="10" Background="#333333" Padding="8,8,8,4" Margin="0,10,0,0">
+                                <ContentPresenter />
+                            </Border>
+                            <StackPanel x:Name="ExperimentalIndicator" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,22,15,0" Visibility="Collapsed" ToolTip="{SLoc SABT_Tooltip_Experimental}">
+                                <iconpacks:PackIconMaterial Kind="AlertRhombus" Width="16" Height="16" Foreground="#FFC107" VerticalAlignment="Center" />
+                                <TextBlock Text="{SLoc SABT_Label_Experimental}" Foreground="#FFC107" FontWeight="SemiBold" VerticalAlignment="Center" Margin="5,0,0,2" />
+                            </StackPanel>
+                            <StackPanel x:Name="UnavailableIndicator" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,0" Visibility="Collapsed" ToolTip="{SLoc SABT_Tooltip_Unavailable}">
+                                <iconpacks:PackIconMaterial Kind="RadiatorDisabled" Width="16" Height="16" Foreground="#CCCCFF" VerticalAlignment="Center" />
+                                <TextBlock Text="{SLoc SABT_Label_Unavailable}" Foreground="#CCCCFF" FontWeight="SemiBold" VerticalAlignment="Center" Margin="5,0,0,2" />
+                            </StackPanel>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Tag" Value="Experimental">
+                                <Setter TargetName="ExperimentalIndicator" Property="Visibility" Value="Visible" />
+                                <!--<Setter TargetName="ContentBorder" Property="BorderBrush" Value="#FFC107" />-->
+                            </Trigger>
+                            <Trigger Property="Tag" Value="Unavailable">
+                                <Setter TargetName="UnavailableIndicator" Property="Visibility" Value="Visible" />
+                                <!--<Setter TargetName="ContentBorder" Property="BorderBrush" Value="#FFC107" />-->
+                            </Trigger>
+                            <Trigger Property="Tag" Value="Darker">
+                                <Setter TargetName="ContentBorder" Property="Background" Value="#202020" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </UserControl.Resources>
     
     <ScrollViewer>
@@ -129,26 +168,13 @@
                                         <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding MotorController.LeftMotorStatus, Mode=OneWay}" Margin="1,15,10,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
                                         <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding MotorController.RightMotorStatus, Mode=OneWay}" Margin="11,15,0,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
 
-                                        <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" LineHeight="20" TextWrapping="WrapWithOverflow" Margin="2,50,2,20" Text="{SLoc SABT_Text_Connection}" />
+                                        <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" LineHeight="20" TextWrapping="WrapWithOverflow" Margin="2,15,2,5" Text="{SLoc SABT_Text_Connection}" />
 
                                         <ComboBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding MotorController.SerialPorts}" SelectedItem="{Binding Settings.SerialPort, UpdateSourceTrigger=PropertyChanged}" Margin="-1,10,-1,10" />
 
                                         <styles:SHButtonPrimary Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Click="SetupMotors" Margin="0,0,0,0" IsEnabled="{Binding Settings.IsSerialPortValid}" Content="{SLoc SABT_Button_SetupMotors}" />
 
                                     </Grid>
-
-                                </StackPanel>
-                            </styles:SHTitledGroup>
-                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Temperatures}" d:Title="Title">
-                                <StackPanel>
-
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Temperatures}" />
-
-                                    <ui:TitledSlider Title="{SLoc SABT_Label_ReducedOutputTemperature}" Maximum="80" Minimum="45" Value="{Binding Settings.ReducedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_ReducedOutputTemperature}" />
-
-                                    <ui:TitledSlider Title="{SLoc SABT_Label_StoppedOutputTemperature}" Maximum="80" Minimum="45" Value="{Binding Settings.StoppedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_StoppedOutputTemperature}" />
 
                                 </StackPanel>
                             </styles:SHTitledGroup>
@@ -197,67 +223,65 @@
                             </styles:SHTitledGroup>
                         </StackPanel>
                     </styles:SHTabItem>
-                    <styles:SHTabItem Header="{SLoc SABT_Tab_Tension}" d:Header="Tab">
-                        <styles:SHTitledGroup Title="{SLoc SABT_Title_Tension}" d:Title="Title">
+                    <styles:SHTabItem Header="{SLoc SABT_Tab_Preferences}" d:Header="Tab">
+                        <styles:SHTitledGroup Title="{SLoc SABT_Title_Preferences}" d:Title="Title">
                             <StackPanel>
 
-                                <ui:TitledSlider Title="{SLoc SABT_Label_IdleTension}" Maximum="250" Minimum="0" Value="{Binding Settings.IdleTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_IdleTension}" />
+                                <StackPanel>
+                                    <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,0" LineHeight="20" Text="{SLoc SABT_Text_Preferences}" />
+                                </StackPanel>
 
-                                <styles:SHSectionSeparator />
+                                <ContentControl Style="{StaticResource SettingStyle}">
+                                    <StackPanel>
+                                        <ui:TitledSlider Title="{SLoc SABT_Label_IdleTension}" Maximum="250" Minimum="0" Value="{Binding Settings.IdleTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_IdleTension}" />
+                                    </StackPanel>
+                                </ContentControl>
 
-                                <ui:TitledRangeSlider Title="{SLoc SABT_Label_DrivingTension}" Maximum="1000" Minimum="0" LowerValue="{Binding Settings.MinimumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_DrivingTension}" />
+                                <ContentControl Style="{StaticResource SettingStyle}">
+                                    <StackPanel>
+                                        <ui:TitledRangeSlider Title="{SLoc SABT_Label_DrivingTension}" Maximum="1000" Minimum="0" LowerValue="{Binding Settings.MinimumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_DrivingTension}" />
+                                    </StackPanel>
+                                </ContentControl>
 
-                                <styles:SHSectionSeparator />
+                                <ContentControl Style="{StaticResource SettingStyle}">
+                                    <StackPanel>
+                                        <ui:TitledSlider Title="{SLoc SABT_Label_LeftRightBias}" Maximum="1000" Minimum="-1000" Value="{Binding Settings.SideBias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_LeftRightBias}" />
+                                    </StackPanel>
+                                </ContentControl>
 
-                                <ui:TitledSlider Title="{SLoc SABT_Label_LeftRightBias}" Maximum="1000" Minimum="-1000" Value="{Binding Settings.SideBias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_LeftRightBias}" />
 
-                                <styles:SHSectionSeparator />
+                                <ContentControl Style="{StaticResource SettingStyle}">
+                                    <StackPanel>
+                                        <DockPanel Margin="5,4,5,4">
+                                            <mah:NumericUpDown DockPanel.Dock="Right" Width="100" Minimum="10" Maximum="200" Value="{Binding Settings.TensionStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock Text="{SLoc SABT_Label_StepSize}" VerticalAlignment="Center" />
+                                        </DockPanel>
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_TensionStep}" />
+                                    </StackPanel>
+                                </ContentControl>
 
-                                <DockPanel Margin="5,4,5,4">
-                                    <mah:NumericUpDown DockPanel.Dock="Right" Width="100" Minimum="10" Maximum="200" Value="{Binding Settings.TensionStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock Text="{SLoc SABT_Label_StepSize}" VerticalAlignment="Center" />
-                                </DockPanel>
-                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_TensionStep}" />
+                                <ContentControl Style="{StaticResource SettingStyle}">
+                                    <StackPanel>
+
+                                        <Label Content="{SLoc SABT_Label_Temperatures}" Margin="0,0,0,5" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Temperatures}" />
+
+                                        <ui:TitledSlider Title="{SLoc SABT_Label_ReducedOutputTemperature}" Maximum="80" Minimum="45" Value="{Binding Settings.ReducedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_ReducedOutputTemperature}" />
+
+                                        <ui:TitledSlider Title="{SLoc SABT_Label_StoppedOutputTemperature}" Maximum="80" Minimum="45" Value="{Binding Settings.StoppedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_StoppedOutputTemperature}" />
+
+                                    </StackPanel>
+                                </ContentControl>
 
                             </StackPanel>
                         </styles:SHTitledGroup>
                     </styles:SHTabItem>
-                    <styles:SHTabItem Header="{SLoc SABT_Tab_Effects}" d:Header="Tab">
-                        <StackPanel>
-                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Effects}" d:Title="Title">
-                                <StackPanel>
-
-                                    <ui:TitledSlider Title="{SLoc SABT_Label_Cornering}" Maximum="1000" Minimum="0" Value="{Binding Settings.CorneringStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Cornering}" />
-
-                                    <styles:SHSectionSeparator />
-
-                                    <ui:TitledSlider Title="{SLoc SABT_Label_Braking}" Maximum="1000" Minimum="0" Value="{Binding Settings.BrakingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Braking}" />
-
-                                    <styles:SHSectionSeparator />
-
-                                    <ui:TitledSlider Title="{SLoc SABT_Label_Acceleration}" Maximum="1000" Minimum="0" Value="{Binding Settings.AccelerationStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Acceleration}" />
-
-                                    <styles:SHSectionSeparator />
-
-                                    <ui:TitledSlider Title="{SLoc SABT_Label_Jumping}" Maximum="1000" Minimum="0" Value="{Binding Settings.JumpingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Jumping}" />
-
-                                    <styles:SHSectionSeparator />
-
-                                    <ui:TitledSlider Title="{SLoc SABT_Label_Landing}" Maximum="1000" Minimum="0" Value="{Binding Settings.LandingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Landing}" />
-
-                                </StackPanel>
-                            </styles:SHTitledGroup>
-                        </StackPanel>
-                    </styles:SHTabItem>
-                    <styles:SHTabItem Header="{SLoc SABT_Tab_Tuning}" d:Header="Tab">
+                    <styles:SHTabItem Header="{SLoc SABT_Tab_Profiles}" d:Header="Tab">
                         <StackPanel>
                             <styles:SHTitledGroup Title="{SLoc SABT_Title_Profiles}" d:Title="Title">
                                 <StackPanel>
@@ -267,7 +291,7 @@
                                             <Label Content="{SLoc SABT_Label_AutomaticSwitching}" Margin="-5,0,0,0" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsAutomaticallySwitching, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </TextBlock>
-                                        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,20" LineHeight="20" Text="{SLoc SABT_Text_Profiles}" />
+                                        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,5" LineHeight="20" Text="{SLoc SABT_Text_Profiles}" />
                                     </StackPanel>
 
                                     <ListBox ItemsSource="{Binding Settings.Profiles}" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,10,0,-10" ItemContainerStyle="{StaticResource ProfileListBoxItemStyle}" MaxHeight="400" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -329,85 +353,135 @@
                                             <Label Content="{SLoc SABT_Label_EnableMotors}" Margin="-5,0,0,0" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsSerialPortValid}" />
                                         </TextBlock>
-                                        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,20" LineHeight="20" Text="{SLoc SABT_Text_Tuning}" />
+                                        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,5" LineHeight="20" Text="{SLoc SABT_Text_Tuning}" />
                                     </StackPanel>
 
-                                    <oxy:PlotView Height="{Binding Settings.TelemetryGraphHeight, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="-14,-10,-14,0" Background="#202020" Model="{Binding TelemetryGraphModel}" />
+                                    <ContentControl Style="{StaticResource SettingStyle}" Tag="Darker">
+                                        <StackPanel>
 
-                                    <Thumb x:Name="TelemetryGraphResizeHandle" Height="14" HorizontalAlignment="Stretch" Margin="-14,0,-14,0" Background="#202020" Cursor="SizeNS" DragDelta="ResizeTelemetryGraph">
-                                        <Thumb.Template>
-                                            <ControlTemplate TargetType="Thumb">
-                                                <Border Background="{TemplateBinding Background}">
-                                                    <Rectangle Height="3" Width="32" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="#808080" RadiusX="1.5" RadiusY="1.5" />
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Thumb.Template>
-                                    </Thumb>
+                                            <oxy:PlotView Height="{Binding Settings.TelemetryGraphHeight, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="-5,-5,-5,0" Background="#202020" Model="{Binding TelemetryGraphModel}" />
 
-                                    <StackPanel Orientation="Horizontal" Margin="-14,0,-14,14" Background="#202020">
-                                        <StackPanel Orientation="Horizontal" Margin="50,0,0,15">
-                                            <Label Content="{SLoc SABT_Legend_Surge}" d:Content="Plot" Foreground="#f44336" VerticalAlignment="Center" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.ShowSurgePlot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Thumb x:Name="TelemetryGraphResizeHandle" Height="14" HorizontalAlignment="Stretch" Margin="0,0,0,0" Background="#202020" Cursor="SizeNS" DragDelta="ResizeTelemetryGraph">
+                                                <Thumb.Template>
+                                                    <ControlTemplate TargetType="Thumb">
+                                                        <Border Background="{TemplateBinding Background}">
+                                                            <Rectangle Height="3" Width="32" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="#808080" RadiusX="1.5" RadiusY="1.5" />
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Thumb.Template>
+                                            </Thumb>
+
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                                <StackPanel Orientation="Horizontal" Margin="45,0,0,0">
+                                                    <Label Content="{SLoc SABT_Legend_Surge}" d:Content="Plot" Foreground="#f44336" VerticalAlignment="Center" />
+                                                    <styles:SHToggleCheckbox IsChecked="{Binding Settings.ShowSurgePlot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                                    <Label Content="{SLoc SABT_Legend_Sway}" d:Content="Plot" Foreground="#4caf50" VerticalAlignment="Center" />
+                                                    <styles:SHToggleCheckbox IsChecked="{Binding Settings.ShowSwayPlot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                                    <Label Content="{SLoc SABT_Legend_Heave}" d:Content="Plot" Foreground="#ffeb3b" VerticalAlignment="Center" />
+                                                    <styles:SHToggleCheckbox IsChecked="{Binding Settings.ShowHeavePlot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                                    <Label Content="{SLoc SABT_Legend_Torque}" d:Content="Plot" Foreground="#119eda" VerticalAlignment="Center" />
+                                                    <styles:SHToggleCheckbox IsChecked="{Binding Settings.ShowTorquePlot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </StackPanel>
+                                            </StackPanel>
+
                                         </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                                            <Label Content="{SLoc SABT_Legend_Sway}" d:Content="Plot" Foreground="#4caf50" VerticalAlignment="Center" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.ShowSwayPlot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </ContentControl>
+
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
+                                            <ui:TitledRangeSlider Title="{SLoc SABT_Label_SurgeLimits}" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Plugin.IsNotAutomaticallyTuning}" />
+                                            <ui:TitledRangeSlider Title="{SLoc SABT_Label_SwayLimits}" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Plugin.IsNotAutomaticallyTuning}" />
+                                            <ui:TitledRangeSlider Title="{SLoc SABT_Label_HeaveLimits}" Maximum="100" Minimum="-50" LowerValue="{Binding Settings.MinimumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Plugin.IsNotAutomaticallyTuning}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Telemetry}" />
                                         </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                                            <Label Content="{SLoc SABT_Legend_Heave}" d:Content="Plot" Foreground="#ffeb3b" VerticalAlignment="Center" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.ShowHeavePlot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </ContentControl>
+
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
+                                            <ui:TitledSlider Title="{SLoc SABT_Label_SmoothingFactor}" Maximum="750" Minimum="0" Value="{Binding Settings.SmoothingFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Smoothing}" />
                                         </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                                            <Label Content="{SLoc SABT_Legend_Torque}" d:Content="Plot" Foreground="#119eda" VerticalAlignment="Center" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.ShowTorquePlot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </ContentControl>
+                                    
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
+                                            <ui:TitledSlider Title="{SLoc SABT_Label_Cornering}" Maximum="1000" Minimum="0" Value="{Binding Settings.CorneringStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Cornering}" />
                                         </StackPanel>
-                                    </StackPanel>
+                                    </ContentControl>
 
-                                    <ui:TitledRangeSlider Title="{SLoc SABT_Label_SurgeLimits}" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Plugin.IsNotAutomaticallyTuning}" />
-                                    <ui:TitledRangeSlider Title="{SLoc SABT_Label_SwayLimits}" Maximum="50" Minimum="-50" LowerValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Plugin.IsNotAutomaticallyTuning}" />
-                                    <ui:TitledRangeSlider Title="{SLoc SABT_Label_HeaveLimits}" Maximum="100" Minimum="-50" LowerValue="{Binding Settings.MinimumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Settings.MaximumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Plugin.IsNotAutomaticallyTuning}" />
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
+                                            <ui:TitledSlider Title="{SLoc SABT_Label_Braking}" Maximum="1000" Minimum="0" Value="{Binding Settings.BrakingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Braking}" />
+                                        </StackPanel>
+                                    </ContentControl>
 
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Telemetry}" />
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
+                                            <ui:TitledSlider Title="{SLoc SABT_Label_Acceleration}" Maximum="1000" Minimum="0" Value="{Binding Settings.AccelerationStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Acceleration}" />
+                                        </StackPanel>
+                                    </ContentControl>
 
-                                    <styles:SHSectionSeparator />
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
+                                            <ui:TitledSlider Title="{SLoc SABT_Label_Jumping}" Maximum="1000" Minimum="0" Value="{Binding Settings.JumpingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Jumping}" />
+                                        </StackPanel>
+                                    </ContentControl>
 
-                                    <ui:TitledSlider Title="{SLoc SABT_Label_SmoothingFactor}" Maximum="750" Minimum="0" Value="{Binding Settings.SmoothingFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Smoothing}" />
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
+                                            <ui:TitledSlider Title="{SLoc SABT_Label_Landing}" Maximum="1000" Minimum="0" Value="{Binding Settings.LandingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Landing}" />
+                                        </StackPanel>
+                                    </ContentControl>
 
-                                    <styles:SHSectionSeparator />
+                                    <ContentControl Style="{StaticResource SettingStyle}" Tag="Experimental">
+                                        <StackPanel>
+                                            <ui:TitledSlider Title="{SLoc SABT_Label_Engine}" Maximum="500" Minimum="0" Value="{Binding Settings.EngineStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Engine}" />
+                                        </StackPanel>
+                                    </ContentControl>
 
-                                    <ui:TitledSlider Title="{SLoc SABT_Label_Engine}" Maximum="1000" Minimum="0" Value="{Binding Settings.EngineStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Engine}" />
-
-                                    <styles:SHSectionSeparator />
-
-                                    <ui:TitledSlider Title="{SLoc SABT_Label_Upshifting}" Maximum="1000" Minimum="0" Value="{Binding Settings.UpshiftingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Grid Margin="5,0,5,15">
-                                        <TextBox Text="{Binding Settings.UpshiftingModifiers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="4,4,26,4" />
-                                        <TextBlock Text="&#10003;" FontWeight="Bold" Foreground="#4CAF50" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0" IsHitTestVisible="False">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Settings.AreUpshiftingModifiersValid}" Value="False">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                        <TextBlock Text="&#10007;" FontWeight="Bold" Foreground="#F44336" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0" IsHitTestVisible="False">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Settings.AreUpshiftingModifiersValid}" Value="True">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </Grid>
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Upshifting}" />
+                                    <ContentControl Style="{StaticResource SettingStyle}" Tag="Experimental">
+                                        <StackPanel>
+                                            <ui:TitledSlider Title="{SLoc SABT_Label_Upshifting}" Maximum="1000" Minimum="0" Value="{Binding Settings.UpshiftingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Grid Margin="5,0,5,15">
+                                                <TextBox Text="{Binding Settings.UpshiftingModifiers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="4,4,26,4" />
+                                                <TextBlock Text="&#10003;" FontWeight="Bold" Foreground="#4CAF50" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0" IsHitTestVisible="False">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Settings.AreUpshiftingModifiersValid}" Value="False">
+                                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <TextBlock Text="&#10007;" FontWeight="Bold" Foreground="#F44336" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0" IsHitTestVisible="False">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding Settings.AreUpshiftingModifiersValid}" Value="True">
+                                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Grid>
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Upshifting}" />
+                                        </StackPanel>
+                                    </ContentControl>
 
                                 </StackPanel>
                             </styles:SHTitledGroup>

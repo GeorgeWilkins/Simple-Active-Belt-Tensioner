@@ -647,7 +647,7 @@ namespace User.ActiveBeltTensioner
                             oscillationStopwatch.Restart();
                         }
 
-                        double revolutionsFraction = ConvertToFractionOfRange(revolutions, 0, 6000);
+                        double revolutionsFraction = ConvertToFractionOfRange(revolutions, 0, 2500);
                         double adjustedEngineStrength = (1.0 - (revolutionsFraction * revolutionsFraction * revolutionsFraction)) * engineStrength * 0.5; // Cubic Curve
 
                         if (oscillationDirection > 0)
@@ -673,7 +673,7 @@ namespace User.ActiveBeltTensioner
                     }
 
                     // Update Telemetry Graph
-                    if (telemetrySnapshot.IsActive && SelectedTabIndex == 3)
+                    if (telemetrySnapshot.IsActive && SelectedTabIndex == 2)
                     {
                         UpdateTelemetryGraph(
                             telemetrySnapshot.Surge ?? 0,

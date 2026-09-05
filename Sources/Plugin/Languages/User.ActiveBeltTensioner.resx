@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SABT_Tab_Tuning" xml:space="preserve">
-    <value>Tuning</value>
+  <data name="SABT_Tab_Profiles" xml:space="preserve">
+    <value>Profiles</value>
   </data>
   <data name="SABT_Tab_Credits" xml:space="preserve">
     <value>Credits</value>
@@ -130,9 +130,12 @@
     <value>Belt Tension Adjustment</value>
   </data>
   <data name="SABT_Title_Tuning" xml:space="preserve">
-    <value>Telemetry Handling</value>
+    <value>Tuning</value>
   </data>
-  <data name="SABT_Title_Temperatures" xml:space="preserve">
+  <data name="SABT_Title_Preferences" xml:space="preserve">
+    <value>Preferences</value>
+  </data>
+  <data name="SABT_Label_Temperatures" xml:space="preserve">
     <value>Temperatures</value>
   </data>
   <data name="SABT_Title_Profiles" xml:space="preserve">
@@ -231,11 +234,8 @@
   <data name="SABT_Title_Diagnostics" xml:space="preserve">
     <value>Diagnostics</value>
   </data>
-  <data name="SABT_Tab_Tension" xml:space="preserve">
-    <value>Tension</value>
-  </data>
-  <data name="SABT_Tab_Effects" xml:space="preserve">
-    <value>Effects</value>
+  <data name="SABT_Tab_Preferences" xml:space="preserve">
+    <value>Preferences</value>
   </data>
   <data name="SABT_Title_Effects" xml:space="preserve">
     <value>Effects</value>
@@ -412,6 +412,9 @@
 • 'Auto-Switching' will be automatically disabled when using the automatic tuning feature
 • 'Auto-Tuning' will be automatically disabled if the active profile changes</value>
   </data>
+  <data name="SABT_Text_Preferences" xml:space="preserve">
+    <value>These settings are not game-specific and control the basic operation of the tensioner; including overall output both during and between game sessions. They should be set to your liking before performing fine-tuning within the 'Profiles' tab.</value>
+  </data>
   <data name="SABT_Text_Temperatures" xml:space="preserve">
     <value>• Under normal circumstances the motors should not get hot; but they are capable of operating at up to 80°C
 • Depending on your choice of filament, your printed parts may fail at much lower temperatures (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
@@ -498,5 +501,17 @@
   </data>
   <data name="SABT_Text_Diagnostics" xml:space="preserve">
     <value>If you are having connectivity, thermal or reliability issues with your installation, the data below may be helpful. Note that 'Most Consecutive Faults' numbers under 10 are considered to be normal and do not affect operation of the tensioner. However higher numbers may indicate a problem with the power supply, USB cable or hub, motor connectors, etc</value>
+  </data>
+  <data name="SABT_Tooltip_Experimental" xml:space="preserve">
+    <value>This feature or setting is considered 'experimental' and may not function correctly</value>
+  </data>
+  <data name="SABT_Tooltip_Unavailable" xml:space="preserve">
+    <value>This setting is unavailable due to the values of other settings</value>
+  </data>
+  <data name="SABT_Label_Experimental" xml:space="preserve">
+    <value>EXPERIMENTAL</value>
+  </data>
+  <data name="SABT_Label_Unavailable" xml:space="preserve">
+    <value>UNAVAILABLE</value>
   </data>
 </root>
