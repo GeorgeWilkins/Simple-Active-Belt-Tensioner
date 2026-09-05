@@ -210,6 +210,11 @@ namespace User.ActiveBeltTensioner
             );
         }
 
+        private void ResetUpshiftingModifiers(object sender, RoutedEventArgs e)
+        {
+            _plugin.Settings.UpshiftingModifiers = _plugin.Settings.DefaultUpshiftingModifiers;
+        }
+
         private void OpenHyperlink(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start(((Hyperlink)sender).NavigateUri.ToString());

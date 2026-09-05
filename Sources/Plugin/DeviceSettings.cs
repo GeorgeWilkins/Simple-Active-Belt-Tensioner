@@ -27,6 +27,8 @@ namespace User.ActiveBeltTensioner
         [JsonIgnore]
         public Action Persist { get; set; }
 
+        public string DefaultUpshiftingModifiers = "0ms:100% 150ms:100% 300ms:0%";
+
         public void Initialise(DevicePlugin plugin)
         {
             _plugin = plugin;
@@ -132,10 +134,10 @@ namespace User.ActiveBeltTensioner
             get { return _reducedOutputTemperature; }
             set
             {
-                value = Math.Min(
+                /*value = Math.Min(
                     Math.Max(value, 45),
                     _stoppedOutputTemperature - 1
-                );
+                );*/
 
                 if (_reducedOutputTemperature != value)
                 {
@@ -151,10 +153,10 @@ namespace User.ActiveBeltTensioner
             get { return _stoppedOutputTemperature; }
             set
             {
-                value = Math.Max(
+                /*value = Math.Max(
                     Math.Min(value, 80),
                     _reducedOutputTemperature + 1
-                );
+                );*/
 
                 if (_stoppedOutputTemperature != value)
                 {
@@ -621,7 +623,7 @@ namespace User.ActiveBeltTensioner
             SmoothingFactor = profile.SmoothingFactor;
             EngineStrength = profile.EngineStrength;
             UpshiftingStrength = profile.UpshiftingStrength;
-            UpshiftingModifiers = profile.UpshiftingModifiers ?? "0ms:100% 150ms:100% 300ms:0%";
+            UpshiftingModifiers = profile.UpshiftingModifiers ?? DefaultUpshiftingModifiers;
 
             profile.IsActive = true;
 

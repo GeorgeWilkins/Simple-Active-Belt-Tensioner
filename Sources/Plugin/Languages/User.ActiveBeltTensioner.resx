@@ -135,9 +135,6 @@
   <data name="SABT_Title_Preferences" xml:space="preserve">
     <value>Preferences</value>
   </data>
-  <data name="SABT_Label_Temperatures" xml:space="preserve">
-    <value>Temperatures</value>
-  </data>
   <data name="SABT_Title_Profiles" xml:space="preserve">
     <value>Profiles</value>
   </data>
@@ -248,6 +245,9 @@
   </data>
   <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
     <value>Reset Diagnostics</value>
+  </data>
+  <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
+    <value>Reset Upshifting Modifiers</value>
   </data>
   <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
     <value>⧉ Game &amp; Vehicle</value>
@@ -390,7 +390,7 @@
   </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
     <value>• To what extent low-speed engine idle and stalling vibrations should be felt through the belts
-• This effect is based upon the reported engine speed and is limited to below 5000 RPM due to motor limitations</value>
+• This effect is based upon the reported engine speed and is limited to below 2500 RPM due to motor limitations</value>
   </data>
   <data name="SABT_Text_Upshifting" xml:space="preserve">
     <value>• Adds a more pronounced tension blip on upshift
@@ -415,10 +415,12 @@
   <data name="SABT_Text_Preferences" xml:space="preserve">
     <value>These settings are not game-specific and control the basic operation of the tensioner; including overall output both during and between game sessions. They should be set to your liking before performing fine-tuning within the 'Profiles' tab.</value>
   </data>
-  <data name="SABT_Text_Temperatures" xml:space="preserve">
-    <value>• Under normal circumstances the motors should not get hot; but they are capable of operating at up to 80°C
-• Depending on your choice of filament, your printed parts may fail at much lower temperatures (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
-• Set reasonable temperature thresholds below to protect your printed parts from thermal damage</value>
+  <data name="SABT_Text_TemperatureThrottlingRange" xml:space="preserve">
+    <value>• The motors should not get hot during operation; but they are capable of operating at up to 80°C
+• Depending on your choice of filament, your printed parts may fail at lower temperatures (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
+• The first slider sets the temperature at which thermal throttling should start (a reduction in motor power)
+• The second slider sets the temperature at which the motors should be disabled to prevent damage
+• While between these temperatures, the motor output will be gradually reduced (proportional to the temperature)</value>
   </data>
   <data name="SABT_Text_Telemetry" xml:space="preserve">
     <value>• The permitted value ranges for incoming telemetry (anything more or less will be clipped, resulting in zero or maximum motor output)
@@ -465,21 +467,8 @@
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
     <value>Sway Limits (Cornering)</value>
   </data>
-  <data name="SABT_Label_ReducedOutputTemperature" xml:space="preserve">
-    <value>Reduced Output Temperature °C</value>
-  </data>
-  <data name="SABT_Text_ReducedOutputTemperature" xml:space="preserve">
-    <value>• The temperature at which motors will automatically reduce their output to avoid overheating
-• Motors will continue operating, but torque output will be reduced proportionally to how far over the temperature threshold they are
-• This should be lower than your filament's glass transition temperature (Tg °C)</value>
-  </data>
-  <data name="SABT_Label_StoppedOutputTemperature" xml:space="preserve">
-    <value>Stopped Output Temperature °C</value>
-  </data>
-  <data name="SABT_Text_StoppedOutputTemperature" xml:space="preserve">
-    <value>• The temperature at which motors will automatically cease output entirely to avoid overheating
-• Motors will not output any torque over this temperature
-• This should be lower than your filament's glass transition temperature (Tg °C)</value>
+  <data name="SABT_Label_TemperatureThrottlingRange" xml:space="preserve">
+    <value>Temperature Throttling Range</value>
   </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
     <value>Heave Limits (Jumps)</value>

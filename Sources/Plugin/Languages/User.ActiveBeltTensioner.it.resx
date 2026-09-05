@@ -132,12 +132,8 @@
   <data name="SABT_Title_Tuning" xml:space="preserve">
     <value>Messa a punto</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SABT_Title_Preferences" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="SABT_Label_Temperatures" xml:space="preserve">
-    <value>Temperature</value>
+  <data name="SABT_Title_Preferences" xml:space="preserve">
+    <value>Preferenze</value>
   </data>
   <data name="SABT_Title_Profiles" xml:space="preserve">
     <value>Profili</value>
@@ -249,6 +245,9 @@
   </data>
   <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
     <value>Ripristina diagnostica</value>
+  </data>
+  <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
+    <value>Reimposta Modificatori Di Cambio Marcia</value>
   </data>
   <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
     <value>⧉ Gioco &amp; Veicolo</value>
@@ -391,7 +390,7 @@
   </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
     <value>• In che misura le vibrazioni al minimo e in stallo del motore a bassa velocità dovrebbero essere percepite attraverso le cinghie
-• Questo effetto si basa sul numero di giri motore rilevato ed è limitato al di sotto di 5000 RPM a causa delle limitazioni del motore</value>
+• Questo effetto si basa sul numero di giri motore rilevato ed è limitato al di sotto di 2500 RPM a causa delle limitazioni del motore</value>
   </data>
   <data name="SABT_Text_Upshifting" xml:space="preserve">
     <value>• Aggiunge un picco di tensione più pronunciato durante il cambio marcia in salita
@@ -416,10 +415,12 @@
   <data name="SABT_Text_Preferences" xml:space="preserve">
     <value>Queste impostazioni non sono specifiche per il gioco e controllano il funzionamento di base del tensioner; includono l'output complessivo sia durante che tra le sessioni di gioco. Devono essere impostate secondo le tue preferenze prima di eseguire la messa a punto nella scheda 'Profiles'.</value>
   </data>
-  <data name="SABT_Text_Temperatures" xml:space="preserve">
-    <value>• In circostanze normali i motori non dovrebbero surriscaldarsi; ma sono in grado di operare fino a 80°C
-• A seconda della scelta del filamento, le parti stampate potrebbero cedere a temperature molto più basse (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
-• Impostare soglie di temperatura ragionevoli di seguito per proteggere le parti stampate dai danni termici</value>
+  <data name="SABT_Text_TemperatureThrottlingRange" xml:space="preserve">
+    <value>• I motori non dovrebbero riscaldarsi durante il funzionamento; tuttavia sono in grado di funzionare fino a 80°C
+• A seconda del filamento scelto, le parti stampate potrebbero non reggere a temperature più basse (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
+• Il primo cursore imposta la temperatura alla quale deve iniziare la limitazione termica (riduzione della potenza dei motori)
+• Il secondo cursore imposta la temperatura alla quale i motori devono essere disabilitati per evitare danni
+• Quando la temperatura è compresa tra questi valori, la potenza dei motori verrà gradualmente ridotta (proporzionalmente alla temperatura)</value>
   </data>
   <data name="SABT_Text_Telemetry" xml:space="preserve">
     <value>• Gli intervalli di valori consentiti per la telemetria in ingresso (qualsiasi valore superiore o inferiore verrà limitato, risultando in un'uscita motore nulla o massima)
@@ -466,21 +467,8 @@
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
     <value>Limiti sway (Curva)</value>
   </data>
-  <data name="SABT_Label_ReducedOutputTemperature" xml:space="preserve">
-    <value>Temperatura di Uscita Ridotta °C</value>
-  </data>
-  <data name="SABT_Text_ReducedOutputTemperature" xml:space="preserve">
-    <value>• La temperatura alla quale i motori ridurranno automaticamente la loro potenza per evitare il surriscaldamento
-• I motori continueranno a funzionare, ma la coppia erogata sarà ridotta proporzionalmente a quanto superano la soglia di temperatura
-• Questa dovrebbe essere inferiore alla temperatura di transizione vetrosa del filamento (Tg °C)</value>
-  </data>
-  <data name="SABT_Label_StoppedOutputTemperature" xml:space="preserve">
-    <value>Temperatura Uscita Fermata °C</value>
-  </data>
-  <data name="SABT_Text_StoppedOutputTemperature" xml:space="preserve">
-    <value>• La temperatura alla quale i motori cesseranno automaticamente di funzionare completamente per evitare il surriscaldamento
-• I motori non erogeranno alcuna coppia oltre questa temperatura
-• Questa dovrebbe essere inferiore alla temperatura di transizione vetrosa del filamento (Tg °C)</value>
+  <data name="SABT_Label_TemperatureThrottlingRange" xml:space="preserve">
+    <value>Intervallo di limitazione termica</value>
   </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
     <value>Limiti heave (Salti)</value>

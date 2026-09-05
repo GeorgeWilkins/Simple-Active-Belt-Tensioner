@@ -132,12 +132,8 @@
   <data name="SABT_Title_Tuning" xml:space="preserve">
     <value>Optimierung</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SABT_Title_Preferences" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="SABT_Label_Temperatures" xml:space="preserve">
-    <value>Temperaturen</value>
+  <data name="SABT_Title_Preferences" xml:space="preserve">
+    <value>Einstellungen</value>
   </data>
   <data name="SABT_Title_Profiles" xml:space="preserve">
     <value>Profile</value>
@@ -249,6 +245,9 @@
   </data>
   <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
     <value>Diagnose zurücksetzen</value>
+  </data>
+  <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
+    <value>Upshifting-Modifikatoren zurücksetzen</value>
   </data>
   <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
     <value>⧉ Spiel &amp; Fahrzeug</value>
@@ -391,7 +390,7 @@
   </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
     <value>• Inwieweit Leerlauf- und Abwürgevibrationen bei niedriger Motordrehzahl über die Gurte spürbar sein sollten
-• Dieser Effekt basiert auf der gemeldeten Motordrehzahl und ist aufgrund von Motorbeschränkungen auf unter 5000 U/min begrenzt</value>
+• Dieser Effekt basiert auf der gemeldeten Motordrehzahl und ist aufgrund von Motorbeschränkungen auf unter 2500 U/min begrenzt</value>
   </data>
   <data name="SABT_Text_Upshifting" xml:space="preserve">
     <value>• Fügt beim Hochschalten einen ausgeprägteren Spannungsimpuls hinzu
@@ -416,10 +415,12 @@
   <data name="SABT_Text_Preferences" xml:space="preserve">
     <value>Diese Einstellungen sind nicht spielabhängig und steuern den grundlegenden Betrieb des Spannmechanismus; einschließlich der Gesamtleistung sowohl während als auch zwischen Spielesitzungen. Sie sollten nach Ihren Wünschen eingestellt werden, bevor Sie Feinabstimmungen innerhalb der 'Profiles' tab vornehmen.</value>
   </data>
-  <data name="SABT_Text_Temperatures" xml:space="preserve">
-    <value>• Unter normalen Umständen sollten die Motoren nicht heiß werden; sie können jedoch bei Temperaturen bis zu 80°C betrieben werden
-• Abhängig von der Wahl Ihres Filaments können Ihre gedruckten Teile bei wesentlich niedrigeren Temperaturen versagen (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
-• Legen Sie unten angemessene Temperaturschwellenwerte fest, um Ihre gedruckten Teile vor thermischen Schäden zu schützen</value>
+  <data name="SABT_Text_TemperatureThrottlingRange" xml:space="preserve">
+    <value>• Die Motoren sollten während des Betriebs nicht heiß werden; sie können jedoch bei Temperaturen bis zu 80°C betrieben werden
+• Je nach Wahl Ihres Filaments können Ihre gedruckten Teile bei niedrigeren Temperaturen versagen (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
+• Der erste Schieberegler legt die Temperatur fest, bei der die thermische Drosselung beginnen soll (eine Reduzierung der Motorleistung)
+• Der zweite Schieberegler legt die Temperatur fest, bei der die Motoren deaktiviert werden sollen, um Schäden zu verhindern
+• Solange die Temperatur zwischen diesen Werten liegt, wird die Motorleistung schrittweise reduziert (proportional zur Temperatur)</value>
   </data>
   <data name="SABT_Text_Telemetry" xml:space="preserve">
     <value>• Die zulässigen Wertebereiche für eingehende Telemetriedaten (alles darüber oder darunter wird beschnitten, was zu null oder maximaler Motorleistung führt)
@@ -466,21 +467,8 @@
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
     <value>Sway-Grenzen (Kurvenfahrt)</value>
   </data>
-  <data name="SABT_Label_ReducedOutputTemperature" xml:space="preserve">
-    <value>Reduzierte Ausgangstemperatur °C</value>
-  </data>
-  <data name="SABT_Text_ReducedOutputTemperature" xml:space="preserve">
-    <value>• Die Temperatur, bei der Motoren automatisch ihre Leistung reduzieren, um Überhitzung zu vermeiden
-• Motoren arbeiten weiter, aber die Drehmomentabgabe wird proportional dazu reduziert, wie weit sie über dem Temperaturschwellenwert liegen
-• Dies sollte niedriger sein als die Glasübergangstemperatur (Tg °C) Ihres Filaments</value>
-  </data>
-  <data name="SABT_Label_StoppedOutputTemperature" xml:space="preserve">
-    <value>Gestoppte Ausgangstemperatur °C</value>
-  </data>
-  <data name="SABT_Text_StoppedOutputTemperature" xml:space="preserve">
-    <value>• Die Temperatur, bei der Motoren ihre Leistung automatisch vollständig einstellen, um eine Überhitzung zu vermeiden
-• Motoren geben über dieser Temperatur kein Drehmoment ab
-• Dies sollte niedriger sein als die Glasübergangstemperatur Ihres Filaments (Tg °C)</value>
+  <data name="SABT_Label_TemperatureThrottlingRange" xml:space="preserve">
+    <value>Temperatur-Drosselbereich</value>
   </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
     <value>Heave-Grenzen (Sprünge)</value>
