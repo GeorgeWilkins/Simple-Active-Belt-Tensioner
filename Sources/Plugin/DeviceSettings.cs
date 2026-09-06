@@ -128,17 +128,12 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _reducedOutputTemperature = 55;
+        private int _reducedOutputTemperature = 50;
         public int ReducedOutputTemperature
         {
             get { return _reducedOutputTemperature; }
             set
             {
-                /*value = Math.Min(
-                    Math.Max(value, 45),
-                    _stoppedOutputTemperature - 1
-                );*/
-
                 if (_reducedOutputTemperature != value)
                 {
                     _reducedOutputTemperature = value;
@@ -147,17 +142,12 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _stoppedOutputTemperature = 65;
+        private int _stoppedOutputTemperature = 60;
         public int StoppedOutputTemperature
         {
             get { return _stoppedOutputTemperature; }
             set
             {
-                /*value = Math.Max(
-                    Math.Min(value, 80),
-                    _reducedOutputTemperature + 1
-                );*/
-
                 if (_stoppedOutputTemperature != value)
                 {
                     _stoppedOutputTemperature = value;
@@ -315,7 +305,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _maximumHeave = 90;
+        private int _maximumHeave = 75;
         public int MaximumHeave
         {
             get { return _maximumHeave; }
@@ -459,7 +449,11 @@ namespace User.ActiveBeltTensioner
         private string _upshiftingModifiers = null;
         public string UpshiftingModifiers
         {
-            get { return _upshiftingModifiers; }
+            get {
+                _upshiftingModifiers = _upshiftingModifiers ?? DefaultUpshiftingModifiers;
+
+                return _upshiftingModifiers;
+            }
             set
             {
                 if (_upshiftingModifiers != value)
