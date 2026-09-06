@@ -578,8 +578,10 @@ namespace User.ActiveBeltTensioner
                 motor.PropertyChanged += MotorPropertyChanged;
             }
 
-            _motorCommandTicks = (long)(16.67 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 60Hz
-            _motorQueryTicks = (long)(5000.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 5s
+            //_motorCommandTicks = (long)(16.67 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 60Hz
+            //_motorCommandTicks = (long)(5.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 200Hz
+            _motorCommandTicks = (long)(3.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0);
+            _motorQueryTicks = (long)(10000.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 5s
         }
 
         private void MotorPropertyChanged(object origin, PropertyChangedEventArgs e)
@@ -779,6 +781,13 @@ namespace User.ActiveBeltTensioner
                 catch (Exception exception)
                 {
                     Logging.Current.Warn($"SABT: Unexpected serial communication error: {exception.Message}");
+
+                    MessageBox.Show(
+                        exception.Message,
+                        SLoc.GetValue("SABT_Plugin"),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
                 }
             }
 
@@ -1044,7 +1053,7 @@ namespace User.ActiveBeltTensioner
         /// <summary>Sends the given bytes over the serial port connection, then waits for a response and populates the given response buffer</summary>
         /// <remarks>The timeout may be customised and the verification of the checksum can be disabled if needed</remarks>
         /// <returns>Whether the motor responded as expected</returns>
-        public bool WriteFrameReadFrame(byte[] tx, byte[] rx, int timeout = 10, bool shouldValidate = true, bool shouldLog = false)
+        public bool WriteFrameReadFrame(byte[] tx, byte[] rx, int timeout = 5, bool shouldValidate = true, bool shouldLog = false)
         {
             if (_serialPort == null || !_serialPort.IsOpen)
             {

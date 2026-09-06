@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SABT_Tab_Tuning" xml:space="preserve">
-    <value>Feinabstimmung</value>
+  <data name="SABT_Tab_Profiles" xml:space="preserve">
+    <value>Profile</value>
   </data>
   <data name="SABT_Tab_Credits" xml:space="preserve">
     <value>Danksagungen</value>
@@ -130,10 +130,10 @@
     <value>Anpassung der Gurtspannung</value>
   </data>
   <data name="SABT_Title_Tuning" xml:space="preserve">
-    <value>Telemetrie-Verarbeitung</value>
+    <value>Optimierung</value>
   </data>
-  <data name="SABT_Title_Temperatures" xml:space="preserve">
-    <value>Temperaturen</value>
+  <data name="SABT_Title_Preferences" xml:space="preserve">
+    <value>Einstellungen</value>
   </data>
   <data name="SABT_Title_Profiles" xml:space="preserve">
     <value>Profile</value>
@@ -231,11 +231,8 @@
   <data name="SABT_Title_Diagnostics" xml:space="preserve">
     <value>Diagnose</value>
   </data>
-  <data name="SABT_Tab_Tension" xml:space="preserve">
-    <value>Spannung</value>
-  </data>
-  <data name="SABT_Tab_Effects" xml:space="preserve">
-    <value>Effekte</value>
+  <data name="SABT_Tab_Preferences" xml:space="preserve">
+    <value>Einstellungen</value>
   </data>
   <data name="SABT_Title_Effects" xml:space="preserve">
     <value>Effekte</value>
@@ -248,6 +245,9 @@
   </data>
   <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
     <value>Diagnose zurücksetzen</value>
+  </data>
+  <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
+    <value>Upshifting-Modifikatoren zurücksetzen</value>
   </data>
   <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
     <value>⧉ Spiel &amp; Fahrzeug</value>
@@ -276,9 +276,8 @@
   <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
     <value>• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
   </data>
-  <data name="SABT_Label_Shifting" xml:space="preserve">
-    <value>• Fügt beim Hochschalten eine stärkere Entlastung der Spannung hinzu, als die Standard-Telemetrie bietet
-• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
+  <data name="SABT_Label_Upshifting" xml:space="preserve">
+    <value>Hochschalten</value>
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Website</value>
@@ -389,6 +388,17 @@
   <data name="SABT_Text_Landing" xml:space="preserve">
     <value>• Wie stark Landungen die Spannung auf beiden Gurten erhöhen sollen</value>
   </data>
+  <data name="SABT_Text_Engine" xml:space="preserve">
+    <value>• Inwieweit Vibrationen des Motors bei niedriger Drehzahl im Leerlauf und beim Abwürgen über die Riemen spürbar sein sollen
+• Dieser Effekt basiert auf der gemeldeten Motordrehzahl und ist aufgrund von Motorbegrenzungen auf niedrige Drehzahlen beschränkt</value>
+  </data>
+  <data name="SABT_Text_Upshifting" xml:space="preserve">
+    <value>• Fügt beim Hochschalten einen ausgeprägteren Spannungsimpuls hinzu
+• Passen Sie den Effekt an, indem Sie eine Sequenz von durch Leerzeichen getrennten `{milliseconds}:{torque%}` Werten in das obige Feld eingeben
+• Millisekunden-Werte sind relativ zum Beginn der Schaltung, während Drehmomentwerte 0 bis 100 (%) sind
+• `0ms:100% 200ms:100% 500ms:0%` würde bedeuten `Start bei 100% Drehmoment, dort bleiben bis 200ms, dann abfallen auf 0% Drehmoment zwischen 200ms und 500ms`
+• `0ms:0% 100ms:100% 300ms:100% 600ms:0%` würde bedeuten `Start bei 0% Drehmoment, ansteigen auf 100% bei 100ms, halten bis 300ms, dann abfallen auf 0% Drehmoment zwischen 300ms und 500ms`</value>
+  </data>
   <data name="SABT_Text_Profiles" xml:space="preserve">
     <value>• Mit aktiviertem 'Auto-Switching' werden Tuning-Profile automatisch für das aktuelle Spiel (und die Fahrzeugklasse, falls bekannt) geladen, wobei das spezifischste Profil Vorrang hat
 • Das Kopieren eines vorhandenen Profils führt dazu, dass dessen Tuning-Parameter in ein neues Profil für das aktuell aktive Spiel (und die Fahrzeugklasse, falls bekannt) geladen werden
@@ -402,10 +412,15 @@
 • 'Auto-Switching' wird bei Verwendung der automatischen Abstimmungsfunktion automatisch deaktiviert
 • 'Auto-Tuning' wird automatisch deaktiviert, wenn das aktive Profil geändert wird</value>
   </data>
-  <data name="SABT_Text_Temperatures" xml:space="preserve">
-    <value>• Unter normalen Umständen sollten die Motoren nicht heiß werden; sie können jedoch bei Temperaturen bis zu 80°C betrieben werden
-• Abhängig von der Wahl Ihres Filaments können Ihre gedruckten Teile bei wesentlich niedrigeren Temperaturen versagen (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
-• Legen Sie unten angemessene Temperaturschwellenwerte fest, um Ihre gedruckten Teile vor thermischen Schäden zu schützen</value>
+  <data name="SABT_Text_Preferences" xml:space="preserve">
+    <value>Diese Einstellungen sind nicht spielabhängig und steuern den grundlegenden Betrieb des Spannmechanismus; einschließlich der Gesamtleistung sowohl während als auch zwischen Spielesitzungen. Sie sollten nach Ihren Wünschen eingestellt werden, bevor Sie Feinabstimmungen innerhalb der 'Profiles' tab vornehmen.</value>
+  </data>
+  <data name="SABT_Text_TemperatureThrottlingRange" xml:space="preserve">
+    <value>• Die Motoren sollten während des Betriebs nicht heiß werden; sie können jedoch bei Temperaturen bis zu 80°C betrieben werden
+• Je nach Wahl Ihres Filaments können Ihre gedruckten Teile bei niedrigeren Temperaturen versagen (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
+• Der erste Schieberegler legt die Temperatur fest, bei der die thermische Drosselung beginnen soll (eine Reduzierung der Motorleistung)
+• Der zweite Schieberegler legt die Temperatur fest, bei der die Motoren deaktiviert werden sollen, um Schäden zu verhindern
+• Solange die Temperatur zwischen diesen Werten liegt, wird die Motorleistung schrittweise reduziert (proportional zur Temperatur)</value>
   </data>
   <data name="SABT_Text_Telemetry" xml:space="preserve">
     <value>• Die zulässigen Wertebereiche für eingehende Telemetriedaten (alles darüber oder darunter wird beschnitten, was zu null oder maximaler Motorleistung führt)
@@ -443,27 +458,17 @@
   <data name="SABT_Label_Landing" xml:space="preserve">
     <value>Landung</value>
   </data>
+  <data name="SABT_Label_Engine" xml:space="preserve">
+    <value>Motordrehzahl</value>
+  </data>
   <data name="SABT_Label_SurgeLimits" xml:space="preserve">
     <value>Surge-Grenzen (Beschleunigung/Bremsen)</value>
   </data>
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
     <value>Sway-Grenzen (Kurvenfahrt)</value>
   </data>
-  <data name="SABT_Label_ReducedOutputTemperature" xml:space="preserve">
-    <value>Reduzierte Ausgangstemperatur °C</value>
-  </data>
-  <data name="SABT_Text_ReducedOutputTemperature" xml:space="preserve">
-    <value>• Die Temperatur, bei der Motoren automatisch ihre Leistung reduzieren, um Überhitzung zu vermeiden
-• Motoren arbeiten weiter, aber die Drehmomentabgabe wird proportional dazu reduziert, wie weit sie über dem Temperaturschwellenwert liegen
-• Dies sollte niedriger sein als die Glasübergangstemperatur (Tg °C) Ihres Filaments</value>
-  </data>
-  <data name="SABT_Label_StoppedOutputTemperature" xml:space="preserve">
-    <value>Gestoppte Ausgangstemperatur °C</value>
-  </data>
-  <data name="SABT_Text_StoppedOutputTemperature" xml:space="preserve">
-    <value>• Die Temperatur, bei der Motoren ihre Leistung automatisch vollständig einstellen, um eine Überhitzung zu vermeiden
-• Motoren geben über dieser Temperatur kein Drehmoment ab
-• Dies sollte niedriger sein als die Glasübergangstemperatur Ihres Filaments (Tg °C)</value>
+  <data name="SABT_Label_TemperatureThrottlingRange" xml:space="preserve">
+    <value>Temperatur-Drosselbereich</value>
   </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
     <value>Heave-Grenzen (Sprünge)</value>
@@ -485,5 +490,17 @@
   </data>
   <data name="SABT_Text_Diagnostics" xml:space="preserve">
     <value>Wenn Sie Verbindungs-, Wärme- oder Zuverlässigkeitsprobleme mit Ihrer Installation haben, können die nachstehenden Daten hilfreich sein. Beachten Sie, dass Werte unter 10 bei 'Meiste aufeinanderfolgende Fehler' als normal gelten und den Betrieb der Spannvorrichtung nicht beeinträchtigen. Höhere Werte können jedoch auf ein Problem mit dem Netzteil, USB-Kabel oder Hub, Motoranschlüssen usw. hinweisen</value>
+  </data>
+  <data name="SABT_Tooltip_Experimental" xml:space="preserve">
+    <value>Diese Funktion oder Einstellung gilt als 'experimentell' und funktioniert möglicherweise nicht korrekt</value>
+  </data>
+  <data name="SABT_Tooltip_Unavailable" xml:space="preserve">
+    <value>Diese Einstellung ist aufgrund der Werte anderer Einstellungen nicht verfügbar</value>
+  </data>
+  <data name="SABT_Label_Experimental" xml:space="preserve">
+    <value>EXPERIMENTELL</value>
+  </data>
+  <data name="SABT_Label_Unavailable" xml:space="preserve">
+    <value>NICHT VERFÜGBAR</value>
   </data>
 </root>
