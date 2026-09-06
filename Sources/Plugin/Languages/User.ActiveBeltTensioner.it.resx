@@ -389,8 +389,8 @@
     <value>• Quanto l'atterraggio deve aumentare la tensione su entrambe le cinture</value>
   </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
-    <value>• In che misura le vibrazioni al minimo e in stallo del motore a bassa velocità dovrebbero essere percepite attraverso le cinghie
-• Questo effetto si basa sul numero di giri motore rilevato ed è limitato al di sotto di 2500 RPM a causa delle limitazioni del motore</value>
+    <value>• In che misura le vibrazioni del motore al minimo e durante lo spegnimento a basso regime dovrebbero essere percepite attraverso le cinghie
+• Questo effetto si basa sulla velocità del motore segnalata e è limitato ai bassi regimi a causa delle limitazioni del motore</value>
   </data>
   <data name="SABT_Text_Upshifting" xml:space="preserve">
     <value>• Aggiunge un picco di tensione più pronunciato durante il cambio marcia in salita

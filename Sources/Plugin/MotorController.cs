@@ -781,6 +781,13 @@ namespace User.ActiveBeltTensioner
                 catch (Exception exception)
                 {
                     Logging.Current.Warn($"SABT: Unexpected serial communication error: {exception.Message}");
+
+                    MessageBox.Show(
+                        exception.Message,
+                        SLoc.GetValue("SABT_Plugin"),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
                 }
             }
 

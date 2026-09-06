@@ -390,7 +390,7 @@
   </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
     <value>• To what extent low-speed engine idle and stalling vibrations should be felt through the belts
-• This effect is based upon the reported engine speed and is limited to below 2500 RPM due to motor limitations</value>
+• This effect is based upon the reported engine speed and is limited to low-RPMs due to motor limitations</value>
   </data>
   <data name="SABT_Text_Upshifting" xml:space="preserve">
     <value>• Adds a more pronounced tension blip on upshift

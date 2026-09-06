@@ -389,8 +389,8 @@
     <value>• Intensité de l'augmentation de tension sur les deux ceintures lors des réceptions</value>
   </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
-    <value>• Dans quelle mesure les vibrations de ralenti moteur à bas régime et de calage doivent être ressenties à travers les ceintures
-• Cet effet est basé sur le régime moteur indiqué et est limité à moins de 2500 tr/min en raison des limitations du moteur</value>
+    <value>• Dans quelle mesure les vibrations du moteur au ralenti et lors des calages à faible régime doivent être ressenties à travers les courroies
+• Cet effet est basé sur la vitesse moteur signalée et est limité aux faibles régimes en raison des limitations du moteur</value>
   </data>
   <data name="SABT_Text_Upshifting" xml:space="preserve">
     <value>• Ajoute un à-coup de tension plus prononcé lors de la montée de rapport

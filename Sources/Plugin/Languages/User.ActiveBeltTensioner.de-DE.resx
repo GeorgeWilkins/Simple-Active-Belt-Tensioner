@@ -389,8 +389,8 @@
     <value>• Wie stark Landungen die Spannung auf beiden Gurten erhöhen sollen</value>
   </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
-    <value>• Inwieweit Leerlauf- und Abwürgevibrationen bei niedriger Motordrehzahl über die Gurte spürbar sein sollten
-• Dieser Effekt basiert auf der gemeldeten Motordrehzahl und ist aufgrund von Motorbeschränkungen auf unter 2500 U/min begrenzt</value>
+    <value>• Inwieweit Vibrationen des Motors bei niedriger Drehzahl im Leerlauf und beim Abwürgen über die Riemen spürbar sein sollen
+• Dieser Effekt basiert auf der gemeldeten Motordrehzahl und ist aufgrund von Motorbegrenzungen auf niedrige Drehzahlen beschränkt</value>
   </data>
   <data name="SABT_Text_Upshifting" xml:space="preserve">
     <value>• Fügt beim Hochschalten einen ausgeprägteren Spannungsimpuls hinzu

@@ -647,8 +647,10 @@ namespace User.ActiveBeltTensioner
                             oscillationStopwatch.Restart();
                         }
 
-                        double revolutionsFraction = ConvertToFractionOfRange(revolutions, 0, 2500);
-                        double adjustedEngineStrength = (1.0 - (revolutionsFraction * revolutionsFraction * revolutionsFraction)) * engineStrength * 0.5; // Cubic Curve
+                        double revolutionsFraction = ConvertToFractionOfRange(revolutions, 0, 5000);
+
+                     // double adjustedEngineStrength = (1.0 - (revolutionsFraction * revolutionsFraction * revolutionsFraction)) * engineStrength * 0.5; // Cubic Curve
+                        double adjustedEngineStrength = (1.0 - revolutionsFraction) * engineStrength * 0.5; // Linear
 
                         if (oscillationDirection > 0)
                         {
