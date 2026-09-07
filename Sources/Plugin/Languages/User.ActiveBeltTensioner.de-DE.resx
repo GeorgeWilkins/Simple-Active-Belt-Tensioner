@@ -228,8 +228,9 @@
   <data name="SABT_Title_Credits" xml:space="preserve">
     <value>Lizenz- und Autoreninformationen</value>
   </data>
-  <data name="SABT_Title_Diagnostics" xml:space="preserve">
-    <value>Diagnose</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SABT_Title_Layout" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
     <value>Einstellungen</value>
@@ -240,8 +241,8 @@
   <data name="SABT_Tab_Connection" xml:space="preserve">
     <value>Verbindung</value>
   </data>
-  <data name="SABT_Button_TestMotor" xml:space="preserve">
-    <value>Motor testen</value>
+  <data name="SABT_Button_Test" xml:space="preserve">
+    <value>Testen</value>
   </data>
   <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
     <value>Diagnose zurücksetzen</value>
@@ -299,6 +300,9 @@
   </data>
   <data name="SABT_Text_Tester" xml:space="preserve">
     <value>Pre-Release-Tests und Feedback von TurtleMenace:</value>
+  </data>
+  <data name="SABT_Text_Layout" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Text_Repository" xml:space="preserve">
     <value>Für weitere Informationen, Fehlermeldungen oder Beiträge siehe das GitHub-Repository des Projekts:</value>
@@ -458,6 +462,15 @@
   <data name="SABT_Label_Landing" xml:space="preserve">
     <value>Landung</value>
   </data>
+  <data name="SABT_Label_Mapping" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Label_Direction" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Label_Status" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Label_Engine" xml:space="preserve">
     <value>Motordrehzahl</value>
   </data>
@@ -469,6 +482,9 @@
   </data>
   <data name="SABT_Label_TemperatureThrottlingRange" xml:space="preserve">
     <value>Temperatur-Drosselbereich</value>
+  </data>
+  <data name="SABT_Label_Temperatures" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
     <value>Heave-Grenzen (Sprünge)</value>
@@ -485,8 +501,8 @@
   <data name="SABT_Label_HighestTemperature" xml:space="preserve">
     <value>Höchste Temperatur</value>
   </data>
-  <data name="SABT_Label_MostConsecutiveFaults" xml:space="preserve">
-    <value>Meiste aufeinanderfolgende Fehler</value>
+  <data name="SABT_Label_Faults" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Text_Diagnostics" xml:space="preserve">
     <value>Wenn Sie Verbindungs-, Wärme- oder Zuverlässigkeitsprobleme mit Ihrer Installation haben, können die nachstehenden Daten hilfreich sein. Beachten Sie, dass Werte unter 10 bei 'Meiste aufeinanderfolgende Fehler' als normal gelten und den Betrieb der Spannvorrichtung nicht beeinträchtigen. Höhere Werte können jedoch auf ein Problem mit dem Netzteil, USB-Kabel oder Hub, Motoranschlüssen usw. hinweisen</value>

@@ -11,6 +11,7 @@ using System.Threading;
 using System.Windows;
 using WoteverCommon.Extensions;
 using WoteverLocalization;
+using static User.ActiveBeltTensioner.MotorController;
 
 namespace User.ActiveBeltTensioner
 {
@@ -24,9 +25,54 @@ namespace User.ActiveBeltTensioner
             public const string Communicating = "/User.ActiveBeltTensioner;component/Motor, Communicating.png";
             public const string Connected = "/User.ActiveBeltTensioner;component/Motor, Connected.png";
             public const string Error = "/User.ActiveBeltTensioner;component/Motor, Error.png";
-
             public const string Overheating = "/User.ActiveBeltTensioner;component/Motor, Overheating.png";
             public const string Overheated = "/User.ActiveBeltTensioner;component/Motor, Overheated.png";
+        }
+
+        public struct MotorMapping
+        {
+            public string Label { get; }
+            public MotorMapping(string label)
+            {
+                Label = label;
+            }
+
+            public static MotorMapping LeftShoulder = new MotorMapping("Left Shoulder");
+            public static MotorMapping RightShoulder = new MotorMapping("Right Shoulder");
+            public static MotorMapping LeftWaist = new MotorMapping("Left Waist");
+            public static MotorMapping RightWaist = new MotorMapping("Right Waist");
+
+            public static MotorMapping[] Mappings = {
+                LeftShoulder,
+                RightShoulder,
+                LeftWaist,
+                RightWaist,
+            };
+        }
+
+        public struct MotorDirection
+        {
+            public string Label { get; }
+            public sbyte Direction { get; }
+            public MotorDirection(string label, sbyte direction)
+            {
+                Label = label;
+                Direction = direction;
+            }
+
+            public static MotorDirection Clockwise = new MotorDirection("⭮", 1);
+            public static MotorDirection AntiClockwise = new MotorDirection("⭯", -1);
+
+            public static MotorDirection[] Directions = {
+                Clockwise,
+                AntiClockwise,
+            };
+
+            /// <summary>Applies the selected `MotorDirection` to the given value and returns it</summary>
+            public double Apply(double value)
+            {
+                return Direction * value;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -63,6 +109,34 @@ namespace User.ActiveBeltTensioner
                 }
             }
 
+            private MotorMapping _mapping;
+            public MotorMapping Mapping
+            {
+                get { return _mapping; }
+                set
+                {
+                    if (_mapping.Label != value.Label)
+                    {
+                        _mapping = value;
+                        InvokePropertyChange();
+                    }
+                }
+            }
+
+            private MotorDirection _direction = MotorDirection.Clockwise;
+            public MotorDirection Direction
+            {
+                get { return _direction; }
+                set
+                {
+                    if (_direction.Direction != value.Direction)
+                    {
+                        _direction = value;
+                        InvokePropertyChange();
+                    }
+                }
+            }
+
             private string _status = SLoc.GetValue("SABT_Status_Disconnected");
             public string Status
             {
@@ -77,7 +151,7 @@ namespace User.ActiveBeltTensioner
                 }
             }
 
-            private string _graphic = MotorController.MotorGraphic.Disconnected;
+            private string _graphic = MotorGraphic.Disconnected;
             public string Graphic
             {
                 get { return _graphic; }
@@ -146,15 +220,15 @@ namespace User.ActiveBeltTensioner
                 }
             }
 
-            private int _mostConsecutiveFaults = 0;
-            public int MostConsecutiveFaults
+            private int _faults = 0;
+            public int Faults
             {
-                get { return _mostConsecutiveFaults; }
+                get { return _faults; }
                 private set
                 {
-                    if (_mostConsecutiveFaults != value)
+                    if (_faults != value)
                     {
-                        _mostConsecutiveFaults = value;
+                        _faults = value;
                         InvokePropertyChange();
                     }
                 }
@@ -182,12 +256,12 @@ namespace User.ActiveBeltTensioner
             private int _commandFailures = 0;
             private double _smoothedTorque = 0.0;
 
-            public Motor(MotorController controller, byte identifier, string label = "Unassigned")
+            public Motor(MotorController controller, byte identifier)
             {
                 _controller = controller;
 
                 Identifier = identifier;
-                Label = label;
+                Label = "OLDLABEL";
             }
 
             /// <summary>Resets the session diagnostic data for the motor</summary>
@@ -195,7 +269,7 @@ namespace User.ActiveBeltTensioner
             {
                 LowestTemperature = null;
                 HighestTemperature = null;
-                MostConsecutiveFaults = 0;
+                Faults = 0;
             }
 
             /// <summary>Invokes various methods to ascertain the status of the motor, while updating its status indicators</summary>
@@ -458,9 +532,9 @@ namespace User.ActiveBeltTensioner
                 {
                     _commandFailures++;
 
-                    if (_commandFailures > MostConsecutiveFaults)
+                    if (_commandFailures > Faults)
                     {
-                        MostConsecutiveFaults = _commandFailures;
+                        Faults = _commandFailures;
                     }
 
                     if (_commandFailures > 1)
@@ -569,8 +643,10 @@ namespace User.ActiveBeltTensioner
             _plugin = plugin;
 
             Motors = new Motor[] {
-                new Motor(this, 0x01, "Left"),
-                new Motor(this, 0x02, "Right")
+                new Motor(this, 0x01),
+                new Motor(this, 0x02),
+                new Motor(this, 0x03),
+                new Motor(this, 0x04),
             };
 
             foreach (Motor motor in Motors)

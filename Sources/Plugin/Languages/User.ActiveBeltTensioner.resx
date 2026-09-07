@@ -228,8 +228,8 @@
   <data name="SABT_Title_Credits" xml:space="preserve">
     <value>Licensing &amp; Author Information</value>
   </data>
-  <data name="SABT_Title_Diagnostics" xml:space="preserve">
-    <value>Diagnostics</value>
+  <data name="SABT_Title_Layout" xml:space="preserve">
+    <value>Layout</value>
   </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
     <value>Preferences</value>
@@ -240,8 +240,8 @@
   <data name="SABT_Tab_Connection" xml:space="preserve">
     <value>Connection</value>
   </data>
-  <data name="SABT_Button_TestMotor" xml:space="preserve">
-    <value>Test Motor</value>
+  <data name="SABT_Button_Test" xml:space="preserve">
+    <value>Test</value>
   </data>
   <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
     <value>Reset Diagnostics</value>
@@ -299,6 +299,9 @@
   </data>
   <data name="SABT_Text_Tester" xml:space="preserve">
     <value>Pre-Release Testing &amp; Feedback by TurtleMenace:</value>
+  </data>
+  <data name="SABT_Text_Layout" xml:space="preserve">
+    <value>Motor layout text</value>
   </data>
   <data name="SABT_Text_Repository" xml:space="preserve">
     <value>For more information, to report a bug or contribute, consult the project GitHub repository:</value>
@@ -458,6 +461,15 @@
   <data name="SABT_Label_Landing" xml:space="preserve">
     <value>Landing</value>
   </data>
+  <data name="SABT_Label_Mapping" xml:space="preserve">
+    <value>Mapping</value>
+  </data>
+  <data name="SABT_Label_Direction" xml:space="preserve">
+    <value>Direction</value>
+  </data>
+  <data name="SABT_Label_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
   <data name="SABT_Label_Engine" xml:space="preserve">
     <value>Engine RPM</value>
   </data>
@@ -469,6 +481,9 @@
   </data>
   <data name="SABT_Label_TemperatureThrottlingRange" xml:space="preserve">
     <value>Temperature Throttling Range</value>
+  </data>
+  <data name="SABT_Label_Temperatures" xml:space="preserve">
+    <value>Temperatures</value>
   </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
     <value>Heave Limits (Jumps)</value>
@@ -485,8 +500,8 @@
   <data name="SABT_Label_HighestTemperature" xml:space="preserve">
     <value>Highest Temperature</value>
   </data>
-  <data name="SABT_Label_MostConsecutiveFaults" xml:space="preserve">
-    <value>Most Consecutive Faults</value>
+  <data name="SABT_Label_Faults" xml:space="preserve">
+    <value>Faults</value>
   </data>
   <data name="SABT_Text_Diagnostics" xml:space="preserve">
     <value>If you are having connectivity, thermal or reliability issues with your installation, the data below may be helpful. Note that 'Most Consecutive Faults' numbers under 10 are considered to be normal and do not affect operation of the tensioner. However higher numbers may indicate a problem with the power supply, USB cable or hub, motor connectors, etc</value>

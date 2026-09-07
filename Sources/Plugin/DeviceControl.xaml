@@ -158,12 +158,6 @@
 
                                         <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Source="/User.ActiveBeltTensioner;component/SABT Logo.png" Width="150" Margin="0,0,0,460"/>
 
-                                        <styles:SHButtonPrimary Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestLeftMotor" Margin="0,10,10,0" IsEnabled="{Binding MotorController.LeftMotorIsConnected}" Content="{SLoc SABT_Button_TestMotor}" />
-                                        <styles:SHButtonPrimary Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestRightMotor" Margin="10,10,0,0" IsEnabled="{Binding MotorController.RightMotorIsConnected}" Content="{SLoc SABT_Button_TestMotor}" />
-
-                                        <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding MotorController.LeftMotorStatus, Mode=OneWay}" Margin="1,15,10,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                                        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding MotorController.RightMotorStatus, Mode=OneWay}" Margin="11,15,0,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-
                                         <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" LineHeight="20" TextWrapping="WrapWithOverflow" Margin="2,15,2,5" Text="{SLoc SABT_Text_Connection}" />
 
                                         <ComboBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding MotorController.SerialPorts}" SelectedItem="{Binding Settings.SerialPort, UpdateSourceTrigger=PropertyChanged}" Margin="-1,10,-1,10" />
@@ -174,23 +168,29 @@
 
                                 </StackPanel>
                             </styles:SHTitledGroup>
-                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Diagnostics}" d:Title="Title">
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Layout}" d:Title="Title">
                                 <StackPanel>
 
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Diagnostics}" />
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Layout}" />
 
                                     <Grid Margin="5,10,5,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="3*" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="2*" />
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock Grid.Column="0" FontWeight="SemiBold" Text="{SLoc SABT_Label_Motor}" />
-                                        <TextBlock Grid.Column="1" FontWeight="SemiBold" Text="{SLoc SABT_Label_LowestTemperature}" />
-                                        <TextBlock Grid.Column="2" FontWeight="SemiBold" Text="{SLoc SABT_Label_HighestTemperature}" />
-                                        <TextBlock Grid.Column="3" FontWeight="SemiBold" Text="{SLoc SABT_Label_MostConsecutiveFaults}" />
+                                        <TextBlock Grid.Column="1" FontWeight="SemiBold" Text="{SLoc SABT_Label_Mapping}" />
+                                        <TextBlock Grid.Column="2" FontWeight="SemiBold" Text="{SLoc SABT_Label_Direction}" />
+                                        <TextBlock Grid.Column="3" FontWeight="SemiBold" Text="{SLoc SABT_Label_Temperatures}" />
+                                        <TextBlock Grid.Column="4" FontWeight="SemiBold" Text="{SLoc SABT_Label_Status}" />
+                                        <TextBlock Grid.Column="5" FontWeight="SemiBold" Text="{SLoc SABT_Label_Faults}" />
+                                        <TextBlock Grid.Column="6" FontWeight="SemiBold" Text="VVVVVVVVVV" />
                                     </Grid>
 
                                     <ItemsControl ItemsSource="{Binding MotorController.Motors}">
@@ -198,20 +198,31 @@
                                             <DataTemplate>
                                                 <Grid Margin="5,5,5,0">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="3*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="2*" />
+                                                        <ColumnDefinition Width="2*" />
+                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="2*" />
                                                     </Grid.ColumnDefinitions>
 
-                                                    <TextBlock Grid.Column="0" Text="{Binding Identifier, StringFormat=ID {0}}" />
-                                                    <TextBlock Grid.Column="1" Text="{Binding LowestTemperature, StringFormat={}{0}°C, TargetNullValue=-}" />
-                                                    <TextBlock Grid.Column="2" Text="{Binding HighestTemperature, StringFormat={}{0}°C, TargetNullValue=-}" />
-                                                    <TextBlock Grid.Column="3" Text="{Binding MostConsecutiveFaults}" />
+                                                    <TextBlock Grid.Column="0" Text="{Binding Identifier, Mode=OneWay, StringFormat=ID {0}}" Margin="0,4,0,0" />
+                                                    <ComboBox Grid.Column="1" ItemsSource="{Binding Source={x:Static local:MotorController+MotorMapping.Mappings}}" DisplayMemberPath="Label" SelectedItem="{Binding Mapping, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" />
+                                                    <ComboBox Grid.Column="2" ItemsSource="{Binding Source={x:Static local:MotorController+MotorDirection.Directions}}" DisplayMemberPath="Label" SelectedItem="{Binding Direction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" />
+                                                    <TextBlock Grid.Column="3" Margin="0,4,0,0">
+                                                        <Run Text="{Binding LowestTemperature, Mode=OneWay, StringFormat={}{0}°C, TargetNullValue=-}" />
+                                                        <Run Text="{Binding HighestTemperature, Mode=OneWay, StringFormat={}~ {0}°C, TargetNullValue=''}" />
+                                                    </TextBlock>
+                                                    <TextBlock Grid.Column="4" Text="{Binding Status, Mode=OneWay}" Margin="0,4,0,0" />
+                                                    <TextBlock Grid.Column="5" Text="{Binding Faults, Mode=OneWay}" Margin="0,4,0,0" />
+                                                    <styles:SHButtonPrimary Grid.Column="6" HorizontalAlignment="Stretch" Click="TestLeftMotor" Margin="0,0,0,0" IsEnabled="{Binding IsConnected}" Content="{SLoc SABT_Button_Test}" />
                                                 </Grid>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
+
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,20,0,5" Text="{SLoc SABT_Text_Diagnostics}" />
 
                                     <styles:SHButtonPrimary HorizontalAlignment="Stretch" Click="ResetDiagnostics" Margin="0,20,0,0" Content="{SLoc SABT_Button_ResetDiagnostics}" />
 
