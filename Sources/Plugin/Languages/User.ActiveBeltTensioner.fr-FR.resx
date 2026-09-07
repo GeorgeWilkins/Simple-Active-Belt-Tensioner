@@ -504,8 +504,8 @@
   <data name="SABT_Label_Faults" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_Diagnostics" xml:space="preserve">
-    <value>Si vous rencontrez des problèmes de connectivité, thermiques ou de fiabilité avec votre installation, les données ci-dessous peuvent être utiles. Notez que des valeurs de 'Most Consecutive Faults' inférieures à 10 sont considérées comme normales et n'affectent pas le fonctionnement du tendeur. Cependant, des valeurs plus élevées peuvent indiquer un problème avec l'alimentation électrique, le câble USB ou le hub, les connecteurs du moteur, etc</value>
+  <data name="SABT_Text_Diagnostics" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Tooltip_Experimental" xml:space="preserve">
     <value>Cette fonctionnalité ou ce réglage est considéré comme 'expérimental' et peut ne pas fonctionner correctement</value>

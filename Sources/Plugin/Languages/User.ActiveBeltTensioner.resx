@@ -301,7 +301,11 @@
     <value>Pre-Release Testing &amp; Feedback by TurtleMenace:</value>
   </data>
   <data name="SABT_Text_Layout" xml:space="preserve">
-    <value>Motor layout text</value>
+    <value>Each motor can be assigned to ANY channel; though the most common configurations are:
+• Force Doubling: Each shoulder belt is given a pair of motors to double the effective force output (waist belts are fixed)
+• Four-Channel: Every belt is given its own motor for a true four-channel system
+
+Since the motors may be mounted in various ways, you'll need to assign the rotation direction for each motor yourself.</value>
   </data>
   <data name="SABT_Text_Repository" xml:space="preserve">
     <value>For more information, to report a bug or contribute, consult the project GitHub repository:</value>
@@ -504,7 +508,7 @@
     <value>Faults</value>
   </data>
   <data name="SABT_Text_Diagnostics" xml:space="preserve">
-    <value>If you are having connectivity, thermal or reliability issues with your installation, the data below may be helpful. Note that 'Most Consecutive Faults' numbers under 10 are considered to be normal and do not affect operation of the tensioner. However higher numbers may indicate a problem with the power supply, USB cable or hub, motor connectors, etc</value>
+    <value>If you are having connectivity, thermal or reliability issues with your installation, the data below may be helpful. Note that 'Faults' numbers under 10 are considered to be normal and do not affect operation of the tensioner. However higher numbers may indicate a problem with the power supply, USB cable or hub, motor connectors, etc</value>
   </data>
   <data name="SABT_Tooltip_Experimental" xml:space="preserve">
     <value>This feature or setting is considered 'experimental' and may not function correctly</value>

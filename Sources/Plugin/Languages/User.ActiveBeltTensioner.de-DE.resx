@@ -504,8 +504,8 @@
   <data name="SABT_Label_Faults" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_Diagnostics" xml:space="preserve">
-    <value>Wenn Sie Verbindungs-, Wärme- oder Zuverlässigkeitsprobleme mit Ihrer Installation haben, können die nachstehenden Daten hilfreich sein. Beachten Sie, dass Werte unter 10 bei 'Meiste aufeinanderfolgende Fehler' als normal gelten und den Betrieb der Spannvorrichtung nicht beeinträchtigen. Höhere Werte können jedoch auf ein Problem mit dem Netzteil, USB-Kabel oder Hub, Motoranschlüssen usw. hinweisen</value>
+  <data name="SABT_Text_Diagnostics" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Tooltip_Experimental" xml:space="preserve">
     <value>Diese Funktion oder Einstellung gilt als 'experimentell' und funktioniert möglicherweise nicht korrekt</value>

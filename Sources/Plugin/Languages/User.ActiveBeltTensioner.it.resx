@@ -504,8 +504,8 @@
   <data name="SABT_Label_Faults" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_Diagnostics" xml:space="preserve">
-    <value>Se si verificano problemi di connettività, termici o di affidabilità con l'installazione, i dati seguenti potrebbero essere utili. Si noti che i numeri 'Guasti Consecutivi Massimi' inferiori a 10 sono considerati normali e non influiscono sul funzionamento del tenditore. Tuttavia, numeri più elevati potrebbero indicare un problema con l'alimentatore, il cavo USB o l'hub, i connettori del motore, ecc.</value>
+  <data name="SABT_Text_Diagnostics" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Tooltip_Experimental" xml:space="preserve">
     <value>Questa funzionalità o impostazione è considerata 'sperimentale' e potrebbe non funzionare correttamente</value>

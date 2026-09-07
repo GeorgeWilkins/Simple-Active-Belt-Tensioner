@@ -32,15 +32,17 @@ namespace User.ActiveBeltTensioner
         public struct MotorMapping
         {
             public string Label { get; }
-            public MotorMapping(string label)
+            public string Graphic { get; }
+            public MotorMapping(string label, string graphic)
             {
                 Label = label;
+                Graphic = graphic;
             }
 
-            public static MotorMapping LeftShoulder = new MotorMapping("Left Shoulder");
-            public static MotorMapping RightShoulder = new MotorMapping("Right Shoulder");
-            public static MotorMapping LeftWaist = new MotorMapping("Left Waist");
-            public static MotorMapping RightWaist = new MotorMapping("Right Waist");
+            public static MotorMapping LeftShoulder = new MotorMapping("Left Shoulder", "/User.ActiveBeltTensioner;component/Mapping.LeftShoulder.png");
+            public static MotorMapping RightShoulder = new MotorMapping("Right Shoulder", "/User.ActiveBeltTensioner;component/Mapping.RightShoulder.png");
+            public static MotorMapping LeftWaist = new MotorMapping("Left Waist", "/User.ActiveBeltTensioner;component/Mapping.LeftWaist.png");
+            public static MotorMapping RightWaist = new MotorMapping("Right Waist", "/User.ActiveBeltTensioner;component/Mapping.RightWaist.png");
 
             public static MotorMapping[] Mappings = {
                 LeftShoulder,
@@ -54,14 +56,16 @@ namespace User.ActiveBeltTensioner
         {
             public string Label { get; }
             public sbyte Direction { get; }
-            public MotorDirection(string label, sbyte direction)
+            public string Graphic { get; }
+            public MotorDirection(string label, sbyte direction, string graphic)
             {
                 Label = label;
                 Direction = direction;
+                Graphic = graphic;
             }
 
-            public static MotorDirection Clockwise = new MotorDirection("⭮", 1);
-            public static MotorDirection AntiClockwise = new MotorDirection("⭯", -1);
+            public static MotorDirection Clockwise = new MotorDirection("Clockwise", 1, "/User.ActiveBeltTensioner;component/Direction.Clockwise.png");
+            public static MotorDirection AntiClockwise = new MotorDirection("Anti-Clockwise", -1, "/User.ActiveBeltTensioner;component/Direction.AntiClockwise.png");
 
             public static MotorDirection[] Directions = {
                 Clockwise,

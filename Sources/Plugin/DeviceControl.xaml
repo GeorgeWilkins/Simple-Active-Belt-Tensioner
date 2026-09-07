@@ -81,6 +81,62 @@
             </Setter>
         </Style>
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <Style x:Key="MotorOptionListBoxStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
+        <Style x:Key="MotorOptionListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,0,10,0" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Focusable" Value="True" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Opacity" Value="0.2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Opacity" Value="1.0" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.8" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+        
+        
+        
+        
+        
+        
     </UserControl.Resources>
     
     <ScrollViewer>
@@ -171,17 +227,17 @@
                             <styles:SHTitledGroup Title="{SLoc SABT_Title_Layout}" d:Title="Title">
                                 <StackPanel>
 
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Layout}" />
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="0,0,0,15" Text="{SLoc SABT_Text_Layout}" />
 
-                                    <Grid Margin="5,10,5,0">
+                                    <Grid Margin="0,0,0,0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="1*" />
                                             <ColumnDefinition Width="3*" />
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="2*" />
                                             <ColumnDefinition Width="1*" />
-                                            <ColumnDefinition Width="2*" />
-                                            <ColumnDefinition Width="2*" />
                                             <ColumnDefinition Width="1*" />
-                                            <ColumnDefinition Width="2*" />
                                         </Grid.ColumnDefinitions>
 
                                         <TextBlock Grid.Column="0" FontWeight="SemiBold" Text="{SLoc SABT_Label_Motor}" />
@@ -190,7 +246,7 @@
                                         <TextBlock Grid.Column="3" FontWeight="SemiBold" Text="{SLoc SABT_Label_Temperatures}" />
                                         <TextBlock Grid.Column="4" FontWeight="SemiBold" Text="{SLoc SABT_Label_Status}" />
                                         <TextBlock Grid.Column="5" FontWeight="SemiBold" Text="{SLoc SABT_Label_Faults}" />
-                                        <TextBlock Grid.Column="6" FontWeight="SemiBold" Text="VVVVVVVVVV" />
+                                        <TextBlock Grid.Column="6" FontWeight="SemiBold" Text="" />
                                     </Grid>
 
                                     <ItemsControl ItemsSource="{Binding MotorController.Motors}">
@@ -200,16 +256,45 @@
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="1*" />
                                                         <ColumnDefinition Width="3*" />
+                                                        <ColumnDefinition Width="2*" />
+                                                        <ColumnDefinition Width="2*" />
+                                                        <ColumnDefinition Width="2*" />
                                                         <ColumnDefinition Width="1*" />
-                                                        <ColumnDefinition Width="2*" />
-                                                        <ColumnDefinition Width="2*" />
                                                         <ColumnDefinition Width="1*" />
-                                                        <ColumnDefinition Width="2*" />
                                                     </Grid.ColumnDefinitions>
 
                                                     <TextBlock Grid.Column="0" Text="{Binding Identifier, Mode=OneWay, StringFormat=ID {0}}" Margin="0,4,0,0" />
-                                                    <ComboBox Grid.Column="1" ItemsSource="{Binding Source={x:Static local:MotorController+MotorMapping.Mappings}}" DisplayMemberPath="Label" SelectedItem="{Binding Mapping, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" />
-                                                    <ComboBox Grid.Column="2" ItemsSource="{Binding Source={x:Static local:MotorController+MotorDirection.Directions}}" DisplayMemberPath="Label" SelectedItem="{Binding Direction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" />
+
+                                                    <ListBox Grid.Column="1" Style="{StaticResource MotorOptionListBoxStyle}" ItemContainerStyle="{StaticResource MotorOptionListBoxItemStyle}" ItemsSource="{Binding Source={x:Static local:MotorController+MotorMapping.Mappings}}" SelectedItem="{Binding Mapping, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                        <ListBox.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ListBox.ItemsPanel>
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border ToolTip="{Binding Label}" Background="Transparent">
+                                                                    <Image Source="{Binding Graphic}" Width="20" Height="20" />
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+
+                                                    <ListBox Grid.Column="2" Style="{StaticResource MotorOptionListBoxStyle}" ItemContainerStyle="{StaticResource MotorOptionListBoxItemStyle}" ItemsSource="{Binding Source={x:Static local:MotorController+MotorDirection.Directions}}" SelectedItem="{Binding Direction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                        <ListBox.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ListBox.ItemsPanel>
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border ToolTip="{Binding Label}" Background="Transparent">
+                                                                    <Image Source="{Binding Graphic}" Width="20" Height="20" />
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+
                                                     <TextBlock Grid.Column="3" Margin="0,4,0,0">
                                                         <Run Text="{Binding LowestTemperature, Mode=OneWay, StringFormat={}{0}°C, TargetNullValue=-}" />
                                                         <Run Text="{Binding HighestTemperature, Mode=OneWay, StringFormat={}~ {0}°C, TargetNullValue=''}" />
@@ -222,7 +307,7 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
 
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,20,0,5" Text="{SLoc SABT_Text_Diagnostics}" />
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="0,20,0,0" Text="{SLoc SABT_Text_Diagnostics}" />
 
                                     <styles:SHButtonPrimary HorizontalAlignment="Stretch" Click="ResetDiagnostics" Margin="0,20,0,0" Content="{SLoc SABT_Button_ResetDiagnostics}" />
 
