@@ -27,6 +27,8 @@ namespace User.ActiveBeltTensioner
         [JsonIgnore]
         public Action Persist { get; set; }
 
+        public string DefaultUpshiftingModifiers = "0ms:100% 150ms:100% 300ms:0%";
+
         public void Initialise(DevicePlugin plugin)
         {
             _plugin = plugin;
@@ -126,17 +128,12 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _reducedOutputTemperature = 55;
+        private int _reducedOutputTemperature = 50;
         public int ReducedOutputTemperature
         {
             get { return _reducedOutputTemperature; }
             set
             {
-                value = Math.Min(
-                    Math.Max(value, 45),
-                    _stoppedOutputTemperature - 1
-                );
-
                 if (_reducedOutputTemperature != value)
                 {
                     _reducedOutputTemperature = value;
@@ -145,17 +142,12 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _stoppedOutputTemperature = 65;
+        private int _stoppedOutputTemperature = 60;
         public int StoppedOutputTemperature
         {
             get { return _stoppedOutputTemperature; }
             set
             {
-                value = Math.Max(
-                    Math.Min(value, 80),
-                    _reducedOutputTemperature + 1
-                );
-
                 if (_stoppedOutputTemperature != value)
                 {
                     _stoppedOutputTemperature = value;
@@ -313,7 +305,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _maximumHeave = 90;
+        private int _maximumHeave = 75;
         public int MaximumHeave
         {
             get { return _maximumHeave; }
@@ -426,19 +418,55 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _shiftingStrength = 0;
-        public int ShiftingStrength
+        private int _engineStrength = 0;
+        public int EngineStrength
         {
-            get { return _shiftingStrength; }
+            get { return _engineStrength; }
             set
             {
-                if (_shiftingStrength != value)
+                if (_engineStrength != value)
                 {
-                    _shiftingStrength = value;
-                    InvokePropertyChange(nameof(ShiftingStrength));
+                    _engineStrength = value;
+                    InvokePropertyChange(nameof(EngineStrength));
                 }
             }
         }
+
+        private int _upshiftingStrength = 0;
+        public int UpshiftingStrength
+        {
+            get { return _upshiftingStrength; }
+            set
+            {
+                if (_upshiftingStrength != value)
+                {
+                    _upshiftingStrength = value;
+                    InvokePropertyChange(nameof(UpshiftingStrength));
+                }
+            }
+        }
+
+        private string _upshiftingModifiers = null;
+        public string UpshiftingModifiers
+        {
+            get {
+                _upshiftingModifiers = _upshiftingModifiers ?? DefaultUpshiftingModifiers;
+
+                return _upshiftingModifiers;
+            }
+            set
+            {
+                if (_upshiftingModifiers != value)
+                {
+                    _upshiftingModifiers = value;
+                    InvokePropertyChange(nameof(UpshiftingModifiers));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AreUpshiftingModifiersValid)));
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public bool AreUpshiftingModifiersValid => DevicePlugin.ValidateUpshiftingModifiers(_upshiftingModifiers);
 
         private bool _showSurgePlot = true;
         public bool ShowSurgePlot
@@ -453,6 +481,7 @@ namespace User.ActiveBeltTensioner
                 }
             }
         }
+
 
         private bool _showSwayPlot = true;
         public bool ShowSwayPlot
@@ -492,6 +521,22 @@ namespace User.ActiveBeltTensioner
                 {
                     _showTorquePlot = value;
                     InvokePropertyChange(nameof(ShowTorquePlot));
+                }
+            }
+        }
+
+        private double _telemetryGraphHeight = 500.0;
+        public double TelemetryGraphHeight
+        {
+            get { return _telemetryGraphHeight; }
+            set
+            {
+                double clampedValue = Math.Max(200.0, Math.Min(1200.0, value));
+
+                if (_telemetryGraphHeight != clampedValue)
+                {
+                    _telemetryGraphHeight = clampedValue;
+                    InvokePropertyChange(nameof(TelemetryGraphHeight));
                 }
             }
         }
@@ -570,6 +615,9 @@ namespace User.ActiveBeltTensioner
             MinimumHeave = profile.MinimumHeave;
             MaximumHeave = profile.MaximumHeave;
             SmoothingFactor = profile.SmoothingFactor;
+            EngineStrength = profile.EngineStrength;
+            UpshiftingStrength = profile.UpshiftingStrength;
+            UpshiftingModifiers = profile.UpshiftingModifiers ?? DefaultUpshiftingModifiers;
 
             profile.IsActive = true;
 
@@ -763,6 +811,9 @@ namespace User.ActiveBeltTensioner
         public int MinimumHeave { get; set; }
         public int MaximumHeave { get; set; }
         public int SmoothingFactor { get; set; }
+        public int EngineStrength { get; set; }
+        public int UpshiftingStrength { get; set; }
+        public string UpshiftingModifiers { get; set; }
 
         public GameTuningProfile(string game, string vehicle, bool promptForLabels = false)
         {
@@ -809,7 +860,10 @@ namespace User.ActiveBeltTensioner
                 MaximumSway = settings.MaximumSway,
                 MinimumHeave = settings.MinimumHeave,
                 MaximumHeave = settings.MaximumHeave,
-                SmoothingFactor = settings.SmoothingFactor
+                SmoothingFactor = settings.SmoothingFactor,
+                EngineStrength = settings.EngineStrength,
+                UpshiftingStrength = settings.UpshiftingStrength,
+                UpshiftingModifiers = settings.UpshiftingModifiers
             };
         }
 
@@ -826,7 +880,10 @@ namespace User.ActiveBeltTensioner
                 MaximumSway = this.MaximumSway,
                 MinimumHeave = this.MinimumHeave,
                 MaximumHeave = this.MaximumHeave,
-                SmoothingFactor = this.SmoothingFactor
+                SmoothingFactor = this.SmoothingFactor,
+                EngineStrength = this.EngineStrength,
+                UpshiftingStrength = this.UpshiftingStrength,
+                UpshiftingModifiers = this.UpshiftingModifiers
             };
         }
 

@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SABT_Tab_Tuning" xml:space="preserve">
-    <value>Tuning</value>
+  <data name="SABT_Tab_Profiles" xml:space="preserve">
+    <value>Profiles</value>
   </data>
   <data name="SABT_Tab_Credits" xml:space="preserve">
     <value>Credits</value>
@@ -130,10 +130,10 @@
     <value>Belt Tension Adjustment</value>
   </data>
   <data name="SABT_Title_Tuning" xml:space="preserve">
-    <value>Telemetry Handling</value>
+    <value>Tuning</value>
   </data>
-  <data name="SABT_Title_Temperatures" xml:space="preserve">
-    <value>Temperatures</value>
+  <data name="SABT_Title_Preferences" xml:space="preserve">
+    <value>Preferences</value>
   </data>
   <data name="SABT_Title_Profiles" xml:space="preserve">
     <value>Profiles</value>
@@ -231,11 +231,8 @@
   <data name="SABT_Title_Diagnostics" xml:space="preserve">
     <value>Diagnostics</value>
   </data>
-  <data name="SABT_Tab_Tension" xml:space="preserve">
-    <value>Tension</value>
-  </data>
-  <data name="SABT_Tab_Effects" xml:space="preserve">
-    <value>Effects</value>
+  <data name="SABT_Tab_Preferences" xml:space="preserve">
+    <value>Preferences</value>
   </data>
   <data name="SABT_Title_Effects" xml:space="preserve">
     <value>Effects</value>
@@ -248,6 +245,9 @@
   </data>
   <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
     <value>Reset Diagnostics</value>
+  </data>
+  <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
+    <value>Reset Upshifting Modifiers</value>
   </data>
   <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
     <value>⧉ Game &amp; Vehicle</value>
@@ -276,9 +276,8 @@
   <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
     <value>• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>
   </data>
-  <data name="SABT_Label_Shifting" xml:space="preserve">
-    <value>• Adds a more pronounced release of tension on upshift than standard telemetry offers
-• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>
+  <data name="SABT_Label_Upshifting" xml:space="preserve">
+    <value>Upshifting</value>
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Website</value>
@@ -389,6 +388,17 @@
   <data name="SABT_Text_Landing" xml:space="preserve">
     <value>• How much landing should increase the tension on both belts</value>
   </data>
+  <data name="SABT_Text_Engine" xml:space="preserve">
+    <value>• To what extent low-speed engine idle and stalling vibrations should be felt through the belts
+• This effect is based upon the reported engine speed and is limited to low-RPMs due to motor limitations</value>
+  </data>
+  <data name="SABT_Text_Upshifting" xml:space="preserve">
+    <value>• Adds a more pronounced tension blip on upshift
+• Customize the effect by providing a sequence of space-separated `{milliseconds}:{torque%}` values in the field above
+• Milliseconds values are relative to the start of the shift, while torque values are 0 to 100 (%)
+• `0ms:100% 200ms:100% 500ms:0%` would equate to `Start at 100% torque, stay there until 200ms, then fade down to 0% torque between 200ms and 500ms`
+• `0ms:0% 100ms:100% 300ms:100% 600ms:0%` would equate to `Start at 0% torque, fade up to 100% at 100ms, hold until 300ms, then fade down to 0% torque between 300ms and 500ms`</value>
+  </data>
   <data name="SABT_Text_Profiles" xml:space="preserve">
     <value>• With 'Auto-Switching' enabled, tuning profiles are automatically loaded for the current game (and vehicle class, where known), with the most specific profile taking priority
 • Copying an existing profile will result in its tuning parameters being loaded into a new profile for the currently active game (and vehicle class, where known)
@@ -402,10 +412,15 @@
 • 'Auto-Switching' will be automatically disabled when using the automatic tuning feature
 • 'Auto-Tuning' will be automatically disabled if the active profile changes</value>
   </data>
-  <data name="SABT_Text_Temperatures" xml:space="preserve">
-    <value>• Under normal circumstances the motors should not get hot; but they are capable of operating at up to 80°C
-• Depending on your choice of filament, your printed parts may fail at much lower temperatures (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
-• Set reasonable temperature thresholds below to protect your printed parts from thermal damage</value>
+  <data name="SABT_Text_Preferences" xml:space="preserve">
+    <value>These settings are not game-specific and control the basic operation of the tensioner; including overall output both during and between game sessions. They should be set to your liking before performing fine-tuning within the 'Profiles' tab.</value>
+  </data>
+  <data name="SABT_Text_TemperatureThrottlingRange" xml:space="preserve">
+    <value>• The motors should not get hot during operation; but they are capable of operating at up to 80°C
+• Depending on your choice of filament, your printed parts may fail at lower temperatures (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
+• The first slider sets the temperature at which thermal throttling should start (a reduction in motor power)
+• The second slider sets the temperature at which the motors should be disabled to prevent damage
+• While between these temperatures, the motor output will be gradually reduced (proportional to the temperature)</value>
   </data>
   <data name="SABT_Text_Telemetry" xml:space="preserve">
     <value>• The permitted value ranges for incoming telemetry (anything more or less will be clipped, resulting in zero or maximum motor output)
@@ -443,27 +458,17 @@
   <data name="SABT_Label_Landing" xml:space="preserve">
     <value>Landing</value>
   </data>
+  <data name="SABT_Label_Engine" xml:space="preserve">
+    <value>Engine RPM</value>
+  </data>
   <data name="SABT_Label_SurgeLimits" xml:space="preserve">
     <value>Surge Limits (Acceleration/Braking)</value>
   </data>
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
     <value>Sway Limits (Cornering)</value>
   </data>
-  <data name="SABT_Label_ReducedOutputTemperature" xml:space="preserve">
-    <value>Reduced Output Temperature °C</value>
-  </data>
-  <data name="SABT_Text_ReducedOutputTemperature" xml:space="preserve">
-    <value>• The temperature at which motors will automatically reduce their output to avoid overheating
-• Motors will continue operating, but torque output will be reduced proportionally to how far over the temperature threshold they are
-• This should be lower than your filament's glass transition temperature (Tg °C)</value>
-  </data>
-  <data name="SABT_Label_StoppedOutputTemperature" xml:space="preserve">
-    <value>Stopped Output Temperature °C</value>
-  </data>
-  <data name="SABT_Text_StoppedOutputTemperature" xml:space="preserve">
-    <value>• The temperature at which motors will automatically cease output entirely to avoid overheating
-• Motors will not output any torque over this temperature
-• This should be lower than your filament's glass transition temperature (Tg °C)</value>
+  <data name="SABT_Label_TemperatureThrottlingRange" xml:space="preserve">
+    <value>Temperature Throttling Range</value>
   </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
     <value>Heave Limits (Jumps)</value>
@@ -485,5 +490,17 @@
   </data>
   <data name="SABT_Text_Diagnostics" xml:space="preserve">
     <value>If you are having connectivity, thermal or reliability issues with your installation, the data below may be helpful. Note that 'Most Consecutive Faults' numbers under 10 are considered to be normal and do not affect operation of the tensioner. However higher numbers may indicate a problem with the power supply, USB cable or hub, motor connectors, etc</value>
+  </data>
+  <data name="SABT_Tooltip_Experimental" xml:space="preserve">
+    <value>This feature or setting is considered 'experimental' and may not function correctly</value>
+  </data>
+  <data name="SABT_Tooltip_Unavailable" xml:space="preserve">
+    <value>This setting is unavailable due to the values of other settings</value>
+  </data>
+  <data name="SABT_Label_Experimental" xml:space="preserve">
+    <value>EXPERIMENTAL</value>
+  </data>
+  <data name="SABT_Label_Unavailable" xml:space="preserve">
+    <value>UNAVAILABLE</value>
   </data>
 </root>

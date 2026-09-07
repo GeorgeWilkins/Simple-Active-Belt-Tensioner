@@ -210,9 +210,19 @@ namespace User.ActiveBeltTensioner
             );
         }
 
+        private void ResetUpshiftingModifiers(object sender, RoutedEventArgs e)
+        {
+            _plugin.Settings.UpshiftingModifiers = _plugin.Settings.DefaultUpshiftingModifiers;
+        }
+
         private void OpenHyperlink(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start(((Hyperlink)sender).NavigateUri.ToString());
+        }
+
+        private void ResizeTelemetryGraph(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        {
+            _plugin.Settings.TelemetryGraphHeight += e.VerticalChange;
         }
 
         private static T FindParent<T>(DependencyObject current) where T : DependencyObject

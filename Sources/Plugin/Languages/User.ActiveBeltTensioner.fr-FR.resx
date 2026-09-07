@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SABT_Tab_Tuning" xml:space="preserve">
-    <value>Réglage</value>
+  <data name="SABT_Tab_Profiles" xml:space="preserve">
+    <value>Profils</value>
   </data>
   <data name="SABT_Tab_Credits" xml:space="preserve">
     <value>Crédits</value>
@@ -130,10 +130,10 @@
     <value>Réglage de la tension de ceinture</value>
   </data>
   <data name="SABT_Title_Tuning" xml:space="preserve">
-    <value>Gestion de la télémétrie</value>
+    <value>Réglage</value>
   </data>
-  <data name="SABT_Title_Temperatures" xml:space="preserve">
-    <value>Températures</value>
+  <data name="SABT_Title_Preferences" xml:space="preserve">
+    <value>Préférences</value>
   </data>
   <data name="SABT_Title_Profiles" xml:space="preserve">
     <value>Profils</value>
@@ -231,11 +231,8 @@
   <data name="SABT_Title_Diagnostics" xml:space="preserve">
     <value>Diagnostics</value>
   </data>
-  <data name="SABT_Tab_Tension" xml:space="preserve">
-    <value>Tension</value>
-  </data>
-  <data name="SABT_Tab_Effects" xml:space="preserve">
-    <value>Effets</value>
+  <data name="SABT_Tab_Preferences" xml:space="preserve">
+    <value>Préférences</value>
   </data>
   <data name="SABT_Title_Effects" xml:space="preserve">
     <value>Effets</value>
@@ -248,6 +245,9 @@
   </data>
   <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
     <value>Réinitialiser les diagnostics</value>
+  </data>
+  <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
+    <value>Réinitialiser les modificateurs de passage à la vitesse supérieure</value>
   </data>
   <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
     <value>⧉ Jeu &amp; Véhicule</value>
@@ -276,9 +276,8 @@
   <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
     <value>• Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
   </data>
-  <data name="SABT_Label_Shifting" xml:space="preserve">
-    <value>• Ajoute un relâchement de tension plus marqué lors des passages de rapport que la télémétrie standard
-• Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
+  <data name="SABT_Label_Upshifting" xml:space="preserve">
+    <value>Passage de vitesse supérieure</value>
   </data>
   <data name="SABT_Link_Website" xml:space="preserve">
     <value>Site web</value>
@@ -389,6 +388,17 @@
   <data name="SABT_Text_Landing" xml:space="preserve">
     <value>• Intensité de l'augmentation de tension sur les deux ceintures lors des réceptions</value>
   </data>
+  <data name="SABT_Text_Engine" xml:space="preserve">
+    <value>• Dans quelle mesure les vibrations du moteur au ralenti et lors des calages à faible régime doivent être ressenties à travers les courroies
+• Cet effet est basé sur la vitesse moteur signalée et est limité aux faibles régimes en raison des limitations du moteur</value>
+  </data>
+  <data name="SABT_Text_Upshifting" xml:space="preserve">
+    <value>• Ajoute un à-coup de tension plus prononcé lors de la montée de rapport
+• Personnalisez l'effet en fournissant une séquence de valeurs `{millisecondes}:{couple%}` séparées par des espaces dans le champ ci-dessus
+• Les valeurs en millisecondes sont relatives au début du changement de vitesse, tandis que les valeurs de couple vont de 0 à 100 (%)
+• `0ms:100% 200ms:100% 500ms:0%` équivaudrait à `Commencer à 100% de couple, y rester jusqu'à 200ms, puis diminuer progressivement jusqu'à 0% de couple entre 200ms et 500ms`
+• `0ms:0% 100ms:100% 300ms:100% 600ms:0%` équivaudrait à `Commencer à 0% de couple, augmenter progressivement jusqu'à 100% à 100ms, maintenir jusqu'à 300ms, puis diminuer progressivement jusqu'à 0% de couple entre 300ms et 500ms`</value>
+  </data>
   <data name="SABT_Text_Profiles" xml:space="preserve">
     <value>• Avec le 'Changement automatique' activé, les profils de réglage sont automatiquement chargés pour le jeu actuel (et la classe de véhicule, si connue), le profil le plus spécifique ayant la priorité
 • La copie d'un profil existant entraînera le chargement de ses paramètres de réglage dans un nouveau profil pour le jeu actuellement actif (et la classe de véhicule, si connue)
@@ -402,10 +412,15 @@
 • Le 'Changement automatique' sera automatiquement désactivé lors de l'utilisation de la fonction de réglage automatique
 • Le 'Réglage automatique' sera automatiquement désactivé si le profil actif change</value>
   </data>
-  <data name="SABT_Text_Temperatures" xml:space="preserve">
-    <value>• Dans des circonstances normales, les moteurs ne devraient pas chauffer ; mais ils sont capables de fonctionner jusqu'à 80°C
-• Selon votre choix de filament, vos pièces imprimées peuvent défaillir à des températures beaucoup plus basses (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
-• Définissez des seuils de température raisonnables ci-dessous pour protéger vos pièces imprimées des dommages thermiques</value>
+  <data name="SABT_Text_Preferences" xml:space="preserve">
+    <value>Ces paramètres ne sont pas spécifiques à un jeu et contrôlent le fonctionnement de base du tendeur ; ils déterminent notamment la sortie globale pendant et entre les sessions de jeu. Ils doivent être réglés selon vos préférences avant d'effectuer un réglage fin dans l'onglet 'Profils'.</value>
+  </data>
+  <data name="SABT_Text_TemperatureThrottlingRange" xml:space="preserve">
+    <value>• Les moteurs ne doivent pas chauffer pendant le fonctionnement; mais ils peuvent fonctionner jusqu'à 80°C
+• Selon votre choix de filament, vos pièces imprimées peuvent échouer à des températures plus basses (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
+• Le premier curseur règle la température à laquelle le bridage thermique doit commencer (une réduction de la puissance du moteur)
+• Le second curseur règle la température à laquelle les moteurs doivent être désactivés pour prévenir les dommages
+• Tant que la température est comprise entre ces valeurs, la puissance des moteurs sera progressivement réduite (proportionnelle à la température)</value>
   </data>
   <data name="SABT_Text_Telemetry" xml:space="preserve">
     <value>• Les plages de valeurs autorisées pour la télémétrie entrante (toute valeur supérieure ou inférieure sera écrêtée, résultant en une sortie moteur nulle ou maximale)
@@ -443,27 +458,17 @@
   <data name="SABT_Label_Landing" xml:space="preserve">
     <value>Atterrissage</value>
   </data>
+  <data name="SABT_Label_Engine" xml:space="preserve">
+    <value>Régime moteur</value>
+  </data>
   <data name="SABT_Label_SurgeLimits" xml:space="preserve">
     <value>Limites Surge (Accélération/Freinage)</value>
   </data>
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
     <value>Limites Sway (Virage)</value>
   </data>
-  <data name="SABT_Label_ReducedOutputTemperature" xml:space="preserve">
-    <value>Température de sortie réduite °C</value>
-  </data>
-  <data name="SABT_Text_ReducedOutputTemperature" xml:space="preserve">
-    <value>• La température à laquelle les moteurs réduiront automatiquement leur puissance pour éviter la surchauffe
-• Les moteurs continueront à fonctionner, mais le couple de sortie sera réduit proportionnellement au dépassement du seuil de température
-• Celle-ci doit être inférieure à la température de transition vitreuse de votre filament (Tg °C)</value>
-  </data>
-  <data name="SABT_Label_StoppedOutputTemperature" xml:space="preserve">
-    <value>Température de sortie arrêtée °C</value>
-  </data>
-  <data name="SABT_Text_StoppedOutputTemperature" xml:space="preserve">
-    <value>• La température à laquelle les moteurs cesseront automatiquement toute sortie pour éviter la surchauffe
-• Les moteurs ne produiront aucun couple au-delà de cette température
-• Cette température devrait être inférieure à la température de transition vitreuse de votre filament (Tg °C)</value>
+  <data name="SABT_Label_TemperatureThrottlingRange" xml:space="preserve">
+    <value>Plage de bridage thermique</value>
   </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
     <value>Limites Heave (Sauts)</value>
@@ -485,5 +490,17 @@
   </data>
   <data name="SABT_Text_Diagnostics" xml:space="preserve">
     <value>Si vous rencontrez des problèmes de connectivité, thermiques ou de fiabilité avec votre installation, les données ci-dessous peuvent être utiles. Notez que des valeurs de 'Most Consecutive Faults' inférieures à 10 sont considérées comme normales et n'affectent pas le fonctionnement du tendeur. Cependant, des valeurs plus élevées peuvent indiquer un problème avec l'alimentation électrique, le câble USB ou le hub, les connecteurs du moteur, etc</value>
+  </data>
+  <data name="SABT_Tooltip_Experimental" xml:space="preserve">
+    <value>Cette fonctionnalité ou ce réglage est considéré comme 'expérimental' et peut ne pas fonctionner correctement</value>
+  </data>
+  <data name="SABT_Tooltip_Unavailable" xml:space="preserve">
+    <value>Ce paramètre n'est pas disponible en raison des valeurs d'autres paramètres</value>
+  </data>
+  <data name="SABT_Label_Experimental" xml:space="preserve">
+    <value>EXPÉRIMENTAL</value>
+  </data>
+  <data name="SABT_Label_Unavailable" xml:space="preserve">
+    <value>INDISPONIBLE</value>
   </data>
 </root>

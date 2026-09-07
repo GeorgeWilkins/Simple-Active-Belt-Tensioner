@@ -1,4 +1,5 @@
 ﻿using GameReaderCommon;
+using Newtonsoft.Json.Linq;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
@@ -7,11 +8,15 @@ using SimHub;
 using SimHub.Plugins;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
+using WoteverCommon.RawInput.Win32;
 using WoteverLocalization;
 
 
@@ -44,11 +49,14 @@ namespace User.ActiveBeltTensioner
 
         private static string _settingsName = "SimpleActiveBeltTensioner";
 
+        private (int timeOffset, int tensionModifier)[] _upshiftModifierCurve = ParseUpshiftingModifiers(null);
+
         private readonly object _motorControllerLock = new object();
         private readonly object _telemetryLock = new object();
         private TelemetrySnapshot _latestTelemetry;
 
         private readonly AutoResetEvent _hasTelemetryArrived = new AutoResetEvent(false);
+        private const int _controlLoopInterval = 3; // Milliseconds;
         private Thread _controlThread;
         private volatile bool _runControlLoop = false;
         private volatile bool _hasBeenInactive = true;
@@ -60,6 +68,7 @@ namespace User.ActiveBeltTensioner
             public double? Sway;
             public double? Heave;
             public double? Speed;
+            public double? Revolutions;
             public bool DidUpshift;
             public bool IsActive;
         }
@@ -235,6 +244,8 @@ namespace User.ActiveBeltTensioner
             Settings.PropertyChanged += OnSettingsChanged;
             Settings.Initialise(this);
 
+            _upshiftModifierCurve = ParseUpshiftingModifiers(Settings.UpshiftingModifiers);
+
             IsEnabled = IsEnabled || Settings.StartAutomatically;
 
             // Register Actions (For External Control)
@@ -376,6 +387,13 @@ namespace User.ActiveBeltTensioner
                 return;
             }
 
+            if (e.PropertyName == nameof(Settings.UpshiftingModifiers))
+            {
+                _upshiftModifierCurve = ParseUpshiftingModifiers(Settings.UpshiftingModifiers);
+
+                return;
+            }
+
             if (
                 e.PropertyName == nameof(Settings.MinimumSurge) ||
                 e.PropertyName == nameof(Settings.MaximumSurge) ||
@@ -423,7 +441,8 @@ namespace User.ActiveBeltTensioner
                 Sway = data.NewData?.AccelerationSway,
                 Heave = data.NewData?.AccelerationHeave,
                 Speed = data.NewData?.SpeedKmh,
-                DidUpshift = inGear && (oldGear < newGear),
+                Revolutions = data.NewData?.Rpms,
+                DidUpshift = inGear && (newGear > oldGear),
                 IsActive = (data.GameRunning && !data.GameInMenu) || data.GameReplay
             };
 
@@ -471,6 +490,14 @@ namespace User.ActiveBeltTensioner
             double[] telemetryHeaveBuffer = new double[telemetryBufferSize];
             int telemetryBufferIndex = 0;
 
+            // Initialise Upshift Timer
+            Stopwatch upshiftStopwatch = Stopwatch.StartNew();
+            upshiftStopwatch.Reset();
+
+            // Initialise Oscillation State (For Engine RPM Effects)
+            int oscillationDirection = 1;
+            Stopwatch oscillationStopwatch = Stopwatch.StartNew();
+
             while (_runControlLoop)
             {
                 if (!_runControlLoop)
@@ -478,7 +505,7 @@ namespace User.ActiveBeltTensioner
                     break;
                 }
 
-                _hasTelemetryArrived.WaitOne();
+                _hasTelemetryArrived.WaitOne(_controlLoopInterval); // Time-out Aggressively (For >60Hz Effects)
 
                 TelemetrySnapshot telemetrySnapshot;
                 lock (_telemetryLock)
@@ -499,7 +526,8 @@ namespace User.ActiveBeltTensioner
                     double brakingStrength = ConvertToFraction(Settings.BrakingStrength);
                     double jumpingStrength = ConvertToFraction(Settings.JumpingStrength);
                     double landingStrength = ConvertToFraction(Settings.LandingStrength);
-                    double shiftingStrength = ConvertToFraction(Settings.ShiftingStrength);
+                    double engineStrength = ConvertToFraction(Settings.EngineStrength);
+                    double upshiftingStrength = ConvertToFraction(Settings.UpshiftingStrength);
 
                     // Handle Tuning & Telemetry
                     int minimumSurge = Settings.MinimumSurge;
@@ -515,8 +543,9 @@ namespace User.ActiveBeltTensioner
                     double sway = (ConvertToFractionOfRange(telemetrySnapshot.Sway ?? 0.0, minimumSway, maximumSway) * 2.0) - 1.0;
                     double heave = telemetrySnapshot.Heave ?? 0.0;
                     double speed = telemetrySnapshot.Speed ?? 0.0;
+                    double revolutions = telemetrySnapshot.Revolutions ?? 0.0;
 
-                    // Calculate Effects
+                    // Calculate Forces
                     double braking = ConvertToFractionOfRange(surge, 0, maximumSurge);
                     double acceleration = 1.0 - ConvertToFractionOfRange(surge, minimumSurge, 0);
                     double landing = ConvertToFractionOfRange(heave, 0, maximumHeave);
@@ -541,7 +570,7 @@ namespace User.ActiveBeltTensioner
                     increasingModifierLeft = Math.Max(increasingModifierLeft, (sway <= 0.0) ? (Math.Abs(sway * corneringStrength)) : 0.0);
                     increasingModifierRight = Math.Max(increasingModifierRight, (sway > 0.0) ? (Math.Abs(sway * corneringStrength)) : 0.0);
 
-                    // Combinator
+                    // Combine Modifiers
                     double totalModifierLeft = increasingModifierLeft - decreasingModifierLeft;
                     double totalModifierRight = increasingModifierRight - decreasingModifierRight;
 
@@ -562,6 +591,40 @@ namespace User.ActiveBeltTensioner
                         rightTarget = minimumTension + (totalModifierRight * (maximumTension - minimumTension));
                     }
 
+                    // Upshift Blip
+                    if (didUpshift && upshiftingStrength > 0.0)
+                    {
+                        upshiftStopwatch.Restart();
+                    }
+
+                    if (upshiftStopwatch.IsRunning)
+                    {
+                        double upshiftDuration = upshiftStopwatch.Elapsed.TotalMilliseconds;
+
+                        if (_upshiftModifierCurve != null)
+                        {
+                            if (upshiftDuration >= _upshiftModifierCurve[_upshiftModifierCurve.Length - 1].timeOffset)
+                            {
+                                upshiftStopwatch.Stop();
+                            }
+                            else
+                            {
+                                double upshiftModifier = GetUpshiftModifier(upshiftDuration) * upshiftingStrength;
+
+                                if (upshiftModifier > 0.0)
+                                {
+                                    leftTarget += upshiftModifier * (maximumTension - leftTarget);
+                                    rightTarget += upshiftModifier * (maximumTension - rightTarget);
+                                }
+                                else if (upshiftModifier < 0.0)
+                                {
+                                    leftTarget += upshiftModifier * leftTarget;
+                                    rightTarget += upshiftModifier * rightTarget;
+                                }
+                            }
+                        }
+                    }
+
                     // Map To Range (Minimum ~ Maximum Tension)
                     leftTarget = ClampTo(leftTarget, 0.0, maximumTension);
                     rightTarget = ClampTo(rightTarget, 0.0, maximumTension);
@@ -571,6 +634,34 @@ namespace User.ActiveBeltTensioner
                     {
                         leftTarget = idleTension;
                         rightTarget = idleTension;
+                    }
+
+                    // Engine Revolutions
+                    if (revolutions > 0.0 && engineStrength > 0.0)
+                    {
+                        double oscillationIntervalSeconds = (30.0 / revolutions);
+
+                        if (oscillationStopwatch.Elapsed.TotalSeconds >= oscillationIntervalSeconds)
+                        {
+                            oscillationDirection *= -1;
+                            oscillationStopwatch.Restart();
+                        }
+
+                        double revolutionsFraction = ConvertToFractionOfRange(revolutions, 0, 5000);
+
+                     // double adjustedEngineStrength = (1.0 - (revolutionsFraction * revolutionsFraction * revolutionsFraction)) * engineStrength * 0.5; // Cubic Curve
+                        double adjustedEngineStrength = (1.0 - revolutionsFraction) * engineStrength * 0.5; // Linear
+
+                        if (oscillationDirection > 0)
+                        {
+                            leftTarget = ClampTo(leftTarget + (adjustedEngineStrength * (maximumTension - leftTarget)), 0.0, maximumTension);
+                            rightTarget = ClampTo(rightTarget - (adjustedEngineStrength * rightTarget), 0.0, maximumTension);
+                        }
+                        else
+                        {
+                            rightTarget = ClampTo(rightTarget + (adjustedEngineStrength * (maximumTension - rightTarget)), 0.0, maximumTension);
+                            leftTarget = ClampTo(leftTarget - (adjustedEngineStrength * leftTarget), 0.0, maximumTension);
+                        }
                     }
 
                     // Side Bias
@@ -584,7 +675,7 @@ namespace User.ActiveBeltTensioner
                     }
 
                     // Update Telemetry Graph
-                    if (telemetrySnapshot.IsActive && SelectedTabIndex == 3)
+                    if (telemetrySnapshot.IsActive && SelectedTabIndex == 2)
                     {
                         UpdateTelemetryGraph(
                             telemetrySnapshot.Surge ?? 0,
@@ -726,6 +817,140 @@ namespace User.ActiveBeltTensioner
             return value;
         }
 
+        /// <summary>Returns the appropriate tension modifier for the given <paramref name="upshiftOffset"/> time</summary>
+        private double GetUpshiftModifier(double upshiftOffset)
+        {
+            if (upshiftOffset <= _upshiftModifierCurve[0].timeOffset)
+            {
+                return _upshiftModifierCurve[0].tensionModifier / 100.0;
+            }
+
+            if (upshiftOffset >= _upshiftModifierCurve[_upshiftModifierCurve.Length - 1].timeOffset)
+            {
+                return 0.0;
+            }
+
+            for (int i = 0; i < _upshiftModifierCurve.Length - 1; i++)
+            {
+                double fromTime  = _upshiftModifierCurve[i].timeOffset;
+                double fromValue = _upshiftModifierCurve[i].tensionModifier / 100.0;
+                double toTime    = _upshiftModifierCurve[i + 1].timeOffset;
+                double toValue   = _upshiftModifierCurve[i + 1].tensionModifier / 100.0;
+
+                if (upshiftOffset >= fromTime && upshiftOffset < toTime)
+                {
+                    double t = (upshiftOffset - fromTime) / (toTime - fromTime);
+
+                    return fromValue + t * (toValue - fromValue);
+                }
+            }
+
+            return 0.0;
+        }
+
+        /// <summary>Validates a "milliseconds:torque,milliseconds:torque,..." formatted upshifting time/torque modifier string</summary>
+        public static bool ValidateUpshiftingModifiers(string upshiftingModifiers)
+        {
+            return ParseUpshiftingModifiers(upshiftingModifiers) != null;
+        }
+
+        /// <summary>Parses a "milliseconds:torque,milliseconds:torque,..." formatted upshifting time/torque modifier string, returning the parsed values or null if it is invalid</summary>
+        private static (int timeOffset, int tensionModifier)[] ParseUpshiftingModifiers(string upshiftingModifiers)
+        {
+            if (string.IsNullOrWhiteSpace(upshiftingModifiers))
+            {
+                Logging.Current.Warn("SABT: The 'Upshifting Timing' field cannot be empty");
+
+                return null;
+            }
+
+            Regex modifierPattern = new Regex(
+                @"(?<timeOffset>\d+)ms:(?<tensionModifier>\d+)%",
+                RegexOptions.Compiled
+            );
+
+            string[] modifierPairs = upshiftingModifiers.Split(' ');
+
+            if (modifierPairs.Length < 2)
+            {
+                Logging.Current.Warn("SABT: The 'Upshifting Timing' field must contain at least two '{milliseconds}ms:{torque}%' pairs, separated by spaces");
+
+                return null;
+            }
+
+            const int earliestAllowedTime = 0;
+            const int latestAllowedTime = 5000;
+            const int lowestAllowedModifier = 0;
+            const int highestAllowedModifier = 100;
+
+            var parsedModifiers = new (int timeOffset, int tensionModifier)[modifierPairs.Length];
+            int priorTimeOffset = -1;
+            bool hasMaximumModifier = false;
+
+            for (int i = 0; i < modifierPairs.Length; i++)
+            {
+                Match modifierMatch = modifierPattern.Match(modifierPairs[i]);
+
+                if (!modifierMatch.Success)
+                {
+                    Logging.Current.Warn($"SABT: Modifier {i + 1} within the 'Upshifting Timing' field must be in the format '{{milliseconds}}ms:{{torque}}%' ('{modifierPairs[i]}' given)");
+
+                    return null;
+                }
+
+                if (
+                    !int.TryParse(modifierMatch.Groups["timeOffset"].Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int timeOffset) ||
+                    !int.TryParse(modifierMatch.Groups["tensionModifier"].Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int tensionModifier)
+                )
+                {
+                    Logging.Current.Warn($"SABT: Modifier {i + 1} within the 'Upshifting Timing' field could not be parsed ('{modifierPairs[i]}' given)");
+
+                    return null;
+                }
+
+                if (timeOffset < earliestAllowedTime || timeOffset > latestAllowedTime)
+                {
+                    Logging.Current.Warn($"SABT: Modifier {i + 1} within the 'Upshifting Timing' field has a milliseconds value outside the allowed range of {earliestAllowedTime} to {latestAllowedTime} ({timeOffset}ms given)");
+
+                    return null;
+                }
+
+                if (timeOffset <= priorTimeOffset)
+                {
+                    Logging.Current.Warn($"SABT: Modifier {i + 1} within the 'Upshifting Timing' field has a milliseconds value smaller than the prior modifier ({timeOffset} given, >{priorTimeOffset}ms required)");
+
+                    return null;
+                }
+
+                if (tensionModifier < lowestAllowedModifier || tensionModifier > highestAllowedModifier)
+                {
+                    Logging.Current.Warn($"SABT: Modifier {i + 1} within the 'Upshifting Timing' field has a torque value outside the allowed range of {lowestAllowedModifier}% to {highestAllowedModifier}% ({tensionModifier}% given)");
+
+                    return null;
+                }
+
+                hasMaximumModifier = hasMaximumModifier || tensionModifier == highestAllowedModifier;
+                priorTimeOffset = timeOffset;
+                parsedModifiers[i] = (timeOffset, tensionModifier);
+            }
+
+            if (parsedModifiers[parsedModifiers.Length - 1].tensionModifier != 0)
+            {
+                Logging.Current.Warn($"SABT: The final modifier within the 'Upshifting Timing' field must have a torque value of 0% ({parsedModifiers[parsedModifiers.Length - 1].tensionModifier}% given)");
+
+                return null;
+            }
+
+            if (!hasMaximumModifier)
+            {
+                Logging.Current.Warn($"SABT: The 'Upshifting Timing' field must contain at least one modifier with a torque value of 100% (use the 'Upshifting Strength' to adjust overall effect strength)");
+
+                return null;
+            }
+
+            return parsedModifiers;
+        }
+
         /// <summary>Updates the telemetry value buffer and returns the averaged value</summary>
         private int GetAveragedTelemetryValue(double[] buffer, double newValue, int bufferIndex)
         {
@@ -775,7 +1000,7 @@ namespace User.ActiveBeltTensioner
         private const string _targetAxisKey = "targetAxis";
 
         private DateTime _lastPlotRefresh = DateTime.MinValue;
-        private static readonly TimeSpan PlotRefreshInterval = TimeSpan.FromMilliseconds(33);
+        private static readonly TimeSpan PlotRefreshInterval = TimeSpan.FromMilliseconds(33); // 33
 
         /// <summary>Initialises the telemetry graph instance and configures its styling and legends</summary>
         private void InitialiseTelemetryGraph()
