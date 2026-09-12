@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 using WoteverCommon.Extensions;
 using WoteverLocalization;
 using static User.ActiveBeltTensioner.MotorController;
@@ -39,12 +40,14 @@ namespace User.ActiveBeltTensioner
                 Graphic = graphic;
             }
 
+            public static MotorMapping Unused = new MotorMapping("Unused", "/User.ActiveBeltTensioner;component/Mapping.Unused.png");
             public static MotorMapping LeftShoulder = new MotorMapping("Left Shoulder", "/User.ActiveBeltTensioner;component/Mapping.LeftShoulder.png");
             public static MotorMapping RightShoulder = new MotorMapping("Right Shoulder", "/User.ActiveBeltTensioner;component/Mapping.RightShoulder.png");
             public static MotorMapping LeftWaist = new MotorMapping("Left Waist", "/User.ActiveBeltTensioner;component/Mapping.LeftWaist.png");
             public static MotorMapping RightWaist = new MotorMapping("Right Waist", "/User.ActiveBeltTensioner;component/Mapping.RightWaist.png");
 
             public static MotorMapping[] Mappings = {
+                Unused,
                 LeftShoulder,
                 RightShoulder,
                 LeftWaist,
@@ -55,12 +58,12 @@ namespace User.ActiveBeltTensioner
         public struct MotorDirection
         {
             public string Label { get; }
-            public sbyte Direction { get; }
+            public sbyte Multiplier { get; }
             public string Graphic { get; }
-            public MotorDirection(string label, sbyte direction, string graphic)
+            public MotorDirection(string label, sbyte multiplier, string graphic)
             {
                 Label = label;
-                Direction = direction;
+                Multiplier = multiplier;
                 Graphic = graphic;
             }
 
@@ -71,12 +74,6 @@ namespace User.ActiveBeltTensioner
                 Clockwise,
                 AntiClockwise,
             };
-
-            /// <summary>Applies the selected `MotorDirection` to the given value and returns it</summary>
-            public double Apply(double value)
-            {
-                return Direction * value;
-            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -97,21 +94,6 @@ namespace User.ActiveBeltTensioner
             }
 
             public byte Identifier { get; set; } = 0;
-            public string Label { get; set; }
-
-            private bool _isConnected = false;
-            public bool IsConnected
-            {
-                get { return _isConnected; }
-                set
-                {
-                    if (_isConnected != value)
-                    {
-                        _isConnected = value;
-                        InvokePropertyChange();
-                    }
-                }
-            }
 
             private MotorMapping _mapping;
             public MotorMapping Mapping
@@ -133,9 +115,23 @@ namespace User.ActiveBeltTensioner
                 get { return _direction; }
                 set
                 {
-                    if (_direction.Direction != value.Direction)
+                    if (_direction.Multiplier != value.Multiplier)
                     {
                         _direction = value;
+                        InvokePropertyChange();
+                    }
+                }
+            }
+
+            private bool _isConnected = false;
+            public bool IsConnected
+            {
+                get { return _isConnected; }
+                set
+                {
+                    if (_isConnected != value)
+                    {
+                        _isConnected = value;
                         InvokePropertyChange();
                     }
                 }
@@ -164,6 +160,20 @@ namespace User.ActiveBeltTensioner
                     if (_graphic != value)
                     {
                         _graphic = value;
+                        InvokePropertyChange();
+                    }
+                }
+            }
+
+            private byte _angle = 0;
+            public byte Angle
+            {
+                get { return _angle; }
+                set
+                {
+                    if (_angle != value)
+                    {
+                        _angle = value;
                         InvokePropertyChange();
                     }
                 }
@@ -260,12 +270,22 @@ namespace User.ActiveBeltTensioner
             private int _commandFailures = 0;
             private double _smoothedTorque = 0.0;
 
+            public ICommand TriggerTest { get; }
+            public ICommand TriggerAssign { get; }
+
             public Motor(MotorController controller, byte identifier)
             {
                 _controller = controller;
 
                 Identifier = identifier;
-                Label = "OLDLABEL";
+
+                TriggerTest = new RelayCommand(
+                    execute: _ => Test()
+                );
+
+                TriggerAssign = new RelayCommand(
+                    execute: _ => Assign()
+                );
             }
 
             /// <summary>Resets the session diagnostic data for the motor</summary>
@@ -274,6 +294,50 @@ namespace User.ActiveBeltTensioner
                 LowestTemperature = null;
                 HighestTemperature = null;
                 Faults = 0;
+            }
+
+            /// <summary>Assigns the identifier to the motor via a series of guided prompts</summary>
+            /// <returns>Whether the process succeeded</returns>
+            public bool Assign()
+            {
+                Status = SLoc.GetValue("SABT_Status_AwaitingConnection");
+                Graphic = MotorGraphic.Connect;
+
+                if (
+                    MessageBox.Show(
+                        SLoc.GetValue("SABT_Message_PlugInMotor"),
+                        SLoc.GetValue("SABT_Plugin"),
+                        MessageBoxButton.YesNoCancel,
+                        MessageBoxImage.Information
+                    ) == MessageBoxResult.Yes
+                )
+                {
+                    if (!SetIdentifier())
+                    {
+                        MessageBox.Show(
+                            SLoc.GetValue("SABT_Message_FailedToAssignMotor"),
+                            SLoc.GetValue("SABT_Plugin"),
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error
+                        );
+
+                        return false;
+                    }
+
+                    MessageBox.Show(
+                        SLoc.GetValue("SABT_Message_AssignedMotor"),
+                        SLoc.GetValue("SABT_Plugin"),
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                    );
+
+                    return true;
+                }
+
+                Status = SLoc.GetValue("SABT_Status_Disconnected");
+                Graphic = MotorGraphic.Disconnected;
+
+                return false;
             }
 
             /// <summary>Invokes various methods to ascertain the status of the motor, while updating its status indicators</summary>
@@ -381,12 +445,14 @@ namespace User.ActiveBeltTensioner
                     if (rx[8] != 0x00) { return false; } // Error Code Present
 
                     Temperature = rx[6];
+                    Angle = rx[7];
                     Error = rx[8];
 
                     return true;
                 }
 
                 Temperature = 0;
+                Angle = 0;
                 Error = 0;
 
                 return false;
@@ -408,7 +474,7 @@ namespace User.ActiveBeltTensioner
                     return false;
                 }
 
-                int direction = (this == _controller.GetLeftMotor()) ? -1 : 1;
+                int direction = Direction.Multiplier;
                 int good = 0;
                 int bad = 0;
 
@@ -543,7 +609,7 @@ namespace User.ActiveBeltTensioner
 
                     if (_commandFailures > 1)
                     {
-                        Logging.Current.Warn("SABT: " + this.Label + " Motor communication failure (" + _commandFailures + "/" + _maximumConsecutiveFaults + " Allowed)");
+                        Logging.Current.Warn("SABT: #" + this.Identifier + " motor communication failure (" + _commandFailures + "/" + _maximumConsecutiveFaults + " allowed)");
                     }
 
                     return (_commandFailures < _maximumConsecutiveFaults);
@@ -562,41 +628,6 @@ namespace User.ActiveBeltTensioner
         public bool HasSerial
         {
             get { return (_serialPort != null); }
-        }
-        public bool BothMotorsAreConnected {
-            get { return GetLeftMotor().IsConnected && GetRightMotor().IsConnected; }
-        }
-        public bool OneMotorIsConnected {
-            get { return GetLeftMotor().IsConnected != GetRightMotor().IsConnected; }
-        }
-        public bool LeftMotorIsConnected {
-            get { return GetLeftMotor()?.IsConnected ?? false; }
-        }
-        public bool RightMotorIsConnected
-        {
-            get { return GetRightMotor()?.IsConnected ?? false; }
-        }
-        public string LeftMotorStatus {
-            get { return GetLeftMotor()?.Status ?? SLoc.GetValue("SABT_Status_Disconnected"); }
-        }
-        public string RightMotorStatus {
-            get { return GetRightMotor()?.Status ?? SLoc.GetValue("SABT_Status_Disconnected"); }
-        }
-        public string LeftMotorGraphic
-        {
-            get { return GetLeftMotor()?.Graphic ?? MotorGraphic.Disconnected; }
-        }
-        public string RightMotorGraphic
-        {
-            get { return GetRightMotor()?.Graphic ?? MotorGraphic.Disconnected; }
-        }
-        public byte LeftMotorTemperature
-        {
-            get { return GetLeftMotor()?.Temperature ?? 0; }
-        }
-        public byte RightMotorTemperature
-        {
-            get { return GetRightMotor()?.Temperature ?? 0; }
         }
 
         private string _warningGraphic;
@@ -635,22 +666,24 @@ namespace User.ActiveBeltTensioner
         private readonly object _serialLock = new object();
         private bool _hasNotifiedOfLicense = false;
 
-        private bool _motorCommandSwitch = true;
+        private byte _motorCommandIdentifier = 1;
 
         private readonly long _motorCommandTicks;
         private long _lastCommandTicks = 0;
         private readonly long _motorQueryTicks;
         private long _lastQueryTicks = 0;
 
+        public ICommand TriggerConnect { get; }
+
         public MotorController(DevicePlugin plugin)
         {
             _plugin = plugin;
 
             Motors = new Motor[] {
-                new Motor(this, 0x01),
-                new Motor(this, 0x02),
-                new Motor(this, 0x03),
-                new Motor(this, 0x04),
+                new Motor(this, 1),
+                new Motor(this, 2),
+                new Motor(this, 3),
+                new Motor(this, 4),
             };
 
             foreach (Motor motor in Motors)
@@ -658,10 +691,12 @@ namespace User.ActiveBeltTensioner
                 motor.PropertyChanged += MotorPropertyChanged;
             }
 
-            //_motorCommandTicks = (long)(16.67 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 60Hz
-            //_motorCommandTicks = (long)(5.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 200Hz
             _motorCommandTicks = (long)(3.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0);
-            _motorQueryTicks = (long)(10000.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 5s
+            _motorQueryTicks = (long)(3000.0 * System.Diagnostics.Stopwatch.Frequency / 1000.0); // 3s
+
+            TriggerConnect = new RelayCommand(
+                execute: _ => Connect()
+            );
         }
 
         private void MotorPropertyChanged(object origin, PropertyChangedEventArgs e)
@@ -670,10 +705,9 @@ namespace User.ActiveBeltTensioner
 
             if (motor == null) return;
 
-            InvokePropertyChange($"{motor.Label}Motor{e.PropertyName}");
-
-            InvokePropertyChange(nameof(BothMotorsAreConnected));
-            InvokePropertyChange(nameof(OneMotorIsConnected));
+            //InvokePropertyChange($"{motor.Label}Motor{e.PropertyName}");
+            //InvokePropertyChange(nameof(BothMotorsAreConnected));
+            //InvokePropertyChange(nameof(OneMotorIsConnected));
         }
 
         /// <summary>Resets the session diagnostic data for every connected motor</summary>
@@ -683,100 +717,6 @@ namespace User.ActiveBeltTensioner
             {
                 motor.ResetDiagnostics();
             }
-        }
-
-        /// <summary>Performs the motor configuration process via a series of guided prompts</summary>
-        /// <returns>Whether the process succeeded</returns>
-        public bool Setup()
-        {
-            _plugin.IsEnabled = false;
-
-            Connect();
-
-            Motor leftMotor = GetLeftMotor();
-            Motor rightMotor = GetRightMotor();
-
-            leftMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
-            leftMotor.Graphic = MotorGraphic.Disconnected;
-
-            rightMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
-            rightMotor.Graphic = MotorGraphic.Disconnected;
-
-            if (
-                MessageBox.Show(
-                    SLoc.GetValue("SABT_Message_Setup_TurnOffPower"),
-                    SLoc.GetValue("SABT_Plugin"),
-                    MessageBoxButton.YesNoCancel,
-                    MessageBoxImage.Information
-                ) == MessageBoxResult.Yes
-            ) {
-                leftMotor.Status = SLoc.GetValue("SABT_Status_AwaitingConnection");
-                leftMotor.Graphic = MotorGraphic.Connect;
-
-                if (
-                    MessageBox.Show(
-                        SLoc.GetValue("SABT_Message_Setup_PlugInLeftMotor"),
-                        SLoc.GetValue("SABT_Plugin"),
-                        MessageBoxButton.YesNoCancel,
-                        MessageBoxImage.Information
-                    ) == MessageBoxResult.Yes
-                )
-                {
-                    if (!GetLeftMotor().SetIdentifier())
-                    {
-                        MessageBox.Show(
-                            SLoc.GetValue("SABT_Message_Setup_FailedToSetLeftMotor"),
-                            SLoc.GetValue("SABT_Plugin"),
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error
-                        );
-
-                        return false;
-                    }
-
-                    rightMotor.Status = SLoc.GetValue("SABT_Status_AwaitingConnection");
-                    rightMotor.Graphic = MotorGraphic.Connect;
-
-                    if (
-                        MessageBox.Show(
-                            SLoc.GetValue("SABT_Message_Setup_PlugInRightMotor"),
-                            SLoc.GetValue("SABT_Plugin"),
-                            MessageBoxButton.YesNoCancel,
-                            MessageBoxImage.Information
-                        ) == MessageBoxResult.Yes
-                    )
-                    {
-                        if (!GetRightMotor().SetIdentifier())
-                        {
-                            MessageBox.Show(
-                                SLoc.GetValue("SABT_Message_Setup_FailedToSetRightMotor"),
-                                SLoc.GetValue("SABT_Plugin"),
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error
-                            );
-
-                            return false;
-                        }
-
-                        MessageBox.Show(
-                            SLoc.GetValue("SABT_Message_Setup_Complete"),
-                            SLoc.GetValue("SABT_Plugin"),
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information
-                        );
-
-                        return true;
-                    }
-                }
-            }
-
-            leftMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
-            leftMotor.Graphic = MotorGraphic.Disconnected;
-
-            rightMotor.Status = SLoc.GetValue("SABT_Status_Disconnected");
-            rightMotor.Graphic = MotorGraphic.Disconnected;
-
-            return false;
         }
 
         /// <summary>Opens the selected serial port; checking motor communication automatically if enabled</summary>
@@ -882,7 +822,7 @@ namespace User.ActiveBeltTensioner
         }
 
         /// <summary>Invokes the <see cref="Motor.Check()" /> method on each motor</summary>
-        /// <returns>Whether all motors were successfully connected</returns>
+        /// <returns>Whether all motors were successfully connected (or marked as unused)</returns>
         public bool Check()
         {
             if (!_plugin.PluginManager.IsSimHubLicenceValid && !_hasNotifiedOfLicense)
@@ -902,7 +842,7 @@ namespace User.ActiveBeltTensioner
 
             foreach (Motor motor in Motors)
             {
-                didConnect = motor.Check() && didConnect;
+                didConnect = (motor.Check() || motor.Mapping.Equals(MotorMapping.Unused)) && didConnect;
             }
 
             EndAction(action);
@@ -911,7 +851,7 @@ namespace User.ActiveBeltTensioner
         }
 
         /// <summary>Invokes the <see cref="Motor.Query()" /> method on each motor</summary>
-        /// <returns>Whether all motors responded as expected</returns>
+        /// <returns>Whether all motors responded as expected (or were marked as unused)</returns>
         public bool Query(bool isInTorqueMode = true)
         {
             StartAction(out string action);
@@ -920,7 +860,7 @@ namespace User.ActiveBeltTensioner
 
             foreach (Motor motor in Motors)
             {
-                didRespond = motor.Query(isInTorqueMode) && didRespond;
+                didRespond = (motor.Query(isInTorqueMode) || motor.Mapping.Equals(MotorMapping.Unused)) && didRespond;
             }
 
             EndAction(action);
@@ -963,10 +903,16 @@ namespace User.ActiveBeltTensioner
             Disconnect();
         }
 
-        /// <summary>Sends the given torque values (as fractions of maximum torque) to the two motors, alternating between motors at 30Hz per motor (60Hz overall)</summary>
+        /// <summary>Sends the given torque values (as fractions of maximum torque) to the motors, cycling through motors to reduce bus conflicts</summary>
         /// <returns>Whether the motor commands were sent successfully (if applicable)</returns>
         /// <remarks>Checks the motor temperatures and reduces output if thresholds are exceeded</remarks>
-        public bool SetTorques(double left, double right, double smoothingFactor = 0.0)
+        public bool SetTorques(
+            double shoulderLeft,
+            double shoulderRight,
+            double waistLeft,
+            double waistRight,
+            double smoothingFactor = 0.0
+        )
         {
             StartAction(out string action);
 
@@ -979,7 +925,6 @@ namespace User.ActiveBeltTensioner
 
             bool didSet = true;
             long currentTicks = System.Diagnostics.Stopwatch.GetTimestamp();
-            double direction = _plugin.Settings.IsReversed ? -1.0 : 1.0;
 
             if (currentTicks - _lastQueryTicks >= _motorQueryTicks)
             {
@@ -1020,49 +965,46 @@ namespace User.ActiveBeltTensioner
 
                 WarningGraphic = warningGraphic;
 
-                left *= outputReduction;
-                right *= outputReduction;
+                shoulderLeft *= outputReduction;
+                shoulderRight *= outputReduction;
+                waistLeft *= outputReduction;
+                waistRight *= outputReduction;
+
+                var torqueMapping = new Dictionary<string, double> {
+                    { MotorMapping.LeftShoulder.Label, shoulderLeft },
+                    { MotorMapping.RightShoulder.Label, shoulderRight },
+                    { MotorMapping.LeftWaist.Label, waistLeft },
+                    { MotorMapping.RightWaist.Label, waistRight },
+                };
 
                 // Apply Smoothing & Output
-                didSet = _motorCommandSwitch
-                    ? GetLeftMotor().SetTorque(left * direction, smoothingFactor)
-                    : GetRightMotor().SetTorque(right * direction * -1, smoothingFactor);
+                didSet = false;
+                foreach (Motor motor in Motors)
+                {
+                    if (motor.Identifier == _motorCommandIdentifier) // IGNORE UNUSED MOTORS?
+                    {
+                        motor.SetTorque(
+                            (
+                                torqueMapping.TryGetValue(motor.Mapping.Label, out var motorTorque)
+                                    ? motorTorque
+                                    : 0.0
+                            ) * motor.Direction.Multiplier, // MOVE TO INTERNAL ON SETTORQUE?
+                            smoothingFactor
+                        );
+                    }
+                }
 
                 _lastCommandTicks = currentTicks;
-                _motorCommandSwitch = !_motorCommandSwitch;
+
+                if (++_motorCommandIdentifier > 4)
+                {
+                    _motorCommandIdentifier = 1;
+                }
             }
 
             EndAction(action);
 
             return didSet;
-        }
-
-        /// <summary>Provides the motor instance currently mapped to the `left` channel</summary>
-        public Motor GetLeftMotor()
-        {
-            foreach (Motor motor in Motors)
-            {
-                if (motor.Label == (_plugin.Settings.IsFlipped ? "Right" : "Left"))
-                {
-                    return motor;
-                }
-            }
-
-            return null;
-        }
-
-        /// <summary>Provides the motor instance currently mapped to the `right` channel</summary>
-        public Motor GetRightMotor()
-        {
-            foreach (Motor motor in Motors)
-            {
-                if (motor.Label == (_plugin.Settings.IsFlipped ? "Left" : "Right"))
-                {
-                    return motor;
-                }
-            }
-
-            return null;
         }
 
         /// <summary>Records the (optionally) given action name as being in-progress. Uses the parent caller name if omitted</summary>
@@ -1351,5 +1293,29 @@ namespace User.ActiveBeltTensioner
             public string Name { get; set; }
             public string PnpDeviceId { get; set; }
         }
+    }
+}
+
+public sealed class RelayCommand : ICommand
+{
+    private readonly Action<object> _execute;
+    private readonly Predicate<object> _canExecute;
+
+    public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
+    {
+        _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+        _canExecute = canExecute;
+    }
+
+    public bool CanExecute(object parameter)
+        => _canExecute == null || _canExecute(parameter);
+
+    public void Execute(object parameter)
+        => _execute(parameter);
+
+    public event EventHandler CanExecuteChanged
+    {
+        add { CommandManager.RequerySuggested += value; }
+        remove { CommandManager.RequerySuggested -= value; }
     }
 }

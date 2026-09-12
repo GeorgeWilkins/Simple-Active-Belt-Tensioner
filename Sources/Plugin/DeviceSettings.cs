@@ -81,34 +81,6 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private bool _isFlipped = false;
-        public bool IsFlipped
-        {
-            get { return _isFlipped; }
-            set
-            {
-                if (_isFlipped != value)
-                {
-                    _isFlipped = value;
-                    InvokePropertyChange(nameof(IsFlipped));
-                }
-            }
-        }
-
-        private bool _isReversed = false;
-        public bool IsReversed
-        {
-            get { return _isReversed; }
-            set
-            {
-                if (_isReversed != value)
-                {
-                    _isReversed = value;
-                    InvokePropertyChange(nameof(IsReversed));
-                }
-            }
-        }
-
         private bool _isAutomaticallySwitching = true;
         public bool IsAutomaticallySwitching
         {

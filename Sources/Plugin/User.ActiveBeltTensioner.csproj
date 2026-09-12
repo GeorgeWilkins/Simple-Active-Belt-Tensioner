@@ -177,6 +177,7 @@
     <Resource Include="Mapping.LeftWaist.png" />
     <Resource Include="Mapping.RightShoulder.png" />
     <Resource Include="Mapping.RightWaist.png" />
+    <Resource Include="Mapping.Unused.png" />
     <Content Include="MenuIcon.png" />
   </ItemGroup>
   <ItemGroup>

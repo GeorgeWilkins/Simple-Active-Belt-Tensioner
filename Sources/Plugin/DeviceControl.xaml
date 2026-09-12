@@ -85,18 +85,30 @@
         
         
         
-        
-        
-        
-        
-        
         <Style x:Key="MotorOptionListBoxStyle" TargetType="ListBox">
             <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="HorizontalContentAlignment" Value="Left" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
             <Setter Property="Padding" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                            <ItemsPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="Opacity" Value="0.55" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="MotorOptionListBoxItemStyle" TargetType="ListBoxItem">
@@ -160,10 +172,6 @@
                                             <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsSerialPortValid}" />
                                             <Label Content="{SLoc SABT_Label_StartAutomatically}" Margin="-5,0,0,0" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.StartAutomatically, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <Label Content="{SLoc SABT_Label_FlipChannels}" Margin="-5,0,0,0" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsFlipped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <Label Content="{SLoc SABT_Label_ReverseDirection}" Margin="-5,0,0,0" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsReversed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </TextBlock>
                                     </StackPanel>
 
@@ -182,7 +190,7 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
-
+<!--
                                         <Grid Grid.Column="0" Grid.Row="0">
                                             <Image Source="{Binding MotorController.LeftMotorGraphic}" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5">
                                                 <Image.RenderTransform>
@@ -211,61 +219,64 @@
                                             </Image>
                                             <TextBlock Style="{StaticResource MotorTemperatureStyle}" HorizontalAlignment="Left" TextAlignment="Center" Margin="35,0,0,62" Text="{Binding MotorController.RightMotorTemperature, Mode=OneWay, StringFormat={}{0}°C, TargetNullValue=-}" />
                                         </Grid>
-
+-->
                                         <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Source="/User.ActiveBeltTensioner;component/SABT Logo.png" Width="150" Margin="0,0,0,460"/>
 
                                         <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" LineHeight="20" TextWrapping="WrapWithOverflow" Margin="2,15,2,5" Text="{SLoc SABT_Text_Connection}" />
 
-                                        <ComboBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding MotorController.SerialPorts}" SelectedItem="{Binding Settings.SerialPort, UpdateSourceTrigger=PropertyChanged}" Margin="-1,10,-1,10" />
+                                        <ComboBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding MotorController.SerialPorts}" SelectedItem="{Binding Settings.SerialPort, UpdateSourceTrigger=PropertyChanged}" Margin="0,10,0,0" />
 
-                                        <styles:SHButtonPrimary Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Click="SetupMotors" Margin="0,0,0,0" IsEnabled="{Binding Settings.IsSerialPortValid}" Content="{SLoc SABT_Button_SetupMotors}" />
+                                        <styles:SHButtonPrimary Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Click="Connect" Margin="0,16,0,0" Content="{SLoc SABT_Button_Connect}" />
 
                                     </Grid>
 
                                 </StackPanel>
                             </styles:SHTitledGroup>
                             <styles:SHTitledGroup Title="{SLoc SABT_Title_Layout}" d:Title="Title">
-                                <StackPanel>
+                                <StackPanel Grid.IsSharedSizeScope="True">
 
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="0,0,0,15" Text="{SLoc SABT_Text_Layout}" />
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="0,0,0,10" Text="{SLoc SABT_Text_Layout}" />
 
                                     <Grid Margin="0,0,0,0">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="1*" />
-                                            <ColumnDefinition Width="3*" />
-                                            <ColumnDefinition Width="2*" />
-                                            <ColumnDefinition Width="2*" />
-                                            <ColumnDefinition Width="2*" />
-                                            <ColumnDefinition Width="1*" />
-                                            <ColumnDefinition Width="1*" />
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol0" />
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol1" />
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol2" />
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol3" />
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol4" />
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol5" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
 
-                                        <TextBlock Grid.Column="0" FontWeight="SemiBold" Text="{SLoc SABT_Label_Motor}" />
-                                        <TextBlock Grid.Column="1" FontWeight="SemiBold" Text="{SLoc SABT_Label_Mapping}" />
-                                        <TextBlock Grid.Column="2" FontWeight="SemiBold" Text="{SLoc SABT_Label_Direction}" />
-                                        <TextBlock Grid.Column="3" FontWeight="SemiBold" Text="{SLoc SABT_Label_Temperatures}" />
-                                        <TextBlock Grid.Column="4" FontWeight="SemiBold" Text="{SLoc SABT_Label_Status}" />
-                                        <TextBlock Grid.Column="5" FontWeight="SemiBold" Text="{SLoc SABT_Label_Faults}" />
+                                        <TextBlock Grid.Column="0" FontWeight="SemiBold" Margin="0,0,25,0" Text="{SLoc SABT_Label_Motor}" />
+                                        <TextBlock Grid.Column="1" FontWeight="SemiBold" Margin="0,0,25,0" Text="{SLoc SABT_Label_Mapping}" />
+                                        <TextBlock Grid.Column="2" FontWeight="SemiBold" Margin="0,0,25,0" Text="{SLoc SABT_Label_Direction}" />
+                                        <TextBlock Grid.Column="3" FontWeight="SemiBold" Margin="0,0,25,0" Text="{SLoc SABT_Label_Temperatures}" />
+                                        <TextBlock Grid.Column="4" FontWeight="SemiBold" Margin="0,0,25,0" Text="{SLoc SABT_Label_Status}" />
+                                        <TextBlock Grid.Column="5" FontWeight="SemiBold" Margin="0,0,25,0" Text="{SLoc SABT_Label_Faults}" />
                                         <TextBlock Grid.Column="6" FontWeight="SemiBold" Text="" />
+                                        <TextBlock Grid.Column="7" FontWeight="SemiBold" Text="" />
                                     </Grid>
 
                                     <ItemsControl ItemsSource="{Binding MotorController.Motors}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Grid Margin="5,5,5,0">
+                                                <Grid Margin="0,5,0,0">
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="1*" />
-                                                        <ColumnDefinition Width="3*" />
-                                                        <ColumnDefinition Width="2*" />
-                                                        <ColumnDefinition Width="2*" />
-                                                        <ColumnDefinition Width="2*" />
-                                                        <ColumnDefinition Width="1*" />
-                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol0" />
+                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol1" />
+                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol2" />
+                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol3" />
+                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol4" />
+                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol5" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
                                                     </Grid.ColumnDefinitions>
 
-                                                    <TextBlock Grid.Column="0" Text="{Binding Identifier, Mode=OneWay, StringFormat=ID {0}}" Margin="0,4,0,0" />
+                                                    <TextBlock Grid.Column="0" Text="{Binding Identifier, Mode=OneWay, StringFormat=ID {0}}" Margin="0,4,10,0" />
 
-                                                    <ListBox Grid.Column="1" Style="{StaticResource MotorOptionListBoxStyle}" ItemContainerStyle="{StaticResource MotorOptionListBoxItemStyle}" ItemsSource="{Binding Source={x:Static local:MotorController+MotorMapping.Mappings}}" SelectedItem="{Binding Mapping, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                    <ListBox Grid.Column="1" Margin="0,0,10,0" Style="{StaticResource MotorOptionListBoxStyle}" ItemContainerStyle="{StaticResource MotorOptionListBoxItemStyle}" ItemsSource="{Binding Source={x:Static local:MotorController+MotorMapping.Mappings}}" SelectedItem="{Binding Mapping, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsConnected}">
                                                         <ListBox.ItemsPanel>
                                                             <ItemsPanelTemplate>
                                                                 <StackPanel Orientation="Horizontal" />
@@ -280,7 +291,7 @@
                                                         </ListBox.ItemTemplate>
                                                     </ListBox>
 
-                                                    <ListBox Grid.Column="2" Style="{StaticResource MotorOptionListBoxStyle}" ItemContainerStyle="{StaticResource MotorOptionListBoxItemStyle}" ItemsSource="{Binding Source={x:Static local:MotorController+MotorDirection.Directions}}" SelectedItem="{Binding Direction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                    <ListBox Grid.Column="2" Margin="0,0,10,0" Style="{StaticResource MotorOptionListBoxStyle}" ItemContainerStyle="{StaticResource MotorOptionListBoxItemStyle}" ItemsSource="{Binding Source={x:Static local:MotorController+MotorDirection.Directions}}" SelectedItem="{Binding Direction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsConnected}">
                                                         <ListBox.ItemsPanel>
                                                             <ItemsPanelTemplate>
                                                                 <StackPanel Orientation="Horizontal" />
@@ -295,13 +306,14 @@
                                                         </ListBox.ItemTemplate>
                                                     </ListBox>
 
-                                                    <TextBlock Grid.Column="3" Margin="0,4,0,0">
+                                                    <TextBlock Grid.Column="3" Margin="0,4,10,0">
                                                         <Run Text="{Binding LowestTemperature, Mode=OneWay, StringFormat={}{0}°C, TargetNullValue=-}" />
                                                         <Run Text="{Binding HighestTemperature, Mode=OneWay, StringFormat={}~ {0}°C, TargetNullValue=''}" />
                                                     </TextBlock>
-                                                    <TextBlock Grid.Column="4" Text="{Binding Status, Mode=OneWay}" Margin="0,4,0,0" />
-                                                    <TextBlock Grid.Column="5" Text="{Binding Faults, Mode=OneWay}" Margin="0,4,0,0" />
-                                                    <styles:SHButtonPrimary Grid.Column="6" HorizontalAlignment="Stretch" Click="TestLeftMotor" Margin="0,0,0,0" IsEnabled="{Binding IsConnected}" Content="{SLoc SABT_Button_Test}" />
+                                                    <TextBlock Grid.Column="4" Text="{Binding Status, Mode=OneWay}" Margin="0,4,10,0" />
+                                                    <TextBlock Grid.Column="5" Text="{Binding Faults, Mode=OneWay}" Margin="0,4,10,0" />
+                                                    <styles:SHButtonPrimary Grid.Column="6" HorizontalAlignment="Stretch" Command="{Binding TriggerTest}" Margin="0,0,5,0" IsEnabled="{Binding IsConnected}" Content="{SLoc SABT_Button_Test}" />
+                                                    <styles:SHButtonPrimary Grid.Column="7" HorizontalAlignment="Stretch" Command="{Binding TriggerAssign}" Margin="0,0,0,0" IsEnabled="{Binding Settings.IsSerialPortValid}" Content="{SLoc SABT_Button_Assign}" />
                                                 </Grid>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>

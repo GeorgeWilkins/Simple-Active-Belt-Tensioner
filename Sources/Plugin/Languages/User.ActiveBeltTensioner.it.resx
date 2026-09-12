@@ -177,11 +177,12 @@
   <data name="SABT_Message_Profiles_NoActiveVehicle" xml:space="preserve">
     <value>Un veicolo non è attualmente selezionato nel gioco</value>
   </data>
-  <data name="SABT_Message_Setup_Complete" xml:space="preserve">
-    <value>Perfetto, il MOTORE DESTRO è stato configurato. Entrambi i motori sono ora pronti...</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SABT_Message_AssignedMotor" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Message_Setup_PlugInLeftMotor" xml:space="preserve">
-    <value>Ora dobbiamo COLLEGARE SOLO IL MOTORE SINISTRO. Qualsiasi porta del controller va bene. Una volta collegato, attiva l'alimentazione. L'hai fatto?</value>
+  <data name="SABT_Message_PlugInMotor" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Message_Setup_PlugInRightMotor" xml:space="preserve">
     <value>Perfetto, il MOTORE SINISTRO è stato configurato. Ora COLLEGA IL MOTORE DESTRO, lasciando l'altro motore ancora collegato. L'hai fatto?</value>
@@ -189,8 +190,8 @@
   <data name="SABT_Message_Setup_AlreadySetUp" xml:space="preserve">
     <value>Sembra che sia già tutto configurato correttamente (entrambi i motori sono collegati)!</value>
   </data>
-  <data name="SABT_Message_Setup_FailedToSetLeftMotor" xml:space="preserve">
-    <value>Impossibile impostare l'identificatore del MOTORE SINISTRO. Assicurati che sia collegato e alimentato un solo motore</value>
+  <data name="SABT_Message_FailedToAssignMotor" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Message_Setup_FailedToSetRightMotor" xml:space="preserve">
     <value>Impossibile impostare l'identificatore del MOTORE DESTRO. Assicurati che entrambi i motori siano collegati e alimentati</value>
@@ -228,7 +229,6 @@
   <data name="SABT_Title_Credits" xml:space="preserve">
     <value>Licenze e informazioni autore</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="SABT_Title_Layout" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
@@ -259,8 +259,8 @@
   <data name="SABT_Button_CopyForGame" xml:space="preserve">
     <value>⧉ Gioco</value>
   </data>
-  <data name="SABT_Button_SetupMotors" xml:space="preserve">
-    <value>Configura motori</value>
+  <data name="SABT_Button_Assign" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Legend_Surge" xml:space="preserve">
     <value>Ondata</value>

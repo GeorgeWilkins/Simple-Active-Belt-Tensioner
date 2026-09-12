@@ -177,11 +177,11 @@
   <data name="SABT_Message_Profiles_NoActiveVehicle" xml:space="preserve">
     <value>A profile for this combination of game a vehicle already exists</value>
   </data>
-  <data name="SABT_Message_Setup_Complete" xml:space="preserve">
-    <value>Great, the RIGHT MOTOR has been configured. Both motors are now ready to go...</value>
+  <data name="SABT_Message_AssignedMotor" xml:space="preserve">
+    <value>The selected motor has been assigned an identifier</value>
   </data>
-  <data name="SABT_Message_Setup_PlugInLeftMotor" xml:space="preserve">
-    <value>Now we need to PLUG IN THE LEFT MOTOR ONLY. Any of the ports on the controller will do. Once connected, plug in the power. Have you done this?</value>
+  <data name="SABT_Message_PlugInMotor" xml:space="preserve">
+    <value>Now we need to PLUG IN THE SELECTED MOTOR ONLY. Any of the ports on the controller will do. Have you done this?</value>
   </data>
   <data name="SABT_Message_Setup_PlugInRightMotor" xml:space="preserve">
     <value>Great, the LEFT MOTOR has been configured. Now PLUG IN THE RIGHT MOTOR, leaving the other motor still connected. Have you done this?</value>
@@ -189,8 +189,8 @@
   <data name="SABT_Message_Setup_AlreadySetUp" xml:space="preserve">
     <value>You appear to already be set up correctly (both motors are connected)!</value>
   </data>
-  <data name="SABT_Message_Setup_FailedToSetLeftMotor" xml:space="preserve">
-    <value>Failed to set identifier for the LEFT MOTOR. Please ensure only one motor is plugged in and powered</value>
+  <data name="SABT_Message_FailedToAssignMotor" xml:space="preserve">
+    <value>Failed to assign an identifier to the selected motor. Please ensure only one motor is plugged in and powered before trying again</value>
   </data>
   <data name="SABT_Message_Setup_FailedToSetRightMotor" xml:space="preserve">
     <value>Failed to set identifier for the RIGHT MOTOR. Please ensure both motors are plugged in and powered</value>
@@ -258,8 +258,8 @@
   <data name="SABT_Button_CopyForGame" xml:space="preserve">
     <value>⧉ Game</value>
   </data>
-  <data name="SABT_Button_SetupMotors" xml:space="preserve">
-    <value>Setup Motors</value>
+  <data name="SABT_Button_Assign" xml:space="preserve">
+    <value>Assign</value>
   </data>
   <data name="SABT_Legend_Surge" xml:space="preserve">
     <value>Surge</value>
