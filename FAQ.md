@@ -197,6 +197,7 @@ If the motors are not being detected or the guided setup process is failing, che
 - Try unplugging other USB devices (and disabling associated SimHub plugins) temporarily during the motor setup
 - Restart your computer
 - Check that _Device Manager_ can see a `USB-Enhanced-SERIAL CH343` device (under `Ports (COM & LPT)`) when the control board is connected
+- If also using the _"Arduino"_ [feature](https://github.com/SHWotever/SimHub/wiki/Arduino--Setup) of _SimHub_, check that it is not trying to scan the SABT serial port (as this will block SABT from doing so); either adding an exception to its port scanning functionality (or disabling it entirely)
 
 You can verify that the motors are powered by trying to turn them manually (by their shells, not the pulleys or cords). If they are powered, you should feel very noticable resistance. If they turn freely, the motors are not being powered.
 
