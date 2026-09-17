@@ -43,13 +43,13 @@ Beyond that, everything is documented within the plugin; including descriptions 
 ![SABT Plugin](https://github.com/user-attachments/assets/1b047370-d27f-45a7-aa17-3123e560ef01)
 
 ### 📢 Important
-_SimHub_ has an optional feature (completely unrelated to SABT) called _"Arduino"_, which may or may not be enabled in your installation.
+_SimHub_ has an optional feature called _"Arduino"_, which may or may not be enabled in your installation. It is _completely unrelated to SABT_ and **not required** for SABT to work.
+
+However if it is enabled, there is a good chance it will interfere with SABT by taking over the serial port presented by our motor controller.
 
 You can check if it is enabled by clicking on `Add/remove features` within _SimHub_ and seeing if it is listed as an enabled plugin. Is it is, make sure `Show in left main menu` is toggled on, then find the `Arduino` menu item on the left-hand menu and open it.
-
-If enabled, there is a good chance it will interfere with SABT by taking over the serial port presented by our motor controller.
  
-To prevent this from happening, you can tell the _"Arduino"_ feature to stop scanning the SABT serial port, under the `ARDUINO SCAN SETTINGS` section as shown below.
+To prevent it from causing problems, you can tell the _"Arduino"_ feature to stop scanning the SABT serial port, under the `ARDUINO SCAN SETTINGS` section as shown below.
 
 Select the `Never scan selected ports` and toggle the numbered port that is labelled as `USB-Enhanced-SERIAL CH343`:
 
