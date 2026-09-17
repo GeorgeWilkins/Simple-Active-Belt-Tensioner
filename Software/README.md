@@ -34,3 +34,27 @@ Note that you do not need a _'Motion License'_ to use this tensioner; that is a 
 5. Click on the `Simple Active Belt Tensioner` plugin in the left-hand menu and configure it as you like
 
 You can change the language of the plugin (and SimHub itself) from `Settings` > `General` > `Language`.
+
+## Configuring The Plugin
+The plugin contains instructions on how to initially set up the motors; a one-time process that uniquely identifies each motor so the plugin can send commands to each motor separately.
+
+Beyond that, everything is documented within the plugin; including descriptions of the various sliders and options that control how the effects are applied.
+
+![SABT Plugin](https://github.com/user-attachments/assets/1b047370-d27f-45a7-aa17-3123e560ef01)
+
+### 📢 Important
+_SimHub_ has an optional feature (completely unrelated to SABT) called _"Arduino"_, which may or may not be enabled in your installation.
+
+You can check if it is enabled by clicking on `Add/remove features` within _SimHub_ and seeing if it is listed as an enabled plugin. Is it is, make sure `Show in left main menu` is toggled on, then find the `Arduino` menu item on the left-hand menu and open it.
+
+If enabled, there is a good chance it will interfere with SABT by taking over the serial port presented by our motor controller.
+ 
+To prevent this from happening, you can tell the _"Arduino"_ feature to stop scanning the SABT serial port, under the `ARDUINO SCAN SETTINGS` section as shown below.
+
+Select the `Never scan selected ports` and toggle the numbered port that is labelled as `USB-Enhanced-SERIAL CH343`:
+
+![Arduino Feature](https://github.com/user-attachments/assets/a03ee6c4-a3ab-4596-8b46-a9acc17f73fe)
+
+Once you've done this, unplug the SABT controller's USB cable, close _SimHub_ and then reopen it; finally plugging back in the USB cable. Our plugin should then be able to see and communicate with the motor controller.
+
+Unfortunately _SimHub_ plugins and features can cause conflicts with each other, including SABT. If you've tried the steps above and are still having communication issues, have a look a the [FAQ.md](FAQ.md) document and finally reach out via [a new discussion](/discussions/new/choose) or [create a new issue](/issues/new), describing your problem and including _SimHub_ logs.
