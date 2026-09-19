@@ -93,6 +93,11 @@ namespace User.ActiveBeltTensioner
                     }
                     else
                     {
+                        DoWithoutWaiting(devicePlugin =>
+                        {
+                            devicePlugin.MotorController?.Stop();
+                        });
+
                         _hasBeenInactive = true;
                     }
                 }
@@ -245,6 +250,30 @@ namespace User.ActiveBeltTensioner
 
             // Register Actions (For External Control)
             pluginManager.AddAction(
+                actionName: "SABT.ToggleEffects",
+                actionStart: (PluginManager manager, string input) => {
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Toggling effects from external input");
+
+                        devicePlugin._hasBypassedActivationWarning = false;
+                        devicePlugin.IsEnabled = !devicePlugin.IsEnabled;
+                    });
+                }
+            );
+            pluginManager.AddAction(
+                actionName: "SABT.ToggleEffectsWithoutWarning",
+                actionStart: (PluginManager manager, string input) => {
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Toggling effects from external input (without warning)");
+
+                        devicePlugin._hasBypassedActivationWarning = devicePlugin.IsEnabled ? false : true;
+                        devicePlugin.IsEnabled = !devicePlugin.IsEnabled;
+                    });
+                }
+            );
+            pluginManager.AddAction( // Deprecated
                 actionName: "SABT.ToggleMotors",
                 actionStart: (PluginManager manager, string input) => {
                     DoOnMainThread(devicePlugin =>
@@ -256,7 +285,7 @@ namespace User.ActiveBeltTensioner
                     });
                 }
             );
-            pluginManager.AddAction(
+            pluginManager.AddAction( // Deprecated
                 actionName: "SABT.ToggleMotorsWithoutWarning",
                 actionStart: (PluginManager manager, string input) => {
                     DoOnMainThread(devicePlugin =>
@@ -268,7 +297,6 @@ namespace User.ActiveBeltTensioner
                     });
                 }
             );
-
             pluginManager.AddAction(
                 actionName: "SABT.IncreaseIdleTension",
                 actionStart: (PluginManager manager, string input) => {
@@ -291,7 +319,6 @@ namespace User.ActiveBeltTensioner
                     });
                 }
             );
-
             pluginManager.AddAction(
                 actionName: "SABT.IncreaseMinimumTension",
                 actionStart: (PluginManager manager, string input) => {
@@ -314,7 +341,6 @@ namespace User.ActiveBeltTensioner
                     });
                 }
             );
-
             pluginManager.AddAction(
                 actionName: "SABT.IncreaseMaximumTension",
                 actionStart: (PluginManager manager, string input) => {
@@ -455,6 +481,8 @@ namespace User.ActiveBeltTensioner
         /// <summary>Called by SimHub when the plugin is unloaded, allowing the graceful release of connections and resources</summary>
         public void End(PluginManager pluginManager)
         {
+            MotorController.SaveMotorConfigurations();
+
             this.SaveCommonSettings(_settingsName, Settings);
 
             _runControlLoop = false;

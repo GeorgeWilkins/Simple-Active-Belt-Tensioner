@@ -196,8 +196,8 @@
   <data name="SABT_Plugin" xml:space="preserve">
     <value>Simple Active Belt Tensioner</value>
   </data>
-  <data name="SABT_Label_EnableMotors" xml:space="preserve">
-    <value>Motoren aktivieren</value>
+  <data name="SABT_Label_EnableEffects" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Label_FlipChannels" xml:space="preserve">
     <value>Kanäle tauschen</value>

@@ -168,7 +168,7 @@
 
                                     <StackPanel>
                                         <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,20">
-                                            <Label Content="{SLoc SABT_Label_EnableMotors}" Margin="-5,0,0,0" />
+                                            <Label Content="{SLoc SABT_Label_EnableEffects}" Margin="-5,0,0,0" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding MotorController.Device}" />
                                             <Label Content="{SLoc SABT_Label_StartAutomatically}" Margin="-5,0,0,0" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.StartAutomatically, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -339,7 +339,7 @@
 
                                 <ContentControl Style="{StaticResource SettingStyle}">
                                     <StackPanel>
-                                        <local:SettingSlider Title="{SLoc SABT_Label_IdleTension}" Unit="%" Minimum="0" Maximum="25" Step="0.1" Value="{Binding Settings.IdleTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
+                                        <local:SettingSlider Title="{SLoc SABT_Label_IdleTension}" Unit="%" Minimum="0" Maximum="50" Step="0.1" Value="{Binding Settings.IdleTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
                                         <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_IdleTension}" />
                                     </StackPanel>
                                 </ContentControl>

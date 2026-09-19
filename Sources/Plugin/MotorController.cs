@@ -73,7 +73,8 @@ namespace User.ActiveBeltTensioner
             {
                 if (!ReferenceEquals(_device, value))
                 {
-                    Logging.Current.Info("DEVICE CHANGED: " + (value != null ? value.Name : "null"));
+                    Logging.Current.Info("SABT: Changed selected device to `" + (value != null ? value.Name : "null") + "`");
+
                     _device = value;
 
                     _plugin.Settings.DeviceIdentifier = _device?.Identifier;
@@ -327,6 +328,24 @@ namespace User.ActiveBeltTensioner
             Disconnect();
         }
 
+        /// <summary>Stops all motor activity immediately</summary>
+        public void Stop()
+        {
+            if (_serialPort == null || !_serialPort.IsOpen)
+            {
+                return;
+            }
+
+            StartAction(out string action);
+
+            foreach (Motor motor in Motors)
+            {
+                motor.Stop();
+            }
+
+            EndAction(action);
+        }
+
         /// <summary>Sends the given torque values (as fractions of maximum torque) to the motors, cycling through motors to reduce bus conflicts</summary>
         /// <remarks>Periodically checks motor status and applies thermal throttling if necessary</remarks>
         /// <returns>Whether the motor commands were sent successfully (if applicable)</returns>
@@ -337,14 +356,12 @@ namespace User.ActiveBeltTensioner
             double waistRight
         )
         {
-            StartAction(out string action);
-
             if (_serialPort == null || !_serialPort.IsOpen)
             {
-                EndAction(action);
-
                 return false;
             }
+
+            StartAction(out string action);
 
             long currentTicks = System.Diagnostics.Stopwatch.GetTimestamp();
 
@@ -563,15 +580,12 @@ namespace User.ActiveBeltTensioner
 
             return true;
         }
-
-
-
-
-
-
-
+        
+        /// <summary>Loads the motor configurations from the persisted plugin settings</summary>
         public void LoadMotorConfigurations()
         {
+            Logging.Current.Info("SABT: Loading motor configurations...");
+
             StartAction(out string action);
 
             foreach (Motor motor in Motors)
@@ -596,9 +610,39 @@ namespace User.ActiveBeltTensioner
             EndAction(action);
         }
 
+        /// <summary>Saves the motor configurations to the persisted plugin settings</summary>
+        public void SaveMotorConfigurations()
+        {
+            Logging.Current.Info("SABT: Saving motor configurations...");
+
+            StartAction(out string action);
+
+            foreach (Motor motor in Motors)
+            {
+                MotorConfiguration motorConfiguration = _plugin.Settings.MotorConfigurations.FirstOrDefault(m => m.Identifier == motor.Identifier);
+
+                if (motorConfiguration == null)
+                {
+                    motorConfiguration = new MotorConfiguration
+                    {
+                        Identifier = motor.Identifier
+                    };
+
+                    _plugin.Settings.MotorConfigurations.Add(motorConfiguration);
+                }
+
+                motorConfiguration.Mapping = motor.Mapping.Key;
+                motorConfiguration.Direction = motor.Direction.Key;
+            }
+
+            EndAction(action);
+        }
+
+        /// <summary>Detects motors connected to the bus by invoking <see cref="Motor.Check" /> on each of the four motor identifiers</summary>
+        /// <returns>The number of detected motors</returns>
         public int DetectMotors()
         {
-            Logging.Current.Debug("SABT: Detecting motors...");
+            Logging.Current.Info("SABT: Detecting motors...");
 
             Connect();
 
@@ -640,7 +684,7 @@ namespace User.ActiveBeltTensioner
                 return Devices;
             }
 
-            Logging.Current.Debug("SABT: Detecting devices...");
+            Logging.Current.Info("SABT: Detecting devices...");
 
             const string vidPid = "VID_1A86&PID_55D3";
 

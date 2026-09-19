@@ -14,7 +14,7 @@ namespace User.ActiveBeltTensioner
     public partial class DeviceControl : UserControl
     {
         private readonly DevicePlugin _plugin;
-        private readonly DispatcherTimer _updateDevicesTimer;
+        private readonly DispatcherTimer _detectDevicesTimer;
 
         public Action<string> OnDeviceSelected;
 
@@ -29,11 +29,11 @@ namespace User.ActiveBeltTensioner
 
             _plugin.Settings.PropertyChanged += OnPropertyChanged;
 
-            _updateDevicesTimer = new DispatcherTimer
+            _detectDevicesTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(5)
             };
-            _updateDevicesTimer.Tick += UpdateDevices;
+            _detectDevicesTimer.Tick += DetectDevices;
         }
  
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -42,34 +42,34 @@ namespace User.ActiveBeltTensioner
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            Logging.Current.Info("SABT: OnLoaded");
+
             DataContext = new DeviceViewModel(_plugin);
 
             _plugin.DoWithoutWaiting(
                 devicePlugin =>
                 {
+                    devicePlugin.MotorController.LoadMotorConfigurations();
                     devicePlugin.MotorController.DetectDevices();
+                    devicePlugin.MotorController.DetectMotors();
                 }
             );
 
-            _updateDevicesTimer.Start();
+            _detectDevicesTimer.Start();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            _updateDevicesTimer.Stop();
-        }
+            Logging.Current.Info("SABT: OnUnloaded");
 
-        private void UpdateDevices(object sender, EventArgs e)
-        {
-            if (IsLoaded)
-            {
-                _plugin.DoWithoutWaiting(
-                    devicePlugin =>
-                    {
-                        devicePlugin.MotorController.DetectDevices();
-                    }
-                );
-            }
+            _plugin.DoWithoutWaiting(
+                devicePlugin =>
+                {
+                    devicePlugin.MotorController.SaveMotorConfigurations();
+                }
+            );
+
+            _detectDevicesTimer.Stop();
         }
 
         private void DuplicateProfileForCurrentGame(object sender, RoutedEventArgs e)
@@ -158,6 +158,19 @@ namespace User.ActiveBeltTensioner
             if (((FrameworkElement)sender).Tag is GameTuningProfile profile)
             {
                 _plugin.Settings.RemoveProfile(profile);
+            }
+        }
+
+        private void DetectDevices(object sender, EventArgs e)
+        {
+            if (IsLoaded)
+            {
+                _plugin.DoWithoutWaiting(
+                    devicePlugin =>
+                    {
+                        devicePlugin.MotorController.DetectDevices();
+                    }
+                );
             }
         }
 

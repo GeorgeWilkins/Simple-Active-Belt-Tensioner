@@ -199,8 +199,8 @@ If you have a single unassigned motor plugged in, click one of the 'Assign' butt
   <data name="SABT_Plugin" xml:space="preserve">
     <value>Simple Active Belt Tensioner</value>
   </data>
-  <data name="SABT_Label_EnableMotors" xml:space="preserve">
-    <value>Enable Motors</value>
+  <data name="SABT_Label_EnableEffects" xml:space="preserve">
+    <value>Enable Effects</value>
   </data>
   <data name="SABT_Label_FlipChannels" xml:space="preserve">
     <value>Flip Channels</value>

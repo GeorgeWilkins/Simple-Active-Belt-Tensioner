@@ -133,11 +133,6 @@ namespace User.ActiveBeltTensioner
             get { return _idleTension; }
             set
             {
-                value = Math.Min(
-                    Math.Max(value, 0),
-                    250
-                );
-
                 if (_idleTension != value)
                 {
                     _idleTension = value;

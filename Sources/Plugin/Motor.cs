@@ -119,7 +119,6 @@ namespace User.ActiveBeltTensioner
         public MotorController Controller
         {
             get {
-Logging.Current.Info("SABT: CONTROLLER HAS SELECTED DEVICE: " + _controller.HasDevice.ToString() + " (" + (_controller.Device?.Port ?? "null") + ")");
                 return _controller;
             }
         }
