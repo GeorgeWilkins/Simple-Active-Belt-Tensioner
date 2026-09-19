@@ -515,7 +515,6 @@ namespace User.ActiveBeltTensioner
                     double minimumTension = ConvertToFraction(Settings.MinimumTension);
                     double maximumTension = ConvertToFraction(Settings.MaximumTension);
                     double sideBias = ConvertToFraction(Settings.SideBias);
-                    double smoothingFactor = ConvertToFraction(Settings.SmoothingFactor);
                     double corneringStrength = ConvertToFraction(Settings.CorneringStrength);
                     double accelerationStrength = ConvertToFraction(Settings.AccelerationStrength);
                     double brakingStrength = ConvertToFraction(Settings.BrakingStrength);
@@ -748,7 +747,7 @@ namespace User.ActiveBeltTensioner
                     // Send To Motors
                     if (!motorController.IsBusy && motorController.HasDevice)
                     {
-                        motorController.SetTorques(leftTarget, rightTarget, leftTarget, rightTarget, smoothingFactor);
+                        motorController.SetTorques(leftTarget, rightTarget, leftTarget, rightTarget);
                     }
                 }
                 catch (Exception exception)

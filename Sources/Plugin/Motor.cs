@@ -716,13 +716,6 @@ Logging.Current.Info("SABT: CONTROLLER HAS SELECTED DEVICE: " + _controller.HasD
             return true;
         }
 
-
-
-
-
-
-
-
         /// <summary>Constructs a byte 'frame' that can be understood by the motor controller</summary>
         /// <remarks>Some commands have an additional byte and no checksum; these can be built by providing the final optional parameter</remarks>
         /// <returns>The byte array of the constructed frame</returns>

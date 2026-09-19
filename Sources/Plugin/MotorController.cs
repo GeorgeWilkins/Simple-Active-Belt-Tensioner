@@ -334,8 +334,7 @@ namespace User.ActiveBeltTensioner
             double shoulderLeft,
             double shoulderRight,
             double waistLeft,
-            double waistRight,
-            double smoothingFactor = 0.0
+            double waistRight
         )
         {
             StartAction(out string action);
@@ -353,6 +352,8 @@ namespace User.ActiveBeltTensioner
             {
                 // Handle Motor Status
                 Motor motor = Motors.First(m => m.Identifier == _motorCommandIdentifier);
+
+                // Logging.Current.Info("#" + _motorCommandIdentifier + ": " + (motor.IsConnected ? "CONNECTED" : "UNKNOWN") + " - " + motor.Mapping.Key);
 
                 if (motor.IsConnected && motor.Mapping.Key != Motor.MotorMapping.Unused.Key)
                 {
@@ -405,7 +406,9 @@ namespace User.ActiveBeltTensioner
                         motorTorque = waistRight * outputReduction;
                     }
 
-                    motor.SetTorque(motorTorque, smoothingFactor); // ERROR HANDLING?
+                    // Logging.Current.Info("#" + _motorCommandIdentifier + ": " + motorTorque + " (" + ((double)_plugin.Settings.SmoothingFactor / 1000.0) + ")");
+
+                    motor.SetTorque(motorTorque, (double) _plugin.Settings.SmoothingFactor / 1000.0); // ERROR HANDLING?
 
                     _lastCommandTicks = currentTicks;
                 }
@@ -415,8 +418,6 @@ namespace User.ActiveBeltTensioner
                 {
                     _motorCommandIdentifier = 1;
                 }
-
-                Logging.Current.Info("#" + _motorCommandIdentifier);
             }
 
             EndAction(action);
