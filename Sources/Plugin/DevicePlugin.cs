@@ -94,11 +94,6 @@ namespace User.ActiveBeltTensioner
                     else
                     {
                         _hasBeenInactive = true;
-
-                        DoWithoutWaiting(devicePlugin =>
-                        {
-                            devicePlugin.MotorController?.Disconnect();
-                        });
                     }
                 }
             }
@@ -352,7 +347,7 @@ namespace User.ActiveBeltTensioner
 
             // Initialise Motor Controller
             MotorController = new MotorController(this);
-            if (IsEnabled && Settings.IsSerialPortValid)
+            if (IsEnabled && MotorController.HasDevice)
             {
                 DoWithoutWaiting(devicePlugin =>
                 {
@@ -379,7 +374,7 @@ namespace User.ActiveBeltTensioner
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
         {
             if (
-                e.PropertyName == nameof(Settings.SerialPort)
+                e.PropertyName == nameof(Settings.DeviceIdentifier)
             )
             {
                 IsEnabled = false;
@@ -751,19 +746,14 @@ namespace User.ActiveBeltTensioner
                     _hasBypassedActivationWarning = false;
 
                     // Send To Motors
-                    if (!motorController.IsBusy && motorController.HasSerial)
+                    if (!motorController.IsBusy && motorController.HasDevice)
                     {
-                        if (!motorController.SetTorques(leftTarget, rightTarget, leftTarget, rightTarget, smoothingFactor))
-                        {
-                            Logging.Current.Warn("SABT: Exceeded motor communication failure limit (disabling plugin)");
-
-                            IsEnabled = false;
-                        }
+                        motorController.SetTorques(leftTarget, rightTarget, leftTarget, rightTarget, smoothingFactor);
                     }
                 }
                 catch (Exception exception)
                 {
-                    Logging.Current.Error("SABT: " + exception.Message);
+                    Logging.Current.Error("SABT: " + exception.Message + "\nStack: " + exception.StackTrace);
                 }
             }
         }

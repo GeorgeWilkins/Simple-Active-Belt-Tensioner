@@ -168,36 +168,30 @@
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
     <value>La tua installazione di SimHub non è licenziata, quindi gli aggiornamenti telemetrici saranno limitati a 10 Hz</value>
   </data>
-  <data name="SABT_Message_Setup_TurnOffPower" xml:space="preserve">
-    <value>Ora configureremo i motori. Il primo passaggio è SPEGNERE L'ALIMENTAZIONE del tensionatore. L'hai fatto?</value>
-  </data>
-  <data name="SABT_Message_Profiles_AlreadyExists" xml:space="preserve">
+  <data name="SABT_Message_ProfileAlreadyExists" xml:space="preserve">
     <value>Esiste già un profilo per questa combinazione di gioco e veicolo</value>
   </data>
-  <data name="SABT_Message_Profiles_NoActiveVehicle" xml:space="preserve">
-    <value>Un veicolo non è attualmente selezionato nel gioco</value>
-  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SABT_Message_AssignedMotor" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="SABT_Message_PreviouslyAssignedMotorDetected" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Message_PlugInMotor" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="SABT_Message_PreviouslyAssignedMotorsDetected" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Message_Setup_PlugInRightMotor" xml:space="preserve">
-    <value>Perfetto, il MOTORE SINISTRO è stato configurato. Ora COLLEGA IL MOTORE DESTRO, lasciando l'altro motore ancora collegato. L'hai fatto?</value>
-  </data>
-  <data name="SABT_Message_Setup_AlreadySetUp" xml:space="preserve">
-    <value>Sembra che sia già tutto configurato correttamente (entrambi i motori sono collegati)!</value>
-  </data>
-  <data name="SABT_Message_FailedToAssignMotor" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="SABT_Message_AssignedMotorIdentifier" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Message_Setup_FailedToSetRightMotor" xml:space="preserve">
-    <value>Impossibile impostare l'identificatore del MOTORE DESTRO. Assicurati che entrambi i motori siano collegati e alimentati</value>
+  <data name="SABT_Message_PlugInOneMotorOnly" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Message_FailedToAssignMotorIdentifier" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Message_NoDeviceDetected" xml:space="preserve">
     <value>Nessun dispositivo rilevato. Devi selezionare una porta seriale prima di avviare la configurazione.</value>
+  </data>
+  <data name="SABT_Message_NoAssignedMotorsDetected" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Plugin" xml:space="preserve">
     <value>Simple Active Belt Tensioner</value>
@@ -244,8 +238,17 @@
   <data name="SABT_Button_Test" xml:space="preserve">
     <value>Test</value>
   </data>
+  <data name="SABT_Button_Tension" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Button_Connect" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
     <value>Ripristina diagnostica</value>
+  </data>
+  <data name="SABT_Button_DetectMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
     <value>Reimposta Modificatori Di Cambio Marcia</value>

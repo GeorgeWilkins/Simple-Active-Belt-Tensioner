@@ -123,6 +123,7 @@
     <Compile Include="DevicePlugin.cs" />
     <Compile Include="DeviceSettings.cs" />
     <Compile Include="DeviceViewModel.cs" />
+    <Compile Include="Motor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MotorController.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

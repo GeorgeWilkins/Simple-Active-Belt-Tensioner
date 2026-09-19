@@ -52,17 +52,16 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private string _serialPort = null;
-        public string SerialPort
+        private string _deviceIdentifier = null;
+        public string DeviceIdentifier
         {
-            get { return _serialPort; }
+            get { return _deviceIdentifier; }
             set
             {
-                if (_serialPort != value)
+                if (_deviceIdentifier != value)
                 {
-                    _serialPort = value;
-                    InvokePropertyChange(nameof(SerialPort));
-                    InvokePropertyChange(nameof(IsSerialPortValid));
+                    _deviceIdentifier = value;
+                    InvokePropertyChange(nameof(DeviceIdentifier));
                 }
             }
         }
@@ -162,7 +161,6 @@ namespace User.ActiveBeltTensioner
                 {
                     _minimumTension = value;
                     InvokePropertyChange(nameof(MinimumTension));
-                    InvokePropertyChange(nameof(IsMinimumTensionNonZero));
                 }
             }
         }
@@ -522,6 +520,8 @@ namespace User.ActiveBeltTensioner
             }
         }
 
+        public ObservableCollection<MotorConfiguration> MotorConfigurations { get; set; } = new ObservableCollection<MotorConfiguration>();
+
         public ObservableCollection<GameTuningProfile> Profiles { get; set; } = new ObservableCollection<GameTuningProfile>();
 
         /// <summary>Adds the given <see cref="GameTuningProfile" /> instance to our collection of profiles</summary>
@@ -725,16 +725,6 @@ namespace User.ActiveBeltTensioner
                     Profiles.Move(p, i);
                 }
             }
-        }
-
-        public bool IsMinimumTensionNonZero
-        {
-            get { return MinimumTension > 0; }
-        }
-
-        public bool IsSerialPortValid
-        {
-            get { return !String.IsNullOrEmpty(_serialPort); }
         }
     }
 
@@ -982,6 +972,47 @@ namespace User.ActiveBeltTensioner
             }
 
             return simplified.ToString();
+        }
+    }
+
+    /// <summary>A wrapper for the <see cref="Motor" /> configuration, allowing it to be stored and restored as part of the plugin settings</summary>
+    public class MotorConfiguration : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void InvokePropertyChange([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public byte Identifier { get; set; }
+
+        private byte _mapping = Motor.MotorMapping.Unused.Key;
+        public byte Mapping
+        {
+            get { return _mapping; }
+            set
+            {
+                if (_mapping != value)
+                {
+                    _mapping = value;
+                    InvokePropertyChange(nameof(Mapping));
+                }
+            }
+        }
+
+        private byte _direction = Motor.MotorDirection.Clockwise.Key;
+        public byte Direction
+        {
+            get { return _direction; }
+            set
+            {
+                if (_direction != value)
+                {
+                    _direction = value;
+                    InvokePropertyChange(nameof(Direction));
+                }
+            }
         }
     }
 }

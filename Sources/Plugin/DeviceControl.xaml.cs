@@ -14,9 +14,9 @@ namespace User.ActiveBeltTensioner
     public partial class DeviceControl : UserControl
     {
         private readonly DevicePlugin _plugin;
-        private readonly DispatcherTimer _updateSerialPortsTimer;
+        private readonly DispatcherTimer _updateDevicesTimer;
 
-        public Action<string> OnSerialPortSelected;
+        public Action<string> OnDeviceSelected;
 
         public DeviceControl(DevicePlugin plugin)
         {
@@ -29,11 +29,11 @@ namespace User.ActiveBeltTensioner
 
             _plugin.Settings.PropertyChanged += OnPropertyChanged;
 
-            _updateSerialPortsTimer = new DispatcherTimer
+            _updateDevicesTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(5)
             };
-            _updateSerialPortsTimer.Tick += UpdateSerialPorts;
+            _updateDevicesTimer.Tick += UpdateDevices;
         }
  
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -47,26 +47,26 @@ namespace User.ActiveBeltTensioner
             _plugin.DoWithoutWaiting(
                 devicePlugin =>
                 {
-                    devicePlugin.MotorController.UpdateSerialPorts();
+                    devicePlugin.MotorController.DetectDevices();
                 }
             );
 
-            _updateSerialPortsTimer.Start();
+            _updateDevicesTimer.Start();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            _updateSerialPortsTimer.Stop();
+            _updateDevicesTimer.Stop();
         }
 
-        private void UpdateSerialPorts(object sender, EventArgs e)
+        private void UpdateDevices(object sender, EventArgs e)
         {
             if (IsLoaded)
             {
                 _plugin.DoWithoutWaiting(
                     devicePlugin =>
                     {
-                        devicePlugin.MotorController.UpdateSerialPorts();
+                        devicePlugin.MotorController.DetectDevices();
                     }
                 );
             }
@@ -82,7 +82,7 @@ namespace User.ActiveBeltTensioner
                 if (_plugin.Settings.FindProfile(game, vehicle) != null)
                 {
                     MessageBox.Show(
-                        SLoc.GetValue("SABT_Message_Profiles_AlreadyExists"),
+                        SLoc.GetValue("SABT_Message_ProfileAlreadyExists"),
                         SLoc.GetValue("SABT_Plugin"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Exclamation
@@ -111,7 +111,7 @@ namespace User.ActiveBeltTensioner
                 if (_plugin.Settings.FindProfile(game, vehicle) != null)
                 {
                     MessageBox.Show(
-                        SLoc.GetValue("SABT_Message_Profiles_AlreadyExists"),
+                        SLoc.GetValue("SABT_Message_ProfileAlreadyExists"),
                         SLoc.GetValue("SABT_Plugin"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Exclamation
@@ -159,6 +159,16 @@ namespace User.ActiveBeltTensioner
             {
                 _plugin.Settings.RemoveProfile(profile);
             }
+        }
+
+        private void DetectMotors(object sender, RoutedEventArgs e)
+        {
+            _plugin.DoWithoutWaiting(
+                devicePlugin =>
+                {
+                    devicePlugin.MotorController.DetectMotors();
+                }
+            );
         }
 
         private void ResetDiagnostics(object sender, RoutedEventArgs e)

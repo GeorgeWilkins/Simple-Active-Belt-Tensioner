@@ -19,9 +19,11 @@ namespace User.ActiveBeltTensioner
         public DeviceSettings Settings {
             get { return _plugin.Settings; }
         }
+
         public MotorController MotorController {
             get { return _plugin.MotorController; }
         }
+
         public PlotModel TelemetryGraphModel {
             get { return _plugin.TelemetryGraphModel; }
         }
