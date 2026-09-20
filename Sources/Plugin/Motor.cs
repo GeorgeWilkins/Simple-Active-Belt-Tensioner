@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using System.Threading;
 using System.Threading.Tasks;
 using User.ActiveBeltTensioner;
@@ -23,26 +24,23 @@ namespace User.ActiveBeltTensioner
         {
             public byte Key { get; }
             public string Label { get; }
-            public string Graphic { get; }
             public Brush Color { get; }
 
-            public MotorStatus(byte key, string label, Brush color, string graphic)
+            public MotorStatus(byte key, string label, Brush color)
             {
                 Key = key;
                 Label = label;
                 Color = color;
-                Graphic = graphic;
             }
 
-            public static MotorStatus Disabled = new MotorStatus(0, "Disabled", (Brush)new BrushConverter().ConvertFrom("#454545"), "/User.ActiveBeltTensioner;component/Motor, Disconnected.png");
-            public static MotorStatus Unavailable = new MotorStatus(1, "Unavailable", (Brush)new BrushConverter().ConvertFrom("#f44336"), "/User.ActiveBeltTensioner;component/Motor, Error.png");
-            public static MotorStatus Connected = new MotorStatus(2, "Connected", (Brush)new BrushConverter().ConvertFrom("#357c38"), "/User.ActiveBeltTensioner;component/Motor, Connected.png");
-            public static MotorStatus Communicating = new MotorStatus(3, "Communicating", (Brush)new BrushConverter().ConvertFrom("#119eda"), "/User.ActiveBeltTensioner;component/Motor, Communicating.png");
-            public static MotorStatus Tensioning = new MotorStatus(5, "Tensioning", (Brush)new BrushConverter().ConvertFrom("#ffd03a"), "/User.ActiveBeltTensioner;component/Motor, Communicating.png");
-            public static MotorStatus Testing = new MotorStatus(6, "Testing", (Brush)new BrushConverter().ConvertFrom("#ffd03a"), "/User.ActiveBeltTensioner;component/Motor, Communicating.png");
-
-            public static MotorStatus Overheating = new MotorStatus(7, "Overheating", (Brush)new BrushConverter().ConvertFrom("#ff9800"), "/User.ActiveBeltTensioner;component/Motor, Overheating.png");
-            public static MotorStatus Overheated = new MotorStatus(8, "Overheated", (Brush)new BrushConverter().ConvertFrom("#ff9800"), "/User.ActiveBeltTensioner;component/Motor, Overheated.png");
+            public static MotorStatus Disabled = new MotorStatus(0, "Disabled", (Brush)new BrushConverter().ConvertFrom("#454545"));
+            public static MotorStatus Unavailable = new MotorStatus(1, "Unavailable", (Brush)new BrushConverter().ConvertFrom("#f44336"));
+            public static MotorStatus Connected = new MotorStatus(2, "Connected", (Brush)new BrushConverter().ConvertFrom("#52D468"));
+            public static MotorStatus Communicating = new MotorStatus(3, "Communicating", (Brush)new BrushConverter().ConvertFrom("#119eda"));
+            public static MotorStatus Tensioning = new MotorStatus(5, "Tensioning", (Brush)new BrushConverter().ConvertFrom("#ffd03a"));
+            public static MotorStatus Testing = new MotorStatus(6, "Testing", (Brush)new BrushConverter().ConvertFrom("#ffd03a"));
+            public static MotorStatus Overheating = new MotorStatus(7, "Overheating", (Brush)new BrushConverter().ConvertFrom("#ff9800"));
+            public static MotorStatus Overheated = new MotorStatus(8, "Overheated", (Brush)new BrushConverter().ConvertFrom("#ff9800"));
 
             public static MotorStatus[] Statuses = {
                 Disabled,
@@ -68,18 +66,18 @@ namespace User.ActiveBeltTensioner
                 Graphic = graphic;
             }
 
-            public static MotorMapping Unused = new MotorMapping(0, "Unused", "/User.ActiveBeltTensioner;component/Mapping.Unused.png");
-            public static MotorMapping LeftShoulder = new MotorMapping(1, "Left Shoulder", "/User.ActiveBeltTensioner;component/Mapping.LeftShoulder.png");
-            public static MotorMapping RightShoulder = new MotorMapping(2, "Right Shoulder", "/User.ActiveBeltTensioner;component/Mapping.RightShoulder.png");
-            public static MotorMapping LeftWaist = new MotorMapping(3, "Left Waist", "/User.ActiveBeltTensioner;component/Mapping.LeftWaist.png");
-            public static MotorMapping RightWaist = new MotorMapping(4, "Right Waist", "/User.ActiveBeltTensioner;component/Mapping.RightWaist.png");
+            public static MotorMapping Unused = new MotorMapping(0, "Unused", "/User.ActiveBeltTensioner;component/Graphics/Mapping.Unused.png");
+            public static MotorMapping LeftShoulder = new MotorMapping(1, "Left Shoulder", "/User.ActiveBeltTensioner;component/Graphics/Mapping.LeftShoulder.png");
+            public static MotorMapping RightShoulder = new MotorMapping(2, "Right Shoulder", "/User.ActiveBeltTensioner;component/Graphics/Mapping.RightShoulder.png");
+            public static MotorMapping LeftWaist = new MotorMapping(3, "Left Waist", "/User.ActiveBeltTensioner;component/Graphics/Mapping.LeftWaist.png");
+            public static MotorMapping RightWaist = new MotorMapping(4, "Right Waist", "/User.ActiveBeltTensioner;component/Graphics/Mapping.RightWaist.png");
 
             public static MotorMapping[] Mappings = {
                 Unused,
                 LeftShoulder,
                 RightShoulder,
                 LeftWaist,
-                RightWaist,
+                RightWaist
             };
         }
 
@@ -97,8 +95,8 @@ namespace User.ActiveBeltTensioner
                 Graphic = graphic;
             }
 
-            public static MotorDirection Clockwise = new MotorDirection(0, "Clockwise", 1, "/User.ActiveBeltTensioner;component/Direction.Clockwise.png");
-            public static MotorDirection AntiClockwise = new MotorDirection(1, "Anti-Clockwise", -1, "/User.ActiveBeltTensioner;component/Direction.AntiClockwise.png");
+            public static MotorDirection Clockwise = new MotorDirection(0, "Clockwise", 1, "/User.ActiveBeltTensioner;component/Graphics/Direction.Clockwise.png");
+            public static MotorDirection AntiClockwise = new MotorDirection(1, "Anti-Clockwise", -1, "/User.ActiveBeltTensioner;component/Graphics/Direction.AntiClockwise.png");
 
             public static MotorDirection[] Directions = {
                 Clockwise,
@@ -143,11 +141,25 @@ namespace User.ActiveBeltTensioner
             get { return _mapping; }
             set
             {
-                if (_mapping.Label != value.Label)
+                if (_mapping.Label == value.Label)
                 {
-                    _mapping = value;
-                    InvokePropertyChange();
+                    return;
                 }
+
+                if (!_controller.CanMap(this, value))
+                {
+                    Application.Current?.Dispatcher.BeginInvoke(
+                        DispatcherPriority.DataBind,
+                        new Action(() => InvokePropertyChange(nameof(Mapping)))
+                    );
+
+                    return;
+                }
+
+                _mapping = value;
+                InvokePropertyChange(nameof(Mapping));
+
+                _controller.Refresh();
             }
         }
 
@@ -174,6 +186,20 @@ namespace User.ActiveBeltTensioner
                 if (_isConnected != value)
                 {
                     _isConnected = value;
+                    InvokePropertyChange();
+                }
+            }
+        }
+
+        private bool _isAssignable = false;
+        public bool IsAssignable
+        {
+            get { return _isAssignable; }
+            set
+            {
+                if (_isAssignable != value)
+                {
+                    _isAssignable = value;
                     InvokePropertyChange();
                 }
             }
@@ -229,8 +255,8 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _mostFaults = 0;
-        public int MostFaults
+        private uint? _mostFaults = null;
+        public uint? MostFaults
         {
             get { return _mostFaults; }
             private set
@@ -247,10 +273,10 @@ namespace User.ActiveBeltTensioner
         private const byte _torqueMode = 0x01;
         private const short _torqueLimit = 12000;
 
-        private int _commandFailures = 0;
+        private uint _commandFailures = 0;
         private double _smoothedTorque = 0.0;
 
-        public ICommand TriggerTest { get; }
+        public ICommand TriggerShake { get; }
         public ICommand TriggerTension { get; }
         public ICommand TriggerAssign { get; }
 
@@ -260,8 +286,8 @@ namespace User.ActiveBeltTensioner
 
             Identifier = identifier;
 
-            TriggerTest = new RelayCommand(
-                execute: _ => _ = Task.Run(() => Test())
+            TriggerShake = new RelayCommand(
+                execute: _ => _ = Task.Run(() => Shake())
             );
 
             TriggerTension = new RelayCommand(
@@ -468,7 +494,7 @@ namespace User.ActiveBeltTensioner
         /// <param name="times">The number of times to oscillate the motor</param>
         /// <param name="testTorque">The fraction of the torque limit to apply during testing</param>
         /// <returns>Whether the motor responded as expected</returns>
-        public bool Test(int times = 50, double testTorque = 0.6)
+        public bool Shake(int times = 50, double testTorque = 0.6)
         {
             Status = MotorStatus.Testing;
 

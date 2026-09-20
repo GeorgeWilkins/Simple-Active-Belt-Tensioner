@@ -172,6 +172,12 @@
     <value>Ein Profil für diese Kombination aus Spiel und Fahrzeug existiert bereits</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SABT_Message_TooManyShoulderMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Message_TooManyWaistMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Message_PreviouslyAssignedMotorDetected" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
@@ -223,7 +229,7 @@
   <data name="SABT_Title_Credits" xml:space="preserve">
     <value>Lizenz- und Autoreninformationen</value>
   </data>
-  <data name="SABT_Title_Layout" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="SABT_Title_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
@@ -235,8 +241,8 @@
   <data name="SABT_Tab_Connection" xml:space="preserve">
     <value>Verbindung</value>
   </data>
-  <data name="SABT_Button_Test" xml:space="preserve">
-    <value>Testen</value>
+  <data name="SABT_Button_Shake" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Button_Tension" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
@@ -304,7 +310,7 @@
   <data name="SABT_Text_Tester" xml:space="preserve">
     <value>Pre-Release-Tests und Feedback von TurtleMenace:</value>
   </data>
-  <data name="SABT_Text_Layout" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="SABT_Text_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Text_Repository" xml:space="preserve">
@@ -355,10 +361,8 @@
   <data name="SABT_Status_TestPartiallyFailed" xml:space="preserve">
     <value>Test teilweise fehlgeschlagen</value>
   </data>
-  <data name="SABT_Text_Connection" xml:space="preserve">
-    <value>• Wählen Sie unten einen seriellen Port aus der Liste aus. Es werden nur Ports angezeigt, die zum Gurtstraffer-Gerät passen. Ist die Liste leer, prüfen Sie, ob der Controller angeschlossen ist. Er sollte auch ohne Stromversorgung oder angeschlossene Motoren angezeigt werden.
-• Bei zukünftigen SimHub-Starts sollte Ihre Portauswahl gespeichert und automatisch wiederverbunden werden. Die Option „Motoren aktivieren“ wird jedoch bei jedem Start zurückgesetzt, sofern nicht auch „Automatisch starten“ aktiviert ist.
-• Wenn Sie das System zum ersten Mal einrichten, klicken Sie anschließend auf „Motoren einrichten“ und folgen den Anweisungen. Das ist nur einmal nötig, da jeder Motor seine Konfiguration speichert.</value>
+  <data name="SABT_Text_Connection" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Text_IdleTension" xml:space="preserve">
     <value>• Wird immer angewendet, wenn nicht gefahren wird (keine Wirkung während der Fahrt)

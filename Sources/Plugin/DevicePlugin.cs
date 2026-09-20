@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using WoteverCommon.RawInput.Win32;
 using WoteverLocalization;
@@ -38,7 +39,7 @@ namespace User.ActiveBeltTensioner
 
         public PluginManager PluginManager { get; set; }
 
-        public ImageSource PictureIcon => this.ToIcon(Properties.Resources.MenuIcon);
+        public ImageSource PictureIcon => new BitmapImage(new Uri("pack://application:,,,/User.ActiveBeltTensioner;component/Graphics/MenuIcon.png", UriKind.Absolute));
 
         public string LeftMenuTitle => SLoc.GetValue("SABT_Plugin");
 
@@ -273,27 +274,39 @@ namespace User.ActiveBeltTensioner
                     });
                 }
             );
-            pluginManager.AddAction( // Deprecated
-                actionName: "SABT.ToggleMotors",
+            pluginManager.AddAction(
+                actionName: "SABT.TurnEffectsOn",
                 actionStart: (PluginManager manager, string input) => {
                     DoOnMainThread(devicePlugin =>
                     {
-                        Logging.Current.Info("SABT: Toggling motors from external input");
+                        Logging.Current.Info("SABT: Turning on effects from external input");
 
                         devicePlugin._hasBypassedActivationWarning = false;
-                        devicePlugin.IsEnabled = !devicePlugin.IsEnabled;
+                        devicePlugin.IsEnabled = true;
                     });
                 }
             );
-            pluginManager.AddAction( // Deprecated
-                actionName: "SABT.ToggleMotorsWithoutWarning",
+            pluginManager.AddAction(
+                actionName: "SABT.TurnEffectsOnWithoutWarning",
                 actionStart: (PluginManager manager, string input) => {
                     DoOnMainThread(devicePlugin =>
                     {
-                        Logging.Current.Info("SABT: Toggling motors from external input (without warning)");
+                        Logging.Current.Info("SABT: Turning on effects from external input (without warning)");
 
                         devicePlugin._hasBypassedActivationWarning = devicePlugin.IsEnabled ? false : true;
-                        devicePlugin.IsEnabled = !devicePlugin.IsEnabled;
+                        devicePlugin.IsEnabled = true;
+                    });
+                }
+            );
+            pluginManager.AddAction(
+                actionName: "SABT.TurnEffectsOff",
+                actionStart: (PluginManager manager, string input) => {
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Turning off effects from external input");
+
+                        devicePlugin._hasBypassedActivationWarning = false;
+                        devicePlugin.IsEnabled = false;
                     });
                 }
             );
@@ -775,7 +788,12 @@ namespace User.ActiveBeltTensioner
                     // Send To Motors
                     if (!motorController.IsBusy && motorController.HasDevice)
                     {
-                        motorController.SetTorques(leftTarget, rightTarget, leftTarget, rightTarget);
+                        motorController.SetTorques(
+                            leftTarget,
+                            rightTarget,
+                            leftTarget,
+                            rightTarget
+                        );
                     }
                 }
                 catch (Exception exception)

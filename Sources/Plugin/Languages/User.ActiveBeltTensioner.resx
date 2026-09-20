@@ -171,6 +171,12 @@
   <data name="SABT_Message_ProfileAlreadyExists" xml:space="preserve">
     <value>A profile for this combination of game a vehicle already exists</value>
   </data>
+  <data name="SABT_Message_TooManyShoulderMotors" xml:space="preserve">
+    <value>You have mapped more than two motors to a shoulder belt, which is not supported</value>
+  </data>
+  <data name="SABT_Message_TooManyWaistMotors" xml:space="preserve">
+    <value>You have mapped more than one motor to a waist belt, which is not supported</value>
+  </data>
   <data name="SABT_Message_PreviouslyAssignedMotorDetected" xml:space="preserve">
     <value>A motor with a previously assigned identifier has been detected. Are you in intentionally changing the assigned motor identifier?</value>
   </data>
@@ -190,11 +196,9 @@
     <value>No device detected. You must select a serial device before performing setup!</value>
   </data>
   <data name="SABT_Message_NoAssignedMotorsDetected" xml:space="preserve">
-    <value>No assigned motors were detected
+    <value>No ASSIGNED motors were detected, but there could be one or more UNASSIGNED motors plugged in.
 
-Unassigned motors won't be detected
-
-If you have a single unassigned motor plugged in, click one of the 'Assign' buttons to apply an identifier to it</value>
+If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons to apply an identifier to it</value>
   </data>
   <data name="SABT_Plugin" xml:space="preserve">
     <value>Simple Active Belt Tensioner</value>
@@ -226,8 +230,8 @@ If you have a single unassigned motor plugged in, click one of the 'Assign' butt
   <data name="SABT_Title_Credits" xml:space="preserve">
     <value>Licensing &amp; Author Information</value>
   </data>
-  <data name="SABT_Title_Layout" xml:space="preserve">
-    <value>Layout</value>
+  <data name="SABT_Title_Configuration" xml:space="preserve">
+    <value>Configuration</value>
   </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
     <value>Preferences</value>
@@ -238,8 +242,8 @@ If you have a single unassigned motor plugged in, click one of the 'Assign' butt
   <data name="SABT_Tab_Connection" xml:space="preserve">
     <value>Connection</value>
   </data>
-  <data name="SABT_Button_Test" xml:space="preserve">
-    <value>Test</value>
+  <data name="SABT_Button_Shake" xml:space="preserve">
+    <value>Shake</value>
   </data>
   <data name="SABT_Button_Tension" xml:space="preserve">
     <value>Tension</value>
@@ -307,12 +311,10 @@ If you have a single unassigned motor plugged in, click one of the 'Assign' butt
   <data name="SABT_Text_Tester" xml:space="preserve">
     <value>Pre-Release Testing &amp; Feedback by TurtleMenace:</value>
   </data>
-  <data name="SABT_Text_Layout" xml:space="preserve">
-    <value>Each motor can be assigned to ANY channel; though the most common configurations are:
-• Force Doubling: Each shoulder belt is given a pair of motors to double the effective force output (waist belts are fixed)
-• Four-Channel: Every belt is given its own motor for a true four-channel system
+  <data name="SABT_Text_Configuration" xml:space="preserve">
+    <value>SABT supports a variety of motor configurations; from one to four motors in total.
 
-Since the motors may be mounted in various ways, you'll need to assign the rotation direction for each motor yourself.</value>
+You may allocate up to two motors per should belt (doubling the force applied) and one motor per waist belt.</value>
   </data>
   <data name="SABT_Text_Repository" xml:space="preserve">
     <value>For more information, to report a bug or contribute, consult the project GitHub repository:</value>
@@ -363,8 +365,8 @@ Since the motors may be mounted in various ways, you'll need to assign the rotat
     <value>Test Partially Failed</value>
   </data>
   <data name="SABT_Text_Connection" xml:space="preserve">
-    <value>• Select a serial port from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected
-• Future launches of SimHub should remember your port selection and reconnect automatically. However the 'Enable Motors' option will be reset every launch unless 'Start Automatically' is also enabled
+    <value>1. Select a serial port from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected
+2. Connect a single motor (or unplug the power connectors on all but one motor) and click 'Assign' 
 • If this is your first time setting up, you'll need to then click 'Setup Motors' and follow the instructions given. You'll only need to do this once, as each motor stores its configuration once set</value>
   </data>
   <data name="SABT_Text_IdleTension" xml:space="preserve">

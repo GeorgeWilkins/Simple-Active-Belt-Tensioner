@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -125,12 +125,12 @@
     <Compile Include="DeviceViewModel.cs" />
     <Compile Include="Motor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MotorController.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="MotorController.cs" />
     <Compile Include="SettingRangeSlider.xaml.cs">
       <DependentUpon>SettingRangeSlider.xaml</DependentUpon>
     </Compile>
@@ -162,26 +162,22 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Motor, Overheated.png" />
-    <Resource Include="Motor, Overheating.png" />
-    <Resource Include="SABT Logo.png" />
-    <Resource Include="Motor.png" />
-    <Resource Include="Motor, Connect.png" />
-    <Resource Include="Motor, Connected.png" />
-    <Resource Include="Motor, Disconnected.png" />
-    <Resource Include="Motor, Error.png" />
-    <Resource Include="Motor, Communicating.png" />
-    <Resource Include="GW Logo.png" />
-    <Resource Include="Direction.AntiClockwise.png" />
-    <Resource Include="Direction.Clockwise.png" />
-    <Resource Include="Mapping.LeftShoulder.png" />
-    <Resource Include="Mapping.LeftWaist.png" />
-    <Resource Include="Mapping.RightShoulder.png" />
-    <Resource Include="Mapping.RightWaist.png" />
-    <Resource Include="Mapping.Unused.png" />
-    <Content Include="MenuIcon.png" />
+    <Resource Include="Graphics\SABT Logo.png" />
+    <Resource Include="Graphics\GW Logo.png" />
+    <Resource Include="Graphics\Direction.AntiClockwise.png" />
+    <Resource Include="Graphics\Direction.Clockwise.png" />
+    <Resource Include="Graphics\Mapping.LeftShoulder.png" />
+    <Resource Include="Graphics\Mapping.LeftWaist.png" />
+    <Resource Include="Graphics\Mapping.RightShoulder.png" />
+    <Resource Include="Graphics\Mapping.RightWaist.png" />
+    <Resource Include="Graphics\Mapping.Unused.png" />
+    <Resource Include="Graphics\MenuIcon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Graphics\Configuration.PairedShoulderMotors.png" />
+    <Resource Include="Graphics\Configuration.SingleShoulderMotor.png" />
+    <Resource Include="Graphics\Configuration.SingleWaistMotor.png" />
+    <Resource Include="Graphics\Configuration.Seat.png" />
     <Content Include="Languages\User.ActiveBeltTensioner.resx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>

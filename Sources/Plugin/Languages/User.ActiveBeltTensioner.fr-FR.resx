@@ -172,6 +172,12 @@
     <value>Un profil pour cette combinaison de jeu et de véhicule existe déjà</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SABT_Message_TooManyShoulderMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Message_TooManyWaistMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Message_PreviouslyAssignedMotorDetected" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
@@ -223,7 +229,7 @@
   <data name="SABT_Title_Credits" xml:space="preserve">
     <value>Licence et informations auteur</value>
   </data>
-  <data name="SABT_Title_Layout" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="SABT_Title_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
@@ -235,8 +241,8 @@
   <data name="SABT_Tab_Connection" xml:space="preserve">
     <value>Connexion</value>
   </data>
-  <data name="SABT_Button_Test" xml:space="preserve">
-    <value>Tester</value>
+  <data name="SABT_Button_Shake" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Button_Tension" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
@@ -304,7 +310,7 @@
   <data name="SABT_Text_Tester" xml:space="preserve">
     <value>Tests pré-version et retours par TurtleMenace :</value>
   </data>
-  <data name="SABT_Text_Layout" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="SABT_Text_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Text_Repository" xml:space="preserve">
@@ -355,10 +361,8 @@
   <data name="SABT_Status_TestPartiallyFailed" xml:space="preserve">
     <value>Test partiellement échoué</value>
   </data>
-  <data name="SABT_Text_Connection" xml:space="preserve">
-    <value>• Sélectionnez un port série dans la liste ci-dessous. Seuls les ports correspondant au tendeur de ceinture seront affichés. Si la liste est vide, vérifiez que le contrôleur est branché. Il doit apparaître même sans alimentation ni moteurs connectés.
-• Aux prochains lancements de SimHub, votre sélection de port devrait être conservée et reconnectée automatiquement. Cependant l'option « Activer les moteurs » sera réinitialisée à chaque lancement sauf si « Démarrer automatiquement » est activé.
-• Si c'est votre première configuration, cliquez ensuite sur « Configurer les moteurs » et suivez les instructions. Cette opération n'est à faire qu'une seule fois, chaque moteur conservant sa configuration.</value>
+  <data name="SABT_Text_Connection" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Text_IdleTension" xml:space="preserve">
     <value>• Toujours appliquée hors conduite (aucun effet en conduite)

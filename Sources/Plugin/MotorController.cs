@@ -8,6 +8,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Management;
 using System.Runtime.CompilerServices;
+using System.Runtime.Remoting.Contexts;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
@@ -36,6 +37,132 @@ namespace User.ActiveBeltTensioner
         {
             get { return (_device != null); }
         }
+
+
+
+
+
+        private bool _hasValidConfiguration = false;
+        public bool HasValidConfiguration
+        {
+            get { return _hasValidConfiguration; }
+            private set
+            {
+                if (_hasValidConfiguration != value)
+                {
+                    _hasValidConfiguration = value;
+                    InvokePropertyChange(nameof(HasValidConfiguration));
+                }
+            }
+        }
+
+        private bool _hasSingleLeftShoulder = false;
+        public bool HasSingleLeftShoulder
+        {
+            get { return _hasSingleLeftShoulder; }
+            private set
+            {
+                if (_hasSingleLeftShoulder != value)
+                {
+                    _hasSingleLeftShoulder = value;
+                    InvokePropertyChange(nameof(HasSingleLeftShoulder));
+                }
+            }
+        }
+
+        private bool _hasSingleRightShoulder = false;
+        public bool HasSingleRightShoulder
+        {
+            get { return _hasSingleRightShoulder; }
+            private set
+            {
+                if (_hasSingleRightShoulder != value)
+                {
+                    _hasSingleRightShoulder = value;
+                    InvokePropertyChange(nameof(HasSingleRightShoulder));
+                }
+            }
+        }
+
+        private bool _hasPairedLeftShoulder = false;
+        public bool HasPairedLeftShoulder
+        {
+            get { return _hasPairedLeftShoulder; }
+            private set
+            {
+                if (_hasPairedLeftShoulder != value)
+                {
+                    _hasPairedLeftShoulder = value;
+                    InvokePropertyChange(nameof(HasPairedLeftShoulder));
+                }
+            }
+        }
+
+        private bool _hasPairedRightShoulder = false;
+        public bool HasPairedRightShoulder
+        {
+            get { return _hasPairedRightShoulder; }
+            private set
+            {
+                if (_hasPairedRightShoulder != value)
+                {
+                    _hasPairedRightShoulder = value;
+                    InvokePropertyChange(nameof(HasPairedRightShoulder));
+                }
+            }
+        }
+
+        private bool _hasWaistLeft = false;
+        public bool HasWaistLeft
+        {
+            get { return _hasWaistLeft; }
+            private set
+            {
+                if (_hasWaistLeft != value)
+                {
+                    _hasWaistLeft = value;
+                    InvokePropertyChange(nameof(HasWaistLeft));
+                }
+            }
+        }
+
+        private bool _hasWaistRight = false;
+        public bool HasWaistRight
+        {
+            get { return _hasWaistRight; }
+            private set
+            {
+                if (_hasWaistRight != value)
+                {
+                    _hasWaistRight = value;
+                    InvokePropertyChange(nameof(HasWaistRight));
+                }
+            }
+        }
+
+        private bool _hasCrotch = false;
+        public bool HasCrotch
+        {
+            get { return _hasCrotch; }
+            private set
+            {
+                if (_hasCrotch != value)
+                {
+                    _hasCrotch = value;
+                    InvokePropertyChange(nameof(HasCrotch));
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
 
         private string _warningGraphic;
         public string WarningGraphic
@@ -275,22 +402,106 @@ namespace User.ActiveBeltTensioner
             return didConnect;
         }
 
-        /// <summary>Invokes the <see cref="Motor.Query()" /> method on each motor</summary>
-        /// <returns>Whether all motors responded as expected (or were marked as unused)</returns>
-        public bool Query(bool isInTorqueMode = true)
+        /// <summary>Checks the current configuration to see if the given <see cref="Motor"/> and <see cref="Motor.MotorMapping"/> can be applied</summary>
+        /// <returns>Whether the proposed mapping is permitted</returns>
+        public bool CanMap(Motor targetMotor, Motor.MotorMapping desiredMotorMapping)
         {
-            StartAction(out string action);
+            uint leftShoulderCount = 0;
+            uint rightShoulderCount = 0;
+            uint leftWaistCount = 0;
+            uint rightWaistCount = 0;
 
-            bool didRespond = true;
+            bool exceededShoulderCount = false;
+            bool exceededWaistCount = false;
 
             foreach (Motor motor in Motors)
             {
-                didRespond = (motor.Query(isInTorqueMode) || motor.Mapping.Key == Motor.MotorMapping.Unused.Key) && didRespond;
+                byte mappingKey = motor.Mapping.Key;
+
+                if (motor.Identifier == targetMotor.Identifier)
+                {
+                    mappingKey = desiredMotorMapping.Key;
+                }
+
+                if (mappingKey == Motor.MotorMapping.LeftShoulder.Key)
+                {
+                    exceededShoulderCount |= ++leftShoulderCount > 2;
+                }
+                else if (mappingKey == Motor.MotorMapping.RightShoulder.Key)
+                {
+                    exceededShoulderCount |= ++rightShoulderCount > 2;
+                }
+                else if (mappingKey == Motor.MotorMapping.LeftWaist.Key)
+                {
+                    exceededWaistCount |= ++leftWaistCount > 1;
+                }
+                else if (mappingKey == Motor.MotorMapping.RightWaist.Key)
+                {
+                    exceededWaistCount |= ++rightWaistCount > 1;
+                }
             }
 
-            EndAction(action);
+            if (exceededShoulderCount)
+            {
+                MessageBox.Show(
+                    SLoc.GetValue("SABT_Message_TooManyShoulderMotors"),
+                    SLoc.GetValue("SABT_Plugin"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
 
-            return didRespond;
+                return false;
+            }
+
+            if (exceededWaistCount)
+            {
+                MessageBox.Show(
+                    SLoc.GetValue("SABT_Message_TooManyWaistMotors"),
+                    SLoc.GetValue("SABT_Plugin"),
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
+
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>Determines the overall motor configuration and updates the relevant public properties</summary>
+        public void Refresh()
+        {
+            uint leftShoulderCount = 0;
+            uint rightShoulderCount = 0;
+            uint leftWaistCount = 0;
+            uint rightWaistCount = 0;
+
+            foreach (Motor motor in Motors)
+            {
+                if (motor.Mapping.Key == Motor.MotorMapping.LeftShoulder.Key)
+                {
+                    leftShoulderCount++;
+                }
+                else if (motor.Mapping.Key == Motor.MotorMapping.RightShoulder.Key)
+                {
+                    rightShoulderCount++;
+                }
+                else if (motor.Mapping.Key == Motor.MotorMapping.LeftWaist.Key)
+                {
+                    leftWaistCount++;
+                }
+                else if (motor.Mapping.Key == Motor.MotorMapping.RightWaist.Key)
+                {
+                    rightWaistCount++;
+                }
+            }
+
+            HasSingleLeftShoulder = leftShoulderCount == 1;
+            HasPairedLeftShoulder = leftShoulderCount == 2;
+            HasSingleRightShoulder = rightShoulderCount == 1;
+            HasPairedRightShoulder = rightShoulderCount == 2;
+            HasWaistLeft = leftWaistCount == 1;
+            HasWaistRight = rightWaistCount == 1;
         }
 
         /// <summary>Invokes the <see cref="Motor.Stop()" /> method on each motor then closes the serial port</summary>
@@ -657,17 +868,18 @@ namespace User.ActiveBeltTensioner
                 {
                     detectedMotors++;
                 }
+
+                motor.IsAssignable = false;
             }
 
             Logging.Current.Info("SABT: Detected " + detectedMotors + " motors");
 
-            if (detectedMotors == 0)
+            if (detectedMotors >= 0 && detectedMotors <= 1)
             {
-                MessageBox.Show(
-                    SLoc.GetValue("SABT_Message_NoAssignedMotorsDetected"),
-                    SLoc.GetValue("SABT_Plugin"),
-                    MessageBoxButton.OK
-                );
+                foreach (Motor motor in Motors)
+                {
+                    motor.IsAssignable = true;
+                }
             }
 
             EndAction(action);
