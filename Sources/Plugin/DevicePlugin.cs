@@ -397,7 +397,7 @@ namespace User.ActiveBeltTensioner
             // Initialise Telemetry Graph
             InitialiseTelemetryGraph();
             UpdateTelemetryGraphThresholds(Settings);
-            UpdateTelemetryGraph(0, 0, 0, 0, 0);
+            UpdateTelemetryGraph(0, 0, 0, 0, 0, 0, 0);
 
             // Start Control Loop
             _runControlLoop = true;
@@ -555,7 +555,8 @@ namespace User.ActiveBeltTensioner
                     double idleTension = ConvertToFraction(Settings.IdleTension);
                     double minimumTension = ConvertToFraction(Settings.MinimumTension);
                     double maximumTension = ConvertToFraction(Settings.MaximumTension);
-                    double sideBias = ConvertToFraction(Settings.SideBias);
+                    double horizontalBias = ConvertToFraction(Settings.HorizontalBias);
+                    double verticalBias = ConvertToFraction(Settings.VerticalBias);
                     double corneringStrength = ConvertToFraction(Settings.CorneringStrength);
                     double accelerationStrength = ConvertToFraction(Settings.AccelerationStrength);
                     double brakingStrength = ConvertToFraction(Settings.BrakingStrength);
@@ -683,8 +684,6 @@ namespace User.ActiveBeltTensioner
                         }
 
                         double revolutionsFraction = ConvertToFractionOfRange(revolutions, 0, 5000);
-
-                     // double adjustedEngineStrength = (1.0 - (revolutionsFraction * revolutionsFraction * revolutionsFraction)) * engineStrength * 0.5; // Cubic Curve
                         double adjustedEngineStrength = (1.0 - revolutionsFraction) * engineStrength * 0.5; // Linear
 
                         if (oscillationDirection > 0)
@@ -699,14 +698,38 @@ namespace User.ActiveBeltTensioner
                         }
                     }
 
-                    // Side Bias
-                    if (sideBias < 0.0)
+                    // Allocate To Belts (With Biases)
+                    double leftWaistTarget = leftTarget;
+                    double rightWaistTarget = rightTarget;
+                    double leftShoulderTarget = leftTarget;
+                    double rightShoulderTarget = rightTarget;
+
+                    double scaledBias;
+
+                    if (horizontalBias < 0.0)
                     {
-                        rightTarget *= (1.0 - Math.Abs(sideBias));
+                        scaledBias = (1.0 - Math.Abs(horizontalBias));
+                        rightWaistTarget *= scaledBias;
+                        rightShoulderTarget *= scaledBias;
                     }
-                    else if (sideBias > 0.0)
+                    else if (horizontalBias > 0.0)
                     {
-                        leftTarget *= (1.0 - sideBias);
+                        scaledBias = (1.0 - horizontalBias);
+                        leftWaistTarget *= scaledBias;
+                        leftShoulderTarget *= scaledBias;
+                    }
+
+                    if (verticalBias < 0.0)
+                    {
+                        scaledBias = (1.0 - Math.Abs(verticalBias));
+                        leftShoulderTarget *= scaledBias;
+                        rightShoulderTarget *= scaledBias;
+                    }
+                    else if (verticalBias > 0.0)
+                    {
+                        scaledBias = (1.0 - verticalBias);
+                        leftWaistTarget *= scaledBias;
+                        rightWaistTarget *= scaledBias;
                     }
 
                     // Update Telemetry Graph
@@ -716,8 +739,10 @@ namespace User.ActiveBeltTensioner
                             telemetrySnapshot.Surge ?? 0,
                             telemetrySnapshot.Sway ?? 0,
                             telemetrySnapshot.Heave ?? 0,
-                            leftTarget,
-                            rightTarget
+                            leftWaistTarget,
+                            rightWaistTarget,
+                            leftShoulderTarget,
+                            rightShoulderTarget
                         );
                     }
 
@@ -789,10 +814,10 @@ namespace User.ActiveBeltTensioner
                     if (!motorController.IsBusy && motorController.HasDevice)
                     {
                         motorController.SetTorques(
-                            leftTarget,
-                            rightTarget,
-                            leftTarget,
-                            rightTarget
+                            leftWaistTarget,
+                            rightWaistTarget,
+                            leftShoulderTarget,
+                            rightShoulderTarget
                         );
                     }
                 }
@@ -1009,8 +1034,10 @@ namespace User.ActiveBeltTensioner
         private LineSeries _surgeSeries;
         private LineSeries _swaySeries;
         private LineSeries _heaveSeries;
-        private LineSeries _leftTorqueSeries;
-        private LineSeries _rightTorqueSeries;
+        private LineSeries _leftWaistSeries;
+        private LineSeries _leftShoulderSeries;
+        private LineSeries _rightWaistSeries;
+        private LineSeries _rightShoulderSeries;
 
         private LineAnnotation _surgeMinimumAnnotation;
         private LineAnnotation _surgeMaximumAnnotation;
@@ -1020,8 +1047,10 @@ namespace User.ActiveBeltTensioner
         private LineAnnotation _heaveMaximumAnnotation;
 
         private LineAnnotation _targetDividerAnnotation;
-        private RectangleAnnotation _leftTargetBarAnnotation;
-        private RectangleAnnotation _rightTargetBarAnnotation;
+        private RectangleAnnotation _leftWaistBarAnnotation;
+        private RectangleAnnotation _rightWaistBarAnnotation;
+        private RectangleAnnotation _leftShoulderBarAnnotation;
+        private RectangleAnnotation _rightShoulderBarAnnotation;
 
         private LinearAxis _accelerationAxis;
         private LinearAxis _timeAxis;
@@ -1035,7 +1064,7 @@ namespace User.ActiveBeltTensioner
         private const string _targetAxisKey = "targetAxis";
 
         private DateTime _lastPlotRefresh = DateTime.MinValue;
-        private static readonly TimeSpan PlotRefreshInterval = TimeSpan.FromMilliseconds(33); // 33
+        private static readonly TimeSpan PlotRefreshInterval = TimeSpan.FromMilliseconds(33);
 
         /// <summary>Initialises the telemetry graph instance and configures its styling and legends</summary>
         private void InitialiseTelemetryGraph()
@@ -1126,8 +1155,10 @@ namespace User.ActiveBeltTensioner
             _heaveMinimumAnnotation = AddThresholdLine(yellow);
             _heaveMaximumAnnotation = AddThresholdLine(yellow);
 
-            _leftTorqueSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_Torque") + " (L)", lighterBlue);
-            _rightTorqueSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_Torque") + " (R)", darkerBlue);
+            _leftWaistSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_Torque"), darkerBlue);
+            _rightWaistSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_Torque"), darkerBlue);
+            _leftShoulderSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_Torque"), lighterBlue);
+            _rightShoulderSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_Torque"), lighterBlue);
 
             _targetDividerAnnotation = new LineAnnotation
             {
@@ -1139,31 +1170,55 @@ namespace User.ActiveBeltTensioner
                 X = 0
             };
 
-            _leftTargetBarAnnotation = new RectangleAnnotation
+            _leftWaistBarAnnotation = new RectangleAnnotation
             {
                 XAxisKey = _targetAxisKey,
                 Fill = lighterBlue,
                 Layer = AnnotationLayer.AboveSeries,
-                MinimumX = 0.1,
-                MaximumX = 0.45,
+                MinimumX = (double) 1 / 13,
+                MaximumX = (double) 3 / 13,
                 MinimumY = _accelerationAxis.Minimum,
                 MaximumY = _accelerationAxis.Minimum
             };
 
-            _rightTargetBarAnnotation = new RectangleAnnotation
+            _leftShoulderBarAnnotation = new RectangleAnnotation
+            {
+                XAxisKey = _targetAxisKey,
+                Fill = lighterBlue,
+                Layer = AnnotationLayer.AboveSeries,
+                MinimumX = (double) 4 / 13,
+                MaximumX = (double) 6 / 13,
+                MinimumY = _accelerationAxis.Minimum,
+                MaximumY = _accelerationAxis.Minimum
+            };
+
+            _rightShoulderBarAnnotation = new RectangleAnnotation
             {
                 XAxisKey = _targetAxisKey,
                 Fill = darkerBlue,
                 Layer = AnnotationLayer.AboveSeries,
-                MinimumX = 0.55,
-                MaximumX = 0.9,
+                MinimumX = (double) 7 / 13,
+                MaximumX = (double) 9 / 13,
+                MinimumY = _accelerationAxis.Minimum,
+                MaximumY = _accelerationAxis.Minimum
+            };
+
+            _rightWaistBarAnnotation = new RectangleAnnotation
+            {
+                XAxisKey = _targetAxisKey,
+                Fill = darkerBlue,
+                Layer = AnnotationLayer.AboveSeries,
+                MinimumX = (double) 10 / 13,
+                MaximumX = (double) 12 / 13,
                 MinimumY = _accelerationAxis.Minimum,
                 MaximumY = _accelerationAxis.Minimum
             };
 
             TelemetryGraphModel.Annotations.Add(_targetDividerAnnotation);
-            TelemetryGraphModel.Annotations.Add(_leftTargetBarAnnotation);
-            TelemetryGraphModel.Annotations.Add(_rightTargetBarAnnotation);
+            TelemetryGraphModel.Annotations.Add(_leftWaistBarAnnotation);
+            TelemetryGraphModel.Annotations.Add(_rightWaistBarAnnotation);
+            TelemetryGraphModel.Annotations.Add(_leftShoulderBarAnnotation);
+            TelemetryGraphModel.Annotations.Add(_rightShoulderBarAnnotation);
 
             UpdateTelemetryGraphFilters();
         }
@@ -1200,13 +1255,21 @@ namespace User.ActiveBeltTensioner
                 ToggleThresholdlLine(_heaveMinimumAnnotation, Settings.ShowHeavePlot);
                 ToggleThresholdlLine(_heaveMaximumAnnotation, Settings.ShowHeavePlot);
             }
-            if (_leftTorqueSeries != null)
+            if (_leftWaistSeries != null)
             {
-                _leftTorqueSeries.IsVisible = Settings.ShowTorquePlot;
+                _leftWaistSeries.IsVisible = Settings.ShowTorquePlot;
             }
-            if (_rightTorqueSeries != null)
+            if (_rightWaistSeries != null)
             {
-                _rightTorqueSeries.IsVisible = Settings.ShowTorquePlot;
+                _rightWaistSeries.IsVisible = Settings.ShowTorquePlot;
+            }
+            if (_leftShoulderSeries != null)
+            {
+                _leftShoulderSeries.IsVisible = Settings.ShowTorquePlot;
+            }
+            if (_rightShoulderSeries != null)
+            {
+                _rightShoulderSeries.IsVisible = Settings.ShowTorquePlot;
             }
 
             TelemetryGraphModel.InvalidatePlot(true);
@@ -1215,34 +1278,47 @@ namespace User.ActiveBeltTensioner
         }
 
         /// <summary>Applies the given telemetry data to the telemetry graph and requests (but does not guarantee) a redraw</summary>
-        private void UpdateTelemetryGraph(double surge, double sway, double heave, double leftTorque, double rightTorque)
+        private void UpdateTelemetryGraph(double surge, double sway, double heave, double leftwaistTorque, double rightwaistTorque, double leftShoulderTorque, double rightShoulderTorque)
         {
             double x = _plotPointIndex++;
 
             _surgeSeries.Points.Add(new DataPoint(x, surge));
             _swaySeries.Points.Add(new DataPoint(x, sway));
             _heaveSeries.Points.Add(new DataPoint(x, heave));
-            _leftTorqueSeries.Points.Add(new DataPoint(x, leftTorque * 100));
-            _rightTorqueSeries.Points.Add(new DataPoint(x, rightTorque * 100));
+            _leftWaistSeries.Points.Add(new DataPoint(x, leftwaistTorque * 100));
+            _rightWaistSeries.Points.Add(new DataPoint(x, rightwaistTorque * 100));
+            _leftShoulderSeries.Points.Add(new DataPoint(x, leftShoulderTorque * 100));
+            _rightShoulderSeries.Points.Add(new DataPoint(x, rightShoulderTorque * 100));
 
             if (_surgeSeries.Points.Count > _maximumPlotPoints)
             {
                 _surgeSeries.Points.RemoveAt(0);
                 _swaySeries.Points.RemoveAt(0);
                 _heaveSeries.Points.RemoveAt(0);
-                _leftTorqueSeries.Points.RemoveAt(0);
-                _rightTorqueSeries.Points.RemoveAt(0);
+                _leftWaistSeries.Points.RemoveAt(0);
+                _rightWaistSeries.Points.RemoveAt(0);
+                _leftShoulderSeries.Points.RemoveAt(0);
+                _rightShoulderSeries.Points.RemoveAt(0);
             }
 
-            double leftTorqueClamped = ClampTo(leftTorque, 0.0, 1.0);
-            double rightTorqueClamped = ClampTo(rightTorque, 0.0, 1.0);
+            double leftWaistTorqueClamped = ClampTo(leftwaistTorque, 0.0, 1.0);
+            double rightWaistTorqueClamped = ClampTo(rightwaistTorque, 0.0, 1.0);
+            double leftShoulderTorqueClamped = ClampTo(leftShoulderTorque, 0.0, 1.0);
+            double rightShoulderTorqueClamped = ClampTo(rightShoulderTorque, 0.0, 1.0);
+
             double graphHeight = _accelerationAxis.Maximum - _accelerationAxis.Minimum;
 
-            _leftTargetBarAnnotation.MinimumY = _accelerationAxis.Minimum;
-            _leftTargetBarAnnotation.MaximumY = _accelerationAxis.Minimum + (leftTorqueClamped * graphHeight);
+            _leftWaistBarAnnotation.MinimumY = _accelerationAxis.Minimum;
+            _leftWaistBarAnnotation.MaximumY = _accelerationAxis.Minimum + (leftWaistTorqueClamped * graphHeight);
 
-            _rightTargetBarAnnotation.MinimumY = _accelerationAxis.Minimum;
-            _rightTargetBarAnnotation.MaximumY = _accelerationAxis.Minimum + (rightTorqueClamped * graphHeight);
+            _rightWaistBarAnnotation.MinimumY = _accelerationAxis.Minimum;
+            _rightWaistBarAnnotation.MaximumY = _accelerationAxis.Minimum + (rightWaistTorqueClamped * graphHeight);
+
+            _leftShoulderBarAnnotation.MinimumY = _accelerationAxis.Minimum;
+            _leftShoulderBarAnnotation.MaximumY = _accelerationAxis.Minimum + (leftShoulderTorqueClamped * graphHeight);
+
+            _rightShoulderBarAnnotation.MinimumY = _accelerationAxis.Minimum;
+            _rightShoulderBarAnnotation.MaximumY = _accelerationAxis.Minimum + (rightShoulderTorqueClamped * graphHeight);
 
             RedrawGraph();
         }

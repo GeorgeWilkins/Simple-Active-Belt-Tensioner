@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -8,6 +9,18 @@ namespace User.ActiveBeltTensioner
         public SettingSlider()
         {
             InitializeComponent();
+            IsEnabledChanged += (s, e) => UpdateSliderOpacity();
+        }
+
+        private void UpdateSliderOpacity()
+        {
+            SliderControl.Opacity = IsEnabled ? 1.0 : 0.5;
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+            UpdateSliderOpacity();
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(

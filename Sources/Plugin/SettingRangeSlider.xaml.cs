@@ -16,6 +16,19 @@ namespace User.ActiveBeltTensioner
             InitializeComponent();
             UpdateMidpoint();
             SetCurrentValue(LeftSliderValueProperty, MapLeftValueToSliderValue(LeftValue));
+            IsEnabledChanged += (s, e) => UpdateSlidersOpacity();
+        }
+
+        private void UpdateSlidersOpacity()
+        {
+            LeftSliderControl.Opacity = IsEnabled ? 1.0 : 0.5;
+            RightSliderControl.Opacity = IsEnabled ? 1.0 : 0.5;
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+            UpdateSlidersOpacity();
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(

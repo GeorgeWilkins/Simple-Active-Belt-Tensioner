@@ -378,9 +378,12 @@
     <value>• De combien les valeurs de tension ci-dessus changent lorsqu'elles sont ajustées via les 'Actions' de SimHub
 • Utile lors de l'utilisation de matériel de contrôle comme des encodeurs rotatifs avec un nombre de pas variable</value>
   </data>
-  <data name="SABT_Text_LeftRightBias" xml:space="preserve">
+  <data name="SABT_Text_HorizontalBias" xml:space="preserve">
     <value>• Si la tension semble déséquilibrée, ajustez vers la gauche ou la droite
 • Vérifiez d'abord le cheminement de la ceinture et les points de contact avant d'utiliser ce réglage</value>
+  </data>
+  <data name="SABT_Text_VerticalBias" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Text_Cornering" xml:space="preserve">
     <value>• Intensité de l'effet des forces de virage sur la différence de tension entre les deux ceintures</value>
@@ -451,8 +454,11 @@
   <data name="SABT_Label_StepSize" xml:space="preserve">
     <value>Taille du pas</value>
   </data>
-  <data name="SABT_Label_LeftRightBias" xml:space="preserve">
+  <data name="SABT_Label_HorizontalBias" xml:space="preserve">
     <value>Équilibre gauche/droite</value>
+  </data>
+  <data name="SABT_Label_VerticalBias" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Label_Cornering" xml:space="preserve">
     <value>Virage</value>

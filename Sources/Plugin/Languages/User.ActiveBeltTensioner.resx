@@ -323,7 +323,7 @@ You may allocate up to two motors per should belt (doubling the force applied) a
     <value>GitHub Repository</value>
   </data>
   <data name="SABT_Text_Designer" xml:space="preserve">
-    <value>Hardware and software design by George Wilkins:</value>
+    <value>Hardware and software design by **George Wilkins**:</value>
   </data>
   <data name="SABT_Status_Connected" xml:space="preserve">
     <value>Connected</value>
@@ -365,7 +365,7 @@ You may allocate up to two motors per should belt (doubling the force applied) a
     <value>Test Partially Failed</value>
   </data>
   <data name="SABT_Text_Connection" xml:space="preserve">
-    <value>1. Select a serial port from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected
+    <value>1. Select a **Serial Port** from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected
 2. Connect a single motor (or unplug the power connectors on all but one motor) and click 'Assign' 
 • If this is your first time setting up, you'll need to then click 'Setup Motors' and follow the instructions given. You'll only need to do this once, as each motor stores its configuration once set</value>
   </data>
@@ -383,9 +383,12 @@ You may allocate up to two motors per should belt (doubling the force applied) a
     <value>• How much the above tension values change when adjusted via SimHub 'Actions'
 • Useful when using control hardware like encoder knobs with variable step counts</value>
   </data>
-  <data name="SABT_Text_LeftRightBias" xml:space="preserve">
+  <data name="SABT_Text_HorizontalBias" xml:space="preserve">
     <value>• If tension feels unbalanced between sides, adjust this left or right to bias towards that side
 • Check and correct your belt path and contact points before resorting to using this setting</value>
+  </data>
+  <data name="SABT_Text_VerticalBias" xml:space="preserve">
+    <value>• If you've mapped motors to both the waist and shoulder belts, you can adjust the relative force bias between these</value>
   </data>
   <data name="SABT_Text_Cornering" xml:space="preserve">
     <value>• How much cornering forces should affect the tension differential between the two belts</value>
@@ -456,8 +459,11 @@ You may allocate up to two motors per should belt (doubling the force applied) a
   <data name="SABT_Label_StepSize" xml:space="preserve">
     <value>Step Size</value>
   </data>
-  <data name="SABT_Label_LeftRightBias" xml:space="preserve">
+  <data name="SABT_Label_HorizontalBias" xml:space="preserve">
     <value>Left/Right Bias</value>
+  </data>
+  <data name="SABT_Label_VerticalBias" xml:space="preserve">
+    <value>Waist/Shoulder Bias</value>
   </data>
   <data name="SABT_Label_Cornering" xml:space="preserve">
     <value>Cornering</value>

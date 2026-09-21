@@ -81,10 +81,6 @@
             </Setter>
         </Style>
 
-        
-        
-        
-        
         <Style x:Key="MotorOptionListBoxStyle" TargetType="ListBox">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
@@ -142,13 +138,6 @@
             </Style.Triggers>
         </Style>
 
-
-        
-        
-        
-        
-        
-        
     </UserControl.Resources>
     
     <ScrollViewer>
@@ -174,7 +163,9 @@
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.StartAutomatically, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </TextBlock>
 
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="2,10,2,5" Text="{SLoc SABT_Text_Connection}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="2,10,2,5">
+                                            <local:SLocFormatted Key="SABT_Text_Connection" />
+                                        </TextBlock>
 
                                         <ComboBox ItemsSource="{Binding MotorController.Devices}" DisplayMemberPath="Port" SelectedItem="{Binding MotorController.Device, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -185,7 +176,9 @@
                             <styles:SHTitledGroup Title="{SLoc SABT_Title_Configuration}" d:Title="Title">
                                 <StackPanel Grid.IsSharedSizeScope="True">
 
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="0,0,0,10" Text="{SLoc SABT_Text_Configuration}" />
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="0,0,0,10">
+                                        <local:SLocFormatted Key="SABT_Text_Configuration" />
+                                    </TextBlock>
 
                                     <Grid Margin="0,0,0,0">
                                         <Grid.ColumnDefinitions>
@@ -230,7 +223,7 @@
 
                                                     <TextBlock Grid.Column="0" Text="{Binding Identifier, Mode=OneWay, StringFormat=ID {0}}" Margin="0,4,10,0" />
 
-                                                    <ListBox Grid.Column="1" Margin="0,0,10,0" Style="{StaticResource MotorOptionListBoxStyle}" ItemContainerStyle="{StaticResource MotorOptionListBoxItemStyle}" ItemsSource="{Binding Source={x:Static local:Motor+MotorMapping.Mappings}}" SelectedItem="{Binding Mapping, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                    <ListBox Grid.Column="1" Margin="0,0,10,0" Style="{StaticResource MotorOptionListBoxStyle}" ItemContainerStyle="{StaticResource MotorOptionListBoxItemStyle}" ItemsSource="{Binding DataContext.MotorMappings, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding Mapping, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                                         <ListBox.ItemsPanel>
                                                             <ItemsPanelTemplate>
                                                                 <StackPanel Orientation="Horizontal" />
@@ -245,7 +238,7 @@
                                                         </ListBox.ItemTemplate>
                                                     </ListBox>
 
-                                                    <ListBox Grid.Column="2" Margin="0,0,10,0" Style="{StaticResource MotorOptionListBoxStyle}" ItemContainerStyle="{StaticResource MotorOptionListBoxItemStyle}" ItemsSource="{Binding Source={x:Static local:Motor+MotorDirection.Directions}}" SelectedItem="{Binding Direction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                    <ListBox Grid.Column="2" Margin="0,0,10,0" Style="{StaticResource MotorOptionListBoxStyle}" ItemContainerStyle="{StaticResource MotorOptionListBoxItemStyle}" ItemsSource="{Binding DataContext.MotorDirections, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding Direction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                                         <ListBox.ItemsPanel>
                                                             <ItemsPanelTemplate>
                                                                 <StackPanel Orientation="Horizontal" />
@@ -415,20 +408,26 @@
                             <StackPanel>
 
                                 <StackPanel>
-                                    <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,0" LineHeight="20" Text="{SLoc SABT_Text_Preferences}" />
+                                    <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,0" LineHeight="20">
+                                        <local:SLocFormatted Key="SABT_Text_Preferences" />
+                                    </TextBlock>
                                 </StackPanel>
 
                                 <ContentControl Style="{StaticResource SettingStyle}">
                                     <StackPanel>
                                         <local:SettingSlider Title="{SLoc SABT_Label_IdleTension}" Unit="%" Minimum="0" Maximum="50" Step="0.1" Value="{Binding Settings.IdleTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_IdleTension}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                            <local:SLocFormatted Key="SABT_Text_IdleTension" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </ContentControl>
 
                                 <ContentControl Style="{StaticResource SettingStyle}">
                                     <StackPanel>
                                         <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_DrivingTension}" Unit="%" Minimum="0" Maximum="100" Step="0.1" LeftValue="{Binding Settings.MinimumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" RightValue="{Binding Settings.MaximumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_DrivingTension}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                            <local:SLocFormatted Key="SABT_Text_DrivingTension" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </ContentControl>
 
@@ -438,21 +437,36 @@
                                             <mah:NumericUpDown DockPanel.Dock="Right" Width="100" Minimum="10" Maximum="200" Value="{Binding Settings.TensionStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock Text="{SLoc SABT_Label_StepSize}" VerticalAlignment="Center" />
                                         </DockPanel>
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_TensionStep}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                            <local:SLocFormatted Key="SABT_Text_TensionStep" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </ContentControl>
 
                                 <ContentControl Style="{StaticResource SettingStyle}">
                                     <StackPanel>
-                                        <local:SettingSlider Title="{SLoc SABT_Label_LeftRightBias}" Unit="%" Minimum="-100" Maximum="100" Step="0.1" Value="{Binding Settings.SideBias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_LeftRightBias}" />
+                                        <local:SettingSlider Title="{SLoc SABT_Label_HorizontalBias}" Unit="%" Minimum="-100" Maximum="100" Step="0.1" Value="{Binding Settings.HorizontalBias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                            <local:SLocFormatted Key="SABT_Text_HorizontalBias" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ContentControl>
+
+                                <ContentControl Style="{StaticResource SettingStyle}">
+                                    <StackPanel>
+                                        <local:SettingSlider Title="{SLoc SABT_Label_VerticalBias}" Unit="%" Minimum="-100" Maximum="100" Step="0.1" Value="{Binding Settings.VerticalBias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" IsEnabled="{Binding MotorController.HasWaistAndShoulder}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                            <local:SLocFormatted Key="SABT_Text_VerticalBias" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </ContentControl>
 
                                 <ContentControl Style="{StaticResource SettingStyle}">
                                     <StackPanel>
                                         <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_TemperatureThrottlingRange}" Unit="°C" Minimum="0" Maximum="80" Step="1" Midpoint="50" LeftValue="{Binding Settings.ReducedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.StoppedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_TemperatureThrottlingRange}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                            <local:SLocFormatted Key="SABT_Text_TemperatureThrottlingRange" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </ContentControl>
 
@@ -528,7 +542,7 @@
                                         <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,5">
                                             <Label Content="{SLoc SABT_Label_AutomaticTuning}" Margin="-5,0,0,0" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsAutomaticallyTuning, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <Label Content="{SLoc SABT_Label_EnableMotors}" Margin="-5,0,0,0" />
+                                            <Label Content="{SLoc SABT_Label_EnableEffects}" Margin="-5,0,0,0" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding MotorController.Device}" />
                                         </TextBlock>
                                         <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,5" LineHeight="20" Text="{SLoc SABT_Text_Tuning}" />
@@ -671,9 +685,9 @@
                             <StackPanel>
 
                                 <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="10">
-                                    <Image Source="/User.ActiveBeltTensioner;component/GW Logo.png" Width="105" Margin="-3,0,0,8"/>
+                                    <Image Source="/User.ActiveBeltTensioner;component/Graphics/GW%20Logo.png" Width="105" Margin="-3,0,0,8"/>
                                     <LineBreak />
-                                    <Run Text="{SLoc SABT_Text_Designer}" />
+                                    <local:SLocFormatted Key="SABT_Text_Designer" />
                                     <LineBreak />
                                     <Hyperlink NavigateUri="https://georgewilkins.co.uk" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_Website}" /></Hyperlink>
                                     <LineBreak />

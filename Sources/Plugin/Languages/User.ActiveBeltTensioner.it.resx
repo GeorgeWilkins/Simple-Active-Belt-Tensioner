@@ -378,9 +378,12 @@
     <value>• Di quanto cambiano i suddetti valori di tensione quando regolati tramite le 'Azioni' di SimHub
 • Utile quando si usa hardware di controllo come manopole encoder con incrementi variabili</value>
   </data>
-  <data name="SABT_Text_LeftRightBias" xml:space="preserve">
+  <data name="SABT_Text_HorizontalBias" xml:space="preserve">
     <value>• Se la tensione sembra sbilanciata tra i lati, regola verso sinistra o destra
 • Controlla e correggi il percorso della cintura e i punti di contatto prima di usare questa impostazione</value>
+  </data>
+  <data name="SABT_Text_VerticalBias" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Text_Cornering" xml:space="preserve">
     <value>• Quanto le forze in curva devono influire sulla differenza di tensione tra le due cinture</value>
@@ -451,8 +454,11 @@
   <data name="SABT_Label_StepSize" xml:space="preserve">
     <value>Dimensione passo</value>
   </data>
-  <data name="SABT_Label_LeftRightBias" xml:space="preserve">
+  <data name="SABT_Label_HorizontalBias" xml:space="preserve">
     <value>Bilanciamento sinistra/destra</value>
+  </data>
+  <data name="SABT_Label_VerticalBias" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Label_Cornering" xml:space="preserve">
     <value>Curva</value>

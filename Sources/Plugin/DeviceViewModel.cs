@@ -28,6 +28,16 @@ namespace User.ActiveBeltTensioner
             get { return _plugin.TelemetryGraphModel; }
         }
 
+        public Motor.MotorMapping[] MotorMappings
+        {
+            get { return Motor.MotorMapping.Mappings; }
+        }
+
+        public Motor.MotorDirection[] MotorDirections
+        {
+            get { return Motor.MotorDirection.Directions; }
+        }
+
         private int _selectedTabIndex = 0;
         public int SelectedTabIndex
         {

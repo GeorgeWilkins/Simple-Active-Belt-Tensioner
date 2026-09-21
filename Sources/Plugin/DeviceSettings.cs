@@ -286,15 +286,29 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _sideBias = 0;
-        public int SideBias
+        private int _horizontalBias = 0;
+        public int HorizontalBias
         {
-            get { return _sideBias; }
+            get { return _horizontalBias; }
             set {
-                if (_sideBias != value)
+                if (_horizontalBias != value)
                 {
-                    _sideBias = value;
-                    InvokePropertyChange(nameof(SideBias));
+                    _horizontalBias = value;
+                    InvokePropertyChange(nameof(HorizontalBias));
+                }
+            }
+        }
+
+        private int _verticalBias = 0;
+        public int VerticalBias
+        {
+            get { return _verticalBias; }
+            set
+            {
+                if (_verticalBias != value)
+                {
+                    _verticalBias = value;
+                    InvokePropertyChange(nameof(VerticalBias));
                 }
             }
         }

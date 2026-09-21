@@ -38,24 +38,6 @@ namespace User.ActiveBeltTensioner
             get { return (_device != null); }
         }
 
-
-
-
-
-        private bool _hasValidConfiguration = false;
-        public bool HasValidConfiguration
-        {
-            get { return _hasValidConfiguration; }
-            private set
-            {
-                if (_hasValidConfiguration != value)
-                {
-                    _hasValidConfiguration = value;
-                    InvokePropertyChange(nameof(HasValidConfiguration));
-                }
-            }
-        }
-
         private bool _hasSingleLeftShoulder = false;
         public bool HasSingleLeftShoulder
         {
@@ -66,6 +48,7 @@ namespace User.ActiveBeltTensioner
                 {
                     _hasSingleLeftShoulder = value;
                     InvokePropertyChange(nameof(HasSingleLeftShoulder));
+                    InvokePropertyChange(nameof(HasWaistAndShoulder));
                 }
             }
         }
@@ -80,6 +63,7 @@ namespace User.ActiveBeltTensioner
                 {
                     _hasSingleRightShoulder = value;
                     InvokePropertyChange(nameof(HasSingleRightShoulder));
+                    InvokePropertyChange(nameof(HasWaistAndShoulder));
                 }
             }
         }
@@ -94,6 +78,7 @@ namespace User.ActiveBeltTensioner
                 {
                     _hasPairedLeftShoulder = value;
                     InvokePropertyChange(nameof(HasPairedLeftShoulder));
+                    InvokePropertyChange(nameof(HasWaistAndShoulder));
                 }
             }
         }
@@ -108,6 +93,7 @@ namespace User.ActiveBeltTensioner
                 {
                     _hasPairedRightShoulder = value;
                     InvokePropertyChange(nameof(HasPairedRightShoulder));
+                    InvokePropertyChange(nameof(HasWaistAndShoulder));
                 }
             }
         }
@@ -122,6 +108,7 @@ namespace User.ActiveBeltTensioner
                 {
                     _hasWaistLeft = value;
                     InvokePropertyChange(nameof(HasWaistLeft));
+                    InvokePropertyChange(nameof(HasWaistAndShoulder));
                 }
             }
         }
@@ -136,45 +123,24 @@ namespace User.ActiveBeltTensioner
                 {
                     _hasWaistRight = value;
                     InvokePropertyChange(nameof(HasWaistRight));
+                    InvokePropertyChange(nameof(HasWaistAndShoulder));
                 }
             }
         }
 
-        private bool _hasCrotch = false;
-        public bool HasCrotch
+        public bool HasWaistAndShoulder
         {
-            get { return _hasCrotch; }
-            private set
+            get
             {
-                if (_hasCrotch != value)
-                {
-                    _hasCrotch = value;
-                    InvokePropertyChange(nameof(HasCrotch));
-                }
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-        private string _warningGraphic;
-        public string WarningGraphic
-        {
-            get { return _warningGraphic; }
-            private set
-            {
-                if (_warningGraphic != value)
-                {
-                    _warningGraphic = value;
-                    InvokePropertyChange(nameof(WarningGraphic));
-                }
+                return (
+                    _hasWaistLeft ||
+                    _hasWaistRight
+                ) && (
+                    _hasSingleLeftShoulder ||
+                    _hasPairedLeftShoulder ||
+                    _hasSingleRightShoulder ||
+                    _hasPairedRightShoulder
+                );
             }
         }
 
