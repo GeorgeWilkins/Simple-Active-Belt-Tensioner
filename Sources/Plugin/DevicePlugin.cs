@@ -43,7 +43,6 @@ namespace User.ActiveBeltTensioner
 
         public string LeftMenuTitle => SLoc.GetValue("SABT_Plugin");
 
-
         public MotorController MotorController;
 
         public int SelectedTabIndex { get; set; } = 0;
@@ -243,10 +242,7 @@ namespace User.ActiveBeltTensioner
             );
 
             // Load Serialised Settings
-            Settings = this.ReadCommonSettings<DeviceSettings>(_settingsName, () => new DeviceSettings());
-            Settings.Persist = () => this.SaveCommonSettings(_settingsName, Settings);
-            Settings.PropertyChanged += OnSettingsChanged;
-            Settings.Initialise(this);
+            Settings = LoadSettings();
 
             _upshiftModifierCurve = ParseUpshiftingModifiers(Settings.UpshiftingModifiers);
 
@@ -413,6 +409,18 @@ namespace User.ActiveBeltTensioner
                 Name = "SABT.ControlLoop"
             };
             _controlThread.Start();
+        }
+
+        private DeviceSettings LoadSettings()
+        {
+            DeviceSettings settings = this.ReadCommonSettings<DeviceSettings>(_settingsName, () => new DeviceSettings()) ?? new DeviceSettings();
+
+            settings.Initialise(this);
+
+            settings.Persist = () => this.SaveCommonSettings(_settingsName, settings);
+            settings.PropertyChanged += OnSettingsChanged;
+
+            return settings;
         }
 
         /// <summary>Selectively initiates side effects for settings property changes</summary>

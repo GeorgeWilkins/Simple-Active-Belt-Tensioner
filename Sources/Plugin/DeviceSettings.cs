@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using WoteverLocalization;
 
 namespace User.ActiveBeltTensioner
@@ -29,12 +30,69 @@ namespace User.ActiveBeltTensioner
 
         public string DefaultUpshiftingModifiers = "0ms:100% 150ms:100% 300ms:0%";
 
+        public string PluginVersion = "0.0.0.0";
+
         public void Initialise(DevicePlugin plugin)
         {
             _plugin = plugin;
             _isInitialised = true;
 
+            ApplyTransition();
+
             ChangeActiveProfile();
+        }
+        
+        /// <summary>Applies any required settings value transitions, then sets the the stored plugin version for future transitions</summary>
+        /// <remarks>This can be used to apply new defaults, merge or migrate properties, change types and scales, etc</remarks>
+        public DeviceSettings ApplyTransition()
+        {
+            string currentVersion = typeof(DevicePlugin).Assembly.GetName().Version.ToString(4) ?? new Version(1, 0).ToString(4);
+            string priorVersion = PluginVersion;
+
+            switch (true)
+            {
+                case bool _ when IsTransitioning(priorVersion, currentVersion, "0.*.*.*", "1.*.*.*"):
+
+                    // TODO: Add any migration logic here for settings values
+
+                    break;
+
+                case bool _ when IsTransitioning(priorVersion, currentVersion, "0.8.*.*", "0.9.*.*"):
+
+                    // TODO: Add any migration logic here for settings values
+
+                    break;
+            }
+
+            PluginVersion = currentVersion;
+
+            return this;
+        }
+
+        /// <summary>Indicates if these settings are transitioning between the specified plugin versions</summary>
+        /// <remarks>Supports wildcard patterns in the version strings like `0.9.*.*` or `1.*.*.*`</remarks>
+        private static bool IsTransitioning(string priorVersion, string currentVersion, string priorPattern, string currentPattern)
+        {
+            return (
+                IsVersionMatch(priorVersion, priorPattern) &&
+                IsVersionMatch(currentVersion, currentPattern)
+            );
+        }
+
+        private static bool IsVersionMatch(string version, string wildcardPattern)
+        {
+            if (string.IsNullOrWhiteSpace(version) || string.IsNullOrWhiteSpace(wildcardPattern))
+            {
+                return false;
+            }
+
+            string regexPattern = "^" + Regex.Escape(wildcardPattern).Replace("\\*", ".*") + "$";
+
+            return Regex.IsMatch(
+                version,
+                regexPattern,
+                RegexOptions.CultureInvariant | RegexOptions.IgnoreCase
+            );
         }
 
         private void InvokePropertyChange([CallerMemberName] string name = null)
