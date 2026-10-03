@@ -56,6 +56,9 @@ namespace User.ActiveBeltTensioner
         private readonly object _telemetryLock = new object();
         private TelemetrySnapshot _latestTelemetry;
 
+        private PhysicsForceCalculator _physicsCalculator;
+        private Stopwatch _controlLoopStopwatch;
+
         private readonly AutoResetEvent _hasTelemetryArrived = new AutoResetEvent(false);
         private const int _controlLoopInterval = 3; // Milliseconds;
         private Thread _controlThread;
@@ -394,10 +397,13 @@ namespace User.ActiveBeltTensioner
                 });
             }
 
+            // Initialise Physics Calculator
+            _physicsCalculator = new PhysicsForceCalculator(Settings);
+
             // Initialise Telemetry Graph
             InitialiseTelemetryGraph();
             UpdateTelemetryGraphThresholds(Settings);
-            UpdateTelemetryGraph(0, 0, 0, 0, 0, 0, 0);
+            UpdateTelemetryGraph(new TelemetrySnapshot(), 0, 0, 0, 0);
 
             // Start Control Loop
             _runControlLoop = true;
@@ -450,6 +456,25 @@ namespace User.ActiveBeltTensioner
             )
             {
                 UpdateTelemetryGraphFilters();
+
+                return;
+            }
+
+            if (
+                e.PropertyName == nameof(Settings.DriverMass) ||
+                e.PropertyName == nameof(Settings.DriverDamping) ||
+                e.PropertyName == nameof(Settings.SeatDegreesFromVertical) ||
+                e.PropertyName == nameof(Settings.LeftShoulderBeltDegreesFromVertical) ||
+                e.PropertyName == nameof(Settings.RightShoulderBeltDegreesFromVertical) ||
+                e.PropertyName == nameof(Settings.LeftWaistBeltDegreesFromVertical) ||
+                e.PropertyName == nameof(Settings.RightWaistBeltDegreesFromVertical) ||
+                e.PropertyName == nameof(Settings.LeftShoulderBeltDistance) ||
+                e.PropertyName == nameof(Settings.RightShoulderBeltDistance) ||
+                e.PropertyName == nameof(Settings.LeftWaistBeltDistance) ||
+                e.PropertyName == nameof(Settings.RightWaistBeltDistance)
+            )
+            {
+                _physicsCalculator = new PhysicsForceCalculator(Settings);
 
                 return;
             }
@@ -529,10 +554,14 @@ namespace User.ActiveBeltTensioner
             // Initialise Upshift Timer
             Stopwatch upshiftStopwatch = Stopwatch.StartNew();
             upshiftStopwatch.Reset();
-
+            
             // Initialise Oscillation State (For Engine RPM Effects)
             int oscillationDirection = 1;
             Stopwatch oscillationStopwatch = Stopwatch.StartNew();
+
+            // Monitor Control Loop Interval
+            _controlLoopStopwatch = Stopwatch.StartNew();
+            long latestTime = 0;
 
             while (_runControlLoop)
             {
@@ -551,194 +580,28 @@ namespace User.ActiveBeltTensioner
 
                 try
                 {
-                    // Parse Preferences
-                    double idleTension = ConvertToFraction(Settings.IdleTension);
-                    double minimumTension = ConvertToFraction(Settings.MinimumTension);
-                    double maximumTension = ConvertToFraction(Settings.MaximumTension);
-                    double horizontalBias = ConvertToFraction(Settings.HorizontalBias);
-                    double verticalBias = ConvertToFraction(Settings.VerticalBias);
-                    double corneringStrength = ConvertToFraction(Settings.CorneringStrength);
-                    double accelerationStrength = ConvertToFraction(Settings.AccelerationStrength);
-                    double brakingStrength = ConvertToFraction(Settings.BrakingStrength);
-                    double jumpingStrength = ConvertToFraction(Settings.JumpingStrength);
-                    double landingStrength = ConvertToFraction(Settings.LandingStrength);
-                    double engineStrength = ConvertToFraction(Settings.EngineStrength);
-                    double upshiftingStrength = ConvertToFraction(Settings.UpshiftingStrength);
+                    // Calculate Elapsed Time
+                    long currentTime = _controlLoopStopwatch.ElapsedMilliseconds;
+                    long elapsedTime = (latestTime > 0) ? (currentTime - latestTime) : _controlLoopInterval;
+                         elapsedTime = Math.Max(1, Math.Min(100, elapsedTime));
+                    
+                    latestTime = currentTime;
 
-                    // Handle Tuning & Telemetry
-                    int minimumSurge = Settings.MinimumSurge;
-                    int maximumSurge = Settings.MaximumSurge;
-                    int minimumSway = Settings.MinimumSway;
-                    int maximumSway = Settings.MaximumSway;
-                    int minimumHeave = Settings.MinimumHeave;
-                    int maximumHeave = Settings.MaximumHeave;
-
-                    bool isMoving = telemetrySnapshot.Speed > 0.2;
-                    bool didUpshift = telemetrySnapshot.DidUpshift;
-                    double surge = telemetrySnapshot.Surge ?? 0.0;
-                    double sway = (ConvertToFractionOfRange(telemetrySnapshot.Sway ?? 0.0, minimumSway, maximumSway) * 2.0) - 1.0;
-                    double heave = telemetrySnapshot.Heave ?? 0.0;
-                    double speed = telemetrySnapshot.Speed ?? 0.0;
-                    double revolutions = telemetrySnapshot.Revolutions ?? 0.0;
-
-                    // Calculate Forces
-                    double braking = ConvertToFractionOfRange(surge, 0, maximumSurge);
-                    double acceleration = 1.0 - ConvertToFractionOfRange(surge, minimumSurge, 0);
-                    double landing = ConvertToFractionOfRange(heave, 0, maximumHeave);
-                    double jumping = 1.0 - ConvertToFractionOfRange(heave, minimumHeave, 0);
-
-                    double increasingModifierLeft = 0.0;
-                    double increasingModifierRight = 0.0;
-                    double decreasingModifierLeft = 0.0;
-                    double decreasingModifierRight = 0.0;
-
-                    double leftTarget = 0.0;
-                    double rightTarget = 0.0;
-
-                    increasingModifierLeft = Math.Max(increasingModifierLeft, (braking * brakingStrength));
-                    increasingModifierRight = Math.Max(increasingModifierRight, (braking * brakingStrength));
-                    decreasingModifierLeft = Math.Max(decreasingModifierLeft, (acceleration * accelerationStrength));
-                    decreasingModifierRight = Math.Max(decreasingModifierRight, (acceleration * accelerationStrength));
-                    decreasingModifierLeft = Math.Max(decreasingModifierLeft, (jumping * jumpingStrength));
-                    decreasingModifierRight = Math.Max(decreasingModifierRight, (jumping * jumpingStrength));
-                    increasingModifierLeft = Math.Max(increasingModifierLeft, (landing * landingStrength));
-                    increasingModifierRight = Math.Max(increasingModifierRight, (landing * landingStrength));
-                    increasingModifierLeft = Math.Max(increasingModifierLeft, (sway <= 0.0) ? (Math.Abs(sway * corneringStrength)) : 0.0);
-                    increasingModifierRight = Math.Max(increasingModifierRight, (sway > 0.0) ? (Math.Abs(sway * corneringStrength)) : 0.0);
-
-                    // Combine Modifiers
-                    double totalModifierLeft = increasingModifierLeft - decreasingModifierLeft;
-                    double totalModifierRight = increasingModifierRight - decreasingModifierRight;
-
-                    if (totalModifierLeft < 0.0)
-                    {
-                        leftTarget = minimumTension + (totalModifierLeft * minimumTension);
-                    }
-                    else {
-                        leftTarget = minimumTension + (totalModifierLeft * (maximumTension - minimumTension));
-                    }
-
-                    if (totalModifierRight < 0.0)
-                    {
-                        rightTarget = minimumTension + (totalModifierRight * minimumTension);
-                    }
-                    else
-                    {
-                        rightTarget = minimumTension + (totalModifierRight * (maximumTension - minimumTension));
-                    }
-
-                    // Upshift Blip
-                    if (didUpshift && upshiftingStrength > 0.0)
-                    {
-                        upshiftStopwatch.Restart();
-                    }
-
-                    if (upshiftStopwatch.IsRunning)
-                    {
-                        double upshiftDuration = upshiftStopwatch.Elapsed.TotalMilliseconds;
-
-                        if (_upshiftModifierCurve != null)
-                        {
-                            if (upshiftDuration >= _upshiftModifierCurve[_upshiftModifierCurve.Length - 1].timeOffset)
-                            {
-                                upshiftStopwatch.Stop();
-                            }
-                            else
-                            {
-                                double upshiftModifier = GetUpshiftModifier(upshiftDuration) * upshiftingStrength;
-
-                                if (upshiftModifier > 0.0)
-                                {
-                                    leftTarget += upshiftModifier * (maximumTension - leftTarget);
-                                    rightTarget += upshiftModifier * (maximumTension - rightTarget);
-                                }
-                                else if (upshiftModifier < 0.0)
-                                {
-                                    leftTarget += upshiftModifier * leftTarget;
-                                    rightTarget += upshiftModifier * rightTarget;
-                                }
-                            }
-                        }
-                    }
-
-                    // Map To Range (Minimum ~ Maximum Tension)
-                    leftTarget = ClampTo(leftTarget, 0.0, maximumTension);
-                    rightTarget = ClampTo(rightTarget, 0.0, maximumTension);
-
-                    // Idle Tension
-                    if (!isMoving)
-                    {
-                        leftTarget = idleTension;
-                        rightTarget = idleTension;
-                    }
-
-                    // Engine Revolutions
-                    if (revolutions > 0.0 && engineStrength > 0.0)
-                    {
-                        double oscillationIntervalSeconds = (30.0 / revolutions);
-
-                        if (oscillationStopwatch.Elapsed.TotalSeconds >= oscillationIntervalSeconds)
-                        {
-                            oscillationDirection *= -1;
-                            oscillationStopwatch.Restart();
-                        }
-
-                        double revolutionsFraction = ConvertToFractionOfRange(revolutions, 0, 5000);
-                        double adjustedEngineStrength = (1.0 - revolutionsFraction) * engineStrength * 0.5; // Linear
-
-                        if (oscillationDirection > 0)
-                        {
-                            leftTarget = ClampTo(leftTarget + (adjustedEngineStrength * (maximumTension - leftTarget)), 0.0, maximumTension);
-                            rightTarget = ClampTo(rightTarget - (adjustedEngineStrength * rightTarget), 0.0, maximumTension);
-                        }
-                        else
-                        {
-                            rightTarget = ClampTo(rightTarget + (adjustedEngineStrength * (maximumTension - rightTarget)), 0.0, maximumTension);
-                            leftTarget = ClampTo(leftTarget - (adjustedEngineStrength * leftTarget), 0.0, maximumTension);
-                        }
-                    }
-
-                    // Allocate To Belts (With Biases)
-                    double leftWaistTarget = leftTarget;
-                    double rightWaistTarget = rightTarget;
-                    double leftShoulderTarget = leftTarget;
-                    double rightShoulderTarget = rightTarget;
-
-                    double scaledBias;
-
-                    if (horizontalBias < 0.0)
-                    {
-                        scaledBias = (1.0 - Math.Abs(horizontalBias));
-                        rightWaistTarget *= scaledBias;
-                        rightShoulderTarget *= scaledBias;
-                    }
-                    else if (horizontalBias > 0.0)
-                    {
-                        scaledBias = (1.0 - horizontalBias);
-                        leftWaistTarget *= scaledBias;
-                        leftShoulderTarget *= scaledBias;
-                    }
-
-                    if (verticalBias < 0.0)
-                    {
-                        scaledBias = (1.0 - Math.Abs(verticalBias));
-                        leftShoulderTarget *= scaledBias;
-                        rightShoulderTarget *= scaledBias;
-                    }
-                    else if (verticalBias > 0.0)
-                    {
-                        scaledBias = (1.0 - verticalBias);
-                        leftWaistTarget *= scaledBias;
-                        rightWaistTarget *= scaledBias;
-                    }
+                    // Send Telemetry To Physics Calculator
+                    _physicsCalculator.CalculateForcesAndTorques(
+                        telemetrySnapshot,
+                        elapsedTime,
+                        out double leftShoulderTarget,
+                        out double rightShoulderTarget,
+                        out double leftWaistTarget,
+                        out double rightWaistTarget
+                    );
 
                     // Update Telemetry Graph
                     if (telemetrySnapshot.IsActive && SelectedTabIndex == 2)
                     {
                         UpdateTelemetryGraph(
-                            telemetrySnapshot.Surge ?? 0,
-                            telemetrySnapshot.Sway ?? 0,
-                            telemetrySnapshot.Heave ?? 0,
+                            telemetrySnapshot,
                             leftWaistTarget,
                             rightWaistTarget,
                             leftShoulderTarget,
@@ -752,16 +615,16 @@ namespace User.ActiveBeltTensioner
                         int averagedSurge = GetAveragedTelemetryValue(telemetrySurgeBuffer, telemetrySnapshot.Surge ?? 0, telemetryBufferIndex);
                         int averagedSway = GetAveragedTelemetryValue(telemetrySwayBuffer, Math.Abs(telemetrySnapshot.Sway ?? 0), telemetryBufferIndex);
                         int averagedHeave = GetAveragedTelemetryValue(telemetryHeaveBuffer, telemetrySnapshot.Heave ?? 0, telemetryBufferIndex);
-
+                        
                         Settings.MaximumSurge = Math.Max(Settings.MaximumSurge, averagedSurge);
                         Settings.MinimumSurge = Math.Min(Settings.MinimumSurge, averagedSurge);
                         Settings.MaximumSway = Math.Max(Settings.MaximumSway, averagedSway);
                         Settings.MinimumSway = Settings.MaximumSway * -1;
                         Settings.MaximumHeave = Math.Max(Settings.MaximumHeave, averagedHeave);
                         Settings.MinimumHeave = Math.Min(Settings.MinimumHeave, averagedHeave);
-
+                        
                         telemetryBufferIndex = (telemetryBufferIndex + 1) % telemetryBufferSize;
-
+                        
                         continue;
                     }
 
@@ -1066,6 +929,18 @@ namespace User.ActiveBeltTensioner
         private DateTime _lastPlotRefresh = DateTime.MinValue;
         private static readonly TimeSpan PlotRefreshInterval = TimeSpan.FromMilliseconds(33);
 
+
+
+
+
+
+
+
+
+
+
+
+
         /// <summary>Initialises the telemetry graph instance and configures its styling and legends</summary>
         private void InitialiseTelemetryGraph()
         {
@@ -1278,13 +1153,13 @@ namespace User.ActiveBeltTensioner
         }
 
         /// <summary>Applies the given telemetry data to the telemetry graph and requests (but does not guarantee) a redraw</summary>
-        private void UpdateTelemetryGraph(double surge, double sway, double heave, double leftwaistTorque, double rightwaistTorque, double leftShoulderTorque, double rightShoulderTorque)
+        private void UpdateTelemetryGraph(TelemetrySnapshot telemetrySnapshot, double leftwaistTorque, double rightwaistTorque, double leftShoulderTorque, double rightShoulderTorque)
         {
             double x = _plotPointIndex++;
 
-            _surgeSeries.Points.Add(new DataPoint(x, surge));
-            _swaySeries.Points.Add(new DataPoint(x, sway));
-            _heaveSeries.Points.Add(new DataPoint(x, heave));
+            _surgeSeries.Points.Add(new DataPoint(x, telemetrySnapshot.Surge ?? 0.0));
+            _swaySeries.Points.Add(new DataPoint(x, telemetrySnapshot.Sway ?? 0.0));
+            _heaveSeries.Points.Add(new DataPoint(x, telemetrySnapshot.Heave ?? 0.0));
             _leftWaistSeries.Points.Add(new DataPoint(x, leftwaistTorque * 100));
             _rightWaistSeries.Points.Add(new DataPoint(x, rightwaistTorque * 100));
             _leftShoulderSeries.Points.Add(new DataPoint(x, leftShoulderTorque * 100));

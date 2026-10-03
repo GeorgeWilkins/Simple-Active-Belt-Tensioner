@@ -494,7 +494,7 @@ namespace User.ActiveBeltTensioner
         /// <param name="times">The number of times to oscillate the motor</param>
         /// <param name="testTorque">The fraction of the torque limit to apply during testing</param>
         /// <returns>Whether the motor responded as expected</returns>
-        public bool Shake(int times = 50, double testTorque = 0.6)
+        public bool Shake(int times = 75, double testTorque = 0.6)
         {
             Status = MotorStatus.Testing;
 
@@ -577,8 +577,6 @@ namespace User.ActiveBeltTensioner
                 return false;
             }
 
-            int direction = Direction.Multiplier;
-            
             const int commandInterval = 25;
 
             int totalTime = Math.Abs(duration) + 1;
@@ -607,7 +605,7 @@ namespace User.ActiveBeltTensioner
                     currentTorque = tensionTorque;
                 }
 
-                short torque = (short)(currentTorque * direction * _torqueLimit);
+                short torque = (short)(currentTorque * _torqueLimit);
 
                 byte highByte = (byte)((torque >> 8) & 0xFF);
                 byte lowByte = (byte)(torque & 0xFF);

@@ -366,8 +366,12 @@ You may allocate up to two motors per should belt (doubling the force applied) a
   </data>
   <data name="SABT_Text_Connection" xml:space="preserve">
     <value>1. Select a **Serial Port** from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected
-2. Connect a single motor (or unplug the power connectors on all but one motor) and click 'Assign' 
-• If this is your first time setting up, you'll need to then click 'Setup Motors' and follow the instructions given. You'll only need to do this once, as each motor stores its configuration once set</value>
+2. Connect a single motor (or unplug the power connectors on all but one motor) and click **Assign ID 1** 
+3. Disconnect that motor, connect the next motor and click **Assign ID 2**
+4. Disconnect that motor, connect the next motor and click **Assign ID 3** (where using 3+ motors)
+5. Disconnect that motor, connect the next motor and click **Assign ID 3** (where using 4 motors)
+6. Reconnect all motors and click **Detect Motors**
+7. Allocate motors to belts under the **Mapping** column and set rotation directions under **Direction**</value>
   </data>
   <data name="SABT_Text_IdleTension" xml:space="preserve">
     <value>• Always applied while not driving (no effect while driving)

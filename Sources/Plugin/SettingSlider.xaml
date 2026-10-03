@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="User.ActiveBeltTensioner.SettingSlider"
     x:Name="Root"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -19,9 +19,18 @@
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,4">
+            <Button x:Name="ResetButton"
+                Content="|"
+                Margin="0,-13,0,-28"
+                Width="30"
+                Height="5"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Top"
+                Click="OnResetClick"
+                Visibility="Collapsed" />
             <TextBlock Text="{Binding Title, ElementName=Root}" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center" />
             <TextBlock Text="{Binding Unit, ElementName=Root}" Foreground="#AAAAAA" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,0,0" />
-            <TextBlock Text="{Binding Value, ElementName=Root}" Foreground="#FFFFFF" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,1,0" />
+            <TextBlock x:Name="ValueTextBlock" Foreground="#FFFFFF" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,1,0" />
         </DockPanel>
 
         <Slider Grid.Row="1" Grid.Column="0" x:Name="SliderControl"

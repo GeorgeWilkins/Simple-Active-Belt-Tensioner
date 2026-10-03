@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -17,6 +18,7 @@ namespace User.ActiveBeltTensioner
             UpdateMidpoint();
             SetCurrentValue(LeftSliderValueProperty, MapLeftValueToSliderValue(LeftValue));
             IsEnabledChanged += (s, e) => UpdateSlidersOpacity();
+            UpdateDisplayValues();
         }
 
         private void UpdateSlidersOpacity()
@@ -29,6 +31,7 @@ namespace User.ActiveBeltTensioner
         {
             base.OnInitialized(e);
             UpdateSlidersOpacity();
+            UpdateDisplayValues();
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
@@ -83,7 +86,7 @@ namespace User.ActiveBeltTensioner
             nameof(Step),
             typeof(double),
             typeof(SettingRangeSlider),
-            new PropertyMetadata(1d));
+            new PropertyMetadata(1d, OnStepChanged));
 
         public double Step
         {
@@ -181,6 +184,8 @@ namespace User.ActiveBeltTensioner
             {
                 control.ApplyMirroredValuesFromRight();
             }
+
+            control.UpdateDisplayValues();
         }
 
         private void UpdateMidpoint()
@@ -211,6 +216,8 @@ namespace User.ActiveBeltTensioner
             {
                 control.ApplyMirroredValuesFromLeft();
             }
+
+            control.UpdateDisplayValues();
         }
 
         private static void OnRightValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -220,6 +227,8 @@ namespace User.ActiveBeltTensioner
             {
                 control.ApplyMirroredValuesFromRight();
             }
+
+            control.UpdateDisplayValues();
         }
 
         private static void OnLeftSliderValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -238,6 +247,8 @@ namespace User.ActiveBeltTensioner
             {
                 control.ApplyMirroredValuesFromLeft();
             }
+
+            control.UpdateDisplayValues();
         }
 
         private static object CoerceMidpoint(DependencyObject d, object baseValue)
@@ -296,6 +307,8 @@ namespace User.ActiveBeltTensioner
             {
                 control.ApplyMirroredValuesFromRight();
             }
+
+            control.UpdateDisplayValues();
         }
 
         private static void OnShouldMirrorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -305,6 +318,46 @@ namespace User.ActiveBeltTensioner
             {
                 control.ApplyMirroredValuesFromRight();
             }
+
+            control.UpdateDisplayValues();
+        }
+
+        private static void OnStepChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((SettingRangeSlider)d).UpdateDisplayValues();
+        }
+
+        private void UpdateDisplayValues()
+        {
+            var leftValueTextBlock = FindName("LeftValueTextBlock") as TextBlock;
+            if (leftValueTextBlock != null)
+            {
+                leftValueTextBlock.Text = FormatValueForStep(LeftValue, Step);
+            }
+
+            var rightValueTextBlock = FindName("RightValueTextBlock") as TextBlock;
+            if (rightValueTextBlock != null)
+            {
+                rightValueTextBlock.Text = FormatValueForStep(RightValue, Step);
+            }
+        }
+
+        private static string FormatValueForStep(double value, double step)
+        {
+            var decimals = GetDecimalPlaces(step);
+            return value.ToString($"F{decimals}", CultureInfo.CurrentCulture);
+        }
+
+        private static int GetDecimalPlaces(double step)
+        {
+            if (step <= 0 || double.IsNaN(step) || double.IsInfinity(step))
+            {
+                return 0;
+            }
+
+            var text = step.ToString("0.#############################", CultureInfo.InvariantCulture);
+            var decimalSeparatorIndex = text.IndexOf('.');
+            return decimalSeparatorIndex < 0 ? 0 : text.Length - decimalSeparatorIndex - 1;
         }
 
         private void ApplyMirroredValuesFromLeft()

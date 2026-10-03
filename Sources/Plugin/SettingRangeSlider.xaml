@@ -21,9 +21,9 @@
         <DockPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,4">
             <TextBlock Text="{Binding Title, ElementName=Root}" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center" />
             <TextBlock Text="{Binding Unit, ElementName=Root}" Foreground="#AAAAAA" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,0,0" />
-            <TextBlock Text="{Binding RightValue, ElementName=Root}" Foreground="#FFFFFF" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,1,0" />
+            <TextBlock x:Name="RightValueTextBlock" Foreground="#FFFFFF" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,1,0" />
             <TextBlock Text="~" Foreground="#AAAAAA" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="1,0,1,0" />
-            <TextBlock Text="{Binding LeftValue, ElementName=Root}" Foreground="#FFFFFF" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,1,0" />
+            <TextBlock x:Name="LeftValueTextBlock" Foreground="#FFFFFF" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,1,0" />
         </DockPanel>
 
         <Slider Grid.Row="1" Grid.Column="0" x:Name="LeftSliderControl"
