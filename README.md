@@ -1,5 +1,7 @@
 > 📢 **Important:** This is a _pre-release_ of the project and considered to be under active development and testing. If you're not prepared to do some tinkering and/or deal with initial usability issues, it is recommended that you do not attempt to build it right now and instead wait for the `v1.0` release
 
+> 📰 **Latest News:** We now have a [Discord Server](https://discord.gg/YwW3TvEJEv) for pre-build questions, troubleshooting and technical support. You can also share details and photos of your build there!
+
 ![SABT Logo](https://github.com/user-attachments/assets/b6603db9-19e0-4a30-8c0e-a23675a9797a)
 
 ![Diagram](https://github.com/user-attachments/assets/2df94a31-df9a-4b21-928e-0c55b43f01dc)
@@ -37,14 +39,14 @@ The printable files and software are **completely free** (except the required [S
 
 Anyone with a sim rig that desires a more immersive experience. It's a plug-and-play design that requires no soldering or programming, so virtually anyone can build it.
 
-Note that you'll need either an _aluminium profile_ (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) or _2" tubular steel_ (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) sim rig frame to mount this using the available brackets. Mounting to other types of rig is possible, but you'll need to design and fabricate your own brackets (or [get in touch](mailto:sabt@georgewilkins.co.uk) with me). We are currently testing bracket designs for the [Playseat Challenge](https://www.playseat.com/).
+Note that you'll need either an _aluminium profile_ (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) or _tubular steel_ (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) sim rig frame to mount this using the available brackets. Mounting to other types of rig is possible, but you'll need to design and fabricate your own brackets (or [get in touch](mailto:sabt@georgewilkins.co.uk) with me).
 
 I would recommend installing tactile transducers (bass shakers) before embarking on belt tensioners and other more exotic haptic systems. Transducers are by far the simplest and cheapest way of adding real immersion to your experience. They provide detail that belt tensioners cannot (road bumps, curbs, etc), while tensioners provide constant forces that transducers cannot (braking, cornering, etc).
 
 ### Community Builds
-Several members of the sim racing community have [provided photographs](https://photos.app.goo.gl/ju7rso1PFKGxnRhJ8) of their SABT builds. Many have also _forked_ the project and customised it to their needs.
+As of October 2026, at least _forty_ SABT builds are known to exist; probably many more.
 
-If you build a SABT, you're encouraged to photograph and document your completed installation. A good way to do that is by [creating a new](https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/discussions/new?category=sabt-builds) GitHub discussion.
+Several members of the sim racing community have already provided photographs of their SABT builds, which I've added to a [shared album](https://photos.app.goo.gl/ju7rso1PFKGxnRhJ8); but we're moving over to a new [Discord Server](https://discord.gg/YwW3TvEJEv), where there is a dedicated channel allowing builders to post their builds directly.
 
 ## What Does It Cost?
 
@@ -110,7 +112,7 @@ Of particular note:
 - The belt clamp designs are intended for 2" wide belts of up to 2MM thickness. If your belts are wider or thicker than this, you will need to modify the design (or let me know and I'll create additional designs)
 - The need for belt rollers depends on the seat design. In many cases applying low-friction tape is sufficient. A 'universal' [Belt Roller](INSTRUCTIONS.md#belt-rollers) design is included should you wish to use it
 - The system includes a design for a [Back Driving Protection Unit](INSTRUCTIONS.md#back-driving-protection), which prevents your power supply's protection circuitry from tripping when the motors are back-driven (e.g. by pulling fast on the belts). This is an optional component, but highly recommended. A _zero-soldering solution_ is available, but even the soldered version is very simple to assemble
-- Although the motors and driver board can tolerate up to `24V` supply, I've found that `15V` is a good compromise. Operating at the maximum `24V` is not reccommended, because any voltage spikes risk damaging the motors. Common `19V` laptop power supplies have been tested and work; but the higher the voltage, the greater the risk of damage
+- Although the motors and driver board can tolerate up to `24V`, I've found that `15V` works just fine. Common `19V~20V` laptop power supplies are used by many SABT builders without issue; but using anything higher risks damage to the motors under back-driving conditions (pulling aggressively on the belts)
 
 ## Is It Safe?
 
