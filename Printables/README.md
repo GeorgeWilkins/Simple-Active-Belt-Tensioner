@@ -83,6 +83,8 @@ The default orientation of the STEP files likely won't be appropriate when impor
 
 I've used [DEEPLE PLA Plus](https://www.amazon.co.uk/dp/B0F66H47J8) on my Bambu H2S for all of my own prints; but virtually _any_ strong PLA/ABS/PETG filament should be fine. Fibre-reinforced filament is okay for the mounting brackets but _not reccommended_ for the pulley parts due to abrasion concerns.
 
+If you're able to, printing in a more heat-resistant filament such as ABS or PETG is preferred over PLA. The motors are capable of operating at _much_ higher temperatures than PLA can cope with; but under normal operation they should not get warm enough to pose a problem. The **SABT** plugin has thermal controls that allow you to reduce the motor output if the temperatures reach a threshold you set; so whatever you print in, you can adjust that to match your material.
+
 As for printing settings, I would suggest:
 | Setting | Value |
 | - | - |
@@ -95,7 +97,7 @@ As for printing settings, I would suggest:
 
 Manually add supports to the counterbored bolt & nut holes _only_. They aren't needed anywhere else.
 
-The above takes about **8 hours** on my H2S if printing everything at once. It uses about 75M of filament, or ~230g of PLA. I'd suggest you do the parts in smaller batchces though, to minimise wastage if something goes wrong during the print.
+The above takes about **8 hours** on my H2S if printing everything at once. It uses about 75M of filament, or ~230g of filament. I'd suggest you do the parts in smaller batchces though, to minimise wastage if something goes wrong during the print.
 
 ### Third-Party Printing
 
