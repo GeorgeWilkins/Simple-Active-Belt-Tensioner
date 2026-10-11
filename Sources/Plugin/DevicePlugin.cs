@@ -669,10 +669,10 @@ namespace User.ActiveBeltTensioner
                     if (!motorController.IsBusy && motorController.HasDevice)
                     {
                         motorController.SetTorques(
-                            leftWaistTarget,
-                            rightWaistTarget,
                             leftShoulderTarget,
-                            rightShoulderTarget
+                            rightShoulderTarget,
+                            leftWaistTarget,
+                            rightWaistTarget
                         );
                     }
                 }

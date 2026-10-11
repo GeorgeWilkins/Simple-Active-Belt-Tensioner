@@ -150,9 +150,9 @@ namespace User.ActiveBeltTensioner
             double cos = Math.Cos(seatRadiansFromVertical);
             double sin = Math.Sin(seatRadiansFromVertical);
 
-            double rotatedX = acceleration.X * cos - acceleration.Y * sin;
-            double rotatedY = acceleration.X * sin + acceleration.Y * cos;
-            double rotatedZ = acceleration.Z;
+            double rotatedX = acceleration.X * cos - acceleration.Z * sin;
+            double rotatedY = acceleration.Y;
+            double rotatedZ = acceleration.X * sin + acceleration.Z * cos;
 
             return new AccelerationVector(rotatedX, rotatedY, rotatedZ);
         }
@@ -165,22 +165,35 @@ namespace User.ActiveBeltTensioner
             out double leftWaistTension,
             out double rightWaistTension)
         {
-            leftShoulderTension =
-            rightShoulderTension = CalculateShoulderBeltTension(acceleration);
+            leftShoulderTension = CalculateShoulderBeltTension(acceleration, -1.0);
+            rightShoulderTension = CalculateShoulderBeltTension(acceleration, 1.0);
             leftWaistTension = CalculateWaistBeltTension(acceleration, _leftWaist.RadiansFromVertical);
             rightWaistTension = CalculateWaistBeltTension(acceleration, _rightWaist.RadiansFromVertical);
         }
 
         /// <summary>Returns the calculated tension for a shoulder belt, based on the given acceleration vector</summary>
-        private double CalculateShoulderBeltTension(AccelerationVector acceleration)
+        private double CalculateShoulderBeltTension(AccelerationVector acceleration, double sideSign)
         {
-            return MapForceComponentToTension(Clamp(acceleration.X, -1.0, 1.0));
+            double forceComponent = acceleration.X + (acceleration.Y * sideSign);
+
+            return MapForceComponentToTension(Clamp(forceComponent, -1.0, 1.0));
         }
 
         /// <summary>Returns the calculated tension for a waist belt, based on the given acceleration vector and belt angle</summary>
         private double CalculateWaistBeltTension(AccelerationVector acceleration, double beltRadiansFromVertical)
         {
-            double forceComponent = (acceleration.X * Math.Cos(beltRadiansFromVertical)) + (acceleration.Y * Math.Sin(beltRadiansFromVertical));
+            double beltCos = Math.Cos(beltRadiansFromVertical);
+            double beltSin = Math.Sin(beltRadiansFromVertical);
+
+            double surgeComponent = acceleration.X * beltCos;
+            double swayComponent = 0.0;
+
+            if (Math.Abs(beltSin) > 0.01)
+            {
+                swayComponent = (acceleration.Y * -beltSin) / Math.Abs(beltSin);
+            }
+
+            double forceComponent = surgeComponent + swayComponent;
 
             return MapForceComponentToTension(Clamp(forceComponent, -1.0, 1.0));
         }
@@ -188,24 +201,23 @@ namespace User.ActiveBeltTensioner
         private double MapForceComponentToTension(double forceComponent)
         {
             // Map To Tension Range
-            double idleTension = _settings.IdleTension / 100.0;
             double minimumTension = _settings.MinimumTension / 100.0;
             double maximumTension = _settings.MaximumTension / 100.0;
-            double baseTension = idleTension;
+            double baseTension = minimumTension;
             double finalTension;
 
             if (forceComponent > 0)
             {
-                // Positive (Idle ~ Maximum)
+                // Positive (Minimum ~ Maximum)
                 finalTension = baseTension + (forceComponent * (maximumTension - baseTension));
             }
             else
             {
-                // Negative (Idle ~ Minimum)
-                finalTension = baseTension + (forceComponent * (baseTension - minimumTension));
+                // Negative (Minimum ~ Zero)
+                finalTension = baseTension + (forceComponent * baseTension);
             }
 
-            return Clamp(finalTension, minimumTension, maximumTension);
+            return Clamp(finalTension, 0.0, maximumTension);
         }
 
         /// <summary>Normalizes the given acceleration value to -1.0 to +1.0, relative to the given range</summary>
