@@ -50,10 +50,6 @@ namespace User.ActiveBeltTensioner
         private BeltGeometry _rightWaist;
 
         private DeviceSettings _settings;
-        public DeviceSettings Settings => _settings;
-
-        private (int timeOffset, int tensionModifier)[] _upshiftingModifiers;
-        public (int timeOffset, int tensionModifier)[] UpshiftModifiers => _upshiftingModifiers;
 
         private readonly EffectPipeline _effectPipeline;
 
@@ -69,12 +65,11 @@ namespace User.ActiveBeltTensioner
         {
             _settings = settings;
 
-            _upshiftingModifiers = DevicePlugin.ParseUpshiftingModifiers(settings.UpshiftingModifiers);
-
             _leftWaist = new BeltGeometry
             {
                 DegreesFromVertical = settings.WaistBeltDegreesFromVertical * -1.0,
             };
+
             _rightWaist = new BeltGeometry
             {
                 DegreesFromVertical = settings.WaistBeltDegreesFromVertical,
@@ -136,6 +131,7 @@ namespace User.ActiveBeltTensioner
             );
 
             _effectPipeline.Apply(
+                _settings,
                 telemetrySnapshot,
                 millisecondsSinceLastUpdate,
                 ref beltTensionTargets

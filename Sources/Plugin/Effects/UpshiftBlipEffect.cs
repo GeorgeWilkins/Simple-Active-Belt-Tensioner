@@ -6,27 +6,12 @@ namespace User.ActiveBeltTensioner.Effects
     internal sealed class UpshiftBlipEffect : IEffect
     {
         private readonly Stopwatch _upshiftStopwatch = new Stopwatch();
-        private readonly PhysicsForceCalculator _calculator;
 
-        public UpshiftBlipEffect(PhysicsForceCalculator calculator)
+        public int Order => 10;
+
+        public void Apply(DeviceSettings settings, DevicePlugin.TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
         {
-            _calculator = calculator;
-        }
-
-        public void Apply(DevicePlugin.TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
-        {
-            // CONTINUE REFACTORING
-
-
-
-            if (!telemetrySnapshot.IsActive)
-            {
-                _upshiftStopwatch.Reset();
-                return;
-            }
-
-            var settings = _calculator.Settings;
-            if (settings == null)
+            if (settings == null || !telemetrySnapshot.IsActive)
             {
                 _upshiftStopwatch.Reset();
                 return;
@@ -34,7 +19,7 @@ namespace User.ActiveBeltTensioner.Effects
 
             double maximumTension = settings.MaximumTension / 100.0;
             double upshiftingStrength = settings.UpshiftingStrength / 100.0;
-            var modifierCurve = _calculator.UpshiftModifiers;
+            var modifierCurve = settings.ParsedUpshiftingModifiers;
 
             if (upshiftingStrength <= 0.0 || modifierCurve == null || modifierCurve.Length == 0)
             {
@@ -57,6 +42,7 @@ namespace User.ActiveBeltTensioner.Effects
             if (upshiftDuration >= modifierCurve[modifierCurve.Length - 1].timeOffset)
             {
                 _upshiftStopwatch.Stop();
+
                 return;
             }
 
@@ -100,6 +86,7 @@ namespace User.ActiveBeltTensioner.Effects
                 if (upshiftOffset >= fromTime && upshiftOffset < toTime)
                 {
                     double t = (upshiftOffset - fromTime) / (toTime - fromTime);
+
                     return fromValue + t * (toValue - fromValue);
                 }
             }

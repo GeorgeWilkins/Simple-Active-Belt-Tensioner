@@ -274,7 +274,6 @@ namespace User.ActiveBeltTensioner
         private const short _torqueLimit = 12000;
 
         private uint _commandFailures = 0;
-        private double _smoothedTorque = 0.0;
 
         public ICommand TriggerShake { get; }
         public ICommand TriggerTension { get; }
@@ -390,8 +389,6 @@ namespace User.ActiveBeltTensioner
             IsConnected = false;
             Status = MotorStatus.Communicating;
 
-            _smoothedTorque = 0;
-
             if (!_controller.HasDevice)
             {
                 IsConnected = false;
@@ -439,8 +436,6 @@ namespace User.ActiveBeltTensioner
         {
             IsConnected = false;
             Status = MotorStatus.Communicating;
-
-            _smoothedTorque = 0;
 
             byte[] tx = BuildFrame(Identifier, 0x64, 0x00, 0x00);
             byte[] rx = new byte[10];
@@ -697,13 +692,11 @@ namespace User.ActiveBeltTensioner
             return Query(true);
         }
 
-        /// <summary>Sends the given torque value (as a fraction of maximum torque) to the motor; optionally subject to a smoothing factor</summary>
+        /// <summary>Sends the given torque value (as a fraction of maximum torque) to the motor</summary>
         /// <returns>Whether the motor responded as expected</returns>
-        public bool SetTorque(double torque, double smoothingFactor = 0.0)
+        public bool SetTorque(double torque)
         {
-            _smoothedTorque = (torque * (1.0 - smoothingFactor)) + (_smoothedTorque * smoothingFactor);
-
-            torque = _smoothedTorque * Direction.Multiplier;
+            torque *= Direction.Multiplier;
 
             short newTorque = ClampValue(
                 (short)(torque * _torqueLimit * -1.0),

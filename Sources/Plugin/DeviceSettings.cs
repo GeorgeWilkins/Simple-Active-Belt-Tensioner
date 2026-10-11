@@ -24,10 +24,10 @@ namespace User.ActiveBeltTensioner
 
         private bool _isInitialised = false;
 
-        /// <summary>Invoke when the current settings should be serialized to the plugin's JSON configuration file</summary>
         [JsonIgnore]
         public Action Persist { get; set; }
 
+        [JsonIgnore]
         public string DefaultUpshiftingModifiers = "0ms:100% 150ms:100% 300ms:0%";
 
         public void Initialise(DevicePlugin plugin)
@@ -488,14 +488,29 @@ namespace User.ActiveBeltTensioner
                 if (_upshiftingModifiers != value)
                 {
                     _upshiftingModifiers = value;
+                    _parsedUpshiftingModifiers = null;
                     InvokePropertyChange(nameof(UpshiftingModifiers));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AreUpshiftingModifiersValid)));
+                    InvokePropertyChange(nameof(AreUpshiftingModifiersValid));
+                    //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AreUpshiftingModifiersValid)));
                 }
             }
         }
 
+        private (int timeOffset, int tensionModifier)[] _parsedUpshiftingModifiers = null;
         [JsonIgnore]
-        public bool AreUpshiftingModifiersValid => DevicePlugin.ValidateUpshiftingModifiers(_upshiftingModifiers);
+        public (int timeOffset, int tensionModifier)[] ParsedUpshiftingModifiers {
+            get {
+                if (_parsedUpshiftingModifiers == null)
+                {
+                    _parsedUpshiftingModifiers = DevicePlugin.ParseUpshiftingModifiers(UpshiftingModifiers);
+                }
+
+                return _parsedUpshiftingModifiers;
+            }
+        }
+
+        [JsonIgnore]
+        public bool AreUpshiftingModifiersValid => DevicePlugin.ValidateUpshiftingModifiers(UpshiftingModifiers);
 
         private bool _showSurgePlot = true;
         public bool ShowSurgePlot

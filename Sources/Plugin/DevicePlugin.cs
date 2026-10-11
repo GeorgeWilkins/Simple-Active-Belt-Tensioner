@@ -470,8 +470,6 @@ namespace User.ActiveBeltTensioner
             }
 
             if (
-                e.PropertyName == nameof(Settings.DriverMass) ||
-                e.PropertyName == nameof(Settings.DriverDamping) ||
                 e.PropertyName == nameof(Settings.SeatDegreesFromVertical) ||
                 e.PropertyName == nameof(Settings.WaistBeltDegreesFromVertical)
             )

@@ -8,17 +8,11 @@ namespace User.ActiveBeltTensioner.Effects
     {
         private readonly Stopwatch _oscillationStopwatch = new Stopwatch();
         private int _oscillationDirection = 1;
-        private readonly PhysicsForceCalculator _calculator;
 
-        public EngineOscillationEffect(PhysicsForceCalculator calculator)
+        public int Order => 20;
+
+        public void Apply(DeviceSettings settings, DevicePlugin.TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
         {
-            _calculator = calculator;
-        }
-
-        public void Apply(DevicePlugin.TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
-        {
-            DeviceSettings settings = _calculator.Settings;
-
             if (settings == null)
             {
                 _oscillationStopwatch.Reset();

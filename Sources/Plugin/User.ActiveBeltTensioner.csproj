@@ -128,6 +128,7 @@
     <Compile Include="Effects\EngineOscillationEffect.cs" />
     <Compile Include="Effects\IEffect.cs" />
     <Compile Include="Effects\SideBiasEffect.cs" />
+    <Compile Include="Effects\SmoothingEffect.cs" />
     <Compile Include="Effects\UpshiftBlipEffect.cs" />
     <Compile Include="Motor.cs" />
     <Compile Include="PhysicsForceCalculator.cs" />

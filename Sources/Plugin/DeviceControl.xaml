@@ -705,13 +705,6 @@
 
                                     <ContentControl Style="{StaticResource SettingStyle}">
                                         <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_DriverDamping}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.DriverDamping, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_DriverDamping}" />
-                                        </StackPanel>
-                                    </ContentControl>
-
-                                    <ContentControl Style="{StaticResource SettingStyle}">
-                                        <StackPanel>
                                             <local:SettingSlider Title="{SLoc SABT_Label_SmoothingFactor}" Unit="%" Minimum="0" Maximum="75" Step="0.1" Value="{Binding Settings.SmoothingFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Smoothing}" />
                                         </StackPanel>

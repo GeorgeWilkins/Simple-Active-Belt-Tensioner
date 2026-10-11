@@ -628,9 +628,9 @@ namespace User.ActiveBeltTensioner
                         motorTorque = waistRight * outputReduction;
                     }
 
-                    // Logging.Current.Info("#" + _motorCommandIdentifier + ": " + motorTorque + " (" + ((double)_plugin.Settings.SmoothingFactor / 1000.0) + ")");
+                    // Logging.Current.Info("#" + _motorCommandIdentifier + ": " + motorTorque);
 
-                    motor.SetTorque(motorTorque, (double) _plugin.Settings.SmoothingFactor / 1000.0); // ERROR HANDLING?
+                    motor.SetTorque(motorTorque);
 
                     _lastCommandTicks = currentTicks;
                 }

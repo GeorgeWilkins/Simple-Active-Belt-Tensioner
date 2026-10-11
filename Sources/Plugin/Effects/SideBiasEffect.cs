@@ -5,22 +5,11 @@ namespace User.ActiveBeltTensioner.Effects
 {
     internal sealed class SideBiasEffect : IEffect
     {
-        private readonly PhysicsForceCalculator _calculator;
+        public int Order => 1;
 
-        public SideBiasEffect(PhysicsForceCalculator calculator)
+        public void Apply(DeviceSettings settings, DevicePlugin.TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
         {
-            _calculator = calculator;
-        }
-
-        public void Apply(DevicePlugin.TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
-        {
-            if (!telemetrySnapshot.IsActive)
-            {
-                return;
-            }
-
-            var settings = _calculator.Settings;
-            if (settings == null)
+            if (settings == null || !telemetrySnapshot.IsActive)
             {
                 return;
             }
