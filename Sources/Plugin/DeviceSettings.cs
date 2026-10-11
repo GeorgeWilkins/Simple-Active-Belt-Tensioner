@@ -274,44 +274,6 @@ namespace User.ActiveBeltTensioner
 
 
 
-
-        private double _driverMass = 1.0;
-        public double DriverMass
-        {
-            get { return _driverMass; }
-            set
-            {
-                double clampedValue = Math.Max(0.1, Math.Min(3.0, value));
-
-                if (_driverMass != clampedValue)
-                {
-                    _driverMass = clampedValue;
-                    InvokePropertyChange(nameof(DriverMass));
-                }
-            }
-        }
-
-        private double _driverDamping = 500;
-        public double DriverDamping
-        {
-            get { return _driverDamping; }
-            set
-            {
-                double clampedValue = Math.Max(0.0, Math.Min(1000.0, value));
-
-                if (_driverDamping != clampedValue)
-                {
-                    _driverDamping = clampedValue;
-                    InvokePropertyChange(nameof(DriverDamping));
-                }
-            }
-        }
-
-
-
-
-
-
         private double _seatDegreesFromVertical = 11.0;
         public double SeatDegreesFromVertical
         {
@@ -324,8 +286,14 @@ namespace User.ActiveBeltTensioner
                 {
                     _seatDegreesFromVertical = clampedValue;
                     InvokePropertyChange(nameof(SeatDegreesFromVertical));
+                    InvokePropertyChange(nameof(SeatRadiansFromVertical));
                 }
             }
+        }
+
+        public double SeatRadiansFromVertical
+        {
+            get { return _seatDegreesFromVertical * (Math.PI / 180.0); }
         }
 
         private double _waistBeltDegreesFromVertical = -38.5;
@@ -340,8 +308,14 @@ namespace User.ActiveBeltTensioner
                 {
                     _waistBeltDegreesFromVertical = clampedValue;
                     InvokePropertyChange(nameof(WaistBeltDegreesFromVertical));
+                    InvokePropertyChange(nameof(WaistBeltRadiansFromVertical));
                 }
             }
+        }
+
+        public double WaistBeltRadiansFromVertical
+        {
+            get { return _waistBeltDegreesFromVertical * (Math.PI / 180.0); }
         }
 
 

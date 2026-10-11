@@ -20,22 +20,6 @@ namespace User.ActiveBeltTensioner
             public double RadiansFromVertical => DegreesFromVertical * Math.PI / 180.0;
         }
 
-        /// <summary>A representation of the physical configuration of the driver and seat</summary>
-        public struct DriverParameters
-        {
-            /// <summary>TODO</summary>
-            public double Mass { get; set; }
-
-            /// <summary>TODO (0-1)</summary>
-            public double DampingFactor { get; set; }
-
-            /// <summary>The seat back angle relative to the vehicle (with directly vertical from floor to roof being 0 degrees)</summary>
-            public double DegreesFromVertical { get; set; }
-
-            /// <summary>The <see cref="DegreesFromVertical" /> value in radians</summary>
-            public double RadiansFromVertical => DegreesFromVertical * Math.PI / 180.0;
-        }
-
         /// <summary>A representation of a three-dimensional acceleration vector</summary>
         private struct AccelerationVector
         {
@@ -62,39 +46,16 @@ namespace User.ActiveBeltTensioner
             //public double Magnitude => Math.Sqrt(X * X + Y * Y + Z * Z);
         }
 
-        private AccelerationVector _driverAcceleration = new AccelerationVector(0, 0, 0);
-        private DriverParameters _driverParameters;
-        private BeltGeometry _leftShoulder;
-        private BeltGeometry _rightShoulder;
         private BeltGeometry _leftWaist;
         private BeltGeometry _rightWaist;
-
 
         private DeviceSettings _settings;
         public DeviceSettings Settings => _settings;
 
-
         private (int timeOffset, int tensionModifier)[] _upshiftingModifiers;
         public (int timeOffset, int tensionModifier)[] UpshiftModifiers => _upshiftingModifiers;
 
-        /*
-            _idleTension = settings.IdleTension / 100.0;
-            _minimumTension = settings.MinimumTension / 100.0;
-            _maximumTension = settings.MaximumTension / 100.0;
-            _smoothingFactor = settings.SmoothingFactor / 100.0;
-            _horizontalBias = settings.HorizontalBias / 100.0;
-         */
-
-
-
         private readonly EffectPipeline _effectPipeline;
-
-
-
-
-
-
-
 
         public PhysicsForceCalculator(DeviceSettings settings)
         {
@@ -107,16 +68,9 @@ namespace User.ActiveBeltTensioner
         public void ApplySettings(DeviceSettings settings)
         {
             _settings = settings;
+
             _upshiftingModifiers = DevicePlugin.ParseUpshiftingModifiers(settings.UpshiftingModifiers);
 
-            _leftShoulder = new BeltGeometry
-            {
-                DegreesFromVertical = 0.0,
-            };
-            _rightShoulder = new BeltGeometry
-            {
-                DegreesFromVertical = 0.0,
-            };
             _leftWaist = new BeltGeometry
             {
                 DegreesFromVertical = settings.WaistBeltDegreesFromVertical * -1.0,
@@ -125,13 +79,9 @@ namespace User.ActiveBeltTensioner
             {
                 DegreesFromVertical = settings.WaistBeltDegreesFromVertical,
             };
-
-
-
-
         }
 
-        /// <summary>Applies force calculations to the given <see cref="DevicePlugin.TelemetrySnapshot" /> in reference to the predefined <see cref="DriverParameters" /> and <see cref="BeltGeometry" /> instances, outputting per-belt tension values</summary>
+        /// <summary>Applies force calculations to the given <see cref="DevicePlugin.TelemetrySnapshot" />, translating acceleration by seat angle and projecting waist belts by their configured angles</summary>
         public void CalculateForcesAndTorques(
             DevicePlugin.TelemetrySnapshot telemetrySnapshot,
             double millisecondsSinceLastUpdate,
@@ -161,14 +111,11 @@ namespace User.ActiveBeltTensioner
                 telemetrySnapshot.Heave ?? 0.0
             );
 
-            // Apply To Driver Acceleration
-            UpdateDriverAcceleration(vehicleAcceleration, millisecondsSinceLastUpdate);
-
-            // Normalize Driver Acceleration (Before Adapting To Seat Frame Of Reference)
+            // Normalize Vehicle Acceleration (Before Adapting To Seat Frame Of Reference)
             AccelerationVector normalizedAcceleration = new AccelerationVector(
-                NormalizeAcceleration(_driverAcceleration.X, _settings.MinimumSurge, _settings.MaximumSurge),
-                NormalizeAcceleration(_driverAcceleration.Y, _settings.MinimumSway, _settings.MaximumSway),
-                NormalizeAcceleration(_driverAcceleration.Z, _settings.MinimumHeave, _settings.MaximumHeave)
+                NormalizeAcceleration(vehicleAcceleration.X, _settings.MinimumSurge, _settings.MaximumSurge),
+                NormalizeAcceleration(vehicleAcceleration.Y, _settings.MinimumSway, _settings.MaximumSway),
+                NormalizeAcceleration(vehicleAcceleration.Z, _settings.MinimumHeave, _settings.MaximumHeave)
             );
 
             // Translate To Seat Frame Of Reference & Calculate Belt Tensions
@@ -200,34 +147,12 @@ namespace User.ActiveBeltTensioner
             rightWaistTarget = beltTensionTargets.RightWaist;
         }
 
-        /// <summary>Applies the given vehicle acceleration to the driver acceleration instance, subject to the damping factor and given time delta</summary>
-        /// <remarks>This is intended to simulate the delay in driver body response to vehicle acceleration, but may be removed in favour of minimizing latency</remarks>
-        private void UpdateDriverAcceleration(AccelerationVector vehicleAcceleration, double millisecondsSinceLastUpdate)
-        {
-            double secondsSinceLastUpdate = millisecondsSinceLastUpdate / 1000.0;
-            if (secondsSinceLastUpdate <= 0 || secondsSinceLastUpdate > 0.1)
-            {
-                // Ignore Invalid Intervals
-                return;
-            }
-
-            // Define Acceleration Latency
-            double timeConstant = 0.05 + (_driverParameters.DampingFactor * 0.15);  // 0.05 - 0.2 seconds
-
-            // Exponential Approach Factor
-            double approachFactor = 1.0 - Math.Exp(-secondsSinceLastUpdate / (timeConstant * (_settings.SmoothingFactor / 100.0)));
-
-            // Apply To Each Axis
-            _driverAcceleration.X = _driverAcceleration.X + (vehicleAcceleration.X - _driverAcceleration.X) * approachFactor;
-            _driverAcceleration.Y = _driverAcceleration.Y + (vehicleAcceleration.Y - _driverAcceleration.Y) * approachFactor;
-            _driverAcceleration.Z = _driverAcceleration.Z + (vehicleAcceleration.Z - _driverAcceleration.Z) * approachFactor;
-        }
-
         /// <summary>Changes the frame of reference from the vehicle to the driver seat, accounting for its angle relative to the vehicle's vertical axis</summary>
         private AccelerationVector TranslateToSeatFrameOfReference(AccelerationVector acceleration)
         {
-            double cos = Math.Cos(_driverParameters.RadiansFromVertical);
-            double sin = Math.Sin(_driverParameters.RadiansFromVertical);
+            double seatRadiansFromVertical = _settings.SeatRadiansFromVertical;
+            double cos = Math.Cos(seatRadiansFromVertical);
+            double sin = Math.Sin(seatRadiansFromVertical);
 
             double rotatedX = acceleration.X * cos - acceleration.Y * sin;
             double rotatedY = acceleration.X * sin + acceleration.Y * cos;
@@ -244,30 +169,28 @@ namespace User.ActiveBeltTensioner
             out double leftWaistTension,
             out double rightWaistTension)
         {
-            leftShoulderTension = CalculateBeltTension(acceleration, _leftShoulder);
-            rightShoulderTension = CalculateBeltTension(acceleration, _rightShoulder);
-            leftWaistTension = CalculateBeltTension(acceleration, _leftWaist);
-            rightWaistTension = CalculateBeltTension(acceleration, _rightWaist);
+            leftShoulderTension =
+            rightShoulderTension = CalculateShoulderBeltTension(acceleration);
+            leftWaistTension = CalculateWaistBeltTension(acceleration, _leftWaist.RadiansFromVertical);
+            rightWaistTension = CalculateWaistBeltTension(acceleration, _rightWaist.RadiansFromVertical);
         }
 
-        /// <summary>Returns the calculated tension value for a single belt based on the given normalized acceleration vector and belt geometry</summary>
-        private double CalculateBeltTension(AccelerationVector acceleration, BeltGeometry belt)
+        /// <summary>Returns the calculated tension for a shoulder belt, based on the given acceleration vector</summary>
+        private double CalculateShoulderBeltTension(AccelerationVector acceleration)
         {
-            double beltRadiansFromVertical = belt.RadiansFromVertical;
-            double beltDistanceFromVertical = 0.0; // Clamp(belt.DistanceFromCenter, 0.0, 1.0); // @TODO: Make Absolute
+            return MapForceComponentToTension(Clamp(acceleration.X, -1.0, 1.0));
+        }
 
-            // Already Reframed To Seat & Normalized To -1.0 to +1.0
-            double seatFramedSurge = acceleration.X;
-            double seatFramedSway = acceleration.Y;
-            double seatFramedHeave = acceleration.Z;
+        /// <summary>Returns the calculated tension for a waist belt, based on the given acceleration vector and belt angle</summary>
+        private double CalculateWaistBeltTension(AccelerationVector acceleration, double beltRadiansFromVertical)
+        {
+            double forceComponent = (acceleration.X * Math.Cos(beltRadiansFromVertical)) + (acceleration.Y * Math.Sin(beltRadiansFromVertical));
 
-            // Calculate Force Component (Surge * cos(θ) + Sway * sin(θ) + Heave * Belt Distance)
-            double forceComponent = (seatFramedSurge * Math.Cos(beltRadiansFromVertical)) + (seatFramedSway * Math.Sin(beltRadiansFromVertical));
+            return MapForceComponentToTension(Clamp(forceComponent, -1.0, 1.0));
+        }
 
-            // Apply Extra Heave Per Distance (TODO: Incorrect)
-            forceComponent += seatFramedHeave * beltDistanceFromVertical * 0.5;
-            forceComponent = Clamp(forceComponent, -1.0, 1.0);
-
+        private double MapForceComponentToTension(double forceComponent)
+        {
             // Map To Tension Range
             double idleTension = _settings.IdleTension / 100.0;
             double minimumTension = _settings.MinimumTension / 100.0;
