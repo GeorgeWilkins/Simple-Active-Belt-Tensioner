@@ -168,13 +168,6 @@
                             <styles:SHTitledGroup Title="{SLoc SABT_Title_Configuration}" d:Title="Title">
                                 <StackPanel Grid.IsSharedSizeScope="True" Cursor="{Binding Settings.PluginVersion}">
 
-
-                                    
-                                    
-                                    
-                                    
-
-
                                     <Grid Margin="0,20,0,0">
 
                                         <Grid.ColumnDefinitions>
@@ -386,18 +379,8 @@
 
                                     </Grid>
 
-
-
-
-
-
-
-
-
                                     <ContentControl Style="{StaticResource SettingStyle}">
                                         <StackPanel>
-
-
 
                                             <Grid Margin="0,0,0,0">
                                                 <Grid.ColumnDefinitions>

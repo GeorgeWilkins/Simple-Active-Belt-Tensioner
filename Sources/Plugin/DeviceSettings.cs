@@ -491,7 +491,6 @@ namespace User.ActiveBeltTensioner
                     _parsedUpshiftingModifiers = null;
                     InvokePropertyChange(nameof(UpshiftingModifiers));
                     InvokePropertyChange(nameof(AreUpshiftingModifiersValid));
-                    //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AreUpshiftingModifiersValid)));
                 }
             }
         }
