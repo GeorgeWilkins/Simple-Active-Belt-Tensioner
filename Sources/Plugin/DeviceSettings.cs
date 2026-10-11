@@ -30,8 +30,6 @@ namespace User.ActiveBeltTensioner
 
         public string DefaultUpshiftingModifiers = "0ms:100% 150ms:100% 300ms:0%";
 
-        public string PluginVersion = "0.0.0.0";
-
         public void Initialise(DevicePlugin plugin)
         {
             _plugin = plugin;
@@ -107,6 +105,20 @@ namespace User.ActiveBeltTensioner
                     name,
                     this.GetType().GetProperty(name)?.GetValue(this)
                 );
+            }
+        }
+
+        private string _pluginVersion = "0.0.0.0";
+        public string PluginVersion
+        {
+            get { return _pluginVersion; }
+            set
+            {
+                if (_pluginVersion != value)
+                {
+                    _pluginVersion = value;
+                    InvokePropertyChange(nameof(PluginVersion));
+                }
             }
         }
 
@@ -257,6 +269,12 @@ namespace User.ActiveBeltTensioner
         }
 
 
+
+
+
+
+
+
         private double _driverMass = 1.0;
         public double DriverMass
         {
@@ -289,13 +307,18 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private double _seatDegreesFromVertical = 20.0;
+
+
+
+
+
+        private double _seatDegreesFromVertical = 11.0;
         public double SeatDegreesFromVertical
         {
             get { return _seatDegreesFromVertical; }
             set
             {
-                double clampedValue = Math.Max(-60.0, Math.Min(60.0, value));
+                double clampedValue = Math.Max(0.0, Math.Min(40.0, value));
 
                 if (_seatDegreesFromVertical != clampedValue)
                 {
@@ -305,133 +328,35 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private double _leftShoulderBeltDegreesFromVertical = -30.0;
-        public double LeftShoulderBeltDegreesFromVertical
+        private double _waistBeltDegreesFromVertical = -38.5;
+        public double WaistBeltDegreesFromVertical
         {
-            get { return _leftShoulderBeltDegreesFromVertical; }
+            get { return _waistBeltDegreesFromVertical; }
             set
             {
-                double clampedValue = Math.Max(-90.0, Math.Min(90.0, value));
+                double clampedValue = Math.Max(-90.0, Math.Min(0.0, value));
 
-                if (_leftShoulderBeltDegreesFromVertical != clampedValue)
+                if (_waistBeltDegreesFromVertical != clampedValue)
                 {
-                    _leftShoulderBeltDegreesFromVertical = clampedValue;
-                    InvokePropertyChange(nameof(LeftShoulderBeltDegreesFromVertical));
+                    _waistBeltDegreesFromVertical = clampedValue;
+                    InvokePropertyChange(nameof(WaistBeltDegreesFromVertical));
                 }
             }
         }
 
-        private double _rightShoulderBeltDegreesFromVertical = 30.0;
-        public double RightShoulderBeltDegreesFromVertical
-        {
-            get { return _rightShoulderBeltDegreesFromVertical; }
-            set
-            {
-                double clampedValue = Math.Max(-90.0, Math.Min(90.0, value));
 
-                if (_rightShoulderBeltDegreesFromVertical != clampedValue)
-                {
-                    _rightShoulderBeltDegreesFromVertical = clampedValue;
-                    InvokePropertyChange(nameof(RightShoulderBeltDegreesFromVertical));
-                }
-            }
-        }
 
-        private double _leftWaistBeltDegreesFromVertical = -45.0;
-        public double LeftWaistBeltDegreesFromVertical
-        {
-            get { return _leftWaistBeltDegreesFromVertical; }
-            set
-            {
-                double clampedValue = Math.Max(-90.0, Math.Min(90.0, value));
 
-                if (_leftWaistBeltDegreesFromVertical != clampedValue)
-                {
-                    _leftWaistBeltDegreesFromVertical = clampedValue;
-                    InvokePropertyChange(nameof(LeftWaistBeltDegreesFromVertical));
-                }
-            }
-        }
 
-        private double _rightWaistBeltDegreesFromVertical = 45.0;
-        public double RightWaistBeltDegreesFromVertical
-        {
-            get { return _rightWaistBeltDegreesFromVertical; }
-            set
-            {
-                double clampedValue = Math.Max(-90.0, Math.Min(90.0, value));
 
-                if (_rightWaistBeltDegreesFromVertical != clampedValue)
-                {
-                    _rightWaistBeltDegreesFromVertical = clampedValue;
-                    InvokePropertyChange(nameof(RightWaistBeltDegreesFromVertical));
-                }
-            }
-        }
 
-        private double _leftShoulderBeltDistance = 0.3;
-        public double LeftShoulderBeltDistance
-        {
-            get { return _leftShoulderBeltDistance; }
-            set
-            {
-                double clampedValue = Math.Max(0.0, Math.Min(1.0, value));
 
-                if (_leftShoulderBeltDistance != clampedValue)
-                {
-                    _leftShoulderBeltDistance = clampedValue;
-                    InvokePropertyChange(nameof(LeftShoulderBeltDistance));
-                }
-            }
-        }
 
-        private double _rightShoulderBeltDistance = 0.3;
-        public double RightShoulderBeltDistance
-        {
-            get { return _rightShoulderBeltDistance; }
-            set
-            {
-                double clampedValue = Math.Max(0.0, Math.Min(1.0, value));
 
-                if (_rightShoulderBeltDistance != clampedValue)
-                {
-                    _rightShoulderBeltDistance = clampedValue;
-                    InvokePropertyChange(nameof(RightShoulderBeltDistance));
-                }
-            }
-        }
 
-        private double _leftWaistBeltDistance = 0.7;
-        public double LeftWaistBeltDistance
-        {
-            get { return _leftWaistBeltDistance; }
-            set
-            {
-                double clampedValue = Math.Max(0.0, Math.Min(1.0, value));
 
-                if (_leftWaistBeltDistance != clampedValue)
-                {
-                    _leftWaistBeltDistance = clampedValue;
-                    InvokePropertyChange(nameof(LeftWaistBeltDistance));
-                }
-            }
-        }
 
-        private double _rightWaistBeltDistance = 0.7;
-        public double RightWaistBeltDistance
-        {
-            get { return _rightWaistBeltDistance; }
-            set
-            {
-                double clampedValue = Math.Max(0.0, Math.Min(1.0, value));
 
-                if (_rightWaistBeltDistance != clampedValue)
-                {
-                    _rightWaistBeltDistance = clampedValue;
-                    InvokePropertyChange(nameof(RightWaistBeltDistance));
-                }
-            }
-        }
 
         private double _minimumSurge = -8.0;
         public double MinimumSurge

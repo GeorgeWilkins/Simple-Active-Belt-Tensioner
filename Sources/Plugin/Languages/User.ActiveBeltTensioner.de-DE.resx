@@ -226,8 +226,8 @@
   <data name="SABT_Prefix_Vehicle" xml:space="preserve">
     <value>Fahrzeug</value>
   </data>
-  <data name="SABT_Title_Credits" xml:space="preserve">
-    <value>Lizenz- und Autoreninformationen</value>
+  <data name="SABT_Title_Credits" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Title_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
@@ -253,7 +253,7 @@
   <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
     <value>Diagnose zurücksetzen</value>
   </data>
-  <data name="SABT_Button_DetectMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="SABT_Button_Detect" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
@@ -289,38 +289,23 @@
   <data name="SABT_Label_Upshifting" xml:space="preserve">
     <value>Hochschalten</value>
   </data>
-  <data name="SABT_Link_Website" xml:space="preserve">
-    <value>Website</value>
+  <data name="SABT_Label_SeatDegreesFromVertical" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Link_Email" xml:space="preserve">
-    <value>E-Mail</value>
+  <data name="SABT_Text_SeatDegreesFromVertical" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Link_GitHubProfile" xml:space="preserve">
-    <value>GitHub-Profil</value>
+  <data name="SABT_Text_WaistBeltDegreesFromVertical" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Link_ProjectLicense" xml:space="preserve">
-    <value>Projektlizenz</value>
-  </data>
-  <data name="SABT_Text_SimHub" xml:space="preserve">
-    <value>SimHub-Plugin basierend auf „SimHub Plugin Demo“ von SHWotever:</value>
-  </data>
-  <data name="SABT_Link_SDKDocumentation" xml:space="preserve">
-    <value>SDK-Dokumentation</value>
-  </data>
-  <data name="SABT_Text_Tester" xml:space="preserve">
-    <value>Pre-Release-Tests und Feedback von TurtleMenace:</value>
+  <data name="SABT_Label_WaistBeltDegreesFromVertical" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Text_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_Repository" xml:space="preserve">
-    <value>Für weitere Informationen, Fehlermeldungen oder Beiträge siehe das GitHub-Repository des Projekts:</value>
-  </data>
-  <data name="SABT_Link_GitHubRepository" xml:space="preserve">
-    <value>GitHub-Repository</value>
-  </data>
-  <data name="SABT_Text_Designer" xml:space="preserve">
-    <value>Hardware- und Software-Design von George Wilkins:</value>
+  <data name="SABT_Text_Credits" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Status_Connected" xml:space="preserve">
     <value>Verbunden</value>
@@ -484,6 +469,9 @@
   <data name="SABT_Label_Status" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="SABT_Label_SerialPort" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Label_Engine" xml:space="preserve">
     <value>Motordrehzahl</value>
   </data>
@@ -531,5 +519,8 @@
   </data>
   <data name="SABT_Label_Unavailable" xml:space="preserve">
     <value>NICHT VERFÜGBAR</value>
+  </data>
+  <data name="SABT_Label_Setup" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
 </root>

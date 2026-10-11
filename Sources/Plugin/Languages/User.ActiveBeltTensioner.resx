@@ -228,7 +228,7 @@ If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons t
     <value>Vehicle</value>
   </data>
   <data name="SABT_Title_Credits" xml:space="preserve">
-    <value>Licensing &amp; Author Information</value>
+    <value>Credits</value>
   </data>
   <data name="SABT_Title_Configuration" xml:space="preserve">
     <value>Configuration</value>
@@ -254,8 +254,8 @@ If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons t
   <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
     <value>Reset Diagnostics</value>
   </data>
-  <data name="SABT_Button_DetectMotors" xml:space="preserve">
-    <value>Detect Motors</value>
+  <data name="SABT_Button_Detect" xml:space="preserve">
+    <value>Detect</value>
   </data>
   <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
     <value>Reset Upshifting Modifiers</value>
@@ -290,40 +290,49 @@ If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons t
   <data name="SABT_Label_Upshifting" xml:space="preserve">
     <value>Upshifting</value>
   </data>
-  <data name="SABT_Link_Website" xml:space="preserve">
-    <value>Website</value>
+  <data name="SABT_Label_SeatDegreesFromVertical" xml:space="preserve">
+    <value>Seat Back Angle</value>
   </data>
-  <data name="SABT_Link_Email" xml:space="preserve">
-    <value>E-Mail</value>
+  <data name="SABT_Text_SeatDegreesFromVertical" xml:space="preserve">
+    <value>• How far the seat back is angled backwards, relative to your rig's vertical axis (perpendicular to the floor)
+• Used to calculate how in-game forces should be applied to your belts</value>
   </data>
-  <data name="SABT_Link_GitHubProfile" xml:space="preserve">
-    <value>GitHub Profile</value>
+  <data name="SABT_Text_WaistBeltDegreesFromVertical" xml:space="preserve">
+    <value>• The angle of the waist belts from a side-on viewpoint, relative to your rig's vertical axis (perpendicular to the floor)
+• Used to calculate how in-game forces should be applied to your waist belts (where present)</value>
   </data>
-  <data name="SABT_Link_ProjectLicense" xml:space="preserve">
-    <value>Project License</value>
-  </data>
-  <data name="SABT_Text_SimHub" xml:space="preserve">
-    <value>SimHub plugin based upon 'SimHub Plugin Demo' by SHWotever:</value>
-  </data>
-  <data name="SABT_Link_SDKDocumentation" xml:space="preserve">
-    <value>SDK Documentation</value>
-  </data>
-  <data name="SABT_Text_Tester" xml:space="preserve">
-    <value>Pre-Release Testing &amp; Feedback by TurtleMenace:</value>
+  <data name="SABT_Label_WaistBeltDegreesFromVertical" xml:space="preserve">
+    <value>Waist Belt Angle</value>
   </data>
   <data name="SABT_Text_Configuration" xml:space="preserve">
-    <value>SABT supports a variety of motor configurations; from one to four motors in total.
+    <value>Anything from **one** to **four** motors are supported. These can be used separately such that each belt is driven by its own motor with roughly **10Kg** of force; or paired up to double that to **20Kg** (on the **shoulder belts** only). 
 
-You may allocate up to two motors per should belt (doubling the force applied) and one motor per waist belt.</value>
+Use the configuration table above to indicate how you want your motors to behave:
+• **Mapping**: Which belt a motor is allocated to (**unused**, **left shoulder**, **right shoulder**, **left waist**, **right waist**)
+• **Direction**: Which direction the motors should turn to apply tension to the belts
+• **Temperatures**: Displays the current and maximum temperatures reported by the motor
+• **Status**: Indicates the motor status and current activity
+• **Tension**: Applies a brief smooth tension to the motor to take up any slack
+• **Shake**: Identifies the motor by shaking it aggressively
+• **Assign...**: Applies the ID to the currently connected motor</value>
   </data>
-  <data name="SABT_Text_Repository" xml:space="preserve">
-    <value>For more information, to report a bug or contribute, consult the project GitHub repository:</value>
-  </data>
-  <data name="SABT_Link_GitHubRepository" xml:space="preserve">
-    <value>GitHub Repository</value>
-  </data>
-  <data name="SABT_Text_Designer" xml:space="preserve">
-    <value>Hardware and software design by **George Wilkins**:</value>
+  <data name="SABT_Text_Credits" xml:space="preserve">
+    <value>Hardware and software design by **George Wilkins**:
+• https://georgewilkins.co.uk
+• https://github.com/GeorgeWilkins
+
+SimHub plugin based upon _SimHub Plugin Demo_ by **SHWotever**:
+• https://github.com/SHWotever/SimHub/wiki/Plugin-and-extensions-SDKs
+• https://github.com/SHWotever
+
+Pre-Release Testing &amp; Feedback by **TurtleMenace**:
+• https://github.com/turtlemenace
+
+Extensive Testing, Feedback &amp; Contributions by **Larsen**
+• https://www.youtube.com/@thelarsofus69
+
+For more information, to report a bug or contribute, consult the project GitHub repository:
+• https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner</value>
   </data>
   <data name="SABT_Status_Connected" xml:space="preserve">
     <value>Connected</value>
@@ -493,6 +502,9 @@ You may allocate up to two motors per should belt (doubling the force applied) a
   <data name="SABT_Label_Status" xml:space="preserve">
     <value>Status</value>
   </data>
+  <data name="SABT_Label_SerialPort" xml:space="preserve">
+    <value>Serial Port</value>
+  </data>
   <data name="SABT_Label_Engine" xml:space="preserve">
     <value>Engine RPM</value>
   </data>
@@ -540,5 +552,8 @@ You may allocate up to two motors per should belt (doubling the force applied) a
   </data>
   <data name="SABT_Label_Unavailable" xml:space="preserve">
     <value>UNAVAILABLE</value>
+  </data>
+  <data name="SABT_Label_Setup" xml:space="preserve">
+    <value>Initial Setup Instructions</value>
   </data>
 </root>

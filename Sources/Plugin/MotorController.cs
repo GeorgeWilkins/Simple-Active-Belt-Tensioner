@@ -48,6 +48,7 @@ namespace User.ActiveBeltTensioner
                 {
                     _hasSingleLeftShoulder = value;
                     InvokePropertyChange(nameof(HasSingleLeftShoulder));
+                    InvokePropertyChange(nameof(HasShoulder));
                     InvokePropertyChange(nameof(HasWaistAndShoulder));
                 }
             }
@@ -63,6 +64,7 @@ namespace User.ActiveBeltTensioner
                 {
                     _hasSingleRightShoulder = value;
                     InvokePropertyChange(nameof(HasSingleRightShoulder));
+                    InvokePropertyChange(nameof(HasShoulder));
                     InvokePropertyChange(nameof(HasWaistAndShoulder));
                 }
             }
@@ -78,6 +80,7 @@ namespace User.ActiveBeltTensioner
                 {
                     _hasPairedLeftShoulder = value;
                     InvokePropertyChange(nameof(HasPairedLeftShoulder));
+                    InvokePropertyChange(nameof(HasShoulder));
                     InvokePropertyChange(nameof(HasWaistAndShoulder));
                 }
             }
@@ -93,38 +96,63 @@ namespace User.ActiveBeltTensioner
                 {
                     _hasPairedRightShoulder = value;
                     InvokePropertyChange(nameof(HasPairedRightShoulder));
+                    InvokePropertyChange(nameof(HasShoulder));
                     InvokePropertyChange(nameof(HasWaistAndShoulder));
                 }
             }
         }
 
-        private bool _hasWaistLeft = false;
-        public bool HasWaistLeft
+        private bool _hasLeftWaist = false;
+        public bool HasLeftWaist
         {
-            get { return _hasWaistLeft; }
+            get { return _hasLeftWaist; }
             private set
             {
-                if (_hasWaistLeft != value)
+                if (_hasLeftWaist != value)
                 {
-                    _hasWaistLeft = value;
-                    InvokePropertyChange(nameof(HasWaistLeft));
+                    _hasLeftWaist = value;
+                    InvokePropertyChange(nameof(HasLeftWaist));
+                    InvokePropertyChange(nameof(HasWaist));
                     InvokePropertyChange(nameof(HasWaistAndShoulder));
                 }
             }
         }
 
-        private bool _hasWaistRight = false;
-        public bool HasWaistRight
+        private bool _hasRightWaist = false;
+        public bool HasRightWaist
         {
-            get { return _hasWaistRight; }
+            get { return _hasRightWaist; }
             private set
             {
-                if (_hasWaistRight != value)
+                if (_hasRightWaist != value)
                 {
-                    _hasWaistRight = value;
-                    InvokePropertyChange(nameof(HasWaistRight));
+                    _hasRightWaist = value;
+                    InvokePropertyChange(nameof(HasRightWaist));
+                    InvokePropertyChange(nameof(HasWaist));
                     InvokePropertyChange(nameof(HasWaistAndShoulder));
                 }
+            }
+        }
+
+        public bool HasWaist
+        {
+            get {
+                return (
+                    _hasLeftWaist ||
+                    _hasRightWaist
+                );
+            }
+        }
+
+        public bool HasShoulder
+        {
+            get {
+                return (
+                    _hasSingleLeftShoulder ||
+                    _hasPairedLeftShoulder ||
+                    _hasSingleRightShoulder ||
+                    _hasPairedRightShoulder
+                );
             }
         }
 
@@ -133,8 +161,8 @@ namespace User.ActiveBeltTensioner
             get
             {
                 return (
-                    _hasWaistLeft ||
-                    _hasWaistRight
+                    _hasLeftWaist ||
+                    _hasRightWaist
                 ) && (
                     _hasSingleLeftShoulder ||
                     _hasPairedLeftShoulder ||
@@ -466,8 +494,8 @@ namespace User.ActiveBeltTensioner
             HasPairedLeftShoulder = leftShoulderCount == 2;
             HasSingleRightShoulder = rightShoulderCount == 1;
             HasPairedRightShoulder = rightShoulderCount == 2;
-            HasWaistLeft = leftWaistCount == 1;
-            HasWaistRight = rightWaistCount == 1;
+            HasLeftWaist = leftWaistCount == 1;
+            HasRightWaist = rightWaistCount == 1;
         }
 
         /// <summary>Invokes the <see cref="Motor.Stop()" /> method on each motor then closes the serial port</summary>

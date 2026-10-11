@@ -1,5 +1,6 @@
 using SimHub;
 using System;
+using User.ActiveBeltTensioner.Effects;
 
 namespace User.ActiveBeltTensioner
 {
@@ -58,102 +59,100 @@ namespace User.ActiveBeltTensioner
             public static AccelerationVector operator *(AccelerationVector a, double scalar)
                 => new AccelerationVector(a.X * scalar, a.Y * scalar, a.Z * scalar);
 
-            public double Magnitude => Math.Sqrt(X * X + Y * Y + Z * Z);
+            //public double Magnitude => Math.Sqrt(X * X + Y * Y + Z * Z);
         }
 
-        private DriverParameters _driverParameters;
-        private BeltGeometry _leftShoulderBelt;
-        private BeltGeometry _rightShoulderBelt;
-        private BeltGeometry _leftWaistBelt;
-        private BeltGeometry _rightWaistBelt;
-
         private AccelerationVector _driverAcceleration = new AccelerationVector(0, 0, 0);
+        private DriverParameters _driverParameters;
+        private BeltGeometry _leftShoulder;
+        private BeltGeometry _rightShoulder;
+        private BeltGeometry _leftWaist;
+        private BeltGeometry _rightWaist;
 
-        private double _minimumTension = 0.0;
-        private double _maximumTension = 1.0;
-        private double _idleTension = 0.1;
-        private double _surgeMinimum = -50.0;
-        private double _surgeMaximum = 50.0;
-        private double _swayMinimum = -50.0;
-        private double _swayMaximum = 50.0;
-        private double _heaveMinimum = -50.0;
-        private double _heaveMaximum = 50.0;
-        private double _smoothingFactor = 0.1;
-        private double _horizontalBias = 0.0;
+
+        private DeviceSettings _settings;
+        public DeviceSettings Settings => _settings;
+
+
+        private (int timeOffset, int tensionModifier)[] _upshiftingModifiers;
+        public (int timeOffset, int tensionModifier)[] UpshiftModifiers => _upshiftingModifiers;
+
+        /*
+            _idleTension = settings.IdleTension / 100.0;
+            _minimumTension = settings.MinimumTension / 100.0;
+            _maximumTension = settings.MaximumTension / 100.0;
+            _smoothingFactor = settings.SmoothingFactor / 100.0;
+            _horizontalBias = settings.HorizontalBias / 100.0;
+         */
+
+
+
+        private readonly EffectPipeline _effectPipeline;
+
+
+
+
+
+
+
 
         public PhysicsForceCalculator(DeviceSettings settings)
         {
+            _effectPipeline = new EffectPipeline(this);
+
             ApplySettings(settings);
         }
 
         /// <summary>Applies the given <see cref="DeviceSettings" /> to the relevant internal properties</summary>
         public void ApplySettings(DeviceSettings settings)
         {
-            // Physical Configuration
-            _driverParameters = new DriverParameters
+            _settings = settings;
+            _upshiftingModifiers = DevicePlugin.ParseUpshiftingModifiers(settings.UpshiftingModifiers);
+
+            _leftShoulder = new BeltGeometry
             {
-                Mass = settings.DriverMass,
-                DampingFactor = settings.DriverDamping,
-                DegreesFromVertical = settings.SeatDegreesFromVertical
+                DegreesFromVertical = 0.0,
             };
-            _leftShoulderBelt = new BeltGeometry
+            _rightShoulder = new BeltGeometry
             {
-                DegreesFromVertical = settings.LeftShoulderBeltDegreesFromVertical,
-                DistanceFromCenter = settings.LeftShoulderBeltDistance
+                DegreesFromVertical = 0.0,
             };
-            _rightShoulderBelt = new BeltGeometry
+            _leftWaist = new BeltGeometry
             {
-                DegreesFromVertical = settings.RightShoulderBeltDegreesFromVertical,
-                DistanceFromCenter = settings.RightShoulderBeltDistance
+                DegreesFromVertical = settings.WaistBeltDegreesFromVertical * -1.0,
             };
-            _leftWaistBelt = new BeltGeometry
+            _rightWaist = new BeltGeometry
             {
-                DegreesFromVertical = settings.LeftWaistBeltDegreesFromVertical,
-                DistanceFromCenter = settings.LeftWaistBeltDistance
-            };
-            _rightWaistBelt = new BeltGeometry
-            {
-                DegreesFromVertical = settings.RightWaistBeltDegreesFromVertical,
-                DistanceFromCenter = settings.RightWaistBeltDistance
+                DegreesFromVertical = settings.WaistBeltDegreesFromVertical,
             };
 
-            // Telemetry Mapping
-            _surgeMinimum = settings.MinimumSurge;
-            _surgeMaximum = settings.MaximumSurge;
-            _swayMinimum = settings.MinimumSway;
-            _swayMaximum = settings.MaximumSway;
-            _heaveMinimum = settings.MinimumHeave;
-            _heaveMaximum = settings.MaximumHeave;
 
-            // General Preferences
-            _idleTension = settings.IdleTension / 100.0;
-            _minimumTension = settings.MinimumTension / 100.0;
-            _maximumTension = settings.MaximumTension / 100.0;
-            _smoothingFactor = settings.SmoothingFactor / 100.0;
-            _horizontalBias = settings.HorizontalBias / 100.0;
+
+
         }
 
         /// <summary>Applies force calculations to the given <see cref="DevicePlugin.TelemetrySnapshot" /> in reference to the predefined <see cref="DriverParameters" /> and <see cref="BeltGeometry" /> instances, outputting per-belt tension values</summary>
         public void CalculateForcesAndTorques(
             DevicePlugin.TelemetrySnapshot telemetrySnapshot,
-            double deltaTimeMsec,
+            double millisecondsSinceLastUpdate,
             out double leftShoulderTarget,
             out double rightShoulderTarget,
             out double leftWaistTarget,
-            out double rightWaistTarget)
+            out double rightWaistTarget
+        )
         {
-            // TODO: Apply idle tension only when not moving
-            /*if (!isMoving)
+            // Apply Idle Tension While In-Menus
+            if (!telemetrySnapshot.IsActive)
             {
+                double idleTension = _settings.IdleTension / 100.0;
+
                 leftShoulderTarget = idleTension;
                 rightShoulderTarget = idleTension;
                 leftWaistTarget = idleTension;
                 rightWaistTarget = idleTension;
-            }*/
 
-            // TODO: Apply horizontal bias to sway axis (left/right) to account for driver asymmetry
-
-
+                return;
+            }
 
             // Convert Telemetry To Vehicle Acceleration
             AccelerationVector vehicleAcceleration = new AccelerationVector(
@@ -163,13 +162,13 @@ namespace User.ActiveBeltTensioner
             );
 
             // Apply To Driver Acceleration
-            UpdateDriverAcceleration(vehicleAcceleration, deltaTimeMsec);
+            UpdateDriverAcceleration(vehicleAcceleration, millisecondsSinceLastUpdate);
 
             // Normalize Driver Acceleration (Before Adapting To Seat Frame Of Reference)
             AccelerationVector normalizedAcceleration = new AccelerationVector(
-                NormalizeAcceleration(_driverAcceleration.X, _surgeMinimum, _surgeMaximum),
-                NormalizeAcceleration(_driverAcceleration.Y, _swayMinimum, _swayMaximum),
-                NormalizeAcceleration(_driverAcceleration.Z, _heaveMinimum, _heaveMaximum)
+                NormalizeAcceleration(_driverAcceleration.X, _settings.MinimumSurge, _settings.MaximumSurge),
+                NormalizeAcceleration(_driverAcceleration.Y, _settings.MinimumSway, _settings.MaximumSway),
+                NormalizeAcceleration(_driverAcceleration.Z, _settings.MinimumHeave, _settings.MaximumHeave)
             );
 
             // Translate To Seat Frame Of Reference & Calculate Belt Tensions
@@ -180,6 +179,25 @@ namespace User.ActiveBeltTensioner
                 out leftWaistTarget,
                 out rightWaistTarget
             );
+
+            // Apply Additional Effects
+            BeltTensionTargets beltTensionTargets = new BeltTensionTargets(
+                leftShoulderTarget,
+                rightShoulderTarget,
+                leftWaistTarget,
+                rightWaistTarget
+            );
+
+            _effectPipeline.Apply(
+                telemetrySnapshot,
+                millisecondsSinceLastUpdate,
+                ref beltTensionTargets
+            );
+
+            leftShoulderTarget = beltTensionTargets.LeftShoulder;
+            rightShoulderTarget = beltTensionTargets.RightShoulder;
+            leftWaistTarget = beltTensionTargets.LeftWaist;
+            rightWaistTarget = beltTensionTargets.RightWaist;
         }
 
         /// <summary>Applies the given vehicle acceleration to the driver acceleration instance, subject to the damping factor and given time delta</summary>
@@ -197,7 +215,7 @@ namespace User.ActiveBeltTensioner
             double timeConstant = 0.05 + (_driverParameters.DampingFactor * 0.15);  // 0.05 - 0.2 seconds
 
             // Exponential Approach Factor
-            double approachFactor = 1.0 - Math.Exp(-secondsSinceLastUpdate / (timeConstant * _smoothingFactor));
+            double approachFactor = 1.0 - Math.Exp(-secondsSinceLastUpdate / (timeConstant * (_settings.SmoothingFactor / 100.0)));
 
             // Apply To Each Axis
             _driverAcceleration.X = _driverAcceleration.X + (vehicleAcceleration.X - _driverAcceleration.X) * approachFactor;
@@ -226,17 +244,17 @@ namespace User.ActiveBeltTensioner
             out double leftWaistTension,
             out double rightWaistTension)
         {
-            leftShoulderTension = CalculateBeltTension(acceleration, _leftShoulderBelt);
-            rightShoulderTension = CalculateBeltTension(acceleration, _rightShoulderBelt);
-            leftWaistTension = CalculateBeltTension(acceleration, _leftWaistBelt);
-            rightWaistTension = CalculateBeltTension(acceleration, _rightWaistBelt);
+            leftShoulderTension = CalculateBeltTension(acceleration, _leftShoulder);
+            rightShoulderTension = CalculateBeltTension(acceleration, _rightShoulder);
+            leftWaistTension = CalculateBeltTension(acceleration, _leftWaist);
+            rightWaistTension = CalculateBeltTension(acceleration, _rightWaist);
         }
 
         /// <summary>Returns the calculated tension value for a single belt based on the given normalized acceleration vector and belt geometry</summary>
         private double CalculateBeltTension(AccelerationVector acceleration, BeltGeometry belt)
         {
             double beltRadiansFromVertical = belt.RadiansFromVertical;
-            double beltDistanceFromVertical = Clamp(belt.DistanceFromCenter, 0.0, 1.0); // @TODO: Make Absolute
+            double beltDistanceFromVertical = 0.0; // Clamp(belt.DistanceFromCenter, 0.0, 1.0); // @TODO: Make Absolute
 
             // Already Reframed To Seat & Normalized To -1.0 to +1.0
             double seatFramedSurge = acceleration.X;
@@ -251,21 +269,24 @@ namespace User.ActiveBeltTensioner
             forceComponent = Clamp(forceComponent, -1.0, 1.0);
 
             // Map To Tension Range
-            double baseTension = _idleTension;
+            double idleTension = _settings.IdleTension / 100.0;
+            double minimumTension = _settings.MinimumTension / 100.0;
+            double maximumTension = _settings.MaximumTension / 100.0;
+            double baseTension = idleTension;
             double finalTension;
 
             if (forceComponent > 0)
             {
                 // Positive (Idle ~ Maximum)
-                finalTension = baseTension + (forceComponent * (_maximumTension - baseTension));
+                finalTension = baseTension + (forceComponent * (maximumTension - baseTension));
             }
             else
             {
                 // Negative (Idle ~ Minimum)
-                finalTension = baseTension + (forceComponent * (baseTension - _minimumTension));
+                finalTension = baseTension + (forceComponent * (baseTension - minimumTension));
             }
 
-            return Clamp(finalTension, _minimumTension, _maximumTension);
+            return Clamp(finalTension, minimumTension, maximumTension);
         }
 
         /// <summary>Normalizes the given acceleration value to -1.0 to +1.0, relative to the given range</summary>

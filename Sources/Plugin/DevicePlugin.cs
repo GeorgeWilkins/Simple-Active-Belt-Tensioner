@@ -49,8 +49,6 @@ namespace User.ActiveBeltTensioner
 
         private static string _settingsName = "SimpleActiveBeltTensioner";
 
-        private (int timeOffset, int tensionModifier)[] _upshiftModifierCurve = ParseUpshiftingModifiers(null);
-
         private readonly object _motorControllerLock = new object();
         private readonly object _telemetryLock = new object();
         private TelemetrySnapshot _latestTelemetry;
@@ -244,8 +242,6 @@ namespace User.ActiveBeltTensioner
             // Load Serialised Settings
             Settings = LoadSettings();
 
-            _upshiftModifierCurve = ParseUpshiftingModifiers(Settings.UpshiftingModifiers);
-
             IsEnabled = IsEnabled || Settings.StartAutomatically;
 
             // Register Actions (For External Control)
@@ -435,9 +431,14 @@ namespace User.ActiveBeltTensioner
                 return;
             }
 
-            if (e.PropertyName == nameof(Settings.UpshiftingModifiers))
+            if (
+                e.PropertyName == nameof(Settings.UpshiftingModifiers) ||
+                e.PropertyName == nameof(Settings.HorizontalBias) ||
+                e.PropertyName == nameof(Settings.EngineStrength) ||
+                e.PropertyName == nameof(Settings.UpshiftingStrength)
+            )
             {
-                _upshiftModifierCurve = ParseUpshiftingModifiers(Settings.UpshiftingModifiers);
+                _physicsCalculator?.ApplySettings(Settings);
 
                 return;
             }
@@ -472,14 +473,7 @@ namespace User.ActiveBeltTensioner
                 e.PropertyName == nameof(Settings.DriverMass) ||
                 e.PropertyName == nameof(Settings.DriverDamping) ||
                 e.PropertyName == nameof(Settings.SeatDegreesFromVertical) ||
-                e.PropertyName == nameof(Settings.LeftShoulderBeltDegreesFromVertical) ||
-                e.PropertyName == nameof(Settings.RightShoulderBeltDegreesFromVertical) ||
-                e.PropertyName == nameof(Settings.LeftWaistBeltDegreesFromVertical) ||
-                e.PropertyName == nameof(Settings.RightWaistBeltDegreesFromVertical) ||
-                e.PropertyName == nameof(Settings.LeftShoulderBeltDistance) ||
-                e.PropertyName == nameof(Settings.RightShoulderBeltDistance) ||
-                e.PropertyName == nameof(Settings.LeftWaistBeltDistance) ||
-                e.PropertyName == nameof(Settings.RightWaistBeltDistance)
+                e.PropertyName == nameof(Settings.WaistBeltDegreesFromVertical)
             )
             {
                 _physicsCalculator = new PhysicsForceCalculator(Settings);
@@ -558,14 +552,6 @@ namespace User.ActiveBeltTensioner
             double[] telemetrySwayBuffer = new double[telemetryBufferSize];
             double[] telemetryHeaveBuffer = new double[telemetryBufferSize];
             int telemetryBufferIndex = 0;
-
-            // Initialise Upshift Timer
-            Stopwatch upshiftStopwatch = Stopwatch.StartNew();
-            upshiftStopwatch.Reset();
-            
-            // Initialise Oscillation State (For Engine RPM Effects)
-            int oscillationDirection = 1;
-            Stopwatch oscillationStopwatch = Stopwatch.StartNew();
 
             // Monitor Control Loop Interval
             _controlLoopStopwatch = Stopwatch.StartNew();
@@ -748,37 +734,6 @@ namespace User.ActiveBeltTensioner
             return value;
         }
 
-        /// <summary>Returns the appropriate tension modifier for the given <paramref name="upshiftOffset"/> time</summary>
-        private double GetUpshiftModifier(double upshiftOffset)
-        {
-            if (upshiftOffset <= _upshiftModifierCurve[0].timeOffset)
-            {
-                return _upshiftModifierCurve[0].tensionModifier / 100.0;
-            }
-
-            if (upshiftOffset >= _upshiftModifierCurve[_upshiftModifierCurve.Length - 1].timeOffset)
-            {
-                return 0.0;
-            }
-
-            for (int i = 0; i < _upshiftModifierCurve.Length - 1; i++)
-            {
-                double fromTime  = _upshiftModifierCurve[i].timeOffset;
-                double fromValue = _upshiftModifierCurve[i].tensionModifier / 100.0;
-                double toTime    = _upshiftModifierCurve[i + 1].timeOffset;
-                double toValue   = _upshiftModifierCurve[i + 1].tensionModifier / 100.0;
-
-                if (upshiftOffset >= fromTime && upshiftOffset < toTime)
-                {
-                    double t = (upshiftOffset - fromTime) / (toTime - fromTime);
-
-                    return fromValue + t * (toValue - fromValue);
-                }
-            }
-
-            return 0.0;
-        }
-
         /// <summary>Validates a "milliseconds:torque,milliseconds:torque,..." formatted upshifting time/torque modifier string</summary>
         public static bool ValidateUpshiftingModifiers(string upshiftingModifiers)
         {
@@ -786,7 +741,7 @@ namespace User.ActiveBeltTensioner
         }
 
         /// <summary>Parses a "milliseconds:torque,milliseconds:torque,..." formatted upshifting time/torque modifier string, returning the parsed values or null if it is invalid</summary>
-        private static (int timeOffset, int tensionModifier)[] ParseUpshiftingModifiers(string upshiftingModifiers)
+        internal static (int timeOffset, int tensionModifier)[] ParseUpshiftingModifiers(string upshiftingModifiers)
         {
             if (string.IsNullOrWhiteSpace(upshiftingModifiers))
             {

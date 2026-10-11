@@ -120,9 +120,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BeltTensionTargets.cs" />
     <Compile Include="DevicePlugin.cs" />
     <Compile Include="DeviceSettings.cs" />
     <Compile Include="DeviceViewModel.cs" />
+    <Compile Include="Effects\EffectPipeline.cs" />
+    <Compile Include="Effects\EngineOscillationEffect.cs" />
+    <Compile Include="Effects\IEffect.cs" />
+    <Compile Include="Effects\SideBiasEffect.cs" />
+    <Compile Include="Effects\UpshiftBlipEffect.cs" />
     <Compile Include="Motor.cs" />
     <Compile Include="PhysicsForceCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -138,7 +144,9 @@
     <Compile Include="DeviceControl.xaml.cs">
       <DependentUpon>DeviceControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SettingSlider.xaml.cs" />
+    <Compile Include="SettingSlider.xaml.cs">
+      <DependentUpon>SettingSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SLocFormatted.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -172,10 +180,14 @@
     <Resource Include="Graphics\MenuIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Graphics\Configuration.PairedShoulderMotors.png" />
-    <Resource Include="Graphics\Configuration.SingleShoulderMotor.png" />
-    <Resource Include="Graphics\Configuration.SingleWaistMotor.png" />
-    <Resource Include="Graphics\Configuration.Seat.png" />
+    <Resource Include="Graphics\Configuration.Seat.Rear.Shoulder.Paired.png" />
+    <Resource Include="Graphics\Configuration.Seat.Rear.Shoulder.Present.png" />
+    <Resource Include="Graphics\Configuration.Seat.Rear.Waist.Present.png" />
+    <Resource Include="Graphics\Configuration.Seat.Side.png" />
+    <Resource Include="Graphics\Configuration.Seat.Rear.png" />
+    <Resource Include="Graphics\Configuration.Seat.Side.Waist.png" />
+    <Resource Include="Graphics\Configuration.Seat.Side.Shoulder.Present.png" />
+    <Resource Include="Graphics\Configuration.Seat.Side.Waist.Present.png" />
     <Content Include="Languages\User.ActiveBeltTensioner.resx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
