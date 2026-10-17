@@ -168,7 +168,7 @@ namespace User.ActiveBeltTensioner
 
         private void OnResetClick(object sender, RoutedEventArgs e)
         {
-            Value = Clamp(0d, Minimum, Maximum);
+            Value = (Minimum + Maximum) * 0.5;
         }
 
         private static double Clamp(double value, double minimum, double maximum)

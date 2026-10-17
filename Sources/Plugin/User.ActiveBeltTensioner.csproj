@@ -130,6 +130,10 @@
     <Compile Include="Effects\SideBiasEffect.cs" />
     <Compile Include="Effects\SmoothingEffect.cs" />
     <Compile Include="Effects\UpshiftBlipEffect.cs" />
+    <Compile Include="Normalizers\IRacingNormalizer.cs" />
+    <Compile Include="Normalizers\INormalizer.cs" />
+    <Compile Include="Normalizers\NormalizerPipeline.cs" />
+    <Compile Include="TelemetrySnapshot.cs" />
     <Compile Include="Motor.cs" />
     <Compile Include="PhysicsForceCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,54 +1,53 @@
 using System;
-using System.Diagnostics;
 using User.ActiveBeltTensioner;
 
 namespace User.ActiveBeltTensioner.Effects
 {
     internal sealed class EngineOscillationEffect : IEffect
     {
-        private readonly Stopwatch _oscillationStopwatch = new Stopwatch();
-        private int _oscillationDirection = 1;
+        private const double FullCycleRadians = Math.PI * 2.0;
 
-        public int Order => 20;
+        private double _oscillationPhaseRadians;
 
-        public void Apply(DeviceSettings settings, DevicePlugin.TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
+        public int Order => 100;
+
+        public void Apply(DeviceSettings settings, TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
         {
+            return; // @TODO: NOT WORKING WELL ENOUGH
+
             if (settings == null)
             {
-                _oscillationStopwatch.Reset();
-                _oscillationDirection = 1;
+                _oscillationPhaseRadians = 0.0;
 
                 return;
             }
 
             double maximumTension = settings.MaximumTension / 100.0;
             double engineStrength = settings.EngineStrength / 100.0;
-            double revolutions = telemetrySnapshot.Revolutions ?? 0.0;
+            double revolutions = telemetrySnapshot.Revolutions;
 
             if (!telemetrySnapshot.IsActive || revolutions <= 0.0 || engineStrength <= 0.0)
             {
-                _oscillationStopwatch.Reset();
-                _oscillationDirection = 1;
+                _oscillationPhaseRadians = 0.0;
                 return;
             }
 
-            if (!_oscillationStopwatch.IsRunning)
+            double deltaTimeSeconds = Math.Max(0.0, millisecondsSinceLastUpdate) / 1000.0;
+            double oscillationFrequencyHz = revolutions / 60.0;
+
+            _oscillationPhaseRadians += FullCycleRadians * oscillationFrequencyHz * deltaTimeSeconds;
+
+            if (_oscillationPhaseRadians >= FullCycleRadians)
             {
-                _oscillationStopwatch.Restart();
+                _oscillationPhaseRadians %= FullCycleRadians;
             }
 
-            double oscillationIntervalSeconds = 30.0 / revolutions;
-
-            if (_oscillationStopwatch.Elapsed.TotalSeconds >= oscillationIntervalSeconds)
-            {
-                _oscillationDirection *= -1;
-                _oscillationStopwatch.Restart();
-            }
+            int oscillationDirection = (Math.Sin(_oscillationPhaseRadians) >= 0.0) ? 1 : -1;
 
             double revolutionsFraction = ConvertToFractionOfRange(revolutions, 0.0, 5000.0);
             double adjustedEngineStrength = (1.0 - revolutionsFraction) * engineStrength * 0.5;
 
-            if (_oscillationDirection > 0)
+            if (oscillationDirection > 0)
             {
                 ApplyEngineBias(ref beltTensionTargets.LeftShoulder, ref beltTensionTargets.RightShoulder, adjustedEngineStrength, maximumTension);
                 ApplyEngineBias(ref beltTensionTargets.LeftWaist, ref beltTensionTargets.RightWaist, adjustedEngineStrength, maximumTension);

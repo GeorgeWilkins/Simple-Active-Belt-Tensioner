@@ -721,7 +721,7 @@ namespace User.ActiveBeltTensioner
 
                 if (_commandFailures > 1)
                 {
-                    Logging.Current.Warn("SABT: #" + this.Identifier + " motor communication failure (" + _commandFailures + "/" + _maximumConsecutiveFaults + " allowed)");
+                    Logging.Current.Warn("SABT: #" + this.Identifier + " motor communication timeout (" + _commandFailures + "/" + _maximumConsecutiveFaults + " allowed)");
                 }
 
                 return (_commandFailures < _maximumConsecutiveFaults);

@@ -159,8 +159,9 @@
   <data name="SABT_Message_AlterVehicleName" xml:space="preserve">
     <value>Vous pouvez modifier le nom du véhicule donné par SimHub si vous le souhaitez :</value>
   </data>
-  <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
-    <value>Les valeurs actuelles des curseurs de réglage seront réduites pour faciliter le réglage automatique. Continuer ?</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SABT_Message_AutomaticTuningReset" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Message_AutomaticTuningRequiresTelemetry" xml:space="preserve">
     <value>Une session de jeu ou un replay en mode fenêtré doit être ouvert et envoyer de la télémétrie pour activer le réglage automatique !</value>
@@ -171,11 +172,13 @@
   <data name="SABT_Message_ProfileAlreadyExists" xml:space="preserve">
     <value>Un profil pour cette combinaison de jeu et de véhicule existe déjà</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="SABT_Message_TooManyShoulderMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Message_TooManyWaistMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Message_NoMappedMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Message_PreviouslyAssignedMotorDetected" type="System.Resources.ResXNullRef, System.Windows.Forms">
@@ -293,6 +296,9 @@
     <value />
   </data>
   <data name="SABT_Text_SeatDegreesFromVertical" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Text_Strengths" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Text_WaistBeltDegreesFromVertical" type="System.Resources.ResXNullRef, System.Windows.Forms">
@@ -421,14 +427,11 @@
 • Le second curseur règle la température à laquelle les moteurs doivent être désactivés pour prévenir les dommages
 • Tant que la température est comprise entre ces valeurs, la puissance des moteurs sera progressivement réduite (proportionnelle à la température)</value>
   </data>
-  <data name="SABT_Text_Telemetry" xml:space="preserve">
-    <value>• Les plages de valeurs autorisées pour la télémétrie entrante (toute valeur supérieure ou inférieure sera écrêtée, résultant en une sortie moteur nulle ou maximale)
-• Des plages plus étroites produisent des effets plus agressifs, des plages plus larges produisent une plus grande subtilité
-• Évitez de définir les `Heave Limits` trop étroitement, car cela peut supprimer d'autres effets ; rappelez-vous que seuls les grands sauts/atterrissages doivent être ressentis dans les ceintures</value>
+  <data name="SABT_Text_Telemetry" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Text_Smoothing" xml:space="preserve">
-    <value>• Dans quelle mesure la sortie de tension doit être lissée
-• La sortie de tension indiquée ci-dessus n'inclut pas cet effet de lissage</value>
+  <data name="SABT_Text_Smoothing" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Label_IdleTension" xml:space="preserve">
     <value>Tension au repos</value>
@@ -445,21 +448,6 @@
   <data name="SABT_Label_VerticalBias" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Label_Cornering" xml:space="preserve">
-    <value>Virage</value>
-  </data>
-  <data name="SABT_Label_Braking" xml:space="preserve">
-    <value>Freinage</value>
-  </data>
-  <data name="SABT_Label_Acceleration" xml:space="preserve">
-    <value>Accélération</value>
-  </data>
-  <data name="SABT_Label_Jumping" xml:space="preserve">
-    <value>Sauts</value>
-  </data>
-  <data name="SABT_Label_Landing" xml:space="preserve">
-    <value>Atterrissage</value>
-  </data>
   <data name="SABT_Label_Mapping" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
@@ -469,14 +457,23 @@
   <data name="SABT_Label_Status" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="SABT_Label_SurgeStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Label_SwayStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Label_HeaveStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Label_SerialPort" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Label_Engine" xml:space="preserve">
     <value>Régime moteur</value>
   </data>
-  <data name="SABT_Label_SurgeLimits" xml:space="preserve">
-    <value>Limites Surge (Accélération/Freinage)</value>
+  <data name="SABT_Label_SurgeLimits" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
     <value>Limites Sway (Virage)</value>
@@ -487,8 +484,8 @@
   <data name="SABT_Label_Temperatures" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Label_HeaveLimits" xml:space="preserve">
-    <value>Limites Heave (Sauts)</value>
+  <data name="SABT_Label_HeaveLimits" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
     <value>Facteur de lissage</value>

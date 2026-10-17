@@ -25,10 +25,10 @@ namespace User.ActiveBeltTensioner.Effects
                 .OrderBy(effect => effect.Order)
                 .ToArray();
 
-            Logging.Current.Info($"SABT: Detected {_effects.Length} effects classes: {string.Join(", ", _effects.Select(e => e.GetType().Name))}");
+            Logging.Current.Info($"SABT: Detected {_effects.Length} effects classes: {string.Join(" > ", _effects.Select(e => e.GetType().Name))}");
         }
 
-        public void Apply(DeviceSettings settings, DevicePlugin.TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
+        public void Apply(DeviceSettings settings, TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
         {
             for (int i = 0; i < _effects.Length; i++)
             {

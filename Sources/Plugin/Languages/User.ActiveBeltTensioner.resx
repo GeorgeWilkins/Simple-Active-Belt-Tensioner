@@ -160,7 +160,7 @@
     <value>You may alter the vehicle name from the one given by SimHub if desired:</value>
   </data>
   <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
-    <value>The current tuning slider values will be reduced to facilitate automatic tuning. Proceed?</value>
+    <value>The current tuning and strength slider values will be reduced to facilitate automatic tuning. Proceed?</value>
   </data>
   <data name="SABT_Message_AutomaticTuningRequiresTelemetry" xml:space="preserve">
     <value>A windowed game session or replay must be open and sending telemetry to enable auto-tuning!</value>
@@ -176,6 +176,9 @@
   </data>
   <data name="SABT_Message_TooManyWaistMotors" xml:space="preserve">
     <value>You have mapped more than one motor to a waist belt, which is not supported</value>
+  </data>
+  <data name="SABT_Message_NoMappedMotors" xml:space="preserve">
+    <value>No motors are currently mapped to belts, so nothing will happen.</value>
   </data>
   <data name="SABT_Message_PreviouslyAssignedMotorDetected" xml:space="preserve">
     <value>A motor with a previously assigned identifier has been detected. Are you in intentionally changing the assigned motor identifier?</value>
@@ -296,6 +299,10 @@ If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons t
   <data name="SABT_Text_SeatDegreesFromVertical" xml:space="preserve">
     <value>• How far the seat back is angled backwards, relative to your rig's vertical axis (perpendicular to the floor)
 • Used to calculate how in-game forces should be applied to your belts</value>
+  </data>
+  <data name="SABT_Text_Strengths" xml:space="preserve">
+    <value>• Adjust these values **after everything else**, as they should normally be left at the default **100%**
+• Increase or decrease these values if an effect is too weak or too strong for your preferences</value>
   </data>
   <data name="SABT_Text_WaistBeltDegreesFromVertical" xml:space="preserve">
     <value>• The angle of the waist belts from a side-on viewpoint, relative to your rig's vertical axis (perpendicular to the floor)
@@ -455,13 +462,13 @@ For more information, to report a bug or contribute, consult the project GitHub 
 • While between these temperatures, the motor output will be gradually reduced (proportional to the temperature)</value>
   </data>
   <data name="SABT_Text_Telemetry" xml:space="preserve">
-    <value>• The permitted value ranges for incoming telemetry (anything more or less will be clipped, resulting in zero or maximum motor output)
-• Narrower ranges result in more aggressive effects, wider ranges result in greater subtlety
-• Avoid setting `Heave Limits` too narrowly, as this can suppress other effects; remember that only large jumps/landings should be felt in the belts</value>
+    <value>• Adjust these ranges **before anything else**, as they control the overall mapping of telemetry forces to belt tension
+• Use **Auto-Tuning** to set these automatically, or adjust manually by observing plotted telemetry data during a replay
+• These should equal the **maximum forces** you expect your vehicle to experience under normal gameplay</value>
   </data>
   <data name="SABT_Text_Smoothing" xml:space="preserve">
-    <value>• How much the tension output should be smoothed
-• The tension output indicated above does not include this smoothing effect</value>
+    <value>• How much the belt tension output should be smoothed
+• This does not apply to all effects (such as **Engine RPM**), as that would make them ineffective</value>
   </data>
   <data name="SABT_Label_IdleTension" xml:space="preserve">
     <value>Idle Tension</value>
@@ -478,21 +485,6 @@ For more information, to report a bug or contribute, consult the project GitHub 
   <data name="SABT_Label_VerticalBias" xml:space="preserve">
     <value>Waist/Shoulder Bias</value>
   </data>
-  <data name="SABT_Label_Cornering" xml:space="preserve">
-    <value>Cornering</value>
-  </data>
-  <data name="SABT_Label_Braking" xml:space="preserve">
-    <value>Braking</value>
-  </data>
-  <data name="SABT_Label_Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
-  </data>
-  <data name="SABT_Label_Jumping" xml:space="preserve">
-    <value>Jumping</value>
-  </data>
-  <data name="SABT_Label_Landing" xml:space="preserve">
-    <value>Landing</value>
-  </data>
   <data name="SABT_Label_Mapping" xml:space="preserve">
     <value>Mapping</value>
   </data>
@@ -502,6 +494,15 @@ For more information, to report a bug or contribute, consult the project GitHub 
   <data name="SABT_Label_Status" xml:space="preserve">
     <value>Status</value>
   </data>
+  <data name="SABT_Label_SurgeStrength" xml:space="preserve">
+    <value>Surge Strength (Acceleration &amp; Braking)</value>
+  </data>
+  <data name="SABT_Label_SwayStrength" xml:space="preserve">
+    <value>Sway Strength (Cornering)</value>
+  </data>
+  <data name="SABT_Label_HeaveStrength" xml:space="preserve">
+    <value>Heave Strength (Bumps &amp; Jumps)</value>
+  </data>
   <data name="SABT_Label_SerialPort" xml:space="preserve">
     <value>Serial Port</value>
   </data>
@@ -509,7 +510,7 @@ For more information, to report a bug or contribute, consult the project GitHub 
     <value>Engine RPM</value>
   </data>
   <data name="SABT_Label_SurgeLimits" xml:space="preserve">
-    <value>Surge Limits (Acceleration/Braking)</value>
+    <value>Surge Limits (Acceleration &amp; Braking)</value>
   </data>
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
     <value>Sway Limits (Cornering)</value>
@@ -521,7 +522,7 @@ For more information, to report a bug or contribute, consult the project GitHub 
     <value>Temperatures</value>
   </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
-    <value>Heave Limits (Jumps)</value>
+    <value>Heave Limits (Bumps &amp; Jumps)</value>
   </data>
   <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
     <value>Smoothing Factor</value>

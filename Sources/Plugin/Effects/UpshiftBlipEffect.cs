@@ -7,9 +7,9 @@ namespace User.ActiveBeltTensioner.Effects
     {
         private readonly Stopwatch _upshiftStopwatch = new Stopwatch();
 
-        public int Order => 10;
+        public int Order => 20;
 
-        public void Apply(DeviceSettings settings, DevicePlugin.TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
+        public void Apply(DeviceSettings settings, TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
         {
             if (settings == null || !telemetrySnapshot.IsActive)
             {

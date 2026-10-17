@@ -58,21 +58,11 @@ namespace User.ActiveBeltTensioner
 
         private readonly AutoResetEvent _hasTelemetryArrived = new AutoResetEvent(false);
         private const int _controlLoopInterval = 3; // Milliseconds;
+        private const int _automaticTuningUpdateInterval = 16; // Milliseconds (~60FPS)
         private Thread _controlThread;
         private volatile bool _runControlLoop = false;
         private volatile bool _hasBeenInactive = true;
         private volatile bool _hasBypassedActivationWarning = false;
-
-        public struct TelemetrySnapshot
-        {
-            public double? Surge;
-            public double? Sway;
-            public double? Heave;
-            public double? Speed;
-            public double? Revolutions;
-            public bool DidUpshift;
-            public bool IsActive;
-        }
 
         private volatile bool _isEnabled = false;
         public bool IsEnabled
@@ -87,6 +77,16 @@ namespace User.ActiveBeltTensioner
 
                     if (_isEnabled)
                     {
+                        if (!MotorController.HasAnyMappings)
+                        {
+                            MessageBox.Show(
+                                SLoc.GetValue("SABT_Message_NoMappedMotors"),
+                                SLoc.GetValue("SABT_Plugin"),
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning
+                            );
+                        }
+
                         DoWithoutWaiting(devicePlugin =>
                         {
                             devicePlugin.MotorController?.Connect();
@@ -200,6 +200,10 @@ namespace User.ActiveBeltTensioner
                             Settings.MaximumSway = 1;
                             Settings.MinimumHeave = -20;
                             Settings.MaximumHeave = 40;
+
+                            Settings.SurgeStrength = 100;
+                            Settings.SwayStrength = 100;
+                            Settings.HeaveStrength = 100;
 
                             IsEnabled = false;
                         }
@@ -490,20 +494,7 @@ namespace User.ActiveBeltTensioner
         /// <summary>Called by SimHub when new telemetry data is available</summary>
         public void DataUpdate(PluginManager pluginManager, ref GameData data)
         {
-            short oldGear = 0;
-            short newGear = 0;
-            bool inGear = Int16.TryParse(data.OldData?.Gear, out oldGear) && Int16.TryParse(data.NewData?.Gear, out newGear);
-
-            TelemetrySnapshot telemetrySnapshot = new TelemetrySnapshot
-            {
-                Surge = data.NewData?.AccelerationSurge,
-                Sway = data.NewData?.AccelerationSway,
-                Heave = data.NewData?.AccelerationHeave,
-                Speed = data.NewData?.SpeedKmh,
-                Revolutions = data.NewData?.Rpms,
-                DidUpshift = inGear && (newGear > oldGear),
-                IsActive = (data.GameRunning && !data.GameInMenu) || data.GameReplay
-            };
+            TelemetrySnapshot telemetrySnapshot = TelemetrySnapshot.Create(data);
 
             lock (_telemetryLock)
             {
@@ -553,7 +544,8 @@ namespace User.ActiveBeltTensioner
 
             // Monitor Control Loop Interval
             _controlLoopStopwatch = Stopwatch.StartNew();
-            long latestTime = 0;
+            long latestPhysicsCalculationTime = 0;
+            long latestAutomaticTuningUpdate = 0;
 
             while (_runControlLoop)
             {
@@ -572,22 +564,17 @@ namespace User.ActiveBeltTensioner
 
                 try
                 {
-                    // Calculate Elapsed Time
-                    long currentTime = _controlLoopStopwatch.ElapsedMilliseconds;
-                    long elapsedTime = (latestTime > 0) ? (currentTime - latestTime) : _controlLoopInterval;
-                         elapsedTime = Math.Max(1, Math.Min(100, elapsedTime));
-                    
-                    latestTime = currentTime;
-
                     // Send Telemetry To Physics Calculator
                     _physicsCalculator.CalculateForcesAndTorques(
                         telemetrySnapshot,
-                        elapsedTime,
+                        _controlLoopStopwatch.ElapsedMilliseconds - latestPhysicsCalculationTime,
                         out double leftShoulderTarget,
                         out double rightShoulderTarget,
                         out double leftWaistTarget,
                         out double rightWaistTarget
                     );
+
+                    latestPhysicsCalculationTime = _controlLoopStopwatch.ElapsedMilliseconds;
 
                     // Update Telemetry Graph
                     if (telemetrySnapshot.IsActive && SelectedTabIndex == 2)
@@ -604,18 +591,23 @@ namespace User.ActiveBeltTensioner
                     // Apply Automatic Tuning
                     if (IsAutomaticallyTuning)
                     {
-                        int averagedSurge = GetAveragedTelemetryValue(telemetrySurgeBuffer, telemetrySnapshot.Surge ?? 0, telemetryBufferIndex);
-                        int averagedSway = GetAveragedTelemetryValue(telemetrySwayBuffer, Math.Abs(telemetrySnapshot.Sway ?? 0), telemetryBufferIndex);
-                        int averagedHeave = GetAveragedTelemetryValue(telemetryHeaveBuffer, telemetrySnapshot.Heave ?? 0, telemetryBufferIndex);
-                        
-                        Settings.MaximumSurge = Math.Max(Settings.MaximumSurge, averagedSurge);
-                        Settings.MinimumSurge = Math.Min(Settings.MinimumSurge, averagedSurge);
-                        Settings.MaximumSway = Math.Max(Settings.MaximumSway, averagedSway);
-                        Settings.MinimumSway = Settings.MaximumSway * -1;
-                        Settings.MaximumHeave = Math.Max(Settings.MaximumHeave, averagedHeave);
-                        Settings.MinimumHeave = Math.Min(Settings.MinimumHeave, averagedHeave);
+                        int averagedSurge = GetAveragedTelemetryValue(telemetrySurgeBuffer, telemetrySnapshot.Surge, telemetryBufferIndex);
+                        int averagedSway = GetAveragedTelemetryValue(telemetrySwayBuffer, Math.Abs(telemetrySnapshot.Sway), telemetryBufferIndex);
+                        int averagedHeave = GetAveragedTelemetryValue(telemetryHeaveBuffer, telemetrySnapshot.Heave, telemetryBufferIndex);
                         
                         telemetryBufferIndex = (telemetryBufferIndex + 1) % telemetryBufferSize;
+
+                        if ((_controlLoopStopwatch.ElapsedMilliseconds - latestAutomaticTuningUpdate) >= _automaticTuningUpdateInterval)
+                        {
+                            Settings.MaximumSurge = Math.Max(Settings.MaximumSurge, averagedSurge);
+                            Settings.MinimumSurge = Math.Min(Settings.MinimumSurge, averagedSurge);
+                            Settings.MaximumSway = Math.Max(Settings.MaximumSway, averagedSway);
+                            Settings.MinimumSway = Settings.MaximumSway * -1;
+                            Settings.MaximumHeave = Math.Max(Settings.MaximumHeave, averagedHeave);
+                            Settings.MinimumHeave = Math.Min(Settings.MinimumHeave, averagedHeave);
+
+                            latestAutomaticTuningUpdate = _controlLoopStopwatch.ElapsedMilliseconds;
+                        }
                         
                         continue;
                     }
@@ -705,23 +697,6 @@ namespace User.ActiveBeltTensioner
                 new Action(() => actionToPerform(this)),
                 DispatcherPriority.Send
             );
-        }
-
-        /// <summary>A utility method for converting the 10x/100x/1000x integers used in the settings sliders with decimal values</summary>
-        private static double ConvertToFraction(double value, uint resolution = 1000)
-        {
-            value /= resolution;
-            if (value < -1.0) { return -1.0; }
-            if (value > 1.0) { return 1.0; }
-            return value;
-        }
-
-        /// <summary>A utility method for converting the integers used in the settings sliders with decimal values (relative to the given range)</summary>
-        private static double ConvertToFractionOfRange(double value, double min, double max)
-        {
-            value = ClampTo(value, min, max);
-
-            return (value - min) / (max - min);
         }
 
         /// <summary>A utility method for clamping the given value to a given range</summary>
@@ -1118,9 +1093,9 @@ namespace User.ActiveBeltTensioner
         {
             double x = _plotPointIndex++;
 
-            _surgeSeries.Points.Add(new DataPoint(x, telemetrySnapshot.Surge ?? 0.0));
-            _swaySeries.Points.Add(new DataPoint(x, telemetrySnapshot.Sway ?? 0.0));
-            _heaveSeries.Points.Add(new DataPoint(x, telemetrySnapshot.Heave ?? 0.0));
+            _surgeSeries.Points.Add(new DataPoint(x, telemetrySnapshot.Surge));
+            _swaySeries.Points.Add(new DataPoint(x, telemetrySnapshot.Sway));
+            _heaveSeries.Points.Add(new DataPoint(x, telemetrySnapshot.Heave));
             _leftWaistSeries.Points.Add(new DataPoint(x, leftwaistTorque * 100));
             _rightWaistSeries.Points.Add(new DataPoint(x, rightwaistTorque * 100));
             _leftShoulderSeries.Points.Add(new DataPoint(x, leftShoulderTorque * 100));

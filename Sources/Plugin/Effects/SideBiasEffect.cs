@@ -5,9 +5,9 @@ namespace User.ActiveBeltTensioner.Effects
 {
     internal sealed class SideBiasEffect : IEffect
     {
-        public int Order => 1;
+        public int Order => 10;
 
-        public void Apply(DeviceSettings settings, DevicePlugin.TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
+        public void Apply(DeviceSettings settings, TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
         {
             if (settings == null || !telemetrySnapshot.IsActive)
             {

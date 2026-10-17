@@ -679,10 +679,23 @@
 
                                     <ContentControl Style="{StaticResource SettingStyle}">
                                         <StackPanel>
-                                            <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_SurgeLimits}" Unit="m/s²" Minimum="-50" Maximum="50" Step="0.1" LeftValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_SwayLimits}" Unit="m/s²" Minimum="-50" Maximum="50" Step="0.1" LeftValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ShouldMirror="True" />
-                                            <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_HeaveLimits}" Unit="m/s²" Minimum="-50" Maximum="100" Step="0.1" LeftValue="{Binding Settings.MinimumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Telemetry}" />
+                                            <local:SettingRangeSlider Title="{SLoc SABT_Label_SurgeLimits}" Unit="m/s²" Minimum="-50" Maximum="50" Step="0.1" LeftValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingRangeSlider Title="{SLoc SABT_Label_SwayLimits}" Unit="m/s²" Minimum="-50" Maximum="50" Step="0.1" LeftValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ShouldMirror="True" />
+                                            <local:SettingRangeSlider Title="{SLoc SABT_Label_HeaveLimits}" Unit="m/s²" Minimum="-50" Maximum="100" Step="0.1" LeftValue="{Binding Settings.MinimumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                                <local:SLocFormatted Key="SABT_Text_Telemetry" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ContentControl>
+
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
+                                            <local:SettingSlider Title="{SLoc SABT_Label_SurgeStrength}" Unit="%" Minimum="0.0" Maximum="200.0" Step="0.1" ShowReset="True" Value="{Binding Settings.SurgeStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_SwayStrength}" Unit="%" Minimum="0.0" Maximum="200.0" Step="0.1" ShowReset="True" Value="{Binding Settings.SwayStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_HeaveStrength}" Unit="%" Minimum="0.0" Maximum="200.0" Step="0.1" ShowReset="True" Value="{Binding Settings.HeaveStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                                <local:SLocFormatted Key="SABT_Text_Strengths" />
+                                            </TextBlock>
                                         </StackPanel>
                                     </ContentControl>
 

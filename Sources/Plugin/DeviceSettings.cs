@@ -321,8 +321,59 @@ namespace User.ActiveBeltTensioner
 
 
 
+            
 
 
+
+
+
+        private double _surgeStrength = 100.0;
+        public double SurgeStrength
+        {
+            get { return _surgeStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(200.0, value));
+
+                if (Math.Abs(_surgeStrength - clampedValue) > double.Epsilon)
+                {
+                    _surgeStrength = clampedValue;
+                    InvokePropertyChange(nameof(SurgeStrength));
+                }
+            }
+        }
+
+        private double _swayStrength = 100.0;
+        public double SwayStrength
+        {
+            get { return _swayStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(200.0, value));
+
+                if (Math.Abs(_swayStrength - clampedValue) > double.Epsilon)
+                {
+                    _swayStrength = clampedValue;
+                    InvokePropertyChange(nameof(SwayStrength));
+                }
+            }
+        }
+
+        private double _heaveStrength = 100.0;
+        public double HeaveStrength
+        {
+            get { return _heaveStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(200.0, value));
+
+                if (Math.Abs(_heaveStrength - clampedValue) > double.Epsilon)
+                {
+                    _heaveStrength = clampedValue;
+                    InvokePropertyChange(nameof(HeaveStrength));
+                }
+            }
+        }
 
 
 
@@ -658,6 +709,9 @@ namespace User.ActiveBeltTensioner
             MaximumSway = profile.MaximumSway;
             MinimumHeave = profile.MinimumHeave;
             MaximumHeave = profile.MaximumHeave;
+            SurgeStrength = profile.SurgeStrength;
+            SwayStrength = profile.SwayStrength;
+            HeaveStrength = profile.HeaveStrength;
             SmoothingFactor = profile.SmoothingFactor;
             EngineStrength = profile.EngineStrength;
             UpshiftingStrength = profile.UpshiftingStrength;
@@ -844,6 +898,9 @@ namespace User.ActiveBeltTensioner
         public double MaximumSway { get; set; }
         public double MinimumHeave { get; set; }
         public double MaximumHeave { get; set; }
+        public double SurgeStrength { get; set; }
+        public double SwayStrength { get; set; }
+        public double HeaveStrength { get; set; }
         public double SmoothingFactor { get; set; }
         public double EngineStrength { get; set; }
         public double UpshiftingStrength { get; set; }
@@ -894,6 +951,9 @@ namespace User.ActiveBeltTensioner
                 MaximumSway = settings.MaximumSway,
                 MinimumHeave = settings.MinimumHeave,
                 MaximumHeave = settings.MaximumHeave,
+                SurgeStrength = settings.SurgeStrength,
+                SwayStrength = settings.SwayStrength,
+                HeaveStrength = settings.HeaveStrength,
                 SmoothingFactor = settings.SmoothingFactor,
                 EngineStrength = settings.EngineStrength,
                 UpshiftingStrength = settings.UpshiftingStrength,
@@ -914,6 +974,9 @@ namespace User.ActiveBeltTensioner
                 MaximumSway = this.MaximumSway,
                 MinimumHeave = this.MinimumHeave,
                 MaximumHeave = this.MaximumHeave,
+                SurgeStrength = this.SurgeStrength,
+                SwayStrength = this.SwayStrength,
+                HeaveStrength = this.HeaveStrength,
                 SmoothingFactor = this.SmoothingFactor,
                 EngineStrength = this.EngineStrength,
                 UpshiftingStrength = this.UpshiftingStrength,

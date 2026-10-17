@@ -76,9 +76,9 @@ namespace User.ActiveBeltTensioner
             };
         }
 
-        /// <summary>Applies force calculations to the given <see cref="DevicePlugin.TelemetrySnapshot" />, translating acceleration by seat angle and projecting waist belts by their configured angles</summary>
+        /// <summary>Applies force calculations to the given <see cref="TelemetrySnapshot" />, translating acceleration by seat angle and projecting waist belts by their configured angles</summary>
         public void CalculateForcesAndTorques(
-            DevicePlugin.TelemetrySnapshot telemetrySnapshot,
+            TelemetrySnapshot telemetrySnapshot,
             double millisecondsSinceLastUpdate,
             out double leftShoulderTarget,
             out double rightShoulderTarget,
@@ -101,9 +101,9 @@ namespace User.ActiveBeltTensioner
 
             // Convert Telemetry To Vehicle Acceleration
             AccelerationVector vehicleAcceleration = new AccelerationVector(
-                telemetrySnapshot.Surge ?? 0.0,
-                telemetrySnapshot.Sway ?? 0.0,
-                telemetrySnapshot.Heave ?? 0.0
+                telemetrySnapshot.Surge,
+                telemetrySnapshot.Sway,
+                telemetrySnapshot.Heave
             );
 
             // Normalize Vehicle Acceleration (Before Adapting To Seat Frame Of Reference)
@@ -113,9 +113,12 @@ namespace User.ActiveBeltTensioner
                 NormalizeAcceleration(vehicleAcceleration.Z, _settings.MinimumHeave, _settings.MaximumHeave)
             );
 
+            // Apply Per-Axis Strength Gains
+            AccelerationVector strengthAdjustedAcceleration = ApplyStrengthGains(normalizedAcceleration);
+
             // Translate To Seat Frame Of Reference & Calculate Belt Tensions
             CalculateBeltTensions(
-                TranslateToSeatFrameOfReference(normalizedAcceleration),
+                TranslateToSeatFrameOfReference(strengthAdjustedAcceleration),
                 out leftShoulderTarget,
                 out rightShoulderTarget,
                 out leftWaistTarget,
@@ -155,6 +158,26 @@ namespace User.ActiveBeltTensioner
             double rotatedZ = acceleration.X * sin + acceleration.Z * cos;
 
             return new AccelerationVector(rotatedX, rotatedY, rotatedZ);
+        }
+
+        /// <summary>Applies configurable per-axis strength gains to normalized acceleration</summary>
+        private AccelerationVector ApplyStrengthGains(AccelerationVector acceleration)
+        {
+            double surgeGain = PercentageToGain(_settings.SurgeStrength);
+            double swayGain = PercentageToGain(_settings.SwayStrength);
+            double heaveGain = PercentageToGain(_settings.HeaveStrength);
+
+            return new AccelerationVector(
+                acceleration.X * surgeGain,
+                acceleration.Y * swayGain,
+                acceleration.Z * heaveGain
+            );
+        }
+
+        /// <summary>Converts a 0-200 strength slider to gain where 100 = 1.0x</summary>
+        private static double PercentageToGain(double percentage)
+        {
+            return Clamp(percentage, 0.0, 200.0) / 100.0;
         }
 
         /// <summary>Determines belt forces to apply based on the given acceleration vector and predefined belt geometry</summary>

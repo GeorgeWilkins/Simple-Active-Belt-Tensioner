@@ -9,9 +9,9 @@ namespace User.ActiveBeltTensioner.Effects
         private double _leftWaist;
         private double _rightWaist;
 
-        public int Order => 100;
+        public int Order => 1;
 
-        public void Apply(DeviceSettings settings, DevicePlugin.TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
+        public void Apply(DeviceSettings settings, TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
         {
             if (settings == null)
             {

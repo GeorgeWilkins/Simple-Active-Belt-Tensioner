@@ -172,6 +172,14 @@ namespace User.ActiveBeltTensioner
             }
         }
 
+        public bool HasAnyMappings
+        {
+            get
+            {
+                return Motors.Any(motor => motor.Mapping.Key != Motor.MotorMapping.Unused.Key);
+            }
+        }
+
         private DeviceInstance[] _devices = new DeviceInstance[0];
         public DeviceInstance[] Devices
         {
@@ -572,73 +580,79 @@ namespace User.ActiveBeltTensioner
 
             if (currentTicks - _lastCommandTicks >= _motorCommandTicks)
             {
-                // Handle Motor Status
-                Motor motor = Motors.First(m => m.Identifier == _motorCommandIdentifier);
+                bool hasCommanded = false;
 
-                // Logging.Current.Info("#" + _motorCommandIdentifier + ": " + (motor.IsConnected ? "CONNECTED" : "UNKNOWN") + " - " + motor.Mapping.Key);
-
-                if (motor.IsConnected && motor.Mapping.Key != Motor.MotorMapping.Unused.Key)
+                while (!hasCommanded)
                 {
-                    // Query Motor Status
-                    if (currentTicks - _lastQueryTicks >= _motorQueryTicks)
-                    {
-                        motor.Query(true);
+                    // Handle Motor Status
+                    Motor motor = Motors.First(m => m.Identifier == _motorCommandIdentifier);
 
-                        _lastQueryTicks = currentTicks;
+                    if (motor.IsConnected && motor.Mapping.Key != Motor.MotorMapping.Unused.Key)
+                    {
+                        // Query Motor Status
+                        if (currentTicks - _lastQueryTicks >= _motorQueryTicks)
+                        {
+                            motor.Query(true);
+
+                            _lastQueryTicks = currentTicks;
+                        }
+
+                        // Apply Thermal Throttling
+                        int reductionRange = _plugin.Settings.StoppedOutputTemperature - _plugin.Settings.ReducedOutputTemperature;
+                        double outputReduction = 1.0;
+
+                        if (motor.Temperature >= _plugin.Settings.ReducedOutputTemperature)
+                        {
+                            motor.Status = Motor.MotorStatus.Overheating;
+
+                            double motorReduction = Math.Max(0.0, Math.Min(1.0,
+                                (_plugin.Settings.StoppedOutputTemperature - (motor.Temperature ?? 0)) / (double)reductionRange
+                            ));
+
+                            outputReduction = Math.Min(outputReduction, motorReduction);
+                        }
+
+                        if (motor.Temperature >= _plugin.Settings.StoppedOutputTemperature)
+                        {
+                            motor.Status = Motor.MotorStatus.Overheated;
+
+                            outputReduction = 0.0;
+                        }
+
+                        // Map Torque Output
+                        double motorTorque = 0.0;
+                        if (motor.Mapping.Key == Motor.MotorMapping.LeftShoulder.Key)
+                        {
+                            motorTorque = shoulderLeft * outputReduction;
+                        }
+                        else if (motor.Mapping.Key == Motor.MotorMapping.RightShoulder.Key)
+                        {
+                            motorTorque = shoulderRight * outputReduction;
+                        }
+                        else if (motor.Mapping.Key == Motor.MotorMapping.LeftWaist.Key)
+                        {
+                            motorTorque = waistLeft * outputReduction;
+                        }
+                        else if (motor.Mapping.Key == Motor.MotorMapping.RightWaist.Key)
+                        {
+                            motorTorque = waistRight * outputReduction;
+                        }
+
+                        // Send Command
+                        motor.SetTorque(motorTorque);
+                        
+                        hasCommanded = true;
+
+                        _lastCommandTicks = currentTicks;
                     }
 
-                    // Apply Thermal Throttling
-                    int reductionRange = _plugin.Settings.StoppedOutputTemperature - _plugin.Settings.ReducedOutputTemperature;
-                    double outputReduction = 1.0;
-
-                    if (motor.Temperature >= _plugin.Settings.ReducedOutputTemperature)
+                    // Select Next Motor
+                    if (++_motorCommandIdentifier > 4)
                     {
-                        motor.Status = Motor.MotorStatus.Overheating;
+                        hasCommanded = true;
 
-                        double motorReduction = Math.Max(0.0, Math.Min(1.0,
-                            (_plugin.Settings.StoppedOutputTemperature - (motor.Temperature ?? 0)) / (double)reductionRange
-                        ));
-
-                        outputReduction = Math.Min(outputReduction, motorReduction);
+                        _motorCommandIdentifier = 1;
                     }
-
-                    if (motor.Temperature >= _plugin.Settings.StoppedOutputTemperature)
-                    {
-                        motor.Status = Motor.MotorStatus.Overheated;
-
-                        outputReduction = 0.0;
-                    }
-
-                    // Map Torque Output
-                    double motorTorque = 0.0;
-                    if (motor.Mapping.Key == Motor.MotorMapping.LeftShoulder.Key)
-                    {
-                        motorTorque = shoulderLeft * outputReduction;
-                    }
-                    else if (motor.Mapping.Key == Motor.MotorMapping.RightShoulder.Key)
-                    {
-                        motorTorque = shoulderRight * outputReduction;
-                    }
-                    else if (motor.Mapping.Key == Motor.MotorMapping.LeftWaist.Key)
-                    {
-                        motorTorque = waistLeft * outputReduction;
-                    }
-                    else if (motor.Mapping.Key == Motor.MotorMapping.RightWaist.Key)
-                    {
-                        motorTorque = waistRight * outputReduction;
-                    }
-
-                    // Logging.Current.Info("#" + _motorCommandIdentifier + ": " + motorTorque);
-
-                    motor.SetTorque(motorTorque);
-
-                    _lastCommandTicks = currentTicks;
-                }
-
-                // Select Next Motor
-                if (++_motorCommandIdentifier > 4)
-                {
-                    _motorCommandIdentifier = 1;
                 }
             }
 
