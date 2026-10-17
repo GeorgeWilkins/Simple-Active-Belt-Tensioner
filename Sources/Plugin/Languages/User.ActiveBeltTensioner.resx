@@ -314,7 +314,8 @@ If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons t
   </data>
   <data name="SABT_Text_Strengths" xml:space="preserve">
     <value>• Adjust these values **after everything else**, as they should normally be left at the default **100%**
-• Increase or decrease these values if an effect is too weak or too strong for your preferences</value>
+• Increase or decrease these values if an effect is too weak or too strong for your preferences
+• Improper adjustment of these values will result in clipped or oversaturated effects</value>
   </data>
   <data name="SABT_Text_WaistBeltDegreesFromVertical" xml:space="preserve">
     <value>• The angle of the waist belts from a side-on viewpoint, relative to your rig's vertical axis (perpendicular to the floor)

@@ -14,10 +14,10 @@ namespace User.ActiveBeltTensioner.Normalizers
             {
                 if (telemetrySnapshot.IsActive)
                 {
-                    bool matchesSpeed = (telemetrySnapshot.Speed > 0.18 && telemetrySnapshot.Speed < 0.20);
+                    bool matchesSpeed = (telemetrySnapshot.Speed > 0.0 && telemetrySnapshot.Speed < 0.25);
                     bool matchesSway = (
-                        (telemetrySnapshot.Sway > 5.8 && telemetrySnapshot.Sway < 6.2) ||
-                        (telemetrySnapshot.Sway > -6.2 && telemetrySnapshot.Sway < -5.8)
+                        (telemetrySnapshot.Sway > 5.8 && telemetrySnapshot.Sway < 6.3) ||
+                        (telemetrySnapshot.Sway > -6.3 && telemetrySnapshot.Sway < -5.8)
                     );
 
                     if ((matchesSpeed && _matchedSpeed) && (matchesSway && _matchedSway))
