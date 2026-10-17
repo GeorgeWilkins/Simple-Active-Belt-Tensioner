@@ -281,8 +281,20 @@ If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons t
   <data name="SABT_Legend_Sway" xml:space="preserve">
     <value>Sway</value>
   </data>
+  <data name="SABT_Legend_LeftWaistTorque" xml:space="preserve">
+    <value>Torque (Left Waist)</value>
+  </data>
+  <data name="SABT_Legend_RightWaistTorque" xml:space="preserve">
+    <value>Torque (Right Waist)</value>
+  </data>
   <data name="SABT_Legend_Torque" xml:space="preserve">
     <value>Torque</value>
+  </data>
+  <data name="SABT_Legend_RightShoulderTorque" xml:space="preserve">
+    <value>Torque (Right Shoulder)</value>
+  </data>
+  <data name="SABT_Legend_LeftShoulderTorque" xml:space="preserve">
+    <value>Torque (Left Shoulder)</value>
   </data>
   <data name="SABT_Legend_Heave" xml:space="preserve">
     <value>Heave</value>

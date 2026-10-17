@@ -280,8 +280,20 @@
   <data name="SABT_Legend_Sway" xml:space="preserve">
     <value>Sway</value>
   </data>
-  <data name="SABT_Legend_Torque" xml:space="preserve">
-    <value>Couple</value>
+  <data name="SABT_Legend_LeftWaistTorque" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Legend_RightWaistTorque" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Legend_Torque" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Legend_RightShoulderTorque" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Legend_LeftShoulderTorque" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Legend_Heave" xml:space="preserve">
     <value>Soulever</value>

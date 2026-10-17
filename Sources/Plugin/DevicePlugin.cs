@@ -966,10 +966,10 @@ namespace User.ActiveBeltTensioner
             _heaveMinimumAnnotation = AddThresholdLine(yellow);
             _heaveMaximumAnnotation = AddThresholdLine(yellow);
 
-            _leftWaistSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_Torque"), darkerBlue);
-            _rightWaistSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_Torque"), darkerBlue);
-            _leftShoulderSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_Torque"), lighterBlue);
-            _rightShoulderSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_Torque"), lighterBlue);
+            _leftWaistSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_LeftWaistTorque"), darkerBlue);
+            _rightWaistSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_RightWaistTorque"), darkerBlue);
+            _leftShoulderSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_LeftShoulderTorque"), lighterBlue);
+            _rightShoulderSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_RightShoulderTorque"), lighterBlue);
 
             _targetDividerAnnotation = new LineAnnotation
             {
