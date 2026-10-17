@@ -14,11 +14,11 @@
     xmlns:oxy="http://oxyplot.org/wpf"
     d:DataContext="{d:DesignInstance Type=local:DeviceViewModel}"
     mc:Ignorable="d"
->
     
-    <UserControl.Resources>
+    MinWidth="780"
+>
 
-        <local:ThousandthsToPercentConverter x:Key="ThousandthsToPercentConverter" />
+    <UserControl.Resources>
 
         <Style x:Key="ProfileListBoxItemStyle" TargetType="ListBoxItem">
             <Setter Property="Background" Value="Transparent" />
@@ -39,16 +39,6 @@
                 </Setter.Value>
             </Setter>
             <EventSetter Event="MouseLeftButtonUp" Handler="SelectProfile" />
-        </Style>
-        
-        <Style x:Key="MotorTemperatureStyle" TargetType="TextBlock">
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-            <Setter Property="Width" Value="30" />
-            <Setter Property="Padding" Value="0,0,0,0" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="FontSize" Value="15" />
         </Style>
 
         <Style x:Key="SettingStyle" TargetType="ContentControl">
@@ -81,6 +71,63 @@
             </Setter>
         </Style>
 
+        <Style x:Key="MotorOptionListBoxStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                            <ItemsPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="Opacity" Value="0.55" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="MotorOptionListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,0,10,0" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Focusable" Value="True" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Opacity" Value="0.2" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Opacity" Value="1.0" />
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.7" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
     
     <ScrollViewer>
@@ -99,26 +146,37 @@
                                 <StackPanel>
 
                                     <StackPanel>
-                                        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,20">
-                                            <Label Content="{SLoc SABT_Label_EnableMotors}" Margin="-5,0,0,0" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsSerialPortValid}" />
-                                            <Label Content="{SLoc SABT_Label_StartAutomatically}" Margin="-5,0,0,0" />
+                                        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,0">
+                                            <Label Content="{SLoc SABT_Label_EnableEffects}" Margin="-5,0,0,0" FontWeight="Bold" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding MotorController.Device}" />
+                                            <Label Content="{SLoc SABT_Label_StartAutomatically}" Margin="-5,0,0,0" FontWeight="Bold" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.StartAutomatically, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <Label Content="{SLoc SABT_Label_FlipChannels}" Margin="-5,0,0,0" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsFlipped, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <Label Content="{SLoc SABT_Label_ReverseDirection}" Margin="-5,0,0,0" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsReversed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </TextBlock>
+
+                                        <Label Content="{SLoc SABT_Label_Setup}" Margin="-5,10,0,0" FontWeight="Bold" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="2,0,2,5">
+                                            <local:SLocFormatted Key="SABT_Text_Connection" />
+                                        </TextBlock>
+
+                                        <Label Content="{SLoc SABT_Label_SerialPort}" Margin="-3,0,0,0" FontWeight="Bold" />
+                                        <ComboBox ItemsSource="{Binding MotorController.Devices}" DisplayMemberPath="Port" SelectedItem="{Binding MotorController.Device, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
                                     </StackPanel>
 
-                                    <Grid>
+                                </StackPanel>
+                            </styles:SHTitledGroup>
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Configuration}" d:Title="Title">
+                                <StackPanel Grid.IsSharedSizeScope="True" Cursor="{Binding Settings.PluginVersion}">
+
+                                    <Grid Margin="0,20,0,0">
 
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="2*" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="600" />
+                                            <RowDefinition Height="500" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
@@ -128,92 +186,319 @@
                                         </Grid.RowDefinitions>
 
                                         <Grid Grid.Column="0" Grid.Row="0">
-                                            <Image Source="{Binding MotorController.LeftMotorGraphic}" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5">
+                                            <Image Source="/User.ActiveBeltTensioner;component/Graphics/Configuration.Seat.Rear.png" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5" x:Name="SeatRearLeft">
                                                 <Image.RenderTransform>
                                                     <ScaleTransform ScaleX="1"/>
                                                 </Image.RenderTransform>
                                             </Image>
-                                            <Image Source="{Binding MotorController.WarningGraphic}" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5">
+                                            <Image Source="/User.ActiveBeltTensioner;component/Graphics/Configuration.Seat.Rear.Waist.Present.png" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5">
                                                 <Image.RenderTransform>
                                                     <ScaleTransform ScaleX="1"/>
                                                 </Image.RenderTransform>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MotorController.HasLeftWaist}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
                                             </Image>
-                                            <TextBlock Style="{StaticResource MotorTemperatureStyle}" HorizontalAlignment="Right" TextAlignment="Center" Margin="0,0,35,62" Text="{Binding MotorController.LeftMotorTemperature, Mode=OneWay, StringFormat={}{0}°C, TargetNullValue=-}" />
+                                            <Image Source="/User.ActiveBeltTensioner;component/Graphics/Configuration.Seat.Rear.Shoulder.Present.png" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5">
+                                                <Image.RenderTransform>
+                                                    <ScaleTransform ScaleX="1"/>
+                                                </Image.RenderTransform>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MotorController.HasSingleLeftShoulder}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                            <Image Source="/User.ActiveBeltTensioner;component/Graphics/Configuration.Seat.Rear.Shoulder.Paired.png" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5">
+                                                <Image.RenderTransform>
+                                                    <ScaleTransform ScaleX="1"/>
+                                                </Image.RenderTransform>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MotorController.HasPairedLeftShoulder}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
                                         </Grid>
 
                                         <Grid Grid.Column="1" Grid.Row="0">
-                                            <Image Source="{Binding MotorController.RightMotorGraphic}" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5">
+                                            <Image Source="/User.ActiveBeltTensioner;component/Graphics/Configuration.Seat.Rear.png" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" x:Name="SeatRearRight">
                                                 <Image.RenderTransform>
                                                     <ScaleTransform ScaleX="-1"/>
                                                 </Image.RenderTransform>
                                             </Image>
-
-                                            <Image Source="{Binding MotorController.WarningGraphic}" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5">
+                                            <Image Source="/User.ActiveBeltTensioner;component/Graphics/Configuration.Seat.Rear.Waist.Present.png" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5">
                                                 <Image.RenderTransform>
                                                     <ScaleTransform ScaleX="-1"/>
                                                 </Image.RenderTransform>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MotorController.HasRightWaist}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
                                             </Image>
-                                            <TextBlock Style="{StaticResource MotorTemperatureStyle}" HorizontalAlignment="Left" TextAlignment="Center" Margin="35,0,0,62" Text="{Binding MotorController.RightMotorTemperature, Mode=OneWay, StringFormat={}{0}°C, TargetNullValue=-}" />
+                                            <Image Source="/User.ActiveBeltTensioner;component/Graphics/Configuration.Seat.Rear.Shoulder.Present.png" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5">
+                                                <Image.RenderTransform>
+                                                    <ScaleTransform ScaleX="-1"/>
+                                                </Image.RenderTransform>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MotorController.HasSingleRightShoulder}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                            <Image Source="/User.ActiveBeltTensioner;component/Graphics/Configuration.Seat.Rear.Shoulder.Paired.png" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5">
+                                                <Image.RenderTransform>
+                                                    <ScaleTransform ScaleX="-1"/>
+                                                </Image.RenderTransform>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MotorController.HasPairedRightShoulder}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
                                         </Grid>
 
-                                        <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Source="/User.ActiveBeltTensioner;component/SABT Logo.png" Width="150" Margin="0,0,0,460"/>
+                                        <Grid Grid.Column="2" Grid.Row="0" Margin="0,0,0,0">
 
-                                        <styles:SHButtonPrimary Grid.Column="0" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestLeftMotor" Margin="0,10,10,0" IsEnabled="{Binding MotorController.LeftMotorIsConnected}" Content="{SLoc SABT_Button_TestMotor}" />
-                                        <styles:SHButtonPrimary Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Click="TestRightMotor" Margin="10,10,0,0" IsEnabled="{Binding MotorController.RightMotorIsConnected}" Content="{SLoc SABT_Button_TestMotor}" />
+                                            <Image Source="/User.ActiveBeltTensioner;component/Graphics/Configuration.Seat.Side.png" RenderTransformOrigin="0.35,0.55" x:Name="SeatSide">
+                                                <Image.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1.0" ScaleY="1.0" />
+                                                        <TranslateTransform X="0" Y="-25" />
+                                                        <RotateTransform Angle="{Binding Settings.SeatDegreesFromVertical}" />
+                                                    </TransformGroup>
+                                                </Image.RenderTransform>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MotorController.HasShoulder}" Value="False">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
 
-                                        <TextBox Grid.Column="0" Grid.Row="3" Text="{Binding MotorController.LeftMotorStatus, Mode=OneWay}" Margin="1,15,10,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
-                                        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding MotorController.RightMotorStatus, Mode=OneWay}" Margin="11,15,0,0" IsReadOnly="True" IsEnabled="False" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
+                                            <Image Source="/User.ActiveBeltTensioner;component/Graphics/Configuration.Seat.Side.Shoulder.Present.png" RenderTransformOrigin="0.35,0.55">
+                                                <Image.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="1.0" ScaleY="1.0" />
+                                                        <TranslateTransform X="0" Y="-25" />
+                                                        <RotateTransform Angle="{Binding Settings.SeatDegreesFromVertical}" />
+                                                    </TransformGroup>
+                                                </Image.RenderTransform>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MotorController.HasShoulder}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
 
-                                        <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" LineHeight="20" TextWrapping="WrapWithOverflow" Margin="2,15,2,5" Text="{SLoc SABT_Text_Connection}" />
+                                            <Image Source="/User.ActiveBeltTensioner;component/Graphics/Configuration.Seat.Side.Waist.png" RenderTransformOrigin="0.5,0.0" x:Name="WaistBeltSide">
+                                                <Image.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="0.45" ScaleY="0.45" />
+                                                        <RotateTransform Angle="{Binding Settings.WaistBeltDegreesFromVertical}" />
+                                                        <TranslateTransform X="-42" Y="280" />
+                                                    </TransformGroup>
+                                                </Image.RenderTransform>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MotorController.HasWaist}" Value="False">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
 
-                                        <ComboBox Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding MotorController.SerialPorts}" SelectedItem="{Binding Settings.SerialPort, UpdateSourceTrigger=PropertyChanged}" Margin="-1,10,-1,10" />
+                                            <Image Source="/User.ActiveBeltTensioner;component/Graphics/Configuration.Seat.Side.Waist.Present.png" RenderTransformOrigin="0.5,0.0">
+                                                <Image.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="0.45" ScaleY="0.45" />
+                                                        <RotateTransform Angle="{Binding Settings.WaistBeltDegreesFromVertical}" />
+                                                        <TranslateTransform X="-42" Y="280" />
+                                                    </TransformGroup>
+                                                </Image.RenderTransform>
+                                                <Image.Style>
+                                                    <Style TargetType="Image">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding MotorController.HasWaist}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
 
-                                        <styles:SHButtonPrimary Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Click="SetupMotors" Margin="0,0,0,0" IsEnabled="{Binding Settings.IsSerialPortValid}" Content="{SLoc SABT_Button_SetupMotors}" />
+                                        </Grid>
+
+                                        <Image Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Source="/User.ActiveBeltTensioner;component/Graphics/SABT Logo.png" Width="80" Margin="0,0,0,420"/>
 
                                     </Grid>
 
-                                </StackPanel>
-                            </styles:SHTitledGroup>
-                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Diagnostics}" d:Title="Title">
-                                <StackPanel>
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
 
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Diagnostics}" />
+                                            <Grid Margin="0,0,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol0" />
+                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol1" />
+                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol2" />
+                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol3" />
+                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol4" />
+                                                    <ColumnDefinition Width="3*" />
+                                                    <ColumnDefinition Width="3*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                </Grid.ColumnDefinitions>
 
-                                    <Grid Margin="5,10,5,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" FontWeight="SemiBold" Margin="10,0,25,0" Text="" />
+                                                <TextBlock Grid.Column="1" FontWeight="SemiBold" Margin="0,0,25,0" Text="{SLoc SABT_Label_Mapping}" />
+                                                <TextBlock Grid.Column="2" FontWeight="SemiBold" Margin="0,0,25,0" Text="{SLoc SABT_Label_Direction}" />
+                                                <TextBlock Grid.Column="3" FontWeight="SemiBold" Margin="0,0,25,0" Text="{SLoc SABT_Label_Status}" />
+                                                <TextBlock Grid.Column="4" FontWeight="SemiBold" Margin="0,0,30,0" Text="{SLoc SABT_Label_Temperatures}" />
+                                                <TextBlock Grid.Column="5" FontWeight="SemiBold" Text="" />
+                                                <TextBlock Grid.Column="6" FontWeight="SemiBold" Text="" />
+                                                <styles:SHButtonPrimary Grid.Column="7" Click="DetectMotors" Margin="0,0,0,0" Content="{SLoc SABT_Button_Detect}" />
+                                            </Grid>
 
-                                        <TextBlock Grid.Column="0" FontWeight="SemiBold" Text="{SLoc SABT_Label_Motor}" />
-                                        <TextBlock Grid.Column="1" FontWeight="SemiBold" Text="{SLoc SABT_Label_LowestTemperature}" />
-                                        <TextBlock Grid.Column="2" FontWeight="SemiBold" Text="{SLoc SABT_Label_HighestTemperature}" />
-                                        <TextBlock Grid.Column="3" FontWeight="SemiBold" Text="{SLoc SABT_Label_MostConsecutiveFaults}" />
-                                    </Grid>
+                                            <ItemsControl ItemsSource="{Binding MotorController.Motors}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid Margin="0,12,0,0">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol0" />
+                                                                <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol1" />
+                                                                <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol2" />
+                                                                <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol3" />
+                                                                <ColumnDefinition Width="Auto" SharedSizeGroup="MotorCol4" />
+                                                                <ColumnDefinition Width="3*" />
+                                                                <ColumnDefinition Width="3*" />
+                                                                <ColumnDefinition Width="5*" />
+                                                            </Grid.ColumnDefinitions>
 
-                                    <ItemsControl ItemsSource="{Binding MotorController.Motors}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid Margin="5,5,5,0">
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="*" />
-                                                    </Grid.ColumnDefinitions>
+                                                            <Border Grid.ColumnSpan="9" BorderThickness="0,1,0,0" Margin="0,-7,0,0" BorderBrush="#11FFFFFF" />
 
-                                                    <TextBlock Grid.Column="0" Text="{Binding Identifier, StringFormat=ID {0}}" />
-                                                    <TextBlock Grid.Column="1" Text="{Binding LowestTemperature, StringFormat={}{0}°C, TargetNullValue=-}" />
-                                                    <TextBlock Grid.Column="2" Text="{Binding HighestTemperature, StringFormat={}{0}°C, TargetNullValue=-}" />
-                                                    <TextBlock Grid.Column="3" Text="{Binding MostConsecutiveFaults}" />
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
+                                                            <TextBlock Grid.Column="0" Text="{Binding Identifier, Mode=OneWay, StringFormat=ID {0}}" Margin="0,6,10,0" />
 
-                                    <styles:SHButtonPrimary HorizontalAlignment="Stretch" Click="ResetDiagnostics" Margin="0,20,0,0" Content="{SLoc SABT_Button_ResetDiagnostics}" />
+                                                            <ListBox Grid.Column="1" Margin="0,0,10,0" Style="{StaticResource MotorOptionListBoxStyle}" ItemContainerStyle="{StaticResource MotorOptionListBoxItemStyle}" ItemsSource="{Binding DataContext.MotorMappings, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding Mapping, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                                <ListBox.ItemsPanel>
+                                                                    <ItemsPanelTemplate>
+                                                                        <StackPanel Orientation="Horizontal" />
+                                                                    </ItemsPanelTemplate>
+                                                                </ListBox.ItemsPanel>
+                                                                <ListBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <Border ToolTip="{Binding Label}" Background="Transparent">
+                                                                            <Image Source="{Binding Graphic}" Width="20" Height="20" />
+                                                                        </Border>
+                                                                    </DataTemplate>
+                                                                </ListBox.ItemTemplate>
+                                                            </ListBox>
+
+                                                            <ListBox Grid.Column="2" Margin="0,0,10,0" Style="{StaticResource MotorOptionListBoxStyle}" ItemContainerStyle="{StaticResource MotorOptionListBoxItemStyle}" ItemsSource="{Binding DataContext.MotorDirections, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding Direction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                                <ListBox.ItemsPanel>
+                                                                    <ItemsPanelTemplate>
+                                                                        <StackPanel Orientation="Horizontal" />
+                                                                    </ItemsPanelTemplate>
+                                                                </ListBox.ItemsPanel>
+                                                                <ListBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <Border ToolTip="{Binding Label}" Background="Transparent">
+                                                                            <Image Source="{Binding Graphic}" Width="20" Height="20" />
+                                                                        </Border>
+                                                                    </DataTemplate>
+                                                                </ListBox.ItemTemplate>
+                                                            </ListBox>
+
+                                                            <TextBlock Grid.Column="3" Text="{Binding Status.Label, Mode=OneWay}" Margin="0,6,10,0" Foreground="{Binding Status.Color}"/>
+                                                            
+                                                            <TextBlock Grid.Column="4" Margin="0,6,10,0">
+                                                                <Run Text="{Binding Temperature, Mode=OneWay, StringFormat={}{0}°C, TargetNullValue='-'}" />
+                                                                <Run Text="{Binding HighestTemperature, Mode=OneWay, StringFormat={} ≤{0}°C, TargetNullValue=''}" />
+                                                            </TextBlock>
+
+                                                            <styles:SHButtonPrimary Grid.Column="5" HorizontalAlignment="Stretch" Command="{Binding TriggerTension}" Margin="0,0,5,0" IsEnabled="{Binding IsConnected}" Content="{SLoc SABT_Button_Tension}" />
+                                                            <styles:SHButtonPrimary Grid.Column="6" HorizontalAlignment="Stretch" Command="{Binding TriggerShake}" Margin="0,0,5,0" IsEnabled="{Binding IsConnected}" Content="{SLoc SABT_Button_Shake}" />
+                                                            <styles:SHButtonPrimary Grid.Column="7" HorizontalAlignment="Stretch" Command="{Binding TriggerAssign}" Margin="0,0,0,0" IsEnabled="{Binding IsAssignable}">
+                                                                <TextBlock>
+                                                                <Run Text="{SLoc SABT_Button_Assign}" />
+                                                                <Run Text="ID" />
+                                                                <Run Text="{Binding Identifier}" />
+                                                                </TextBlock>
+                                                            </styles:SHButtonPrimary>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="0,20,0,5">
+                                                <local:SLocFormatted Key="SABT_Text_Configuration" />
+                                            </TextBlock>
+
+
+                                        </StackPanel>
+                                    </ContentControl>
+
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
+                                            <local:SettingSlider Title="{SLoc SABT_Label_SeatDegreesFromVertical}" Unit="°" Minimum="0.0" Maximum="40.0" Step="0.1" Value="{Binding Settings.SeatDegreesFromVertical, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                            <local:SLocFormatted Key="SABT_Text_SeatDegreesFromVertical" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ContentControl>
+
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
+                                            <local:SettingSlider Title="{SLoc SABT_Label_WaistBeltDegreesFromVertical}" Unit="°" Minimum="-90.0" Maximum="0.0" Step="0.1" Value="{Binding Settings.WaistBeltDegreesFromVertical, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                            <local:SLocFormatted Key="SABT_Text_WaistBeltDegreesFromVertical" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ContentControl>
 
                                 </StackPanel>
                             </styles:SHTitledGroup>
@@ -224,44 +509,56 @@
                             <StackPanel>
 
                                 <StackPanel>
-                                    <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,0" LineHeight="20" Text="{SLoc SABT_Text_Preferences}" />
+                                    <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,0" LineHeight="20">
+                                        <local:SLocFormatted Key="SABT_Text_Preferences" />
+                                    </TextBlock>
                                 </StackPanel>
 
                                 <ContentControl Style="{StaticResource SettingStyle}">
                                     <StackPanel>
-                                        <local:SettingSlider Title="{SLoc SABT_Label_IdleTension}" Unit="%" Minimum="0" Maximum="25" Step="0.1" Value="{Binding Settings.IdleTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_IdleTension}" />
+                                        <local:SettingSlider Title="{SLoc SABT_Label_IdleTension}" Unit="%" Minimum="0.0" Maximum="50.0" Step="0.1" Value="{Binding Settings.IdleTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                            <local:SLocFormatted Key="SABT_Text_IdleTension" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </ContentControl>
 
                                 <ContentControl Style="{StaticResource SettingStyle}">
                                     <StackPanel>
-                                        <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_DrivingTension}" Unit="%" Minimum="0" Maximum="100" Step="0.1" LeftValue="{Binding Settings.MinimumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" RightValue="{Binding Settings.MaximumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_DrivingTension}" />
+                                        <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_DrivingTension}" Unit="%" Minimum="0.0" Maximum="100.0" Step="0.1" LeftValue="{Binding Settings.MinimumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                            <local:SLocFormatted Key="SABT_Text_DrivingTension" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </ContentControl>
 
                                 <ContentControl Style="{StaticResource SettingStyle}">
                                     <StackPanel>
                                         <DockPanel Margin="5,4,5,4">
-                                            <mah:NumericUpDown DockPanel.Dock="Right" Width="100" Minimum="10" Maximum="200" Value="{Binding Settings.TensionStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <mah:NumericUpDown DockPanel.Dock="Right" Margin="0,-3,-5,-12" Width="100" Minimum="10" Maximum="200" Value="{Binding Settings.TensionStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock Text="{SLoc SABT_Label_StepSize}" VerticalAlignment="Center" />
                                         </DockPanel>
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_TensionStep}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                            <local:SLocFormatted Key="SABT_Text_TensionStep" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </ContentControl>
 
                                 <ContentControl Style="{StaticResource SettingStyle}">
                                     <StackPanel>
-                                        <local:SettingSlider Title="{SLoc SABT_Label_LeftRightBias}" Unit="%" Minimum="-100" Maximum="100" Step="0.1" Value="{Binding Settings.SideBias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_LeftRightBias}" />
+                                        <local:SettingSlider Title="{SLoc SABT_Label_HorizontalBias}" Unit="%" Minimum="-100" Maximum="100" Step="0.1" ShowReset="True" Value="{Binding Settings.HorizontalBias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                            <local:SLocFormatted Key="SABT_Text_HorizontalBias" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </ContentControl>
 
                                 <ContentControl Style="{StaticResource SettingStyle}">
                                     <StackPanel>
                                         <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_TemperatureThrottlingRange}" Unit="°C" Minimum="0" Maximum="80" Step="1" Midpoint="50" LeftValue="{Binding Settings.ReducedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.StoppedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_TemperatureThrottlingRange}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                            <local:SLocFormatted Key="SABT_Text_TemperatureThrottlingRange" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </ContentControl>
 
@@ -275,7 +572,7 @@
 
                                     <StackPanel>
                                         <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,5">
-                                            <Label Content="{SLoc SABT_Label_AutomaticSwitching}" Margin="-5,0,0,0" />
+                                            <Label Content="{SLoc SABT_Label_AutomaticSwitching}" Margin="-5,0,0,0" FontWeight="Bold" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsAutomaticallySwitching, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </TextBlock>
                                         <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,5" LineHeight="20" Text="{SLoc SABT_Text_Profiles}" />
@@ -335,10 +632,10 @@
 
                                     <StackPanel>
                                         <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,5">
-                                            <Label Content="{SLoc SABT_Label_AutomaticTuning}" Margin="-5,0,0,0" />
+                                            <Label Content="{SLoc SABT_Label_AutomaticTuning}" Margin="-5,0,0,0" FontWeight="Bold" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsAutomaticallyTuning, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <Label Content="{SLoc SABT_Label_EnableMotors}" Margin="-5,0,0,0" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Settings.IsSerialPortValid}" />
+                                            <Label Content="{SLoc SABT_Label_EnableEffects}" Margin="-5,0,0,0" FontWeight="Bold" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding MotorController.Device}" />
                                         </TextBlock>
                                         <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,5" LineHeight="20" Text="{SLoc SABT_Text_Tuning}" />
                                     </StackPanel>
@@ -382,65 +679,43 @@
 
                                     <ContentControl Style="{StaticResource SettingStyle}">
                                         <StackPanel>
-                                            <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_SurgeLimits}" Unit="m/s²" Minimum="-50" Maximum="50" Step="0.1" LeftValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_SwayLimits}" Unit="m/s²" Minimum="-50" Maximum="50" Step="0.1" LeftValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ShouldMirror="True" />
-                                            <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_HeaveLimits}" Unit="m/s²" Minimum="-50" Maximum="100" Step="0.1" LeftValue="{Binding Settings.MinimumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Telemetry}" />
+                                            <local:SettingRangeSlider Title="{SLoc SABT_Label_SurgeLimits}" Unit="m/s²" Minimum="-50" Maximum="50" Step="0.1" LeftValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingRangeSlider Title="{SLoc SABT_Label_SwayLimits}" Unit="m/s²" Minimum="-50" Maximum="50" Step="0.1" LeftValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ShouldMirror="True" />
+                                            <local:SettingRangeSlider Title="{SLoc SABT_Label_HeaveLimits}" Unit="m/s²" Minimum="-50" Maximum="100" Step="0.1" LeftValue="{Binding Settings.MinimumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                                <local:SLocFormatted Key="SABT_Text_Telemetry" />
+                                            </TextBlock>
                                         </StackPanel>
                                     </ContentControl>
 
                                     <ContentControl Style="{StaticResource SettingStyle}">
                                         <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_SmoothingFactor}" Unit="%" Minimum="0" Maximum="75" Step="0.1" Value="{Binding Settings.SmoothingFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_SurgeStrength}" Unit="%" Minimum="0.0" Maximum="200.0" Step="0.1" ShowReset="True" Value="{Binding Settings.SurgeStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_SwayStrength}" Unit="%" Minimum="0.0" Maximum="200.0" Step="0.1" ShowReset="True" Value="{Binding Settings.SwayStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_HeaveStrength}" Unit="%" Minimum="0.0" Maximum="200.0" Step="0.1" ShowReset="True" Value="{Binding Settings.HeaveStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                                <local:SLocFormatted Key="SABT_Text_Strengths" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ContentControl>
+
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
+                                            <local:SettingSlider Title="{SLoc SABT_Label_SmoothingFactor}" Unit="%" Minimum="0" Maximum="75" Step="0.1" Value="{Binding Settings.SmoothingFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Smoothing}" />
-                                        </StackPanel>
-                                    </ContentControl>
-                                    
-                                    <ContentControl Style="{StaticResource SettingStyle}">
-                                        <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_Cornering}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.CorneringStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
-                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Cornering}" />
-                                        </StackPanel>
-                                    </ContentControl>
-
-                                    <ContentControl Style="{StaticResource SettingStyle}">
-                                        <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_Braking}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.BrakingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
-                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Braking}" />
-                                        </StackPanel>
-                                    </ContentControl>
-
-                                    <ContentControl Style="{StaticResource SettingStyle}">
-                                        <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_Acceleration}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.AccelerationStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
-                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Acceleration}" />
-                                        </StackPanel>
-                                    </ContentControl>
-
-                                    <ContentControl Style="{StaticResource SettingStyle}">
-                                        <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_Jumping}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.JumpingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
-                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Jumping}" />
-                                        </StackPanel>
-                                    </ContentControl>
-
-                                    <ContentControl Style="{StaticResource SettingStyle}">
-                                        <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_Landing}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.LandingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
-                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Landing}" />
                                         </StackPanel>
                                     </ContentControl>
 
                                     <ContentControl Style="{StaticResource SettingStyle}" Tag="Experimental">
                                         <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_Engine}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.EngineStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_Engine}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.EngineStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Engine}" />
                                         </StackPanel>
                                     </ContentControl>
 
                                     <ContentControl Style="{StaticResource SettingStyle}" Tag="Experimental">
                                         <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_Upshifting}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.UpshiftingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ThousandthsToPercentConverter}}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_Upshifting}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.UpshiftingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <Grid Margin="0,0,-1,10">
                                                 <TextBox Text="{Binding Settings.UpshiftingModifiers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="4,4,26,4" />
                                                 <TextBlock Text="&#10003;" FontWeight="Bold" Foreground="#4CAF50" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0" IsHitTestVisible="False">
@@ -479,44 +754,20 @@
                         <styles:SHTitledGroup Title="{SLoc SABT_Title_Credits}" d:Title="Title">
                             <StackPanel>
 
-                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="10">
-                                    <Image Source="/User.ActiveBeltTensioner;component/GW Logo.png" Width="105" Margin="-3,0,0,8"/>
+                                <Image Source="/User.ActiveBeltTensioner;component/Graphics/SABT%20Logo.png" Height="50" Margin="0,5,0,0" HorizontalAlignment="Right" />
+
+                                <TextBlock Text="{Binding Settings.PluginVersion, StringFormat={} v{0}, FallbackValue=?.?.?.?}" HorizontalAlignment="Right" Margin="0,5,2,0" />
+
+                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="0,-72,0,0">
+                                    <Image Source="/User.ActiveBeltTensioner;component/Graphics/GW%20Logo.png" Height="50" Margin="-3,0,0,15" />
                                     <LineBreak />
-                                    <Run Text="{SLoc SABT_Text_Designer}" />
-                                    <LineBreak />
-                                    <Hyperlink NavigateUri="https://georgewilkins.co.uk" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_Website}" /></Hyperlink>
-                                    <LineBreak />
-                                    <Hyperlink NavigateUri="mailto:sabt@georgewilkins.co.uk" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_Email}" /></Hyperlink>
-                                    <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_GitHubProfile}" /></Hyperlink>
-                                    <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/blob/main/LICENSE.md" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_ProjectLicense}" /></Hyperlink>
-                                    <LineBreak />
-                                    <LineBreak />
-                                    <Run Text="{SLoc SABT_Text_SimHub}" />
-                                    <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/SHWotever/SimHub/wiki/Plugin-and-extensions-SDKs" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_SDKDocumentation}" /></Hyperlink>
-                                    <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/SHWotever" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_GitHubProfile}" /></Hyperlink>
-                                    <LineBreak />
-                                    <LineBreak />
-                                    <Run Text="{SLoc SABT_Text_Tester}" />
-                                    <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/turtlemenace" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_GitHubProfile}" /></Hyperlink>
-                                    <LineBreak />
-                                    <LineBreak />
-                                    <iconpacks:PackIconMaterial Grid.Column="0" Width="25" Height="25" Margin="0,0,0,8" Kind="GithubBox" />
-                                    <LineBreak />
-                                    <Run Text="{SLoc SABT_Text_Repository}" />
-                                    <LineBreak />
-                                    <Hyperlink NavigateUri="https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner" Click="OpenHyperlink"><Run Text="{SLoc SABT_Link_GitHubRepository}" /></Hyperlink>
+                                    <local:SLocFormatted Key="SABT_Text_Credits" />
                                 </TextBlock>
 
                             </StackPanel>
                         </styles:SHTitledGroup>
                     </styles:SHTabItem>
                 </styles:SHTabControl>
-
 
             </StackPanel>
         </Grid>

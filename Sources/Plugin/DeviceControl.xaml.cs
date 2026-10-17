@@ -14,9 +14,9 @@ namespace User.ActiveBeltTensioner
     public partial class DeviceControl : UserControl
     {
         private readonly DevicePlugin _plugin;
-        private readonly DispatcherTimer _updateSerialPortsTimer;
+        private readonly DispatcherTimer _detectDevicesTimer;
 
-        public Action<string> OnSerialPortSelected;
+        public Action<string> OnDeviceSelected;
 
         public DeviceControl(DevicePlugin plugin)
         {
@@ -29,11 +29,11 @@ namespace User.ActiveBeltTensioner
 
             _plugin.Settings.PropertyChanged += OnPropertyChanged;
 
-            _updateSerialPortsTimer = new DispatcherTimer
+            _detectDevicesTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(5)
             };
-            _updateSerialPortsTimer.Tick += UpdateSerialPorts;
+            _detectDevicesTimer.Tick += DetectDevices;
         }
  
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -42,34 +42,34 @@ namespace User.ActiveBeltTensioner
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            Logging.Current.Info("SABT: OnLoaded");
+
             DataContext = new DeviceViewModel(_plugin);
 
             _plugin.DoWithoutWaiting(
                 devicePlugin =>
                 {
-                    devicePlugin.MotorController.UpdateSerialPorts();
+                    devicePlugin.MotorController.LoadMotorConfigurations();
+                    devicePlugin.MotorController.DetectDevices();
+                    devicePlugin.MotorController.DetectMotors();
                 }
             );
 
-            _updateSerialPortsTimer.Start();
+            _detectDevicesTimer.Start();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            _updateSerialPortsTimer.Stop();
-        }
+            Logging.Current.Info("SABT: OnUnloaded");
 
-        private void UpdateSerialPorts(object sender, EventArgs e)
-        {
-            if (IsLoaded)
-            {
-                _plugin.DoWithoutWaiting(
-                    devicePlugin =>
-                    {
-                        devicePlugin.MotorController.UpdateSerialPorts();
-                    }
-                );
-            }
+            _plugin.DoWithoutWaiting(
+                devicePlugin =>
+                {
+                    devicePlugin.MotorController.SaveMotorConfigurations();
+                }
+            );
+
+            _detectDevicesTimer.Stop();
         }
 
         private void DuplicateProfileForCurrentGame(object sender, RoutedEventArgs e)
@@ -82,7 +82,7 @@ namespace User.ActiveBeltTensioner
                 if (_plugin.Settings.FindProfile(game, vehicle) != null)
                 {
                     MessageBox.Show(
-                        SLoc.GetValue("SABT_Message_Profiles_AlreadyExists"),
+                        SLoc.GetValue("SABT_Message_ProfileAlreadyExists"),
                         SLoc.GetValue("SABT_Plugin"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Exclamation
@@ -111,7 +111,7 @@ namespace User.ActiveBeltTensioner
                 if (_plugin.Settings.FindProfile(game, vehicle) != null)
                 {
                     MessageBox.Show(
-                        SLoc.GetValue("SABT_Message_Profiles_AlreadyExists"),
+                        SLoc.GetValue("SABT_Message_ProfileAlreadyExists"),
                         SLoc.GetValue("SABT_Plugin"),
                         MessageBoxButton.OK,
                         MessageBoxImage.Exclamation
@@ -161,41 +161,25 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private void TestLeftMotor(object sender, RoutedEventArgs e)
+        private void DetectDevices(object sender, EventArgs e)
         {
-            _plugin.DoWithoutWaiting(
-                devicePlugin =>
-                {
-                    if (!devicePlugin.MotorController.IsBusy)
+            if (IsLoaded)
+            {
+                _plugin.DoWithoutWaiting(
+                    devicePlugin =>
                     {
-                        devicePlugin.MotorController.GetLeftMotor().Test();
+                        devicePlugin.MotorController.DetectDevices();
                     }
-                }
-            );
+                );
+            }
         }
 
-        private void TestRightMotor(object sender, RoutedEventArgs e)
+        private void DetectMotors(object sender, RoutedEventArgs e)
         {
             _plugin.DoWithoutWaiting(
                 devicePlugin =>
                 {
-                    if (!devicePlugin.MotorController.IsBusy)
-                    {
-                        devicePlugin.MotorController.GetRightMotor().Test();
-                    }
-                }
-            );
-        }
-
-        private void SetupMotors(object sender, RoutedEventArgs e)
-        {
-            _plugin.DoWithoutWaiting(
-                devicePlugin =>
-                {
-                    if (!devicePlugin.MotorController.IsBusy)
-                    {
-                        devicePlugin.MotorController.Setup();
-                    }
+                    devicePlugin.MotorController.DetectMotors();
                 }
             );
         }
