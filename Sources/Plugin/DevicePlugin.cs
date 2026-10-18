@@ -529,7 +529,7 @@ namespace User.ActiveBeltTensioner
                 _controlThread = null;
             }
 
-            MotorController.Disconnect();
+            MotorController.Disconnect(pluginManager.IsApplicationExiting);
         }
 
         public void FinalizePlugin()

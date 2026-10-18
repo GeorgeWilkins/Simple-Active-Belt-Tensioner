@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using WoteverCommon;
 using WoteverCommon.Extensions;
 using WoteverLocalization;
 
@@ -506,8 +507,8 @@ namespace User.ActiveBeltTensioner
             HasRightWaist = rightWaistCount == 1;
         }
 
-        /// <summary>Invokes the <see cref="Motor.Stop()" /> method on each motor then closes the serial port</summary>
-        public void Disconnect()
+        /// <summary>Releases the controller serial port having (optionally) invoked the <see cref="Motor.Stop()" /> method on each motor</summary>
+        public void Disconnect(bool shouldStop = true)
         {
             StartAction(out string action);
 
@@ -515,9 +516,12 @@ namespace User.ActiveBeltTensioner
             {
                 if (_serialPort != null && _serialPort.IsOpen)
                 {
-                    foreach (Motor motor in Motors)
+                    if (shouldStop)
                     {
-                        motor.Stop();
+                        foreach (Motor motor in Motors)
+                        {
+                            motor.Stop();
+                        }
                     }
 
                     try
@@ -810,9 +814,11 @@ namespace User.ActiveBeltTensioner
             foreach (Motor motor in Motors)
             {
                 MotorConfiguration motorConfiguration = _plugin.Settings.MotorConfigurations.FirstOrDefault(m => m.Identifier == motor.Identifier);
+Logging.Current.Info($"SABT: LOADING MOTOR {motorConfiguration.Identifier} CONFIGURATION ({motorConfiguration.ToJson()})");
 
                 if (motorConfiguration == null)
                 {
+Logging.Current.Warn($"SABT: MOTOR {motor.Identifier} CONFIGURATION NOT FOUND, USING DEFAULTS...");
                     motorConfiguration = new MotorConfiguration {
                         Identifier = motor.Identifier,
                         Mapping = motor.Mapping.Key,
@@ -824,6 +830,8 @@ namespace User.ActiveBeltTensioner
 
                 motor.Mapping = Motor.MotorMapping.Mappings.DefaultIfEmpty(Motor.MotorMapping.Unused).First(x => x.Key == motorConfiguration.Mapping);
                 motor.Direction = Motor.MotorDirection.Directions.DefaultIfEmpty(Motor.MotorDirection.Clockwise).First(x => x.Key == motorConfiguration.Direction);
+
+Logging.Current.Info($"SABT: LOADED MOTOR {motor.Identifier} CONFIGURATION ({motor.Identifier}, {motor.Mapping.Label}, {motor.Direction.Label})");
             }
 
             EndAction(action);
