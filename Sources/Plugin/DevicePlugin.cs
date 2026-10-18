@@ -61,10 +61,11 @@ namespace User.ActiveBeltTensioner
         private const int _automaticTuningUpdateInterval = 16; // Milliseconds (~60FPS)
         private Thread _controlThread;
         private volatile bool _runControlLoop = false;
+
+        private volatile bool _isEnabled = false;
         private volatile bool _hasBeenInactive = true;
         private volatile bool _hasBypassedActivationWarning = false;
 
-        private volatile bool _isEnabled = false;
         public bool IsEnabled
         {
             get { return _isEnabled; }
@@ -246,8 +247,6 @@ namespace User.ActiveBeltTensioner
             // Load Serialised Settings
             Settings = LoadSettings();
 
-            IsEnabled = IsEnabled || Settings.StartAutomatically;
-
             // Register Actions (For External Control)
             pluginManager.AddAction(
                 actionName: "SABT.ToggleEffects",
@@ -385,11 +384,13 @@ namespace User.ActiveBeltTensioner
 
             // Initialise Motor Controller
             MotorController = new MotorController(this);
-            if (IsEnabled && MotorController.HasDevice)
+            if (IsEnabled)
             {
                 DoWithoutWaiting(devicePlugin =>
                 {
-                    devicePlugin.MotorController.Connect();
+                    devicePlugin.MotorController.LoadMotorConfigurations();
+                    devicePlugin.MotorController.DetectDevices();
+                    devicePlugin.MotorController.DetectMotors();
                 });
             }
 
@@ -510,6 +511,11 @@ namespace User.ActiveBeltTensioner
         /// <summary>Called by SimHub when the plugin is unloaded, allowing the graceful release of connections and resources</summary>
         public void End(PluginManager pluginManager)
         {
+            if (pluginManager.IsApplicationExiting)
+            {
+                IsEnabled = false;
+            }
+
             MotorController.SaveMotorConfigurations();
 
             this.SaveCommonSettings(_settingsName, Settings);

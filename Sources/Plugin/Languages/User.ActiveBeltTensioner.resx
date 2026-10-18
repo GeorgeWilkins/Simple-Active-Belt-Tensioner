@@ -215,9 +215,6 @@ If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons t
   <data name="SABT_Label_ReverseDirection" xml:space="preserve">
     <value>Reverse Direction</value>
   </data>
-  <data name="SABT_Label_StartAutomatically" xml:space="preserve">
-    <value>Start Automatically</value>
-  </data>
   <data name="SABT_Label_AutomaticSwitching" xml:space="preserve">
     <value>Auto-Switching</value>
   </data>

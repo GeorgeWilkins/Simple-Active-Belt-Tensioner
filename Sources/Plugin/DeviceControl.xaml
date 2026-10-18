@@ -149,8 +149,6 @@
                                         <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,0">
                                             <Label Content="{SLoc SABT_Label_EnableEffects}" Margin="-5,0,0,0" FontWeight="Bold" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding MotorController.Device}" />
-                                            <Label Content="{SLoc SABT_Label_StartAutomatically}" Margin="-5,0,0,0" FontWeight="Bold" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.StartAutomatically, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </TextBlock>
 
                                         <Label Content="{SLoc SABT_Label_Setup}" Margin="-5,10,0,0" FontWeight="Bold" />

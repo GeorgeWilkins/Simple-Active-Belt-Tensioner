@@ -953,9 +953,6 @@ namespace User.ActiveBeltTensioner
                 .OrderBy(device => device.Port, StringComparer.OrdinalIgnoreCase)
                 .ToArray();
 
-
-
-
             string selectedPort = Device?.Port;
 
             if (devices.Count < 1)
@@ -973,13 +970,6 @@ namespace User.ActiveBeltTensioner
                 ?? Devices.First();
 
             _plugin.Settings.DeviceIdentifier = _device?.Identifier;
-
-            /*if (
-                string.IsNullOrWhiteSpace(_plugin.Settings.SerialPort) ||
-                !devices.Contains(_plugin.Settings.SerialPort)
-            ) {
-                Device = Devices.First();
-            }*/
 
             return Devices;
         }

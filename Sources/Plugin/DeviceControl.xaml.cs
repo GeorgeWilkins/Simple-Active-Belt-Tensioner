@@ -42,8 +42,6 @@ namespace User.ActiveBeltTensioner
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            Logging.Current.Info("SABT: OnLoaded");
-
             DataContext = new DeviceViewModel(_plugin);
 
             _plugin.DoWithoutWaiting(
@@ -60,8 +58,6 @@ namespace User.ActiveBeltTensioner
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            Logging.Current.Info("SABT: OnUnloaded");
-
             _plugin.DoWithoutWaiting(
                 devicePlugin =>
                 {

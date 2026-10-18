@@ -136,20 +136,6 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private bool _startAutomatically = false;
-        public bool StartAutomatically
-        {
-            get { return _startAutomatically; }
-            set
-            {
-                if (_startAutomatically != value)
-                {
-                    _startAutomatically = value;
-                    InvokePropertyChange(nameof(StartAutomatically));
-                }
-            }
-        }
-
         private bool _isAutomaticallySwitching = true;
         public bool IsAutomaticallySwitching
         {

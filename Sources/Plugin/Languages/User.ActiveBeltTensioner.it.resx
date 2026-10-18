@@ -214,9 +214,6 @@
   <data name="SABT_Label_ReverseDirection" xml:space="preserve">
     <value>Inverti Direzione</value>
   </data>
-  <data name="SABT_Label_StartAutomatically" xml:space="preserve">
-    <value>Avvio automatico</value>
-  </data>
   <data name="SABT_Label_AutomaticSwitching" xml:space="preserve">
     <value>Commutazione automatica</value>
   </data>
