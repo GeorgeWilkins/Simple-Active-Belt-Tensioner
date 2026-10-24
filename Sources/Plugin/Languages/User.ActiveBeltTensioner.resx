@@ -195,9 +195,6 @@
   <data name="SABT_Message_FailedToAssignMotorIdentifier" xml:space="preserve">
     <value>Failed to assign an identifier to the selected motor. Please ensure only one motor is plugged in and powered before trying again</value>
   </data>
-  <data name="SABT_Message_NoDeviceDetected" xml:space="preserve">
-    <value>No device detected. You must select a serial device before performing setup!</value>
-  </data>
   <data name="SABT_Message_NoAssignedMotorsDetected" xml:space="preserve">
     <value>No ASSIGNED motors were detected, but there could be one or more UNASSIGNED motors plugged in.
 
@@ -566,5 +563,19 @@ For more information, to report a bug or contribute, consult the project GitHub 
   </data>
   <data name="SABT_Label_Setup" xml:space="preserve">
     <value>Initial Setup Instructions</value>
+  </data>
+  <data name="SABT_Message_NoDeviceDetected" xml:space="preserve">
+    <value>#No Device Detected
+The motor controller could not be found. It must be plugged into a USB port on your computer. Please check:
+• The **slide switch** on the controller is set to **USB** (slide it towards the ports)
+• You are using the **USB Port** closest to the power connectors
+
+The motors do not need to be plugged in for the controller to be detected.
+
+If your motor controller is still not detected, you may also try:
+• A different **USB Port** on your computer (preferably without a hub)
+• A different **USB Cable** (USB 2.0 is fine)
+• Disabling other **Plugins** or **Applications** that might conflict with **SABT**
+</value>
   </data>
 </root>

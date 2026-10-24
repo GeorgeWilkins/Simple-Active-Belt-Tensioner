@@ -814,7 +814,6 @@ namespace User.ActiveBeltTensioner
             foreach (Motor motor in Motors)
             {
                 MotorConfiguration motorConfiguration = _plugin.Settings.MotorConfigurations.FirstOrDefault(m => m.Identifier == motor.Identifier);
-Logging.Current.Info($"SABT: LOADING MOTOR {motorConfiguration.Identifier} CONFIGURATION ({motorConfiguration.ToJson()})");
 
                 if (motorConfiguration == null)
                 {
@@ -869,6 +868,21 @@ Logging.Current.Info($"SABT: LOADED MOTOR {motor.Identifier} CONFIGURATION ({mot
         /// <returns>The number of detected motors</returns>
         public int DetectMotors()
         {
+            if (
+                ForegroundPrompt.ShowDialog(
+                    SLoc.GetValue("SABT_Message_NoDeviceDetected"),
+                    "Prompt.Controller.Configuration.jpg",
+                    true
+                )
+            ) {
+                ForegroundPrompt.ShowDialog(
+                    "just _OK_"
+                );
+            }
+
+
+
+
             Logging.Current.Info("SABT: Detecting motors...");
 
             Connect();

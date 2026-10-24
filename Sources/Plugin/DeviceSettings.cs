@@ -183,7 +183,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private double _idleTension = 0.15;
+        private double _idleTension = 12.0;
         public double IdleTension
         {
             get { return _idleTension; }
@@ -470,7 +470,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private double _smoothingFactor = 30.0;
+        private double _smoothingFactor = 10.0;
         public double SmoothingFactor
         {
             get { return _smoothingFactor; }

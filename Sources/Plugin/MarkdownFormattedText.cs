@@ -2,19 +2,27 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Navigation;
 using WoteverLocalization;
 
 namespace User.ActiveBeltTensioner
 {
-    public class SLocFormatted : Span
+    public class MarkdownFormattedText : Span
     {
         public static readonly DependencyProperty KeyProperty = DependencyProperty.Register(
             nameof(Key),
             typeof(string),
-            typeof(SLocFormatted),
-            new PropertyMetadata(null, OnKeyChanged)
+            typeof(MarkdownFormattedText),
+            new PropertyMetadata(null, OnSourceChanged)
+        );
+
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
+            nameof(Text),
+            typeof(string),
+            typeof(MarkdownFormattedText),
+            new PropertyMetadata(null, OnSourceChanged)
         );
 
         public string Key
@@ -23,39 +31,60 @@ namespace User.ActiveBeltTensioner
             set => SetValue(KeyProperty, value);
         }
 
-        public SLocFormatted()
+        public string Text
+        {
+            get => (string)GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
+        }
+
+        public MarkdownFormattedText()
         {
             Loaded += (_, __) => Refresh();
         }
 
-        private static void OnKeyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public static void AppendFormatted(InlineCollection inlines, string text, bool clearExisting = false)
         {
-            ((SLocFormatted)d).Refresh();
+            InlineParser.AppendFormatted(inlines, text, clearExisting);
+        }
+
+        private static void OnSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((MarkdownFormattedText)d).Refresh();
         }
 
         private void Refresh()
         {
-            Inlines.Clear();
+            string value = ResolveSourceText();
 
-            string key = Key;
-            if (string.IsNullOrWhiteSpace(key))
+            InlineParser.AppendFormatted(Inlines, value, true);
+        }
+
+        private string ResolveSourceText()
+        {
+            if (!string.IsNullOrWhiteSpace(Key))
             {
-                return;
+                return SLoc.GetValue(Key) ?? string.Empty;
             }
 
-            string value = SLoc.GetValue(key) ?? string.Empty;
-            InlineParser.AppendFormatted(Inlines, value);
+            return Text ?? string.Empty;
         }
 
         private static class InlineParser
         {
             private const string HttpsPrefix = "https://";
+            private const double HeadingScale = 1.2;
+            private const double HeadingMargin = 5.0;
 
-            public static void AppendFormatted(InlineCollection inlines, string text)
+            public static void AppendFormatted(InlineCollection inlines, string text, bool clearExisting = false)
             {
                 if (inlines == null || string.IsNullOrEmpty(text))
                 {
                     return;
+                }
+
+                if (clearExisting)
+                {
+                    inlines.Clear();
                 }
 
                 var plain = new StringBuilder();
@@ -63,6 +92,15 @@ namespace User.ActiveBeltTensioner
                 for (int index = 0; index < text.Length; index++)
                 {
                     char current = text[index];
+
+                    if (IsStartOfLine(text, index) && TryReadHeading(text, index, out var headingText, out var headingConsumedLength))
+                    {
+                        FlushPlain(inlines, plain);
+                        AppendHeading(inlines, headingText);
+
+                        index += headingConsumedLength - 1;
+                        continue;
+                    }
 
                     if (current == '\r' || current == '\n')
                     {
@@ -129,6 +167,61 @@ namespace User.ActiveBeltTensioner
                 }
 
                 FlushPlain(inlines, plain);
+            }
+
+            private static bool IsStartOfLine(string text, int index)
+            {
+                return index == 0 || text[index - 1] == '\r' || text[index - 1] == '\n';
+            }
+
+            private static bool TryReadHeading(string text, int startIndex, out string headingText, out int consumedLength)
+            {
+                headingText = null;
+                consumedLength = 0;
+
+                if (text[startIndex] != '#' || startIndex + 1 >= text.Length || char.IsDigit(text[startIndex + 1]))
+                {
+                    return false;
+                }
+
+                int lineEndIndex = startIndex + 1;
+                while (lineEndIndex < text.Length && text[lineEndIndex] != '\r' && text[lineEndIndex] != '\n')
+                {
+                    lineEndIndex++;
+                }
+
+                if (lineEndIndex <= startIndex + 1)
+                {
+                    return false;
+                }
+
+                int lineBreakLength = 0;
+                if (lineEndIndex < text.Length)
+                {
+                    lineBreakLength = 1;
+                    if (text[lineEndIndex] == '\r' && lineEndIndex + 1 < text.Length && text[lineEndIndex + 1] == '\n')
+                    {
+                        lineBreakLength = 2;
+                    }
+                }
+
+                headingText = text.Substring(startIndex + 1, lineEndIndex - (startIndex + 1));
+                consumedLength = (lineEndIndex - startIndex) + lineBreakLength;
+                return true;
+            }
+
+            private static void AppendHeading(InlineCollection inlines, string headingText)
+            {
+                var heading = new Bold
+                {
+                    FontSize = new Run().FontSize * HeadingScale
+                };
+
+                AppendFormatted(heading.Inlines, headingText);
+                inlines.Add(heading);
+                inlines.Add(new LineBreak());
+                inlines.Add(new InlineUIContainer(new Border { Height = HeadingMargin, Width = 0 }));
+                inlines.Add(new LineBreak());
             }
 
             private static bool TryReadUrl(string text, int startIndex, out string url, out int consumedLength)

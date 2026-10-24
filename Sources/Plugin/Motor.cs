@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO.Ports;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -315,63 +316,51 @@ namespace User.ActiveBeltTensioner
 
             if (detectedMotors == 1)
             {
-                switch (
-                    MessageBox.Show(
+                if (
+                    !ForegroundPrompt.ShowDialog(
                         SLoc.GetValue("SABT_Message_PreviouslyAssignedMotorDetected"),
-                        SLoc.GetValue("SABT_Plugin"),
-                        MessageBoxButton.YesNoCancel,
-                        MessageBoxImage.Warning
+                        "GW Logo.png",
+                        true
                     )
                 )
                 {
-                    case MessageBoxResult.Yes:
-                    case MessageBoxResult.No:
-
-                        break;
-
-                    case MessageBoxResult.Cancel:
-
-                        return false;
+                    return false;
                 }
             }
             else if (detectedMotors > 1)
             {
-                MessageBox.Show(
+                ForegroundPrompt.ShowDialog(
                     SLoc.GetValue("SABT_Message_PreviouslyAssignedMotorsDetected"),
-                    SLoc.GetValue("SABT_Plugin"),
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error
+                    "GW Logo.png",
+                    false
                 );
 
                 return false;
             }
 
             if (
-                MessageBox.Show(
+                ForegroundPrompt.ShowDialog(
                     SLoc.GetValue("SABT_Message_PlugInOneMotorOnly"),
-                    SLoc.GetValue("SABT_Plugin"),
-                    MessageBoxButton.YesNoCancel,
-                    MessageBoxImage.Information
-                ) == MessageBoxResult.Yes
+                    "GW Logo.png",
+                    true
+                )
             )
             {
                 if (!SetIdentifier() || _controller.DetectMotors() != 1)
                 {
-                    MessageBox.Show(
+                    ForegroundPrompt.ShowDialog(
                         SLoc.GetValue("SABT_Message_FailedToAssignMotorIdentifier"),
-                        SLoc.GetValue("SABT_Plugin"),
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error
+                        "GW Logo.png",
+                        false
                     );
 
                     return false;
                 }
 
-                MessageBox.Show(
+                ForegroundPrompt.ShowDialog(
                     SLoc.GetValue("SABT_Message_AssignedMotorIdentifier"),
-                    SLoc.GetValue("SABT_Plugin"),
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information
+                    "GW Logo.png",
+                    false
                 );
 
                 return true;
@@ -794,4 +783,5 @@ namespace User.ActiveBeltTensioner
             return value;
         }
     }
-}
+
+    }
