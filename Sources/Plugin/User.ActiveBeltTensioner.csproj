@@ -120,26 +120,41 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BeltTensionTargets.cs" />
     <Compile Include="DevicePlugin.cs" />
     <Compile Include="DeviceSettings.cs" />
     <Compile Include="DeviceViewModel.cs" />
+    <Compile Include="Effects\EffectPipeline.cs" />
+    <Compile Include="Effects\EngineOscillationEffect.cs" />
+    <Compile Include="Effects\IEffect.cs" />
+    <Compile Include="Effects\SideBiasEffect.cs" />
+    <Compile Include="Effects\SmoothingEffect.cs" />
+    <Compile Include="Effects\UpshiftBlipEffect.cs" />
+    <Compile Include="ForegroundPrompt.cs" />
+    <Compile Include="Normalizers\Grid2019Normalizer.cs" />
+    <Compile Include="Normalizers\INormalizer.cs" />
+    <Compile Include="Normalizers\IRacingNormalizer.cs" />
+    <Compile Include="Normalizers\NormalizerPipeline.cs" />
+    <Compile Include="TelemetrySnapshot.cs" />
+    <Compile Include="Motor.cs" />
+    <Compile Include="PhysicsForceCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MotorController.cs" />
-    <Compile Include="SettingRangeSlider.xaml.cs">
-      <DependentUpon>SettingRangeSlider.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ThousandthsToPercentConverter.cs" />
-    <Compile Include="SettingSlider.xaml.cs">
-      <DependentUpon>SettingSlider.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DeviceControl.xaml.cs">
-      <DependentUpon>DeviceControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="MotorController.cs" />
+    <Compile Include="SettingRangeSlider.xaml.cs">
+      <DependentUpon>SettingRangeSlider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DeviceControl.xaml.cs">
+      <DependentUpon>DeviceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingSlider.xaml.cs">
+      <DependentUpon>SettingSlider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MarkdownFormattedText.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Properties\DesignTimeResources.xaml" Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
@@ -156,24 +171,33 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SettingSlider.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Motor, Overheated.png" />
-    <Resource Include="Motor, Overheating.png" />
-    <Resource Include="SABT Logo.png" />
-    <Resource Include="Motor.png" />
-    <Resource Include="Motor, Connect.png" />
-    <Resource Include="Motor, Connected.png" />
-    <Resource Include="Motor, Disconnected.png" />
-    <Resource Include="Motor, Error.png" />
-    <Resource Include="Motor, Communicating.png" />
-    <Resource Include="GW Logo.png" />
-    <Content Include="MenuIcon.png" />
+    <Resource Include="Graphics\SABT Logo.png" />
+    <Resource Include="Graphics\GW Logo.png" />
+    <Resource Include="Graphics\Direction.AntiClockwise.png" />
+    <Resource Include="Graphics\Direction.Clockwise.png" />
+    <Resource Include="Graphics\Mapping.LeftShoulder.png" />
+    <Resource Include="Graphics\Mapping.LeftWaist.png" />
+    <Resource Include="Graphics\Mapping.RightShoulder.png" />
+    <Resource Include="Graphics\Mapping.RightWaist.png" />
+    <Resource Include="Graphics\Mapping.Unused.png" />
+    <Resource Include="Graphics\MenuIcon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Graphics\Configuration.Seat.Rear.Shoulder.Paired.png" />
+    <Resource Include="Graphics\Configuration.Seat.Rear.Shoulder.Present.png" />
+    <Resource Include="Graphics\Configuration.Seat.Rear.Waist.Present.png" />
+    <Resource Include="Graphics\Configuration.Seat.Side.png" />
+    <Resource Include="Graphics\Configuration.Seat.Rear.png" />
+    <Resource Include="Graphics\Configuration.Seat.Side.Waist.png" />
+    <Resource Include="Graphics\Configuration.Seat.Side.Shoulder.Present.png" />
+    <Resource Include="Graphics\Configuration.Seat.Side.Waist.Present.png" />
+    <Resource Include="Graphics\Prompt.Controller.Configuration.jpg" />
+    <Resource Include="Graphics\Prompt.Controller.Connectors.jpg" />
+    <Resource Include="Graphics\Prompt.Default.png" />
     <Content Include="Languages\User.ActiveBeltTensioner.resx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -191,8 +215,8 @@
       <SubType>Designer</SubType>
     </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

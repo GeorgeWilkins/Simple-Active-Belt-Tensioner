@@ -160,7 +160,7 @@
     <value>You may alter the vehicle name from the one given by SimHub if desired:</value>
   </data>
   <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
-    <value>The current tuning slider values will be reduced to facilitate automatic tuning. Proceed?</value>
+    <value>The current tuning and strength slider values will be reduced to facilitate automatic tuning. Proceed?</value>
   </data>
   <data name="SABT_Message_AutomaticTuningRequiresTelemetry" xml:space="preserve">
     <value>A windowed game session or replay must be open and sending telemetry to enable auto-tuning!</value>
@@ -168,50 +168,49 @@
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
     <value>Your installation of SimHub is not licensed, so telemetry updates will be limited to 10Hz</value>
   </data>
-  <data name="SABT_Message_Setup_TurnOffPower" xml:space="preserve">
-    <value>We'll now set up the motors. The first step is to TURN OFF THE POWER to the tensioner. Have you done this?</value>
-  </data>
-  <data name="SABT_Message_Profiles_AlreadyExists" xml:space="preserve">
+  <data name="SABT_Message_ProfileAlreadyExists" xml:space="preserve">
     <value>A profile for this combination of game a vehicle already exists</value>
   </data>
-  <data name="SABT_Message_Profiles_NoActiveVehicle" xml:space="preserve">
-    <value>A profile for this combination of game a vehicle already exists</value>
+  <data name="SABT_Message_TooManyShoulderMotors" xml:space="preserve">
+    <value>You have mapped more than two motors to a shoulder belt, which is not supported</value>
   </data>
-  <data name="SABT_Message_Setup_Complete" xml:space="preserve">
-    <value>Great, the RIGHT MOTOR has been configured. Both motors are now ready to go...</value>
+  <data name="SABT_Message_TooManyWaistMotors" xml:space="preserve">
+    <value>You have mapped more than one motor to a waist belt, which is not supported</value>
   </data>
-  <data name="SABT_Message_Setup_PlugInLeftMotor" xml:space="preserve">
-    <value>Now we need to PLUG IN THE LEFT MOTOR ONLY. Any of the ports on the controller will do. Once connected, plug in the power. Have you done this?</value>
+  <data name="SABT_Message_NoMappedMotors" xml:space="preserve">
+    <value>No motors are currently mapped to belts, so nothing will happen.</value>
   </data>
-  <data name="SABT_Message_Setup_PlugInRightMotor" xml:space="preserve">
-    <value>Great, the LEFT MOTOR has been configured. Now PLUG IN THE RIGHT MOTOR, leaving the other motor still connected. Have you done this?</value>
+  <data name="SABT_Message_PreviouslyAssignedMotorDetected" xml:space="preserve">
+    <value>A motor with a previously assigned identifier has been detected. Are you in intentionally changing the assigned motor identifier?</value>
   </data>
-  <data name="SABT_Message_Setup_AlreadySetUp" xml:space="preserve">
-    <value>You appear to already be set up correctly (both motors are connected)!</value>
+  <data name="SABT_Message_PreviouslyAssignedMotorsDetected" xml:space="preserve">
+    <value>Multiple motors with previously assigned identifiers have been detected. You must have ONLY ONE MOTOR plugged in when assigning an identifier</value>
   </data>
-  <data name="SABT_Message_Setup_FailedToSetLeftMotor" xml:space="preserve">
-    <value>Failed to set identifier for the LEFT MOTOR. Please ensure only one motor is plugged in and powered</value>
+  <data name="SABT_Message_AssignedMotorIdentifier" xml:space="preserve">
+    <value>The selected motor has been assigned an identifier</value>
   </data>
-  <data name="SABT_Message_Setup_FailedToSetRightMotor" xml:space="preserve">
-    <value>Failed to set identifier for the RIGHT MOTOR. Please ensure both motors are plugged in and powered</value>
+  <data name="SABT_Message_PlugInOneMotorOnly" xml:space="preserve">
+    <value>Make sure ONLY ONE MOTOR is plugged in while assigning an identifier. Do you have only one motor plugged in?</value>
   </data>
-  <data name="SABT_Message_NoDeviceDetected" xml:space="preserve">
-    <value>No device detected. You must select a serial device before performing setup!</value>
+  <data name="SABT_Message_FailedToAssignMotorIdentifier" xml:space="preserve">
+    <value>Failed to assign an identifier to the selected motor. Please ensure only one motor is plugged in and powered before trying again</value>
+  </data>
+  <data name="SABT_Message_NoAssignedMotorsDetected" xml:space="preserve">
+    <value>No ASSIGNED motors were detected, but there could be one or more UNASSIGNED motors plugged in.
+
+If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons to apply an identifier to it</value>
   </data>
   <data name="SABT_Plugin" xml:space="preserve">
     <value>Simple Active Belt Tensioner</value>
   </data>
-  <data name="SABT_Label_EnableMotors" xml:space="preserve">
-    <value>Enable Motors</value>
+  <data name="SABT_Label_EnableEffects" xml:space="preserve">
+    <value>Enable Effects</value>
   </data>
   <data name="SABT_Label_FlipChannels" xml:space="preserve">
     <value>Flip Channels</value>
   </data>
   <data name="SABT_Label_ReverseDirection" xml:space="preserve">
     <value>Reverse Direction</value>
-  </data>
-  <data name="SABT_Label_StartAutomatically" xml:space="preserve">
-    <value>Start Automatically</value>
   </data>
   <data name="SABT_Label_AutomaticSwitching" xml:space="preserve">
     <value>Auto-Switching</value>
@@ -226,10 +225,10 @@
     <value>Vehicle</value>
   </data>
   <data name="SABT_Title_Credits" xml:space="preserve">
-    <value>Licensing &amp; Author Information</value>
+    <value>Credits</value>
   </data>
-  <data name="SABT_Title_Diagnostics" xml:space="preserve">
-    <value>Diagnostics</value>
+  <data name="SABT_Title_Configuration" xml:space="preserve">
+    <value>Configuration</value>
   </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
     <value>Preferences</value>
@@ -240,11 +239,20 @@
   <data name="SABT_Tab_Connection" xml:space="preserve">
     <value>Connection</value>
   </data>
-  <data name="SABT_Button_TestMotor" xml:space="preserve">
-    <value>Test Motor</value>
+  <data name="SABT_Button_Shake" xml:space="preserve">
+    <value>Shake</value>
+  </data>
+  <data name="SABT_Button_Tension" xml:space="preserve">
+    <value>Tension</value>
+  </data>
+  <data name="SABT_Button_Connect" xml:space="preserve">
+    <value>Connect</value>
   </data>
   <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
     <value>Reset Diagnostics</value>
+  </data>
+  <data name="SABT_Button_Detect" xml:space="preserve">
+    <value>Detect</value>
   </data>
   <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
     <value>Reset Upshifting Modifiers</value>
@@ -258,8 +266,8 @@
   <data name="SABT_Button_CopyForGame" xml:space="preserve">
     <value>⧉ Game</value>
   </data>
-  <data name="SABT_Button_SetupMotors" xml:space="preserve">
-    <value>Setup Motors</value>
+  <data name="SABT_Button_Assign" xml:space="preserve">
+    <value>Assign</value>
   </data>
   <data name="SABT_Legend_Surge" xml:space="preserve">
     <value>Surge</value>
@@ -267,8 +275,20 @@
   <data name="SABT_Legend_Sway" xml:space="preserve">
     <value>Sway</value>
   </data>
+  <data name="SABT_Legend_LeftWaistTorque" xml:space="preserve">
+    <value>Torque (Left Waist)</value>
+  </data>
+  <data name="SABT_Legend_RightWaistTorque" xml:space="preserve">
+    <value>Torque (Right Waist)</value>
+  </data>
   <data name="SABT_Legend_Torque" xml:space="preserve">
     <value>Torque</value>
+  </data>
+  <data name="SABT_Legend_RightShoulderTorque" xml:space="preserve">
+    <value>Torque (Right Shoulder)</value>
+  </data>
+  <data name="SABT_Legend_LeftShoulderTorque" xml:space="preserve">
+    <value>Torque (Left Shoulder)</value>
   </data>
   <data name="SABT_Legend_Heave" xml:space="preserve">
     <value>Heave</value>
@@ -279,35 +299,54 @@
   <data name="SABT_Label_Upshifting" xml:space="preserve">
     <value>Upshifting</value>
   </data>
-  <data name="SABT_Link_Website" xml:space="preserve">
-    <value>Website</value>
+  <data name="SABT_Label_SeatDegreesFromVertical" xml:space="preserve">
+    <value>Seat Back Angle</value>
   </data>
-  <data name="SABT_Link_Email" xml:space="preserve">
-    <value>E-Mail</value>
+  <data name="SABT_Text_SeatDegreesFromVertical" xml:space="preserve">
+    <value>• How far the seat back is angled backwards, relative to your rig's vertical axis (perpendicular to the floor)
+• Used to calculate how in-game forces should be applied to your belts</value>
   </data>
-  <data name="SABT_Link_GitHubProfile" xml:space="preserve">
-    <value>GitHub Profile</value>
+  <data name="SABT_Text_Strengths" xml:space="preserve">
+    <value>• Adjust these values **after everything else**, as they should normally be left at the default **100%**
+• Increase or decrease these values if an effect is too weak or too strong for your preferences
+• Improper adjustment of these values will result in clipped or oversaturated effects</value>
   </data>
-  <data name="SABT_Link_ProjectLicense" xml:space="preserve">
-    <value>Project License</value>
+  <data name="SABT_Text_WaistBeltDegreesFromVertical" xml:space="preserve">
+    <value>• The angle of the waist belts from a side-on viewpoint, relative to your rig's vertical axis (perpendicular to the floor)
+• Used to calculate how in-game forces should be applied to your waist belts (where present)</value>
   </data>
-  <data name="SABT_Text_SimHub" xml:space="preserve">
-    <value>SimHub plugin based upon 'SimHub Plugin Demo' by SHWotever:</value>
+  <data name="SABT_Label_WaistBeltDegreesFromVertical" xml:space="preserve">
+    <value>Waist Belt Angle</value>
   </data>
-  <data name="SABT_Link_SDKDocumentation" xml:space="preserve">
-    <value>SDK Documentation</value>
+  <data name="SABT_Text_Configuration" xml:space="preserve">
+    <value>Anything from **one** to **four** motors are supported. These can be used separately such that each belt is driven by its own motor with roughly **10Kg** of force; or paired up to double that to **20Kg** (on the **shoulder belts** only). 
+
+Use the configuration table above to indicate how you want your motors to behave:
+• **Mapping**: Which belt a motor is allocated to (**unused**, **left shoulder**, **right shoulder**, **left waist**, **right waist**)
+• **Direction**: Which direction the motors should turn to apply tension to the belts
+• **Temperatures**: Displays the current and maximum temperatures reported by the motor
+• **Status**: Indicates the motor status and current activity
+• **Tension**: Applies a brief smooth tension to the motor to take up any slack
+• **Shake**: Identifies the motor by shaking it aggressively
+• **Assign...**: Applies the ID to the currently connected motor</value>
   </data>
-  <data name="SABT_Text_Tester" xml:space="preserve">
-    <value>Pre-Release Testing &amp; Feedback by TurtleMenace:</value>
-  </data>
-  <data name="SABT_Text_Repository" xml:space="preserve">
-    <value>For more information, to report a bug or contribute, consult the project GitHub repository:</value>
-  </data>
-  <data name="SABT_Link_GitHubRepository" xml:space="preserve">
-    <value>GitHub Repository</value>
-  </data>
-  <data name="SABT_Text_Designer" xml:space="preserve">
-    <value>Hardware and software design by George Wilkins:</value>
+  <data name="SABT_Text_Credits" xml:space="preserve">
+    <value>Hardware and software design by **George Wilkins**:
+• https://georgewilkins.co.uk
+• https://github.com/GeorgeWilkins
+
+SimHub plugin based upon _SimHub Plugin Demo_ by **SHWotever**:
+• https://github.com/SHWotever/SimHub/wiki/Plugin-and-extensions-SDKs
+• https://github.com/SHWotever
+
+Pre-Release Testing &amp; Feedback by **TurtleMenace**:
+• https://github.com/turtlemenace
+
+Extensive Testing, Feedback &amp; Contributions by **Larsen**
+• https://www.youtube.com/@thelarsofus69
+
+For more information, to report a bug or contribute, consult the project GitHub repository:
+• https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner</value>
   </data>
   <data name="SABT_Status_Connected" xml:space="preserve">
     <value>Connected</value>
@@ -349,9 +388,13 @@
     <value>Test Partially Failed</value>
   </data>
   <data name="SABT_Text_Connection" xml:space="preserve">
-    <value>• Select a serial port from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected
-• Future launches of SimHub should remember your port selection and reconnect automatically. However the 'Enable Motors' option will be reset every launch unless 'Start Automatically' is also enabled
-• If this is your first time setting up, you'll need to then click 'Setup Motors' and follow the instructions given. You'll only need to do this once, as each motor stores its configuration once set</value>
+    <value>1. Select a **Serial Port** from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected
+2. Connect a single motor (or unplug the power connectors on all but one motor) and click **Assign ID 1** 
+3. Disconnect that motor, connect the next motor and click **Assign ID 2**
+4. Disconnect that motor, connect the next motor and click **Assign ID 3** (where using 3+ motors)
+5. Disconnect that motor, connect the next motor and click **Assign ID 3** (where using 4 motors)
+6. Reconnect all motors and click **Detect Motors**
+7. Allocate motors to belts under the **Mapping** column and set rotation directions under **Direction**</value>
   </data>
   <data name="SABT_Text_IdleTension" xml:space="preserve">
     <value>• Always applied while not driving (no effect while driving)
@@ -367,9 +410,12 @@
     <value>• How much the above tension values change when adjusted via SimHub 'Actions'
 • Useful when using control hardware like encoder knobs with variable step counts</value>
   </data>
-  <data name="SABT_Text_LeftRightBias" xml:space="preserve">
+  <data name="SABT_Text_HorizontalBias" xml:space="preserve">
     <value>• If tension feels unbalanced between sides, adjust this left or right to bias towards that side
 • Check and correct your belt path and contact points before resorting to using this setting</value>
+  </data>
+  <data name="SABT_Text_VerticalBias" xml:space="preserve">
+    <value>• If you've mapped motors to both the waist and shoulder belts, you can adjust the relative force bias between these</value>
   </data>
   <data name="SABT_Text_Cornering" xml:space="preserve">
     <value>• How much cornering forces should affect the tension differential between the two belts</value>
@@ -423,13 +469,13 @@
 • While between these temperatures, the motor output will be gradually reduced (proportional to the temperature)</value>
   </data>
   <data name="SABT_Text_Telemetry" xml:space="preserve">
-    <value>• The permitted value ranges for incoming telemetry (anything more or less will be clipped, resulting in zero or maximum motor output)
-• Narrower ranges result in more aggressive effects, wider ranges result in greater subtlety
-• Avoid setting `Heave Limits` too narrowly, as this can suppress other effects; remember that only large jumps/landings should be felt in the belts</value>
+    <value>• Adjust these ranges **before anything else**, as they control the overall mapping of telemetry forces to belt tension
+• Use **Auto-Tuning** to set these automatically, or adjust manually by observing plotted telemetry data during a replay
+• These should equal the **maximum forces** you expect your vehicle to experience under normal gameplay</value>
   </data>
   <data name="SABT_Text_Smoothing" xml:space="preserve">
-    <value>• How much the tension output should be smoothed
-• The tension output indicated above does not include this smoothing effect</value>
+    <value>• How much the belt tension output should be smoothed
+• This does not apply to all effects (such as **Engine RPM**), as that would make them ineffective</value>
   </data>
   <data name="SABT_Label_IdleTension" xml:space="preserve">
     <value>Idle Tension</value>
@@ -440,29 +486,38 @@
   <data name="SABT_Label_StepSize" xml:space="preserve">
     <value>Step Size</value>
   </data>
-  <data name="SABT_Label_LeftRightBias" xml:space="preserve">
+  <data name="SABT_Label_HorizontalBias" xml:space="preserve">
     <value>Left/Right Bias</value>
   </data>
-  <data name="SABT_Label_Cornering" xml:space="preserve">
-    <value>Cornering</value>
+  <data name="SABT_Label_VerticalBias" xml:space="preserve">
+    <value>Waist/Shoulder Bias</value>
   </data>
-  <data name="SABT_Label_Braking" xml:space="preserve">
-    <value>Braking</value>
+  <data name="SABT_Label_Mapping" xml:space="preserve">
+    <value>Mapping</value>
   </data>
-  <data name="SABT_Label_Acceleration" xml:space="preserve">
-    <value>Acceleration</value>
+  <data name="SABT_Label_Direction" xml:space="preserve">
+    <value>Direction</value>
   </data>
-  <data name="SABT_Label_Jumping" xml:space="preserve">
-    <value>Jumping</value>
+  <data name="SABT_Label_Status" xml:space="preserve">
+    <value>Status</value>
   </data>
-  <data name="SABT_Label_Landing" xml:space="preserve">
-    <value>Landing</value>
+  <data name="SABT_Label_SurgeStrength" xml:space="preserve">
+    <value>Surge Strength (Acceleration &amp; Braking)</value>
+  </data>
+  <data name="SABT_Label_SwayStrength" xml:space="preserve">
+    <value>Sway Strength (Cornering)</value>
+  </data>
+  <data name="SABT_Label_HeaveStrength" xml:space="preserve">
+    <value>Heave Strength (Bumps &amp; Jumps)</value>
+  </data>
+  <data name="SABT_Label_SerialPort" xml:space="preserve">
+    <value>Serial Port</value>
   </data>
   <data name="SABT_Label_Engine" xml:space="preserve">
     <value>Engine RPM</value>
   </data>
   <data name="SABT_Label_SurgeLimits" xml:space="preserve">
-    <value>Surge Limits (Acceleration/Braking)</value>
+    <value>Surge Limits (Acceleration &amp; Braking)</value>
   </data>
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
     <value>Sway Limits (Cornering)</value>
@@ -470,8 +525,11 @@
   <data name="SABT_Label_TemperatureThrottlingRange" xml:space="preserve">
     <value>Temperature Throttling Range</value>
   </data>
+  <data name="SABT_Label_Temperatures" xml:space="preserve">
+    <value>Temperatures</value>
+  </data>
   <data name="SABT_Label_HeaveLimits" xml:space="preserve">
-    <value>Heave Limits (Jumps)</value>
+    <value>Heave Limits (Bumps &amp; Jumps)</value>
   </data>
   <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
     <value>Smoothing Factor</value>
@@ -485,11 +543,11 @@
   <data name="SABT_Label_HighestTemperature" xml:space="preserve">
     <value>Highest Temperature</value>
   </data>
-  <data name="SABT_Label_MostConsecutiveFaults" xml:space="preserve">
-    <value>Most Consecutive Faults</value>
+  <data name="SABT_Label_Faults" xml:space="preserve">
+    <value>Faults</value>
   </data>
   <data name="SABT_Text_Diagnostics" xml:space="preserve">
-    <value>If you are having connectivity, thermal or reliability issues with your installation, the data below may be helpful. Note that 'Most Consecutive Faults' numbers under 10 are considered to be normal and do not affect operation of the tensioner. However higher numbers may indicate a problem with the power supply, USB cable or hub, motor connectors, etc</value>
+    <value>If you are having connectivity, thermal or reliability issues with your installation, the data below may be helpful. Note that 'Faults' numbers under 10 are considered to be normal and do not affect operation of the tensioner. However higher numbers may indicate a problem with the power supply, USB cable or hub, motor connectors, etc</value>
   </data>
   <data name="SABT_Tooltip_Experimental" xml:space="preserve">
     <value>This feature or setting is considered 'experimental' and may not function correctly</value>
@@ -502,5 +560,22 @@
   </data>
   <data name="SABT_Label_Unavailable" xml:space="preserve">
     <value>UNAVAILABLE</value>
+  </data>
+  <data name="SABT_Label_Setup" xml:space="preserve">
+    <value>Initial Setup Instructions</value>
+  </data>
+  <data name="SABT_Message_NoDeviceDetected" xml:space="preserve">
+    <value>#No Device Detected
+The motor controller could not be found. It must be plugged into a USB port on your computer. Please check:
+• The **slide switch** on the controller is set to **USB** (slide it towards the ports)
+• You are using the **USB Port** closest to the power connectors
+
+The motors do not need to be plugged in for the controller to be detected.
+
+If your motor controller is still not detected, you may also try:
+• A different **USB Port** on your computer (preferably without a hub)
+• A different **USB Cable** (USB 2.0 is fine)
+• Disabling other **Plugins** or **Applications** that might conflict with **SABT**
+</value>
   </data>
 </root>
