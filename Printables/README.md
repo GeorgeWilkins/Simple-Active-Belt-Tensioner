@@ -81,9 +81,19 @@ All parts have been designed to avoid overhangs where possible, making them prin
 
 The default orientation of the STEP files likely won't be appropriate when imported into your slicer; so use the auto-orient feature or manually rotate the parts to be flat on the print bed. The preferred orientation will be obvious from the geometry of the parts.
 
-I've used [DEEPLE PLA Plus](https://www.amazon.co.uk/dp/B0F66H47J8) on my Bambu H2S for all of my own prints; but virtually _any_ strong PLA/ABS/PETG filament should be fine. Fibre-reinforced filament is okay for the mounting brackets but _not reccommended_ for the pulley parts due to abrasion concerns.
+#### Filament Choices
 
-As for printing settings, I would suggest:
+For FDM printing, `PETG` or `ABS` are recommended over `PLA` due to their higher heat resistance.
+
+Testing has shown a maximum temperature rise of about `35°C` over ambient for the motors. In other words; if your room temperature is `20°C`, the motors could reach `55°C` _internally_. If run for long enough, the exterior of the motors will eventually reach the same temperature. That would pose a problem for `PLA`, but not for `PETG` or `ABS`.
+
+For many users `PLA` has proven to be adequate, but make sure to use the **SABT** plugin's thermal management features to monitor and limit the temperature of the motors, ensuring that your printed parts are not exposed to excessive heat.
+
+Fibre-reinforced filament is okay for the mounting brackets but _not recommended_ for the pulley parts due to abrasion concerns.
+
+#### Printing Settings
+
+If you're self-printing you probably know what works best for your printer, but here are the settings I use for reference:
 | Setting | Value |
 | - | - |
 | Layer Height | `0.16` |
@@ -93,9 +103,15 @@ As for printing settings, I would suggest:
 | Infill Density | `30%` |
 | Supports | `Manual` |
 
-Manually add supports to the counterbored bolt & nut holes _only_. They aren't needed anywhere else.
+Supports are only needed for the counterbored bolt & nut holes. The designs are intentionally without overhangs.
 
-The above takes about **8 hours** on my H2S if printing everything at once. It uses about 75M of filament, or ~230g of PLA. I'd suggest you do the parts in smaller batchces though, to minimise wastage if something goes wrong during the print.
+I suggest printing in relatively small batches to minimise wastage if something goes wrong during the print.
+
+#### Asking A Friend
+
+You probably know someone that has a 3D printer and might be considering asking them to print the parts for you.
+
+Please note that printing these parts does take several hours, may consume _up to half_ a standard 1Kg spool of filament (roughly `5~10 GBP` worth), and may not always succeed on the first attempt. It is not a trivial task; especially on low-cost printers, so be considerate of their time and effort before asking.
 
 ### Third-Party Printing
 
@@ -105,7 +121,7 @@ If you want a more commercial-looking end result, there are companies running SL
 - [3DPrintUK](https://3dprint-uk.co.uk) are a provider of SLS/MJF Nylon parts in the UK. They have an instant quotation system that will give you a price right away (~**90 GBP** at the time of writing)
 - [JLC3DP](https://jlc3dp.com) offer a similar service out of China with delivery to most countries
 
-I've had test prints done in MJF Nylon PA12 (dyed black & shot peened) which came out great, but as with FDM printing, getting the tolerances correct for the press-fit bearings requires some trial and error.
+I've had test prints done in MJF Nylon PA12 (dyed black & shot peened) which came out great. A few other builders have similarly had SLS/MJF prints made for their builds with great results. So far the tolerances of the press-fit bearings and other critical features have been fine.
 
 ![FDM PLA (Left) &amp; MJF Nylon (Right)](https://github.com/user-attachments/assets/bfac6e96-2e1a-40e1-896b-42d3a9c5b132)
 ![FDM PLA (Left) &amp; MJF Nylon (Right)](https://github.com/user-attachments/assets/4709e92b-cbfa-41a9-ae36-7251c432661b)
@@ -125,3 +141,4 @@ The printable files are provided in the `STEP` format. This provides the highest
 GitHub treats these as _text_ files, so displays their contents rather than offering a download. To download a printable `STEP` file, use the `Download Raw File` option, which looks like a _tray and arrow_ icon:
 ![Download STEP File](https://github.com/user-attachments/assets/0109cad7-64ec-42a7-b945-4ba9ba94bee7)
 
+You may find it simpler to download the whole repository as a ZIP file and grab the `STEP` files from there. This way, you won't need to download each file individually. To do this, click the green `Code` button at the top of the repository page and select `Download ZIP`. The printable files are located in the `/Printables/` folder within the ZIP archive.
