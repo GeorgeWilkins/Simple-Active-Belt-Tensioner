@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SimHub;
 using System;
 using System.Collections.Generic;
@@ -254,12 +253,6 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-
-
-
-
-
-
         private double _seatDegreesFromVertical = 11.0;
         public double SeatDegreesFromVertical
         {
@@ -303,15 +296,6 @@ namespace User.ActiveBeltTensioner
         {
             get { return _waistBeltDegreesFromVertical * (Math.PI / 180.0); }
         }
-
-
-
-
-            
-
-
-
-
 
         private double _surgeStrength = 100.0;
         public double SurgeStrength
@@ -360,14 +344,6 @@ namespace User.ActiveBeltTensioner
                 }
             }
         }
-
-
-
-
-
-
-
-
 
         private double _minimumSurge = -8.0;
         public double MinimumSurge
@@ -900,26 +876,34 @@ namespace User.ActiveBeltTensioner
 
             if (promptForLabels)
             {
-                GameLabel = (game == string.Empty) ? _wildcardSymbol : Interaction.InputBox(
-                    Prompt: SLoc.GetValue("SABT_Message_AlterGameName"),
-                    Title: SLoc.GetValue("SABT_Title_AlterGameName"),
-                    DefaultResponse: PrettifyLabelPart(game)
-                );
-
-                if (string.IsNullOrEmpty(GameLabel))
+                if (game == string.Empty)
                 {
-                    GameLabel = PrettifyLabelPart(game);
+                    GameLabel = _wildcardSymbol;
+                }
+                else
+                {
+                    string gameLabel = ForegroundPrompt.ShowDialog(
+                        SLoc.GetValue("SABT_Message_AlterGameName"),
+                        "Prompt.Car.png",
+                        PrettifyLabelPart(game)
+                    );
+
+                    GameLabel = string.IsNullOrEmpty(gameLabel) ? PrettifyLabelPart(game) : gameLabel;
                 }
 
-                VehicleLabel = (vehicle == string.Empty) ? _wildcardSymbol : Interaction.InputBox(
-                    Prompt: SLoc.GetValue("SABT_Message_AlterVehicleName"),
-                    Title: SLoc.GetValue("SABT_Title_AlterVehicleName"),
-                    DefaultResponse: PrettifyLabelPart(vehicle)
-                );
-
-                if (string.IsNullOrEmpty(VehicleLabel))
+                if (vehicle == string.Empty)
                 {
-                    VehicleLabel = PrettifyLabelPart(vehicle);
+                    VehicleLabel = _wildcardSymbol;
+                }
+                else
+                {
+                    string vehicleLabel = ForegroundPrompt.ShowDialog(
+                        SLoc.GetValue("SABT_Message_AlterVehicleName"),
+                        "Prompt.Car.png",
+                        PrettifyLabelPart(vehicle)
+                    );
+
+                    VehicleLabel = string.IsNullOrEmpty(vehicleLabel) ? PrettifyLabelPart(vehicle) : vehicleLabel;
                 }
             }
         }

@@ -2,11 +2,15 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using MahApps.Metro.Controls;
 
 namespace User.ActiveBeltTensioner
 {
     public partial class SettingSlider : UserControl
     {
+        private bool _isSynchronizingLowerValue;
+
         public SettingSlider()
         {
             InitializeComponent();
@@ -29,13 +33,15 @@ namespace User.ActiveBeltTensioner
             UpdateSliderOpacity();
             UpdateDisplayValue();
             UpdateResetButtonVisibility();
+            EnsureLowerValuePinned();
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             nameof(Title),
             typeof(string),
             typeof(SettingSlider),
-            new PropertyMetadata(string.Empty));
+            new PropertyMetadata(string.Empty)
+        );
 
         public string Title
         {
@@ -47,7 +53,8 @@ namespace User.ActiveBeltTensioner
             nameof(Unit),
             typeof(string),
             typeof(SettingSlider),
-            new PropertyMetadata(string.Empty));
+            new PropertyMetadata(string.Empty)
+        );
 
         public string Unit
         {
@@ -59,7 +66,8 @@ namespace User.ActiveBeltTensioner
             nameof(Minimum),
             typeof(double),
             typeof(SettingSlider),
-            new PropertyMetadata(0d));
+            new PropertyMetadata(0d)
+        );
 
         public double Minimum
         {
@@ -71,7 +79,8 @@ namespace User.ActiveBeltTensioner
             nameof(Maximum),
             typeof(double),
             typeof(SettingSlider),
-            new PropertyMetadata(100d));
+            new PropertyMetadata(100d)
+        );
 
         public double Maximum
         {
@@ -83,7 +92,8 @@ namespace User.ActiveBeltTensioner
             nameof(Step),
             typeof(double),
             typeof(SettingSlider),
-            new PropertyMetadata(1d, OnStepChanged));
+            new PropertyMetadata(1d, OnStepChanged)
+        );
 
         public double Step
         {
@@ -95,7 +105,8 @@ namespace User.ActiveBeltTensioner
             nameof(Value),
             typeof(double),
             typeof(SettingSlider),
-            new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+            new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged)
+        );
 
         public double Value
         {
@@ -107,7 +118,8 @@ namespace User.ActiveBeltTensioner
             nameof(ShowReset),
             typeof(bool),
             typeof(SettingSlider),
-            new PropertyMetadata(false, OnShowResetChanged));
+            new PropertyMetadata(false, OnShowResetChanged)
+        );
 
         public bool ShowReset
         {
@@ -164,6 +176,40 @@ namespace User.ActiveBeltTensioner
             var text = step.ToString("0.#############################", CultureInfo.InvariantCulture);
             var decimalSeparatorIndex = text.IndexOf('.');
             return decimalSeparatorIndex < 0 ? 0 : text.Length - decimalSeparatorIndex - 1;
+        }
+
+        private void OnSliderLowerValueChanged(object sender, RangeParameterChangedEventArgs e)
+        {
+            EnsureLowerValuePinned();
+        }
+
+        private void OnSliderCentralThumbDragStarted(object sender, DragStartedEventArgs e)
+        {
+            e.Handled = true;
+            EnsureLowerValuePinned();
+        }
+
+        private void OnSliderCentralThumbDragDelta(object sender, DragDeltaEventArgs e)
+        {
+            e.Handled = true;
+            EnsureLowerValuePinned();
+        }
+
+        private void EnsureLowerValuePinned()
+        {
+            if (_isSynchronizingLowerValue)
+            {
+                return;
+            }
+
+            if (Math.Abs(SliderControl.LowerValue - Minimum) < double.Epsilon)
+            {
+                return;
+            }
+
+            _isSynchronizingLowerValue = true;
+            SliderControl.SetCurrentValue(RangeSlider.LowerValueProperty, Minimum);
+            _isSynchronizingLowerValue = false;
         }
 
         private void OnResetClick(object sender, RoutedEventArgs e)

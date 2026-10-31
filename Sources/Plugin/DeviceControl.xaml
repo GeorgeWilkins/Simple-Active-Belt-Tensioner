@@ -399,7 +399,7 @@
                                                 <TextBlock Grid.Column="4" FontWeight="SemiBold" Margin="0,0,30,0" Text="{SLoc SABT_Label_Temperatures}" />
                                                 <TextBlock Grid.Column="5" FontWeight="SemiBold" Text="" />
                                                 <TextBlock Grid.Column="6" FontWeight="SemiBold" Text="" />
-                                                <styles:SHButtonPrimary Grid.Column="7" Click="DetectMotors" Margin="0,0,0,0" Content="{SLoc SABT_Button_Detect}" />
+                                                <styles:SHButtonPrimary Grid.Column="7" Click="DetectMotors" Margin="0,0,0,0" Content="{SLoc SABT_Button_Detect}" IsEnabled="{Binding MotorController.HasDevice}" />
                                             </Grid>
 
                                             <ItemsControl ItemsSource="{Binding MotorController.Motors}">
@@ -484,7 +484,7 @@
                                         <StackPanel>
                                             <local:SettingSlider Title="{SLoc SABT_Label_SeatDegreesFromVertical}" Unit="°" Minimum="0.0" Maximum="40.0" Step="0.1" Value="{Binding Settings.SeatDegreesFromVertical, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
-                                            <local:MarkdownFormattedText Key="SABT_Text_SeatDegreesFromVertical" />
+                                                <local:MarkdownFormattedText Key="SABT_Text_SeatDegreesFromVertical" />
                                             </TextBlock>
                                         </StackPanel>
                                     </ContentControl>
@@ -493,7 +493,7 @@
                                         <StackPanel>
                                             <local:SettingSlider Title="{SLoc SABT_Label_WaistBeltDegreesFromVertical}" Unit="°" Minimum="-90.0" Maximum="0.0" Step="0.1" Value="{Binding Settings.WaistBeltDegreesFromVertical, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
-                                            <local:MarkdownFormattedText Key="SABT_Text_WaistBeltDegreesFromVertical" />
+                                                <local:MarkdownFormattedText Key="SABT_Text_WaistBeltDegreesFromVertical" />
                                             </TextBlock>
                                         </StackPanel>
                                     </ContentControl>
@@ -553,7 +553,7 @@
 
                                 <ContentControl Style="{StaticResource SettingStyle}">
                                     <StackPanel>
-                                        <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_TemperatureThrottlingRange}" Unit="°C" Minimum="0" Maximum="80" Step="1" Midpoint="50" LeftValue="{Binding Settings.ReducedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.StoppedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_TemperatureThrottlingRange}" Unit="°C" Minimum="45" Maximum="80" Step="1" Midpoint="50" LeftValue="{Binding Settings.ReducedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.StoppedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
                                             <local:MarkdownFormattedText Key="SABT_Text_TemperatureThrottlingRange" />
                                         </TextBlock>
@@ -573,7 +573,9 @@
                                             <Label Content="{SLoc SABT_Label_AutomaticSwitching}" Margin="-5,0,0,0" FontWeight="Bold" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Settings.IsAutomaticallySwitching, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </TextBlock>
-                                        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,5" LineHeight="20" Text="{SLoc SABT_Text_Profiles}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                                <local:MarkdownFormattedText Key="SABT_Text_Profiles" />
+                                        </TextBlock>
                                     </StackPanel>
 
                                     <ListBox ItemsSource="{Binding Settings.Profiles}" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,10,0,-10" ItemContainerStyle="{StaticResource ProfileListBoxItemStyle}" MaxHeight="400" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -635,7 +637,9 @@
                                             <Label Content="{SLoc SABT_Label_EnableEffects}" Margin="-5,0,0,0" FontWeight="Bold" />
                                             <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding MotorController.Device}" />
                                         </TextBlock>
-                                        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,5" LineHeight="20" Text="{SLoc SABT_Text_Tuning}" />
+                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                                <local:MarkdownFormattedText Key="SABT_Text_Tuning" />
+                                        </TextBlock>
                                     </StackPanel>
 
                                     <ContentControl Style="{StaticResource SettingStyle}" Tag="Darker">
@@ -700,18 +704,22 @@
                                     <ContentControl Style="{StaticResource SettingStyle}">
                                         <StackPanel>
                                             <local:SettingSlider Title="{SLoc SABT_Label_SmoothingFactor}" Unit="%" Minimum="0" Maximum="75" Step="0.1" Value="{Binding Settings.SmoothingFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Smoothing}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                                <local:MarkdownFormattedText Key="SABT_Text_Smoothing" />
+                                            </TextBlock>
                                         </StackPanel>
                                     </ContentControl>
 
                                     <ContentControl Style="{StaticResource SettingStyle}" Tag="Experimental">
                                         <StackPanel>
                                             <local:SettingSlider Title="{SLoc SABT_Label_Engine}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.EngineStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5" Text="{SLoc SABT_Text_Engine}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                                <local:MarkdownFormattedText Key="SABT_Text_Engine" />
+                                            </TextBlock>
                                         </StackPanel>
                                     </ContentControl>
 
-                                    <ContentControl Style="{StaticResource SettingStyle}" Tag="Experimental">
+                                    <ContentControl Style="{StaticResource SettingStyle}">
                                         <StackPanel>
                                             <local:SettingSlider Title="{SLoc SABT_Label_Upshifting}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.UpshiftingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <Grid Margin="0,0,-1,10">
@@ -739,7 +747,9 @@
                                                     </TextBlock.Style>
                                                 </TextBlock>
                                             </Grid>
-                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,0" Text="{SLoc SABT_Text_Upshifting}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                                <local:MarkdownFormattedText Key="SABT_Text_Upshifting" />
+                                            </TextBlock>
                                             <styles:SHButtonPrimary HorizontalAlignment="Stretch" Click="ResetUpshiftingModifiers" Margin="0,10,0,5" Content="{SLoc SABT_Button_ResetUpshiftingModifiers}" />
                                         </StackPanel>
                                     </ContentControl>

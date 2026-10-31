@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using WoteverLocalization;
@@ -19,13 +20,16 @@ namespace User.ActiveBeltTensioner
         public string Message { get; set; } = string.Empty;
         public string Image { get; set; } = "Prompt.Default.png";
         public bool Result { get; private set; } = false;
+        public string Value { get; private set; } = string.Empty;
 
-        public ForegroundPrompt(string message, string image = null, bool requiresDecision = false)
+        public ForegroundPrompt(string message, string image = null, bool requiresDecision = false, string inputDefault = null)
         {
             _requiresDecision = requiresDecision;
 
             Message = message;
             Image = string.IsNullOrWhiteSpace(image) ? "Prompt.Default.png" : image;
+
+            bool requestsInput = (inputDefault != null);
 
             // Window Configuration & Styling
             Title = SLoc.GetValue("SABT_Plugin");
@@ -36,17 +40,25 @@ namespace User.ActiveBeltTensioner
             Width = 700;
             WindowStartupLocation = WindowStartupLocation.CenterOwner;
             Topmost = true;
+            AllowsTransparency = true;
             Background = Brushes.Transparent;
 
             Border outerBorder = new Border
             {
                 Background = (Brush)new BrushConverter().ConvertFrom("#202020"),
-                BorderBrush = (Brush)new BrushConverter().ConvertFrom("#3A3A3A"),
-                BorderThickness = new Thickness(2)
+                Margin = new Thickness(10),
+                Effect = new DropShadowEffect
+                {
+                    Color = Colors.Black,
+                    BlurRadius = 15,
+                    ShadowDepth = 5,
+                    Opacity = 0.5
+                }
             };
 
             // Define Layout
             Grid layoutGrid = new Grid { ClipToBounds = true };
+            layoutGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             layoutGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             layoutGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             layoutGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(250, GridUnitType.Pixel) });
@@ -65,7 +77,7 @@ namespace User.ActiveBeltTensioner
             {
                 Background = _contextualImage
             };
-            Grid.SetRowSpan(imageBorder, 2);
+            Grid.SetRowSpan(imageBorder, 3);
             Grid.SetRow(imageBorder, 0);
             Grid.SetColumn(imageBorder, 0);
 
@@ -81,7 +93,7 @@ namespace User.ActiveBeltTensioner
                 Stretch = Stretch.Uniform,
                 Source = LoadBitmap("SABT Logo.png"),
             };
-            Grid.SetRow(brandLogoImage, 1);
+            Grid.SetRow(brandLogoImage, 2);
             Grid.SetColumn(brandLogoImage, 0);
 
             layoutGrid.Children.Add(brandLogoImage);
@@ -96,10 +108,29 @@ namespace User.ActiveBeltTensioner
             };
             Grid.SetRow(_messageTextBlock, 0);
             Grid.SetColumn(_messageTextBlock, 1);
-            
+
             layoutGrid.Children.Add(_messageTextBlock);
 
             MarkdownFormattedText.AppendFormatted(_messageTextBlock.Inlines, Message ?? string.Empty, true);
+
+            // Text Input Field
+            TextBox inputTextBox = new TextBox
+            {
+                Text = inputDefault ?? string.Empty,
+                Margin = new Thickness(15, -5, 15, 15),
+                Visibility = requestsInput ? Visibility.Visible : Visibility.Collapsed
+            };
+
+            Loaded += (sender, e) =>
+            {
+                inputTextBox.Focus();
+                inputTextBox.SelectAll();
+            };
+
+            Grid.SetRow(inputTextBox, 1);
+            Grid.SetColumn(inputTextBox, 1);
+
+            layoutGrid.Children.Add(inputTextBox);
 
             // Acknowledgment & Decision Buttons
             StackPanel buttonPanel = new StackPanel
@@ -110,24 +141,32 @@ namespace User.ActiveBeltTensioner
                 Margin = new Thickness(0, 0, 15, 15)
             };
 
+            Action<bool> closeWithResult = result =>
+            {
+                Result = result;
+                Value = inputTextBox != null ? inputTextBox.Text : string.Empty;
+
+                Close();
+            };
+
             if (_requiresDecision)
             {
                 Button yesButton = new Button { MinWidth = 60, Height = 30, Margin = new Thickness(0, 0, 0, 0), Content = "Yes" };
-                yesButton.Click += (sender, e) => { Result = true; Close(); };
+                yesButton.Click += (sender, e) => closeWithResult(true);
                 buttonPanel.Children.Add(yesButton);
 
                 Button noButton = new Button { MinWidth = 60, Height = 30, Margin = new Thickness(10, 0, 0, 0), Content = "No" };
-                noButton.Click += (sender, e) => { Result = false; Close(); };
+                noButton.Click += (sender, e) => closeWithResult(false);
                 buttonPanel.Children.Add(noButton);
             }
             else
             {
                 Button okButton = new Button { MinWidth = 60, Height = 30, Content = "OK" };
-                okButton.Click += (sender, e) => { Result = true; Close(); };
+                okButton.Click += (sender, e) => closeWithResult(true);
                 buttonPanel.Children.Add(okButton);
             }
 
-            Grid.SetRow(buttonPanel, 1);
+            Grid.SetRow(buttonPanel, 2);
             Grid.SetColumn(buttonPanel, 1);
 
             layoutGrid.Children.Add(buttonPanel);
@@ -175,6 +214,47 @@ namespace User.ActiveBeltTensioner
             }
 
             return result;
+        }
+
+        public static string ShowDialog(string message, string image, string inputDefault = "")
+        {
+            bool result = false;
+            string value = inputDefault;
+
+            Action showDialogAction = () =>
+            {
+                ForegroundPrompt window = new ForegroundPrompt(
+                    message: message,
+                    image: image,
+                    requiresDecision: false,
+                    inputDefault: inputDefault
+                );
+
+                window.ShowDialog();
+
+                result = window.Result;
+                value = window.Value;
+            };
+
+            if (Application.Current != null && Application.Current.Dispatcher != null)
+            {
+                Dispatcher dispatcher = Application.Current.Dispatcher;
+
+                if (dispatcher.CheckAccess())
+                {
+                    showDialogAction();
+                }
+                else
+                {
+                    dispatcher.Invoke(showDialogAction);
+                }
+            }
+            else
+            {
+                showDialogAction();
+            }
+
+            return result ? value : null;
         }
 
         private static ImageSource LoadBitmap(string imageFile)

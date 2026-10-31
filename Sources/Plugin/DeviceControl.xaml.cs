@@ -1,4 +1,5 @@
 ﻿using SimHub;
+using SimHub.Plugins.Devices;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -77,11 +78,10 @@ namespace User.ActiveBeltTensioner
 
                 if (_plugin.Settings.FindProfile(game, vehicle) != null)
                 {
-                    MessageBox.Show(
+                    ForegroundPrompt.ShowDialog(
                         SLoc.GetValue("SABT_Message_ProfileAlreadyExists"),
-                        SLoc.GetValue("SABT_Plugin"),
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Exclamation
+                        "Prompt.Car.png",
+                        false
                     );
 
                     return;
@@ -106,11 +106,10 @@ namespace User.ActiveBeltTensioner
 
                 if (_plugin.Settings.FindProfile(game, vehicle) != null)
                 {
-                    MessageBox.Show(
+                    ForegroundPrompt.ShowDialog(
                         SLoc.GetValue("SABT_Message_ProfileAlreadyExists"),
-                        SLoc.GetValue("SABT_Plugin"),
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Exclamation
+                        "Prompt.Car.png",
+                        false
                     );
 
                     return;
@@ -175,7 +174,7 @@ namespace User.ActiveBeltTensioner
             _plugin.DoWithoutWaiting(
                 devicePlugin =>
                 {
-                    devicePlugin.MotorController.DetectMotors();
+                    devicePlugin.MotorController.DetectMotors(true);
                 }
             );
         }

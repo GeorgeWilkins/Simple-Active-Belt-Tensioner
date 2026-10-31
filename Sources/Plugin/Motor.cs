@@ -312,14 +312,14 @@ namespace User.ActiveBeltTensioner
         /// <returns>Whether the process succeeded</returns>
         public bool Assign()
         {
-            int detectedMotors = _controller.DetectMotors();
+            int detectedMotors = _controller.DetectMotors(true);
 
             if (detectedMotors == 1)
             {
                 if (
                     !ForegroundPrompt.ShowDialog(
                         SLoc.GetValue("SABT_Message_PreviouslyAssignedMotorDetected"),
-                        "GW Logo.png",
+                        "Prompt.Controller.Single.png",
                         true
                     )
                 )
@@ -331,7 +331,7 @@ namespace User.ActiveBeltTensioner
             {
                 ForegroundPrompt.ShowDialog(
                     SLoc.GetValue("SABT_Message_PreviouslyAssignedMotorsDetected"),
-                    "GW Logo.png",
+                    "Prompt.Controller.Single.png",
                     false
                 );
 
@@ -341,7 +341,7 @@ namespace User.ActiveBeltTensioner
             if (
                 ForegroundPrompt.ShowDialog(
                     SLoc.GetValue("SABT_Message_PlugInOneMotorOnly"),
-                    "GW Logo.png",
+                    "Prompt.Controller.Single.png",
                     true
                 )
             )
@@ -350,7 +350,7 @@ namespace User.ActiveBeltTensioner
                 {
                     ForegroundPrompt.ShowDialog(
                         SLoc.GetValue("SABT_Message_FailedToAssignMotorIdentifier"),
-                        "GW Logo.png",
+                        "Prompt.Controller.Single.png",
                         false
                     );
 
@@ -359,7 +359,7 @@ namespace User.ActiveBeltTensioner
 
                 ForegroundPrompt.ShowDialog(
                     SLoc.GetValue("SABT_Message_AssignedMotorIdentifier"),
-                    "GW Logo.png",
+                    "Prompt.Pulley.png",
                     false
                 );
 

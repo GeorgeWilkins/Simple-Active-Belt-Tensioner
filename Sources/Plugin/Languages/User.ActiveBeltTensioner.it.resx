@@ -196,9 +196,6 @@
   <data name="SABT_Message_FailedToAssignMotorIdentifier" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Message_NoDeviceDetected" xml:space="preserve">
-    <value>Nessun dispositivo rilevato. Devi selezionare una porta seriale prima di avviare la configurazione.</value>
-  </data>
   <data name="SABT_Message_NoAssignedMotorsDetected" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
@@ -527,6 +524,12 @@
     <value>NON DISPONIBILE</value>
   </data>
   <data name="SABT_Label_Setup" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Message_NoDeviceDetected" xml:space="preserve">
+    <value>Nessun dispositivo rilevato. Devi selezionare una porta seriale prima di avviare la configurazione.</value>
+  </data>
+  <data name="SABT_Message_SerialConnectionError" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
 </root>

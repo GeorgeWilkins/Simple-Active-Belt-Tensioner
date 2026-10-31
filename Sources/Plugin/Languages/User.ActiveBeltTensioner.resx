@@ -145,10 +145,18 @@
     <value>Communication Failure</value>
   </data>
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
-    <value>The belt tensioner motors will be activated. Proceed?</value>
+    <value>#Enabling Effects
+This will turn on the motors and depending on your configuration, may apply immediate tension to the belts.
+
+_Do not enable the effects until you have securely attached your motors to your rig!_
+
+Do you wish to proceed?</value>
   </data>
   <data name="SABT_Message_AlterGameName" xml:space="preserve">
-    <value>You may alter the game name from the one given by SimHub if desired:</value>
+    <value>#Specify Game Name
+The profile you're creating will be labelled by the **Game Name** given by **SimHub**, which isn't always nicely formatted.
+
+You may alter this before saving the profile, if desired:</value>
   </data>
   <data name="SABT_Title_AlterGameName" xml:space="preserve">
     <value>Set Game Name</value>
@@ -157,43 +165,103 @@
     <value>Set Vehicle Name</value>
   </data>
   <data name="SABT_Message_AlterVehicleName" xml:space="preserve">
-    <value>You may alter the vehicle name from the one given by SimHub if desired:</value>
+    <value>#Specify Vehicle Name
+The profile you're creating will be labelled by the **Vehicle Name** given by **SimHub**, which isn't always nicely formatted (or necessarily a name at all; it might be a numerical identifier).
+
+You may alter this before saving the profile, if desired:</value>
   </data>
   <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
-    <value>The current tuning and strength slider values will be reduced to facilitate automatic tuning. Proceed?</value>
+    <value>#Resetting Sliders
+For **Automatic Tuning** to function, the current force limit sliders must be reset:
+• Surge Limits
+• Sway Limits
+• Heave Limits
+
+All other sliders and settings will be left as-is. Do you wish to proceed?</value>
   </data>
   <data name="SABT_Message_AutomaticTuningRequiresTelemetry" xml:space="preserve">
-    <value>A windowed game session or replay must be open and sending telemetry to enable auto-tuning!</value>
+    <value>#Telemetry Required
+For **Automatic Tuning** to function, there must be game telemetry actively being collected by **SimHub**. There does not currently appear to be any telemetry.
+
+The best way to do this is to **Record** a game session using **SimHub's** built-in **Replay** system, then play it back. You'll then be able to enable **Automatic Tuning** and select the sections of your replay that contain actual racing.
+
+Some games produce anomalous telemetry while in-menu or between sessions, so try to avoid tuning from that bad data.</value>
   </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
-    <value>Your installation of SimHub is not licensed, so telemetry updates will be limited to 10Hz</value>
+    <value>#SimHub License Required
+Your installation of **SimHub** is not licensed, so telemetry updates will be limited to _10Hz_, which is not enough for meaningful belt tensioner functionality.
+
+The license enables _60Hz_ telemetry, which **SABT** requires, in addition to other useful features.
+
+It costs as little as **8 EUR** and is a lifetime/perpetual license, not a monthly subscription.
+
+https://www.simhubdash.com/get-a-license</value>
   </data>
   <data name="SABT_Message_ProfileAlreadyExists" xml:space="preserve">
-    <value>A profile for this combination of game a vehicle already exists</value>
+    <value>#Profile Already Exists
+You have already created a **Profile** for this combination of **Game** and **Vehicle**, so cannot create another.
+
+Enable **Auto-Switching** to automatically select the appropriate profile for the current **Game** and **Vehicle**, where present.</value>
   </data>
   <data name="SABT_Message_TooManyShoulderMotors" xml:space="preserve">
-    <value>You have mapped more than two motors to a shoulder belt, which is not supported</value>
+    <value>#Too Many Shoulder Motors
+You have mapped **more than two motors** to a single shoulder belt, which is not supported by **SABT**.
+
+The motor you have mapped will be changed to **Unused** instead.</value>
   </data>
   <data name="SABT_Message_TooManyWaistMotors" xml:space="preserve">
-    <value>You have mapped more than one motor to a waist belt, which is not supported</value>
+    <value>#Too Many Waist Motors
+You have mapped **more than one motor** to a single waist belt, which is not supported by **SABT**.
+
+The motor you have mapped will be changed to **Unused** instead.</value>
   </data>
   <data name="SABT_Message_NoMappedMotors" xml:space="preserve">
-    <value>No motors are currently mapped to belts, so nothing will happen.</value>
+    <value>#No Mapped Motors
+No motors are currently mapped to belts, so nothing will happen when you turn on the effects.
+
+Use the **Mapping** list under **Connection** &gt; **Configuration** to assign motors to belts before trying again.</value>
   </data>
   <data name="SABT_Message_PreviouslyAssignedMotorDetected" xml:space="preserve">
-    <value>A motor with a previously assigned identifier has been detected. Are you in intentionally changing the assigned motor identifier?</value>
+    <value>#Previously Assigned Motor Detected
+A motor with a _previously assigned_ **Identifier** has been detected. If this is your first time setting-up **SABT**, this may indicate you've plugged in the wrong motor, or you're using a _previously-owned_ motor.
+
+Note that you do not need to change **Identifiers** in order to change which motors map to which belts. That can be changed from the **Mapping** list under **Connection** &gt; **Configuration** instead.
+
+Are you in intentionally changing a motor identifier?</value>
   </data>
   <data name="SABT_Message_PreviouslyAssignedMotorsDetected" xml:space="preserve">
-    <value>Multiple motors with previously assigned identifiers have been detected. You must have ONLY ONE MOTOR plugged in when assigning an identifier</value>
+    <value>#Previously Assigned Motors Detected
+Multiple motors with _previously assigned_ **Identifiers** have been detected.
+
+You may only assign an **Identifier** when a single motor is connected.</value>
   </data>
   <data name="SABT_Message_AssignedMotorIdentifier" xml:space="preserve">
-    <value>The selected motor has been assigned an identifier</value>
+    <value>#Assigned Motor Identifier
+The **Identifier** was successfully assigned to the connected motor. It will now be remembered and used by the motor _indefinitely_, irrespective of which controller connectors you use.
+
+You _can_ change this in future if desired, but there is usually no reason to do so.
+
+If you have additional motors to assign, you can now _unplug this one_ and proceed to the next motor...</value>
   </data>
   <data name="SABT_Message_PlugInOneMotorOnly" xml:space="preserve">
-    <value>Make sure ONLY ONE MOTOR is plugged in while assigning an identifier. Do you have only one motor plugged in?</value>
+    <value>#Plug In One Motor
+In order to assign an **Identifier** to a motor, we must have _only one_ motor connected to the controller.
+
+This is because the controller will try to assign the identifier to _all connected motors_ at once, which will fail if multiple are connected at the time.
+
+#Please Note:
+• It _does not matter_ which of the four connector pairs you use; they are all the same
+• You may leave the four-pin data connectors for multiple motors connected, as long as the two-pin power connectors are disconnected for all but the motor we're assigning an identifier to
+
+_Do you have only one motor plugged in?_</value>
   </data>
   <data name="SABT_Message_FailedToAssignMotorIdentifier" xml:space="preserve">
-    <value>Failed to assign an identifier to the selected motor. Please ensure only one motor is plugged in and powered before trying again</value>
+    <value>#Identifier Assignment Failed
+The **Identifier** _could not be assigned_ to the connected motor. Please ensure _only one motor_ is plugged in and _powered_ before trying again.
+
+If you continue to have issues, consider trying:
+• Assigning a _different motor_ to eliminate a general issue with the controller
+• Testing your power supply and _back-driving protection unit_ with a multimeter to ensure power is reaching the motor</value>
   </data>
   <data name="SABT_Message_NoAssignedMotorsDetected" xml:space="preserve">
     <value>No ASSIGNED motors were detected, but there could be one or more UNASSIGNED motors plugged in.
@@ -576,6 +644,11 @@ If your motor controller is still not detected, you may also try:
 • A different **USB Port** on your computer (preferably without a hub)
 • A different **USB Cable** (USB 2.0 is fine)
 • Disabling other **Plugins** or **Applications** that might conflict with **SABT**
+</value>
+  </data>
+  <data name="SABT_Message_SerialConnectionError" xml:space="preserve">
+    <value>#Serial Connection Error
+A connection could not be made to the motor controller. The host refused access to the serial port with the following message:
 </value>
   </data>
 </root>

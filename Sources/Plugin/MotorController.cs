@@ -357,11 +357,10 @@ namespace User.ActiveBeltTensioner
                 {
                     Logging.Current.Warn("SABT: Serial communication error (" + exception.Message + ")");
 
-                    MessageBox.Show(
-                        exception.Message,
-                        SLoc.GetValue("SABT_Plugin"),
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Error
+                    ForegroundPrompt.ShowDialog(
+                        SLoc.GetValue("SABT_Message_SerialConnectionError") + "\n" + exception.Message,
+                        "GW Logo.png",
+                        false
                     );
                 }
             }
@@ -384,10 +383,10 @@ namespace User.ActiveBeltTensioner
             {
                 _hasNotifiedOfLicense = true;
 
-                MessageBox.Show(
+                ForegroundPrompt.ShowDialog(
                     SLoc.GetValue("SABT_Message_SimHubLicenseRequired"),
-                    SLoc.GetValue("SABT_Plugin"),
-                    MessageBoxButton.OK
+                    "Prompt.Telemetry.png",
+                    false
                 );
             }
 
@@ -446,11 +445,10 @@ namespace User.ActiveBeltTensioner
 
             if (exceededShoulderCount)
             {
-                MessageBox.Show(
+                ForegroundPrompt.ShowDialog(
                     SLoc.GetValue("SABT_Message_TooManyShoulderMotors"),
-                    SLoc.GetValue("SABT_Plugin"),
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning
+                    "Prompt.Pulley.png",
+                    false
                 );
 
                 return false;
@@ -458,11 +456,10 @@ namespace User.ActiveBeltTensioner
 
             if (exceededWaistCount)
             {
-                MessageBox.Show(
+                ForegroundPrompt.ShowDialog(
                     SLoc.GetValue("SABT_Message_TooManyWaistMotors"),
-                    SLoc.GetValue("SABT_Plugin"),
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning
+                    "Prompt.Pulley.png",
+                    false
                 );
 
                 return false;
@@ -866,24 +863,28 @@ Logging.Current.Info($"SABT: LOADED MOTOR {motor.Identifier} CONFIGURATION ({mot
 
         /// <summary>Detects motors connected to the bus by invoking <see cref="Motor.Check" /> on each of the four motor identifiers</summary>
         /// <returns>The number of detected motors</returns>
-        public int DetectMotors()
+        public int DetectMotors(bool shouldPrompt = false)
         {
-            if (
+            Logging.Current.Info("SABT: Detecting motors...");
+
+
+
+
+
+            if (shouldPrompt && !HasDevice)
+            {
                 ForegroundPrompt.ShowDialog(
                     SLoc.GetValue("SABT_Message_NoDeviceDetected"),
-                    "Prompt.Controller.Configuration.jpg",
-                    true
-                )
-            ) {
-                ForegroundPrompt.ShowDialog(
-                    "just _OK_"
+                    "Prompt.Controller.Configuration.png",
+                    false
                 );
+                return 0;
             }
 
 
 
 
-            Logging.Current.Info("SABT: Detecting motors...");
+
 
             Connect();
 
@@ -908,7 +909,7 @@ Logging.Current.Info($"SABT: LOADED MOTOR {motor.Identifier} CONFIGURATION ({mot
             {
                 foreach (Motor motor in Motors)
                 {
-                    motor.IsAssignable = true;
+                    motor.IsAssignable = HasDevice;
                 }
             }
 

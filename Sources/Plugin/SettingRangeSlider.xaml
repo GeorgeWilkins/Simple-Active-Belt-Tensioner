@@ -13,12 +13,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*" />
-        </Grid.ColumnDefinitions>
 
-        <DockPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,4">
+        <DockPanel Grid.Row="0" Margin="0,0,0,4">
             <TextBlock Text="{Binding Title, ElementName=Root}" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center" />
             <TextBlock Text="{Binding Unit, ElementName=Root}" Foreground="#AAAAAA" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,0,0" />
             <TextBlock x:Name="RightValueTextBlock" Foreground="#FFFFFF" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,1,0" />
@@ -26,23 +22,15 @@
             <TextBlock x:Name="LeftValueTextBlock" Foreground="#FFFFFF" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,1,0" />
         </DockPanel>
 
-        <Slider Grid.Row="1" Grid.Column="0" x:Name="LeftSliderControl"
+        <mah:RangeSlider Grid.Row="1"
+            x:Name="RangeSliderControl"
             Minimum="{Binding Minimum, ElementName=Root}"
-            Maximum="{Binding Midpoint, ElementName=Root}"
-            Value="{Binding LeftSliderValue, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            SmallChange="{Binding Step, ElementName=Root}"
-            LargeChange="{Binding Step, ElementName=Root}"
-            TickFrequency="{Binding Step, ElementName=Root}"
-            IsSnapToTickEnabled="True"
-            FlowDirection="RightToLeft" />
-        <Slider Grid.Row="1" Grid.Column="1" x:Name="RightSliderControl"
-            Minimum="{Binding Midpoint, ElementName=Root}"
             Maximum="{Binding Maximum, ElementName=Root}"
-            Value="{Binding RightValue, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            LowerValue="{Binding LeftValue, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            UpperValue="{Binding RightValue, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SmallChange="{Binding Step, ElementName=Root}"
             LargeChange="{Binding Step, ElementName=Root}"
-            TickFrequency="{Binding Step, ElementName=Root}"
-            IsSnapToTickEnabled="True"
-            FlowDirection="LeftToRight" />
+            MinRangeWidth="10"
+            IsSnapToTickEnabled="True" />
     </Grid>
 </UserControl>

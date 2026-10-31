@@ -7,7 +7,6 @@ namespace User.ActiveBeltTensioner
 {
     public partial class SettingRangeSlider : UserControl
     {
-        private bool _isSynchronizingValues;
         private bool _isSynchronizingMirroredValues;
         private bool _isSynchronizingMidpoint;
         private bool _isMidpointAuto = true;
@@ -16,15 +15,14 @@ namespace User.ActiveBeltTensioner
         {
             InitializeComponent();
             UpdateMidpoint();
-            SetCurrentValue(LeftSliderValueProperty, MapLeftValueToSliderValue(LeftValue));
             IsEnabledChanged += (s, e) => UpdateSlidersOpacity();
+            UpdateSlidersOpacity();
             UpdateDisplayValues();
         }
 
         private void UpdateSlidersOpacity()
         {
-            LeftSliderControl.Opacity = IsEnabled ? 1.0 : 0.5;
-            RightSliderControl.Opacity = IsEnabled ? 1.0 : 0.5;
+            RangeSliderControl.Opacity = IsEnabled ? 1.0 : 0.5;
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -142,16 +140,6 @@ namespace User.ActiveBeltTensioner
                 OnRightValueChanged,
                 CoerceRightValue));
 
-        public static readonly DependencyProperty LeftSliderValueProperty = DependencyProperty.Register(
-            nameof(LeftSliderValue),
-            typeof(double),
-            typeof(SettingRangeSlider),
-            new FrameworkPropertyMetadata(
-                0d,
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                OnLeftSliderValueChanged,
-                CoerceLeftSliderValue));
-
         public double LeftValue
         {
             get { return (double)GetValue(LeftValueProperty); }
@@ -164,12 +152,6 @@ namespace User.ActiveBeltTensioner
             set { SetValue(RightValueProperty, value); }
         }
 
-        public double LeftSliderValue
-        {
-            get { return (double)GetValue(LeftSliderValueProperty); }
-            set { SetValue(LeftSliderValueProperty, value); }
-        }
-
         private static void OnRangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (SettingRangeSlider)d;
@@ -177,8 +159,6 @@ namespace User.ActiveBeltTensioner
             control.UpdateMidpoint();
             control.CoerceValue(LeftValueProperty);
             control.CoerceValue(RightValueProperty);
-            control.CoerceValue(LeftSliderValueProperty);
-            control.SetCurrentValue(LeftSliderValueProperty, control.MapLeftValueToSliderValue(control.LeftValue));
 
             if (control.ShouldMirror)
             {
@@ -203,15 +183,6 @@ namespace User.ActiveBeltTensioner
         private static void OnLeftValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (SettingRangeSlider)d;
-            if (control._isSynchronizingValues)
-            {
-                return;
-            }
-
-            control._isSynchronizingValues = true;
-            control.SetCurrentValue(LeftSliderValueProperty, control.MapLeftValueToSliderValue((double)e.NewValue));
-            control._isSynchronizingValues = false;
-
             if (control.ShouldMirror && !control._isSynchronizingMirroredValues)
             {
                 control.ApplyMirroredValuesFromLeft();
@@ -226,26 +197,6 @@ namespace User.ActiveBeltTensioner
             if (control.ShouldMirror && !control._isSynchronizingMirroredValues)
             {
                 control.ApplyMirroredValuesFromRight();
-            }
-
-            control.UpdateDisplayValues();
-        }
-
-        private static void OnLeftSliderValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (SettingRangeSlider)d;
-            if (control._isSynchronizingValues)
-            {
-                return;
-            }
-
-            control._isSynchronizingValues = true;
-            control.SetCurrentValue(LeftValueProperty, control.MapLeftSliderValueToValue((double)e.NewValue));
-            control._isSynchronizingValues = false;
-
-            if (control.ShouldMirror && !control._isSynchronizingMirroredValues)
-            {
-                control.ApplyMirroredValuesFromLeft();
             }
 
             control.UpdateDisplayValues();
@@ -267,19 +218,15 @@ namespace User.ActiveBeltTensioner
         private static object CoerceLeftValue(DependencyObject d, object baseValue)
         {
             var control = (SettingRangeSlider)d;
-            return Clamp((double)baseValue, control.Minimum, control.GetEffectiveMidpoint());
+            var maximum = control.ShouldMirror ? control.GetEffectiveMidpoint() : control.RightValue;
+            return Clamp((double)baseValue, control.Minimum, maximum);
         }
 
         private static object CoerceRightValue(DependencyObject d, object baseValue)
         {
             var control = (SettingRangeSlider)d;
-            return Clamp((double)baseValue, control.GetEffectiveMidpoint(), control.Maximum);
-        }
-
-        private static object CoerceLeftSliderValue(DependencyObject d, object baseValue)
-        {
-            var control = (SettingRangeSlider)d;
-            return Clamp((double)baseValue, control.Minimum, control.GetEffectiveMidpoint());
+            var minimum = control.ShouldMirror ? control.GetEffectiveMidpoint() : control.LeftValue;
+            return Clamp((double)baseValue, minimum, control.Maximum);
         }
 
         private static void OnMidpointChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -300,8 +247,6 @@ namespace User.ActiveBeltTensioner
 
             control.CoerceValue(LeftValueProperty);
             control.CoerceValue(RightValueProperty);
-            control.CoerceValue(LeftSliderValueProperty);
-            control.SetCurrentValue(LeftSliderValueProperty, control.MapLeftValueToSliderValue(control.LeftValue));
 
             if (control.ShouldMirror)
             {
@@ -314,6 +259,9 @@ namespace User.ActiveBeltTensioner
         private static void OnShouldMirrorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (SettingRangeSlider)d;
+            control.CoerceValue(LeftValueProperty);
+            control.CoerceValue(RightValueProperty);
+
             if ((bool)e.NewValue)
             {
                 control.ApplyMirroredValuesFromRight();
@@ -377,16 +325,6 @@ namespace User.ActiveBeltTensioner
         private double MapMirroredValue(double value)
         {
             return (2d * GetEffectiveMidpoint()) - value;
-        }
-
-        private double MapLeftValueToSliderValue(double leftValue)
-        {
-            return Minimum + GetEffectiveMidpoint() - leftValue;
-        }
-
-        private double MapLeftSliderValueToValue(double leftSliderValue)
-        {
-            return Minimum + GetEffectiveMidpoint() - leftSliderValue;
         }
 
         private double GetEffectiveMidpoint()

@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Margin="0,0,0,8">
+    <Grid Margin="0,0,0,8" ClipToBounds="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -33,7 +33,7 @@
             <TextBlock x:Name="ValueTextBlock" Foreground="#FFFFFF" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,1,0" />
         </DockPanel>
 
-        <Slider Grid.Row="1" Grid.Column="0" x:Name="SliderControl"
+        <!--<Slider Grid.Row="1" Grid.Column="0" x:Name="SliderControl"
             Minimum="{Binding Minimum, ElementName=Root}"
             Maximum="{Binding Maximum, ElementName=Root}"
             Value="{Binding Value, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -41,6 +41,22 @@
             LargeChange="{Binding Step, ElementName=Root}"
             TickFrequency="{Binding Step, ElementName=Root}"
             IsSnapToTickEnabled="True"
-            FlowDirection="{Binding FlowDirection, ElementName=Root}" />
+            FlowDirection="{Binding FlowDirection, ElementName=Root}" />-->
+
+        <mah:RangeSlider Grid.Row="1"
+            x:Name="SliderControl"
+            Minimum="{Binding Minimum, ElementName=Root}"
+            Maximum="{Binding Maximum, ElementName=Root}"
+            LowerValue="{Binding Minimum, ElementName=Root, Mode=OneWay}"
+            UpperValue="{Binding Value, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SmallChange="{Binding Step, ElementName=Root}"
+            LargeChange="{Binding Step, ElementName=Root}"
+            MoveWholeRange="False"
+            MinRangeWidth="0"
+            IsSnapToTickEnabled="True"
+            LowerValueChanged="OnSliderLowerValueChanged"
+            CentralThumbDragStarted="OnSliderCentralThumbDragStarted"
+            CentralThumbDragDelta="OnSliderCentralThumbDragDelta"
+            Margin="-9,0,0,0" />
     </Grid>
 </UserControl>

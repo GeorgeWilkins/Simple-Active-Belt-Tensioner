@@ -78,16 +78,6 @@ namespace User.ActiveBeltTensioner
 
                     if (_isEnabled)
                     {
-                        if (!MotorController.HasAnyMappings)
-                        {
-                            MessageBox.Show(
-                                SLoc.GetValue("SABT_Message_NoMappedMotors"),
-                                SLoc.GetValue("SABT_Plugin"),
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Warning
-                            );
-                        }
-
                         DoWithoutWaiting(devicePlugin =>
                         {
                             devicePlugin.MotorController?.Connect();
@@ -169,11 +159,10 @@ namespace User.ActiveBeltTensioner
 
                         if (!_latestTelemetry.IsActive)
                         {
-                            MessageBox.Show(
+                            ForegroundPrompt.ShowDialog(
                                 SLoc.GetValue("SABT_Message_AutomaticTuningRequiresTelemetry"),
-                                SLoc.GetValue("SABT_Plugin"),
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Warning
+                                "Prompt.Telemetry.png",
+                                false
                             );
 
                             IsAutomaticallyTuning = false;
@@ -181,19 +170,18 @@ namespace User.ActiveBeltTensioner
                             return;
                         }
 
-                        MessageBoxResult result = MessageBoxResult.No;
+                        bool shouldProceed = false;
 
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            result = MessageBox.Show(
+                            shouldProceed = ForegroundPrompt.ShowDialog(
                                 SLoc.GetValue("SABT_Message_AutomaticTuningReset"),
-                                SLoc.GetValue("SABT_Plugin"),
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Warning
+                                "Prompt.Telemetry.png",
+                                true
                             );
                         });
 
-                        if (result == MessageBoxResult.Yes)
+                        if (shouldProceed)
                         {
                             Settings.MinimumSurge = -1;
                             Settings.MaximumSurge = 1;
@@ -379,8 +367,6 @@ namespace User.ActiveBeltTensioner
             pluginManager.AttachDelegate("SABT.IdleTension", typeof(DevicePlugin), () => Settings.IdleTension / 10.0);
             pluginManager.AttachDelegate("SABT.MinimumTension", typeof(DevicePlugin), () => Settings.MinimumTension / 10.0);
             pluginManager.AttachDelegate("SABT.MaximumTension", typeof(DevicePlugin), () => Settings.MaximumTension / 10.0);
-//          pluginManager.AttachDelegate("SABT.LeftMotorTemperature", typeof(DevicePlugin), () => MotorController.LeftMotorTemperature);
-//          pluginManager.AttachDelegate("SABT.RightMotorTemperature", typeof(DevicePlugin), () => MotorController.RightMotorTemperature);
 
             // Initialise Motor Controller
             MotorController = new MotorController(this);
@@ -634,21 +620,33 @@ namespace User.ActiveBeltTensioner
 
                     if (_hasBeenInactive)
                     {
+                        if (!motorController.HasDevice)
+                        {
+                            ForegroundPrompt.ShowDialog(
+                                SLoc.GetValue("SABT_Message_NoDeviceDetected"),
+                                "Prompt.Controller.Configuration.png",
+                                false
+                            );
+
+                            IsEnabled = false;
+
+                            continue;
+                        }
+
                         if (!_hasBypassedActivationWarning)
                         {
-                            MessageBoxResult result = MessageBoxResult.No;
+                            bool shouldProceed = false;
 
                             Application.Current.Dispatcher.Invoke(() =>
                             {
-                                result = MessageBox.Show(
+                                shouldProceed = ForegroundPrompt.ShowDialog(
                                     SLoc.GetValue("SABT_Message_ActivationWarning"),
-                                    SLoc.GetValue("SABT_Plugin"),
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Warning
+                                    "Prompt.Pulley.png",
+                                    true
                                 );
                             });
 
-                            if (result != MessageBoxResult.Yes)
+                            if (!shouldProceed)
                             {
                                 IsEnabled = false;
 
@@ -656,6 +654,15 @@ namespace User.ActiveBeltTensioner
                             }
 
                             motorController.Connect();
+
+                            if (!motorController.HasAnyMappings)
+                            {
+                                ForegroundPrompt.ShowDialog(
+                                    SLoc.GetValue("SABT_Message_NoMappedMotors"),
+                                    "Prompt.Pulley.png",
+                                    false
+                                );
+                            }
                         }
 
                         _hasBeenInactive = false;
