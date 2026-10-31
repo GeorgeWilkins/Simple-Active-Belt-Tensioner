@@ -30,7 +30,8 @@
             UpperValue="{Binding RightValue, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SmallChange="{Binding Step, ElementName=Root}"
             LargeChange="{Binding Step, ElementName=Root}"
-            MinRangeWidth="10"
-            IsSnapToTickEnabled="True" />
+            TickFrequency="{Binding Step, ElementName=Root}"
+            IsSnapToTickEnabled="True"
+            MinRangeWidth="10" />
     </Grid>
 </UserControl>

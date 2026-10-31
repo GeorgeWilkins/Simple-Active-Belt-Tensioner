@@ -226,6 +226,9 @@
   <data name="SABT_Title_Credits" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="SABT_Title_Biases" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Title_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
@@ -242,6 +245,21 @@
     <value />
   </data>
   <data name="SABT_Button_Tension" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Button_SetTemperaturesForPLA" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Button_SetTemperaturesForASA" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Button_SetTemperaturesForPC" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Button_SetTemperaturesForPETG" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Button_SetTemperaturesForABS" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Button_Connect" type="System.Resources.ResXNullRef, System.Windows.Forms">
@@ -361,19 +379,17 @@
   <data name="SABT_Text_Connection" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_IdleTension" xml:space="preserve">
-    <value>• Wird immer angewendet, wenn nicht gefahren wird (keine Wirkung während der Fahrt)
-• Verhält sich wie die Rückholfeder eines Automatikgurts
-• Auf null setzen zum Deaktivieren; begrenzt auf 25 % des maximalen Motordrehmoments</value>
+  <data name="SABT_Text_TensionWhileIdle" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Text_DrivingTension" xml:space="preserve">
-    <value>• Minimale und maximale Spannung während der Fahrt
-• Ein höheres Minimum erzeugt eine konstante Spannung und verstärkt Beschleunigungs- und Sprungeffekte
-• Ein niedrigeres Maximum reduziert die gesamte Spannungsstärke</value>
+  <data name="SABT_Text_Tension" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Text_TensionStep" xml:space="preserve">
-    <value>• Um wie viel sich die oben genannten Spannungswerte ändern, wenn sie über SimHub 'Actions' angepasst werden
-• Nützlich bei der Verwendung von Steuerungshardware wie Encoder-Drehreglern mit variabler Schrittanzahl</value>
+  <data name="SABT_Text_TensionWhileActive" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Text_ControlStep" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Text_HorizontalBias" xml:space="preserve">
     <value>• Wenn die Spannung zwischen den Seiten unausgewogen wirkt, nach links oder rechts anpassen
@@ -423,15 +439,14 @@
 • 'Auto-Switching' wird bei Verwendung der automatischen Abstimmungsfunktion automatisch deaktiviert
 • 'Auto-Tuning' wird automatisch deaktiviert, wenn das aktive Profil geändert wird</value>
   </data>
+  <data name="SABT_Text_Biases" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Text_Preferences" xml:space="preserve">
     <value>Diese Einstellungen sind nicht spielabhängig und steuern den grundlegenden Betrieb des Spannmechanismus; einschließlich der Gesamtleistung sowohl während als auch zwischen Spielesitzungen. Sie sollten nach Ihren Wünschen eingestellt werden, bevor Sie Feinabstimmungen innerhalb der 'Profiles' tab vornehmen.</value>
   </data>
-  <data name="SABT_Text_TemperatureThrottlingRange" xml:space="preserve">
-    <value>• Die Motoren sollten während des Betriebs nicht heiß werden; sie können jedoch bei Temperaturen bis zu 80°C betrieben werden
-• Je nach Wahl Ihres Filaments können Ihre gedruckten Teile bei niedrigeren Temperaturen versagen (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
-• Der erste Schieberegler legt die Temperatur fest, bei der die thermische Drosselung beginnen soll (eine Reduzierung der Motorleistung)
-• Der zweite Schieberegler legt die Temperatur fest, bei der die Motoren deaktiviert werden sollen, um Schäden zu verhindern
-• Solange die Temperatur zwischen diesen Werten liegt, wird die Motorleistung schrittweise reduziert (proportional zur Temperatur)</value>
+  <data name="SABT_Text_TemperatureThrottlingRange" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Text_Telemetry" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
@@ -439,19 +454,28 @@
   <data name="SABT_Text_Smoothing" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Label_IdleTension" xml:space="preserve">
-    <value>Leerlaufspannung</value>
+  <data name="SABT_Label_TensionWhileIdle" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Label_DrivingTension" xml:space="preserve">
-    <value>Fahrspannung</value>
+  <data name="SABT_Label_TensionWhileActive" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Label_StepSize" xml:space="preserve">
-    <value>Schrittgröße</value>
+  <data name="SABT_Label_ControlStep" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Label_HorizontalBias" xml:space="preserve">
     <value>Links/Rechts-Balance</value>
   </data>
-  <data name="SABT_Label_VerticalBias" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="SABT_Label_LeftStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Label_RightStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Label_WaistStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Label_ShoulderStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Label_Mapping" type="System.Resources.ResXNullRef, System.Windows.Forms">

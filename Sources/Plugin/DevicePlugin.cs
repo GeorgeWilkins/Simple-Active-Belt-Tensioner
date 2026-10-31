@@ -303,7 +303,7 @@ namespace User.ActiveBeltTensioner
                     {
                         Logging.Current.Info("SABT: Increasing idle tension from external input");
 
-                        devicePlugin.Settings.IdleTension += devicePlugin.Settings.TensionStep;
+                        devicePlugin.Settings.IdleTension += devicePlugin.Settings.ControlStep;
                     });
                 }
             );
@@ -314,7 +314,7 @@ namespace User.ActiveBeltTensioner
                     {
                         Logging.Current.Info("SABT: Decreasing idle tension from external input");
 
-                        devicePlugin.Settings.IdleTension -= devicePlugin.Settings.TensionStep;
+                        devicePlugin.Settings.IdleTension -= devicePlugin.Settings.ControlStep;
                     });
                 }
             );
@@ -325,7 +325,7 @@ namespace User.ActiveBeltTensioner
                     {
                         Logging.Current.Info("SABT: Increasing minimum tension from external input");
 
-                        devicePlugin.Settings.MinimumTension += devicePlugin.Settings.TensionStep;
+                        devicePlugin.Settings.MinimumTension += devicePlugin.Settings.ControlStep;
                     });
                 }
             );
@@ -336,7 +336,7 @@ namespace User.ActiveBeltTensioner
                     {
                         Logging.Current.Info("SABT: Decreasing minimum tension from external input");
 
-                        devicePlugin.Settings.MinimumTension -= devicePlugin.Settings.TensionStep;
+                        devicePlugin.Settings.MinimumTension -= devicePlugin.Settings.ControlStep;
                     });
                 }
             );
@@ -346,7 +346,7 @@ namespace User.ActiveBeltTensioner
                     DoOnMainThread(devicePlugin =>
                     {
                         Logging.Current.Info("SABT: Increasing maximum tension from external input");
-                        devicePlugin.Settings.MaximumTension += devicePlugin.Settings.TensionStep;
+                        devicePlugin.Settings.MaximumTension += devicePlugin.Settings.ControlStep;
                     });
                 }
             );
@@ -357,7 +357,7 @@ namespace User.ActiveBeltTensioner
                     {
                         Logging.Current.Info("SABT: Decreasing maximum tension from external input");
 
-                        devicePlugin.Settings.MaximumTension -= devicePlugin.Settings.TensionStep;
+                        devicePlugin.Settings.MaximumTension -= devicePlugin.Settings.ControlStep;
                     });
                 }
             );

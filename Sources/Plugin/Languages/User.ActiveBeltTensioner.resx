@@ -127,7 +127,7 @@
     <value>Status &amp; Setup</value>
   </data>
   <data name="SABT_Title_Tension" xml:space="preserve">
-    <value>Belt Tension Adjustment</value>
+    <value>Tension</value>
   </data>
   <data name="SABT_Title_Tuning" xml:space="preserve">
     <value>Tuning</value>
@@ -295,6 +295,9 @@ If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons t
   <data name="SABT_Title_Credits" xml:space="preserve">
     <value>Credits</value>
   </data>
+  <data name="SABT_Title_Biases" xml:space="preserve">
+    <value>Biases</value>
+  </data>
   <data name="SABT_Title_Configuration" xml:space="preserve">
     <value>Configuration</value>
   </data>
@@ -312,6 +315,21 @@ If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons t
   </data>
   <data name="SABT_Button_Tension" xml:space="preserve">
     <value>Tension</value>
+  </data>
+  <data name="SABT_Button_SetTemperaturesForPLA" xml:space="preserve">
+    <value>Set For PLA Parts</value>
+  </data>
+  <data name="SABT_Button_SetTemperaturesForASA" xml:space="preserve">
+    <value>Set For ASA Parts</value>
+  </data>
+  <data name="SABT_Button_SetTemperaturesForPC" xml:space="preserve">
+    <value>Set For PC Parts</value>
+  </data>
+  <data name="SABT_Button_SetTemperaturesForPETG" xml:space="preserve">
+    <value>Set For PETG Parts</value>
+  </data>
+  <data name="SABT_Button_SetTemperaturesForABS" xml:space="preserve">
+    <value>Set For ABS Parts</value>
   </data>
   <data name="SABT_Button_Connect" xml:space="preserve">
     <value>Connect</value>
@@ -464,19 +482,21 @@ For more information, to report a bug or contribute, consult the project GitHub 
 6. Reconnect all motors and click **Detect Motors**
 7. Allocate motors to belts under the **Mapping** column and set rotation directions under **Direction**</value>
   </data>
-  <data name="SABT_Text_IdleTension" xml:space="preserve">
-    <value>• Always applied while not driving (no effect while driving)
-• Behaves like the retraction spring on an inertia reel belt
-• Set to zero to disable; limited to 25% of maximum motor torque</value>
+  <data name="SABT_Text_TensionWhileIdle" xml:space="preserve">
+    <value>• Applied whenever the motors are enabled and a game is not active
+• Behaves like the retraction spring on an inertia reel belt; taking up slack automatically</value>
   </data>
-  <data name="SABT_Text_DrivingTension" xml:space="preserve">
-    <value>• The minimum and maximum tension to be applied while driving
-• Increasing the minimum will apply a constant tension and enhance acceleration and jumping effects
-• Reducing the maximum will result in a reduction of overall tension strength</value>
+  <data name="SABT_Text_Tension" xml:space="preserve">
+    <value>The total amount of tension **SABT** can apply is limited by these sliders. They are relative to the maximum motor output, which is approximately **10Kg** _per motor_. All other adjustments respect these limits, so make sure these are set appropriately before tuning anything else.</value>
   </data>
-  <data name="SABT_Text_TensionStep" xml:space="preserve">
-    <value>• How much the above tension values change when adjusted via SimHub 'Actions'
-• Useful when using control hardware like encoder knobs with variable step counts</value>
+  <data name="SABT_Text_TensionWhileActive" xml:space="preserve">
+    <value>• The minimum and maximum tension to be applied while in-game
+• Increasing the minimum tension to a non-zero value will apply a constant tension and enhance acceleration and jumping effects (by releasing tension)
+• Reducing the maximum tension will result in a reduction of overall tension strength and under-utilization of the motors</value>
+  </data>
+  <data name="SABT_Text_ControlStep" xml:space="preserve">
+    <value>• The percentage increment/decrement that should be applied when adjusting settings by an external control (via **SimHub's** _Controls &amp; Events_ functionality)
+• Set this lower for _encoder knobs_ and higher for _push-buttons_</value>
   </data>
   <data name="SABT_Text_HorizontalBias" xml:space="preserve">
     <value>• If tension feels unbalanced between sides, adjust this left or right to bias towards that side
@@ -526,15 +546,19 @@ For more information, to report a bug or contribute, consult the project GitHub 
 • 'Auto-Switching' will be automatically disabled when using the automatic tuning feature
 • 'Auto-Tuning' will be automatically disabled if the active profile changes</value>
   </data>
+  <data name="SABT_Text_Biases" xml:space="preserve">
+    <value>If you feel that one belt is pulling too hard relative to the others, you can reduce that belt's tension output here. This is **not recommended**, as it usually indicates you have a mechanical problem with your setup that needs to be resolved. If you aren't using _belt rollers_, consider adding them before adjusting these settings.</value>
+  </data>
   <data name="SABT_Text_Preferences" xml:space="preserve">
-    <value>These settings are not game-specific and control the basic operation of the tensioner; including overall output both during and between game sessions. They should be set to your liking before performing fine-tuning within the 'Profiles' tab.</value>
+    <value>These general preferences apply to all situations. Make sure these are correct before moving on to adjusting other settings.</value>
   </data>
   <data name="SABT_Text_TemperatureThrottlingRange" xml:space="preserve">
-    <value>• The motors should not get hot during operation; but they are capable of operating at up to 80°C
-• Depending on your choice of filament, your printed parts may fail at lower temperatures (PLA &lt;60°C, PETG &lt;85°C, ABS &lt;95°C)
-• The first slider sets the temperature at which thermal throttling should start (a reduction in motor power)
-• The second slider sets the temperature at which the motors should be disabled to prevent damage
-• While between these temperatures, the motor output will be gradually reduced (proportional to the temperature)</value>
+    <value>The motors should not get hot during operation; but multi-hour sessions of heavy use can raise their internal temperature to **~35°C** _over ambient_. It takes time and sustained use for their external temperature to equalize to this, but it can happen; and if it does, filaments susceptible to deformation at less than  **~55°C** (e.g. **PLA**) can be vulnerable to damage.
+
+By setting a thermal throttling range you can protect your printed parts from damage:
+• When **below** the selected temperature range, motor output will be unaffected
+• At the **start** of the selected temperature range, motor output will begin to be reduced proportionally to temperature
+• At the **end** of the selected temperature range, the motors will be disabled to prevent damage</value>
   </data>
   <data name="SABT_Text_Telemetry" xml:space="preserve">
     <value>• Adjust these ranges **before anything else**, as they control the overall mapping of telemetry forces to belt tension
@@ -542,23 +566,32 @@ For more information, to report a bug or contribute, consult the project GitHub 
 • These should equal the **maximum forces** you expect your vehicle to experience under normal gameplay</value>
   </data>
   <data name="SABT_Text_Smoothing" xml:space="preserve">
-    <value>• How much the belt tension output should be smoothed
-• This does not apply to all effects (such as **Engine RPM**), as that would make them ineffective</value>
+    <value>• How much the calculated tension output should be smoothed
+• Some effects will ignore this setting (e.g. **Engine RPM**)</value>
   </data>
-  <data name="SABT_Label_IdleTension" xml:space="preserve">
-    <value>Idle Tension</value>
+  <data name="SABT_Label_TensionWhileIdle" xml:space="preserve">
+    <value>While Idle (Not In Game)</value>
   </data>
-  <data name="SABT_Label_DrivingTension" xml:space="preserve">
-    <value>Driving Tension</value>
+  <data name="SABT_Label_TensionWhileActive" xml:space="preserve">
+    <value>While Active (In Game)</value>
   </data>
-  <data name="SABT_Label_StepSize" xml:space="preserve">
-    <value>Step Size</value>
+  <data name="SABT_Label_ControlStep" xml:space="preserve">
+    <value>External Control Step Size</value>
   </data>
   <data name="SABT_Label_HorizontalBias" xml:space="preserve">
     <value>Left/Right Bias</value>
   </data>
-  <data name="SABT_Label_VerticalBias" xml:space="preserve">
-    <value>Waist/Shoulder Bias</value>
+  <data name="SABT_Label_LeftStrength" xml:space="preserve">
+    <value>Left Side Strength</value>
+  </data>
+  <data name="SABT_Label_RightStrength" xml:space="preserve">
+    <value>Right Side Strength</value>
+  </data>
+  <data name="SABT_Label_WaistStrength" xml:space="preserve">
+    <value>Waist Belts Strength</value>
+  </data>
+  <data name="SABT_Label_ShoulderStrength" xml:space="preserve">
+    <value>Shoulder Belts Strength</value>
   </data>
   <data name="SABT_Label_Mapping" xml:space="preserve">
     <value>Mapping</value>

@@ -204,7 +204,7 @@ namespace User.ActiveBeltTensioner
             {
                 value = Math.Min(
                     Math.Max(value, 0.0),
-                    _maximumTension - _tensionStep
+                    _maximumTension - _controlStep
                 );
 
                 if (Math.Abs(_minimumTension - value) > double.Epsilon)
@@ -222,7 +222,7 @@ namespace User.ActiveBeltTensioner
             set
             {
                 value = Math.Min(
-                    Math.Max(value, _minimumTension + _tensionStep),
+                    Math.Max(value, _minimumTension + _controlStep),
                     100.0
                 );
 
@@ -234,21 +234,21 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private double _tensionStep = 0.1;
-        public double TensionStep
+        private double _controlStep = 0.1;
+        public double ControlStep
         {
-            get { return _tensionStep; }
+            get { return _controlStep; }
             set
             {
                 value = Math.Min(
                     Math.Max(value, 0.1),
-                    20.0
+                    10.0
                 );
 
-                if (Math.Abs(_tensionStep - value) > double.Epsilon)
+                if (Math.Abs(_controlStep - value) > double.Epsilon)
                 {
-                    _tensionStep = value;
-                    InvokePropertyChange(nameof(TensionStep));
+                    _controlStep = value;
+                    InvokePropertyChange(nameof(ControlStep));
                 }
             }
         }
@@ -433,15 +433,62 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private double _horizontalBias = 0.0;
-        public double HorizontalBias
+        private double _leftStrength = 100.0;
+        public double LeftStrength
         {
-            get { return _horizontalBias; }
-            set {
-                if (Math.Abs(_horizontalBias - value) > double.Epsilon)
+            get { return _leftStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(100.0, value));
+                if (Math.Abs(_leftStrength - clampedValue) > double.Epsilon)
                 {
-                    _horizontalBias = value;
-                    InvokePropertyChange(nameof(HorizontalBias));
+                    _leftStrength = clampedValue;
+                    InvokePropertyChange(nameof(LeftStrength));
+                }
+            }
+        }
+
+        private double _rightStrength = 100.0;
+        public double RightStrength
+        {
+            get { return _rightStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(100.0, value));
+                if (Math.Abs(_rightStrength - clampedValue) > double.Epsilon)
+                {
+                    _rightStrength = clampedValue;
+                    InvokePropertyChange(nameof(RightStrength));
+                }
+            }
+        }
+
+        private double _waistStrength = 100.0;
+        public double WaistStrength
+        {
+            get { return _waistStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(100.0, value));
+                if (Math.Abs(_waistStrength - clampedValue) > double.Epsilon)
+                {
+                    _waistStrength = clampedValue;
+                    InvokePropertyChange(nameof(WaistStrength));
+                }
+            }
+        }
+
+        private double _shoulderStrength = 100.0;
+        public double ShoulderStrength
+        {
+            get { return _shoulderStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(100.0, value));
+                if (Math.Abs(_shoulderStrength - clampedValue) > double.Epsilon)
+                {
+                    _shoulderStrength = clampedValue;
+                    InvokePropertyChange(nameof(ShoulderStrength));
                 }
             }
         }

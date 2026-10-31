@@ -69,6 +69,36 @@ namespace User.ActiveBeltTensioner
             _detectDevicesTimer.Stop();
         }
 
+        private void SetTemperaturesForPLA(object sender, RoutedEventArgs e)
+        {
+            _plugin.Settings.ReducedOutputTemperature = 45;
+            _plugin.Settings.StoppedOutputTemperature = 55;
+        }
+
+        private void SetTemperaturesForABS(object sender, RoutedEventArgs e)
+        {
+            _plugin.Settings.ReducedOutputTemperature = 65;
+            _plugin.Settings.StoppedOutputTemperature = 75;
+        }
+
+        private void SetTemperaturesForPETG(object sender, RoutedEventArgs e)
+        {
+            _plugin.Settings.ReducedOutputTemperature = 50;
+            _plugin.Settings.StoppedOutputTemperature = 60;
+        }
+
+        private void SetTemperaturesForASA(object sender, RoutedEventArgs e)
+        {
+            _plugin.Settings.ReducedOutputTemperature = 70;
+            _plugin.Settings.StoppedOutputTemperature = 80;
+        }
+
+        private void SetTemperaturesForPC(object sender, RoutedEventArgs e)
+        {
+            _plugin.Settings.ReducedOutputTemperature = 70;
+            _plugin.Settings.StoppedOutputTemperature = 80;
+        }
+
         private void DuplicateProfileForCurrentGame(object sender, RoutedEventArgs e)
         {
             if (((FrameworkElement)sender).Tag is GameTuningProfile profile)
@@ -203,6 +233,8 @@ namespace User.ActiveBeltTensioner
         {
             _plugin.Settings.TelemetryGraphHeight += e.VerticalChange;
         }
+
+
 
         private static T FindParent<T>(DependencyObject current) where T : DependencyObject
         {

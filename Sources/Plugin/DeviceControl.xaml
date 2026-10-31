@@ -142,7 +142,7 @@
                 <styles:SHTabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <styles:SHTabItem Header="{SLoc SABT_Tab_Connection}" d:Header="Tab">
                         <StackPanel>
-                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Connection}" d:Title="Title">
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Connection}" d:Title="Title" Margin="10,10,10,10">
                                 <StackPanel>
 
                                     <StackPanel>
@@ -163,7 +163,7 @@
 
                                 </StackPanel>
                             </styles:SHTitledGroup>
-                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Configuration}" d:Title="Title">
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Configuration}" d:Title="Title" Margin="10,0,10,10">
                                 <StackPanel Grid.IsSharedSizeScope="True" Cursor="{Binding Settings.PluginVersion}">
 
                                     <Grid Margin="0,20,0,0">
@@ -482,7 +482,7 @@
 
                                     <ContentControl Style="{StaticResource SettingStyle}">
                                         <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_SeatDegreesFromVertical}" Unit="°" Minimum="0.0" Maximum="40.0" Step="0.1" Value="{Binding Settings.SeatDegreesFromVertical, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_SeatDegreesFromVertical}" Unit="°" Minimum="0.0" Maximum="40.0" Step="1.0" Value="{Binding Settings.SeatDegreesFromVertical, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
                                                 <local:MarkdownFormattedText Key="SABT_Text_SeatDegreesFromVertical" />
                                             </TextBlock>
@@ -491,7 +491,7 @@
 
                                     <ContentControl Style="{StaticResource SettingStyle}">
                                         <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_WaistBeltDegreesFromVertical}" Unit="°" Minimum="-90.0" Maximum="0.0" Step="0.1" Value="{Binding Settings.WaistBeltDegreesFromVertical, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_WaistBeltDegreesFromVertical}" Unit="°" Minimum="-90.0" Maximum="0.0" Step="1.0" Value="{Binding Settings.WaistBeltDegreesFromVertical, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
                                                 <local:MarkdownFormattedText Key="SABT_Text_WaistBeltDegreesFromVertical" />
                                             </TextBlock>
@@ -503,69 +503,131 @@
                         </StackPanel>
                     </styles:SHTabItem>
                     <styles:SHTabItem Header="{SLoc SABT_Tab_Preferences}" d:Header="Tab">
-                        <styles:SHTitledGroup Title="{SLoc SABT_Title_Preferences}" d:Title="Title">
-                            <StackPanel>
-
+                        <StackPanel>
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Preferences}" d:Title="Title" Margin="10,10,10,10">
                                 <StackPanel>
-                                    <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,0" LineHeight="20">
-                                        <local:MarkdownFormattedText Key="SABT_Text_Preferences" />
-                                    </TextBlock>
+
+                                    <StackPanel>
+                                        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,0" LineHeight="20">
+                                            <local:MarkdownFormattedText Key="SABT_Text_Preferences" />
+                                        </TextBlock>
+
+                                        <ContentControl Style="{StaticResource SettingStyle}">
+                                            <StackPanel>
+                                                <local:SettingSlider Title="{SLoc SABT_Label_ControlStep}" Unit="%" Minimum="0.5" Maximum="10.0" Step="0.5" Value="{Binding Settings.ControlStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                                    <local:MarkdownFormattedText Key="SABT_Text_ControlStep" />
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ContentControl>
+
+                                        <ContentControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource SettingStyle}">
+                                            <StackPanel>
+                                                <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_TemperatureThrottlingRange}" Unit="°C" Minimum="40" Maximum="80" Step="1" Midpoint="50" LeftValue="{Binding Settings.ReducedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.StoppedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                    </Grid.RowDefinitions>
+
+                                                    <styles:SHButtonPrimary Grid.Column="0" HorizontalAlignment="Stretch" Click="SetTemperaturesForPLA" Margin="0,5,5,5" Content="{SLoc SABT_Button_SetTemperaturesForPLA}" />
+                                                    <styles:SHButtonPrimary Grid.Column="1" HorizontalAlignment="Stretch" Click="SetTemperaturesForPETG" Margin="5,5,5,5" Content="{SLoc SABT_Button_SetTemperaturesForPETG}" />
+                                                    <styles:SHButtonPrimary Grid.Column="2" HorizontalAlignment="Stretch" Click="SetTemperaturesForABS" Margin="5,5,5,5" Content="{SLoc SABT_Button_SetTemperaturesForABS}" />
+                                                    <styles:SHButtonPrimary Grid.Column="3" HorizontalAlignment="Stretch" Click="SetTemperaturesForASA" Margin="5,5,5,5" Content="{SLoc SABT_Button_SetTemperaturesForASA}" />
+                                                    <styles:SHButtonPrimary Grid.Column="4" HorizontalAlignment="Stretch" Click="SetTemperaturesForPC" Margin="5,5,0,5" Content="{SLoc SABT_Button_SetTemperaturesForPC}" />
+
+                                                </Grid>
+
+                                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,10,0,5">
+                                                    <local:MarkdownFormattedText Key="SABT_Text_TemperatureThrottlingRange" />
+                                                </TextBlock>
+
+                                            </StackPanel>
+                                        </ContentControl>
+
+                                    </StackPanel>
+
                                 </StackPanel>
+                            </styles:SHTitledGroup>
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Tension}" d:Title="Title" Margin="10,0,10,10">
+                                <StackPanel>
 
-                                <ContentControl Style="{StaticResource SettingStyle}">
+                                    <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,0" LineHeight="20">
+                                            <local:MarkdownFormattedText Key="SABT_Text_Tension" />
+                                    </TextBlock>
+
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
+                                            <local:SettingSlider Title="{SLoc SABT_Label_TensionWhileIdle}" Unit="%" Minimum="0.0" Maximum="50.0" Step="0.5" Value="{Binding Settings.IdleTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                                    <local:MarkdownFormattedText Key="SABT_Text_TensionWhileIdle" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ContentControl>
+
+                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                        <StackPanel>
+                                            <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_TensionWhileActive}" Unit="%" Minimum="0.0" Maximum="100.0" Step="0.5" LeftValue="{Binding Settings.MinimumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
+                                                    <local:MarkdownFormattedText Key="SABT_Text_TensionWhileActive" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ContentControl>
+
+                                </StackPanel>
+                            </styles:SHTitledGroup>
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Biases}" d:Title="Title" Margin="10,0,10,10">
+                                <StackPanel>
+
                                     <StackPanel>
-                                        <local:SettingSlider Title="{SLoc SABT_Label_IdleTension}" Unit="%" Minimum="0.0" Maximum="50.0" Step="0.1" Value="{Binding Settings.IdleTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
-                                            <local:MarkdownFormattedText Key="SABT_Text_IdleTension" />
+                                        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,0" LineHeight="20">
+                                            <local:MarkdownFormattedText Key="SABT_Text_Biases" />
                                         </TextBlock>
                                     </StackPanel>
-                                </ContentControl>
 
-                                <ContentControl Style="{StaticResource SettingStyle}">
-                                    <StackPanel>
-                                        <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_DrivingTension}" Unit="%" Minimum="0.0" Maximum="100.0" Step="0.1" LeftValue="{Binding Settings.MinimumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumTension, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
-                                            <local:MarkdownFormattedText Key="SABT_Text_DrivingTension" />
-                                        </TextBlock>
-                                    </StackPanel>
-                                </ContentControl>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
 
-                                <ContentControl Style="{StaticResource SettingStyle}">
-                                    <StackPanel>
-                                        <DockPanel Margin="5,4,5,4">
-                                            <mah:NumericUpDown DockPanel.Dock="Right" Margin="0,-3,-5,-12" Width="100" Minimum="10" Maximum="200" Value="{Binding Settings.TensionStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <TextBlock Text="{SLoc SABT_Label_StepSize}" VerticalAlignment="Center" />
-                                        </DockPanel>
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
-                                            <local:MarkdownFormattedText Key="SABT_Text_TensionStep" />
-                                        </TextBlock>
-                                    </StackPanel>
-                                </ContentControl>
+                                        <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Style="{StaticResource SettingStyle}" Margin="0,0,5,0">
+                                            <local:SettingSlider Grid.Column="0" Title="{SLoc SABT_Label_LeftStrength}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.LeftStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </ContentControl>
 
-                                <ContentControl Style="{StaticResource SettingStyle}">
-                                    <StackPanel>
-                                        <local:SettingSlider Title="{SLoc SABT_Label_HorizontalBias}" Unit="%" Minimum="-100" Maximum="100" Step="0.1" ShowReset="True" Value="{Binding Settings.HorizontalBias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
-                                            <local:MarkdownFormattedText Key="SABT_Text_HorizontalBias" />
-                                        </TextBlock>
-                                    </StackPanel>
-                                </ContentControl>
+                                        <ContentControl Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Style="{StaticResource SettingStyle}" Margin="5,0,0,0">
+                                            <local:SettingSlider Grid.Column="0" Title="{SLoc SABT_Label_RightStrength}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.RightStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </ContentControl>
 
-                                <ContentControl Style="{StaticResource SettingStyle}">
-                                    <StackPanel>
-                                        <local:SettingRangeSlider Grid.Column="0" Title="{SLoc SABT_Label_TemperatureThrottlingRange}" Unit="°C" Minimum="45" Maximum="80" Step="1" Midpoint="50" LeftValue="{Binding Settings.ReducedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.StoppedOutputTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
-                                            <local:MarkdownFormattedText Key="SABT_Text_TemperatureThrottlingRange" />
-                                        </TextBlock>
-                                    </StackPanel>
-                                </ContentControl>
+                                        <ContentControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource SettingStyle}">
+                                            <local:SettingSlider Grid.Column="0" Title="{SLoc SABT_Label_WaistStrength}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.WaistStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </ContentControl>
 
-                            </StackPanel>
-                        </styles:SHTitledGroup>
+                                        <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource SettingStyle}">
+                                            <local:SettingSlider Grid.Column="0" Title="{SLoc SABT_Label_ShoulderStrength}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.ShoulderStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </ContentControl>
+
+                                    </Grid>
+
+                                </StackPanel>
+                            </styles:SHTitledGroup>
+                        </StackPanel>
                     </styles:SHTabItem>
                     <styles:SHTabItem Header="{SLoc SABT_Tab_Profiles}" d:Header="Tab">
                         <StackPanel>
-                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Profiles}" d:Title="Title">
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Profiles}" d:Title="Title" Margin="10,10,10,10">
                                 <StackPanel>
 
                                     <StackPanel>
@@ -627,7 +689,7 @@
                                     </ListBox>
                                 </StackPanel>
                             </styles:SHTitledGroup>
-                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Tuning}" d:Title="Title">
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Tuning}" d:Title="Title" Margin="10,0,10,10">
                                 <StackPanel>
 
                                     <StackPanel>
@@ -681,9 +743,9 @@
 
                                     <ContentControl Style="{StaticResource SettingStyle}">
                                         <StackPanel>
-                                            <local:SettingRangeSlider Title="{SLoc SABT_Label_SurgeLimits}" Unit="m/s²" Minimum="-50" Maximum="50" Step="0.1" LeftValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <local:SettingRangeSlider Title="{SLoc SABT_Label_SwayLimits}" Unit="m/s²" Minimum="-50" Maximum="50" Step="0.1" LeftValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ShouldMirror="True" />
-                                            <local:SettingRangeSlider Title="{SLoc SABT_Label_HeaveLimits}" Unit="m/s²" Minimum="-50" Maximum="100" Step="0.1" LeftValue="{Binding Settings.MinimumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingRangeSlider Title="{SLoc SABT_Label_SurgeLimits}" Unit="m/s²" Minimum="-50" Maximum="50" Step="0.5" LeftValue="{Binding Settings.MinimumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumSurge, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingRangeSlider Title="{SLoc SABT_Label_SwayLimits}" Unit="m/s²" Minimum="-50" Maximum="50" Step="0.5" LeftValue="{Binding Settings.MinimumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumSway, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ShouldMirror="True" />
+                                            <local:SettingRangeSlider Title="{SLoc SABT_Label_HeaveLimits}" Unit="m/s²" Minimum="-50" Maximum="100" Step="0.5" LeftValue="{Binding Settings.MinimumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" RightValue="{Binding Settings.MaximumHeave, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
                                                 <local:MarkdownFormattedText Key="SABT_Text_Telemetry" />
                                             </TextBlock>
@@ -692,9 +754,9 @@
 
                                     <ContentControl Style="{StaticResource SettingStyle}">
                                         <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_SurgeStrength}" Unit="%" Minimum="0.0" Maximum="200.0" Step="0.1" ShowReset="True" Value="{Binding Settings.SurgeStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <local:SettingSlider Title="{SLoc SABT_Label_SwayStrength}" Unit="%" Minimum="0.0" Maximum="200.0" Step="0.1" ShowReset="True" Value="{Binding Settings.SwayStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            <local:SettingSlider Title="{SLoc SABT_Label_HeaveStrength}" Unit="%" Minimum="0.0" Maximum="200.0" Step="0.1" ShowReset="True" Value="{Binding Settings.HeaveStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_SurgeStrength}" Unit="%" Minimum="0.0" Maximum="200.0" Step="0.5" ShowReset="True" Value="{Binding Settings.SurgeStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_SwayStrength}" Unit="%" Minimum="0.0" Maximum="200.0" Step="0.5" ShowReset="True" Value="{Binding Settings.SwayStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_HeaveStrength}" Unit="%" Minimum="0.0" Maximum="200.0" Step="0.5" ShowReset="True" Value="{Binding Settings.HeaveStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
                                                 <local:MarkdownFormattedText Key="SABT_Text_Strengths" />
                                             </TextBlock>
@@ -703,7 +765,7 @@
 
                                     <ContentControl Style="{StaticResource SettingStyle}">
                                         <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_SmoothingFactor}" Unit="%" Minimum="0" Maximum="75" Step="0.1" Value="{Binding Settings.SmoothingFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_SmoothingFactor}" Unit="%" Minimum="0" Maximum="75" Step="0.5" Value="{Binding Settings.SmoothingFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
                                                 <local:MarkdownFormattedText Key="SABT_Text_Smoothing" />
                                             </TextBlock>
@@ -712,7 +774,7 @@
 
                                     <ContentControl Style="{StaticResource SettingStyle}" Tag="Experimental">
                                         <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_Engine}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.EngineStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_Engine}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.EngineStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
                                                 <local:MarkdownFormattedText Key="SABT_Text_Engine" />
                                             </TextBlock>
@@ -721,7 +783,7 @@
 
                                     <ContentControl Style="{StaticResource SettingStyle}">
                                         <StackPanel>
-                                            <local:SettingSlider Title="{SLoc SABT_Label_Upshifting}" Unit="%" Minimum="0" Maximum="100" Step="0.1" Value="{Binding Settings.UpshiftingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <local:SettingSlider Title="{SLoc SABT_Label_Upshifting}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.UpshiftingStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <Grid Margin="0,0,-1,10">
                                                 <TextBox Text="{Binding Settings.UpshiftingModifiers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="4,4,26,4" />
                                                 <TextBlock Text="&#10003;" FontWeight="Bold" Foreground="#4CAF50" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0" IsHitTestVisible="False">
@@ -759,7 +821,7 @@
                         </StackPanel>
                     </styles:SHTabItem>
                     <styles:SHTabItem Header="{SLoc SABT_Tab_Credits}" d:Header="Tab">
-                        <styles:SHTitledGroup Title="{SLoc SABT_Title_Credits}" d:Title="Title">
+                        <styles:SHTitledGroup Title="{SLoc SABT_Title_Credits}" d:Title="Title" Margin="10,10,10,10">
                             <StackPanel>
 
                                 <Image Source="/User.ActiveBeltTensioner;component/Graphics/SABT%20Logo.png" Height="50" Margin="0,5,0,0" HorizontalAlignment="Right" />
