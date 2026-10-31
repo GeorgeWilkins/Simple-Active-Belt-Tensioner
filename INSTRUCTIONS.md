@@ -4,46 +4,50 @@ Everything you need to know about building a tensioner of your own is in this do
 
 ## Printed Parts
 
-See the [/Printables/](/Printables/) directory to obtain the printable files, and detailed information on printing them. Make sure you read through this document and note which printable parts you _actually need_.
+See the [/Printables/](/Printables/) directory to obtain the printable files, and detailed information on printing them. Make sure you read through this document and note which printable parts you _actually need_; some are optional.
 
 ## Ordering Components
 ### Motors, Electronics & Fixings
 
-You should be able to order the _Waveshare_ [motors](https://www.waveshare.com/wiki/DDSM115) and [control board](http://www.waveshare.com/wiki/DDSM_Driver_HAT_(A)) from the same supplier, as they are almost always stocked together. They are designed for robotics projects, so those kinds of retailers are your best bet.
+You should be able to order the [motors](https://www.waveshare.com/wiki/DDSM115) and [control board](http://www.waveshare.com/wiki/DDSM_Driver_HAT_(A)) from the same supplier, as they are almost always stocked together. They are designed for robotics projects, so those kinds of retailers are your best bet.
 
-The rest of the parts can be obtained from virtually anywhere, including [Amazon](https://www.amazon.co.uk) or [AliExpress](https://www.aliexpress.com). Where I've linked to particular products, these are not endorsements or items I've tested; simply representative examples. Shop around, as prices change constantly...
+The rest of the parts can be obtained from virtually anywhere, including [Amazon](https://www.amazon.co.uk) or [AliExpress](https://www.aliexpress.com). Where I've linked to particular products, these are not endorsements or necessarilyitems I've tested; simply representative examples.
 
-| Guide Price | Part | Description | Example |
-| - | - | - | - |
-| `60 GBP` `x2` | 2 x `DDSM115` _or_ `M0601` Motors | Waveshare or DFRobot servo motors | [PiHut UK](https://thepihut.com/products/ddsm115-direct-drive-servo-motor) / [Waveshare](https://www.waveshare.com/ddsm115.htm) / [DFRobot](https://www.dfrobot.com/product-3077.html) |
-| `20 GBP` | `DDSM Driver HAT (A)` | Waveshare Controller Board (Version `A`) | [PiHut UK](https://thepihut.com/products/ddsm-hub-motor-driver-board) |
-| `6 GBP` | 2 x `6706` Bearings | `30x37x4mm` bearings for the pulleys | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DN3RW8) |
-| `7 GBP` | `M2.5` Screw & Nut Set | Eight `M2.5x16` (or `M2.5x18`) + eight `M2.5x10` + six `M2.5x12` + six `M2.5x20` + sixteen `M2.5` nuts | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
-| `5 GBP` | `~1M` UHMWPE/Dyneema Cord | The low-friction high-strength cord for the pulleys (`1.6~2.0MM` Diameter) | (any by-the-metre seller; eBay, etc) |
-| `20 GBP` | `15V` `90W` DC Power Supply | The power supply for the board and motors (standard `5.5x2.5MM` centre-positive barrel plug) | [Amazon UK](https://www.amazon.co.uk/dp/B09RHC7QG9) |
-| `25 GBP` | 4/5/6-Point `2"` Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
+Since availability and prices change constantly, I can't keep buying and verifying each component personally. Take note of the listed specifications and shop around for the best deal, or check our [Discord](https://discord.gg/SVkZv7xQ8b) for advice and recommendations.
+
+Some of these items are only sold in multiples, so the given per-unit guide prices are the approximate individual cost _when bought together_ in the required quantities.
+
+| Guide Price (Each) | Quantity | Part | Notes | Example |
+| - | - | - | - | - |
+| `60 GBP` | `2x`-`4x` | `DDSM115`/`M0601` Motor | These two servo motors are the same OEM model and functionally identical. A basic two-channel shoulder belt configuration requires `2x` motors. Four-channel or tandem setups require `4x` motors | [PiHut UK](https://thepihut.com/products/ddsm115-direct-drive-servo-motor) / [Waveshare](https://www.waveshare.com/ddsm115.htm) / [DFRobot](https://www.dfrobot.com/product-3077.html) |
+| `20 GBP` | `1x` | `DDSM Driver HAT (A)` Motor Controller | A motor controller board designed specifically for these motors; up to four at a time. It **must** be the `(A)` model, as there are a few different ones for different motors that are incompatible | [PiHut UK](https://thepihut.com/products/ddsm-hub-motor-driver-board) |
+| `2 GBP` | `2x`-`4x` | `6706` Bearing | `30x37x4mm` bearings for the self-orienting pulley covers (in the same quantity as the motors) | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DN3RW8) |
+| `7 GBP` | `1x` | `M2.5` Screw & Nut Set | A selection of `M2.5` screws and nuts that we use to fit the various parts together. The kit includes everything you need for any possible motor configuration, including a hex key | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
+| `5 GBP` | `~5M` | `~1.8MM` UHMWPE/Dyneema Cord | Low-friction high-strength cord for up to four motors and pulley anchors. Avoid _'Paracord'_ style products with outer sheaths; go for _100% braided UHMWPE/Dyneema_ in `1.6mm` to `2.0mm` diameters | eBay, Kite/Sail stores, etc |
+| `40 GBP` | `1x` | `20V` `120W` DC Power Supply | The power supply for the board and motors (with a standard `5.5x2.5MM` centre-positive barrel plug). This can handle up to `4x` motor configurations | GST120A20-P1M |
+| `25 GBP` | `1x` | 4/5/6-Point `2"` Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
+
+
 
 > 📢 **Important:**
-> - The `DDSM115` and `M0601` motors are the same OEM motor, but rebranded versions
-> - The motors are _sometimes_ sold in **pairs**. Make sure you're only buying _two motors_, not _two sets of two_
+> - The motors are _sometimes_ sold in **pairs** rather than individually. Make sure you're ordering the correct quantity for your preferred setup
 > - There are multiple motor models in the `DDSMXXX` series. Make sure you're buying the [DDSM115](https://www.waveshare.com/wiki/DDSM115)
-> - There are multiple control board models of similar appearance. Make sure you're buying the [DDSM Driver HAT (A)](https://www.waveshare.com/wiki/DDSM_Driver_HAT_(A)) (irrespective of which brand of motor you buy)
-> - If using the _tubular_ motor brackets, you'll need [M5x25mm Clamping Knobs](https://www.amazon.co.uk/dp/B0CP2GQLQJ) and [M5 Nuts (8mm Hex)](https://www.amazon.co.uk/dp/B0FMRFPWJ3) to secure them to the tubing
-> - `15V` is the currently recommended voltage, but some builders are using `19V` (commonly offered by laptop supplies)
+> - There are multiple motor controllers in the `DDSM` series that are visually similar. Make sure you're buying the [DDSM Driver HAT (A)](https://www.waveshare.com/wiki/DDSM_Driver_HAT_(A))
+> - You can use power supplies from `15V` to `20V` as long as they are capable of `6A` continuous output; but exceeding `20V` may damage your motors during back-driving conditions
+> - If using the _tubular_ motor brackets, you'll also need [M5x25mm Clamping Knobs](https://www.amazon.co.uk/dp/B0CP2GQLQJ) and [M5 Nuts (8mm Hex)](https://www.amazon.co.uk/dp/B0FMRFPWJ3) to secure them to the tubing
 
 ### Belt Rollers
 
 These are considered to be _optional_, but are usually required for seats with angled or irregularly shaped belt guides. They cost little to build, so are _recommended_ if you have any doubts about your seat's belt guide design or want maximum performance.
 
-| Guide Price | Part | Description | Example |
-| - | - | - | - |
-| `5 GBP` | 4 x `605` Bearings | `5x14x5mm` bearings for the rollers | [Amazon UK](https://www.amazon.co.uk/dp/B0CZ8DJ6YM) / [Amazon UK](https://www.amazon.co.uk/dp/B0F6LNSC75) |
-| `5 GBP` | 8 x `M5` Fully-Threaded Countersunk Bolts | Length depends on seat belt guide depth | [Amazon UK](https://www.amazon.co.uk/dp/B0C97LXKBP) |
-| `5 GBP` | 8 x `M5` Hex Nuts (`8mm` WAF) | Must be `<5mm` thick | [Amazon UK](https://www.amazon.co.uk/dp/B0FMRFPWJ3) |
+| Guide Price (Each) | Quantity | Part | Description | Example |
+| - | - | - | - | - |
+| `0.5 GBP` | `4x` | `605` Bearings | `5x14x5mm` bearings for the rollers | [Amazon UK](https://www.amazon.co.uk/dp/B0CZ8DJ6YM) / [Amazon UK](https://www.amazon.co.uk/dp/B0F6LNSC75) |
+| `0.5 GBP` | `8x` | `M5` Countersunk Bolts | These **must** be _fully threaded_. You'll need to measure your belt hole depth (front to back) to determine the required length; add `10mm` to that and round up to the nearest standard bolt length (e.g. my `39mm` deep belt guides need `50mm` bolts) | [Amazon UK](https://www.amazon.co.uk/dp/B0C97LXKBP) |
+| `0.5 GBP` | `8x` | `M5` Hex Nuts | Must be `<5mm` thick and `8mm` wide across the flats | [Amazon UK](https://www.amazon.co.uk/dp/B0FMRFPWJ3) |
 
 > 📢 **Important:**
 > - Countersunk bolts are typically measured by their _entire length_ including the head
-> - Measure your seat's belt guide/hole depth and _add_ `10mm`, rounding up to the nearest standard bolt length (e.g. my `39mm` belt guides need `50mm` bolts)
 > - The bolts _must_ be fully threaded; otherwise you won't be able to use them for the roller axles
 > - If you use bolts that are longer than needed, they may interfere with the belts and rollers
 
