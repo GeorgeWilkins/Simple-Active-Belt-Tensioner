@@ -87,63 +87,72 @@ namespace User.ActiveBeltTensioner
         )
         {
             // Apply Idle Tension While In-Menus
-            if (!telemetrySnapshot.IsActive)
+            if (telemetrySnapshot.IsActive)
             {
-                double idleTension = _settings.IdleTension / 100.0;
+                // Convert Telemetry To Vehicle Acceleration
+                AccelerationVector vehicleAcceleration = new AccelerationVector(
+                    telemetrySnapshot.Surge,
+                    telemetrySnapshot.Sway,
+                    telemetrySnapshot.Heave
+                );
 
-                leftShoulderTarget = idleTension;
-                rightShoulderTarget = idleTension;
-                leftWaistTarget = idleTension;
-                rightWaistTarget = idleTension;
+                // Normalize Vehicle Acceleration (Before Adapting To Seat Frame Of Reference)
+                AccelerationVector normalizedAcceleration = new AccelerationVector(
+                    NormalizeAcceleration(vehicleAcceleration.X, _settings.MinimumSurge, _settings.MaximumSurge),
+                    NormalizeAcceleration(vehicleAcceleration.Y, _settings.MinimumSway, _settings.MaximumSway),
+                    NormalizeAcceleration(vehicleAcceleration.Z, _settings.MinimumHeave, _settings.MaximumHeave)
+                );
 
-                return;
+                // Apply Per-Axis Strength Gains
+                AccelerationVector strengthAdjustedAcceleration = ApplyStrengthGains(normalizedAcceleration);
+
+                // Translate To Seat Frame Of Reference & Calculate Belt Tensions
+                CalculateBeltTensions(
+                    TranslateToSeatFrameOfReference(strengthAdjustedAcceleration),
+                    out leftShoulderTarget,
+                    out rightShoulderTarget,
+                    out leftWaistTarget,
+                    out rightWaistTarget
+                );
+
+                // Apply Additional Effects
+                BeltTensionTargets beltTensionTargets = new BeltTensionTargets(
+                    leftShoulderTarget,
+                    rightShoulderTarget,
+                    leftWaistTarget,
+                    rightWaistTarget
+                );
+
+                _effectPipeline.Apply(
+                    _settings,
+                    telemetrySnapshot,
+                    millisecondsSinceLastUpdate,
+                    ref beltTensionTargets
+                );
+
+                leftShoulderTarget = beltTensionTargets.LeftShoulder;
+                rightShoulderTarget = beltTensionTargets.RightShoulder;
+                leftWaistTarget = beltTensionTargets.LeftWaist;
+                rightWaistTarget = beltTensionTargets.RightWaist;
+            }
+            else
+            {
+                leftShoulderTarget = _settings.IdleTension / 100.0;
+                rightShoulderTarget = _settings.IdleTension / 100.0;
+                leftWaistTarget = _settings.IdleTension / 100.0;
+                rightWaistTarget = _settings.IdleTension / 100.0;
             }
 
-            // Convert Telemetry To Vehicle Acceleration
-            AccelerationVector vehicleAcceleration = new AccelerationVector(
-                telemetrySnapshot.Surge,
-                telemetrySnapshot.Sway,
-                telemetrySnapshot.Heave
-            );
+            // Apply Strength Biases
+            double leftStrength = _settings.LeftStrength / 100.0;
+            double rightStrength = _settings.RightStrength / 100.0;
+            double waistStrength = _settings.WaistStrength / 100.0;
+            double shoulderStrength = _settings.ShoulderStrength / 100.0;
 
-            // Normalize Vehicle Acceleration (Before Adapting To Seat Frame Of Reference)
-            AccelerationVector normalizedAcceleration = new AccelerationVector(
-                NormalizeAcceleration(vehicleAcceleration.X, _settings.MinimumSurge, _settings.MaximumSurge),
-                NormalizeAcceleration(vehicleAcceleration.Y, _settings.MinimumSway, _settings.MaximumSway),
-                NormalizeAcceleration(vehicleAcceleration.Z, _settings.MinimumHeave, _settings.MaximumHeave)
-            );
-
-            // Apply Per-Axis Strength Gains
-            AccelerationVector strengthAdjustedAcceleration = ApplyStrengthGains(normalizedAcceleration);
-
-            // Translate To Seat Frame Of Reference & Calculate Belt Tensions
-            CalculateBeltTensions(
-                TranslateToSeatFrameOfReference(strengthAdjustedAcceleration),
-                out leftShoulderTarget,
-                out rightShoulderTarget,
-                out leftWaistTarget,
-                out rightWaistTarget
-            );
-
-            // Apply Additional Effects
-            BeltTensionTargets beltTensionTargets = new BeltTensionTargets(
-                leftShoulderTarget,
-                rightShoulderTarget,
-                leftWaistTarget,
-                rightWaistTarget
-            );
-
-            _effectPipeline.Apply(
-                _settings,
-                telemetrySnapshot,
-                millisecondsSinceLastUpdate,
-                ref beltTensionTargets
-            );
-
-            leftShoulderTarget = beltTensionTargets.LeftShoulder;
-            rightShoulderTarget = beltTensionTargets.RightShoulder;
-            leftWaistTarget = beltTensionTargets.LeftWaist;
-            rightWaistTarget = beltTensionTargets.RightWaist;
+            leftShoulderTarget *= leftStrength * shoulderStrength;
+            rightShoulderTarget *= rightStrength * shoulderStrength;
+            leftWaistTarget *= leftStrength * waistStrength;
+            rightWaistTarget *= rightStrength * waistStrength;
         }
 
         /// <summary>Changes the frame of reference from the vehicle to the driver seat, accounting for its angle relative to the vehicle's vertical axis</summary>

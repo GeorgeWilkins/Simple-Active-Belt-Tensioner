@@ -13,8 +13,6 @@ namespace User.ActiveBeltTensioner.Effects
 
         public void Apply(DeviceSettings settings, TelemetrySnapshot telemetrySnapshot, double millisecondsSinceLastUpdate, ref BeltTensionTargets beltTensionTargets)
         {
-            return; // @TODO: NOT WORKING WELL ENOUGH
-
             if (settings == null)
             {
                 _oscillationPhaseRadians = 0.0;

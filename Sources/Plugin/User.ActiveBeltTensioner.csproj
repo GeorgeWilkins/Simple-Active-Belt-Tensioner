@@ -127,7 +127,6 @@
     <Compile Include="Effects\EffectPipeline.cs" />
     <Compile Include="Effects\EngineOscillationEffect.cs" />
     <Compile Include="Effects\IEffect.cs" />
-    <Compile Include="Effects\BiasEffect.cs" />
     <Compile Include="Effects\SmoothingEffect.cs" />
     <Compile Include="Effects\UpshiftBlipEffect.cs" />
     <Compile Include="ForegroundPrompt.cs" />
