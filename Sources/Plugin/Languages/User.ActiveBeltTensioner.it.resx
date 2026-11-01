@@ -150,12 +150,6 @@
   <data name="SABT_Message_AlterGameName" xml:space="preserve">
     <value>Puoi modificare il nome del gioco da quello fornito da SimHub se desiderato:</value>
   </data>
-  <data name="SABT_Title_AlterGameName" xml:space="preserve">
-    <value>Imposta Nome Gioco</value>
-  </data>
-  <data name="SABT_Title_AlterVehicleName" xml:space="preserve">
-    <value>Imposta nome veicolo</value>
-  </data>
   <data name="SABT_Message_AlterVehicleName" xml:space="preserve">
     <value>Puoi modificare il nome del veicolo da quello fornito da SimHub se desiderato:</value>
   </data>
@@ -234,9 +228,6 @@
   </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
     <value>Preferenze</value>
-  </data>
-  <data name="SABT_Title_Effects" xml:space="preserve">
-    <value>Effetti</value>
   </data>
   <data name="SABT_Tab_Connection" xml:space="preserve">
     <value>Connessione</value>
@@ -391,26 +382,6 @@
   <data name="SABT_Text_ControlStep" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_VerticalBias" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="SABT_Text_Cornering" xml:space="preserve">
-    <value>• Quanto le forze in curva devono influire sulla differenza di tensione tra le due cinture</value>
-  </data>
-  <data name="SABT_Text_Braking" xml:space="preserve">
-    <value>• Quanto le forze di decelerazione devono aumentare la tensione su entrambe le cinture</value>
-  </data>
-  <data name="SABT_Text_Acceleration" xml:space="preserve">
-    <value>• Quanto le forze di accelerazione devono ridurre la tensione su entrambe le cinture
-• Per risultati migliori, imposta la 'Tensione in guida' minima a un valore diverso da zero (vedi scheda 'Tensione')</value>
-  </data>
-  <data name="SABT_Text_Jumping" xml:space="preserve">
-    <value>• Quanto i salti devono ridurre la tensione su entrambe le cinture
-• Per risultati migliori, imposta la 'Tensione in guida' minima a un valore diverso da zero (vedi scheda 'Tensione')</value>
-  </data>
-  <data name="SABT_Text_Landing" xml:space="preserve">
-    <value>• Quanto l'atterraggio deve aumentare la tensione su entrambe le cinture</value>
-  </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
     <value>• In che misura le vibrazioni del motore al minimo e durante lo spegnimento a basso regime dovrebbero essere percepite attraverso le cinghie
 • Questo effetto si basa sulla velocità del motore segnalata e è limitato ai bassi regimi a causa delle limitazioni del motore</value>
@@ -528,14 +499,8 @@
   <data name="SABT_Label_Faults" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_Diagnostics" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="SABT_Tooltip_Experimental" xml:space="preserve">
     <value>Questa funzionalità o impostazione è considerata 'sperimentale' e potrebbe non funzionare correttamente</value>
-  </data>
-  <data name="SABT_Tooltip_Unavailable" xml:space="preserve">
-    <value>Questa impostazione non è disponibile a causa dei valori di altre impostazioni</value>
   </data>
   <data name="SABT_Label_Experimental" xml:space="preserve">
     <value>SPERIMENTALE</value>

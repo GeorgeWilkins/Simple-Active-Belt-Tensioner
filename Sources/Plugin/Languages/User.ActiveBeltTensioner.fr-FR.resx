@@ -150,12 +150,6 @@
   <data name="SABT_Message_AlterGameName" xml:space="preserve">
     <value>Vous pouvez modifier le nom du jeu fourni par SimHub si vous le souhaitez :</value>
   </data>
-  <data name="SABT_Title_AlterGameName" xml:space="preserve">
-    <value>Définir le nom du jeu</value>
-  </data>
-  <data name="SABT_Title_AlterVehicleName" xml:space="preserve">
-    <value>Définir le nom du véhicule</value>
-  </data>
   <data name="SABT_Message_AlterVehicleName" xml:space="preserve">
     <value>Vous pouvez modifier le nom du véhicule donné par SimHub si vous le souhaitez :</value>
   </data>
@@ -234,9 +228,6 @@
   </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
     <value>Préférences</value>
-  </data>
-  <data name="SABT_Title_Effects" xml:space="preserve">
-    <value>Effets</value>
   </data>
   <data name="SABT_Tab_Connection" xml:space="preserve">
     <value>Connexion</value>
@@ -391,26 +382,6 @@
   <data name="SABT_Text_ControlStep" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_VerticalBias" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="SABT_Text_Cornering" xml:space="preserve">
-    <value>• Intensité de l'effet des forces de virage sur la différence de tension entre les deux ceintures</value>
-  </data>
-  <data name="SABT_Text_Braking" xml:space="preserve">
-    <value>• Intensité de l'augmentation de tension sur les deux ceintures lors de la décélération</value>
-  </data>
-  <data name="SABT_Text_Acceleration" xml:space="preserve">
-    <value>• Intensité de la diminution de tension sur les deux ceintures due à l'accélération
-• Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
-  </data>
-  <data name="SABT_Text_Jumping" xml:space="preserve">
-    <value>• Intensité de la diminution de tension sur les deux ceintures lors des sauts
-• Pour de meilleurs résultats, définissez la « Tension en conduite » minimale à une valeur non nulle (voir onglet « Tension »)</value>
-  </data>
-  <data name="SABT_Text_Landing" xml:space="preserve">
-    <value>• Intensité de l'augmentation de tension sur les deux ceintures lors des réceptions</value>
-  </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
     <value>• Dans quelle mesure les vibrations du moteur au ralenti et lors des calages à faible régime doivent être ressenties à travers les courroies
 • Cet effet est basé sur la vitesse moteur signalée et est limité aux faibles régimes en raison des limitations du moteur</value>
@@ -528,14 +499,8 @@
   <data name="SABT_Label_Faults" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_Diagnostics" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="SABT_Tooltip_Experimental" xml:space="preserve">
     <value>Cette fonctionnalité ou ce réglage est considéré comme 'expérimental' et peut ne pas fonctionner correctement</value>
-  </data>
-  <data name="SABT_Tooltip_Unavailable" xml:space="preserve">
-    <value>Ce paramètre n'est pas disponible en raison des valeurs d'autres paramètres</value>
   </data>
   <data name="SABT_Label_Experimental" xml:space="preserve">
     <value>EXPÉRIMENTAL</value>

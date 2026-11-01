@@ -150,12 +150,6 @@
   <data name="SABT_Message_AlterGameName" xml:space="preserve">
     <value>Sie können den von SimHub vorgegebenen Spielnamen bei Bedarf ändern:</value>
   </data>
-  <data name="SABT_Title_AlterGameName" xml:space="preserve">
-    <value>Spielname festlegen</value>
-  </data>
-  <data name="SABT_Title_AlterVehicleName" xml:space="preserve">
-    <value>Fahrzeugnamen festlegen</value>
-  </data>
   <data name="SABT_Message_AlterVehicleName" xml:space="preserve">
     <value>Sie können den von SimHub angegebenen Fahrzeugnamen bei Bedarf ändern:</value>
   </data>
@@ -234,9 +228,6 @@
   </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
     <value>Einstellungen</value>
-  </data>
-  <data name="SABT_Title_Effects" xml:space="preserve">
-    <value>Effekte</value>
   </data>
   <data name="SABT_Tab_Connection" xml:space="preserve">
     <value>Verbindung</value>
@@ -391,26 +382,6 @@
   <data name="SABT_Text_ControlStep" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_VerticalBias" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="SABT_Text_Cornering" xml:space="preserve">
-    <value>• Wie stark Kurvenkräfte die Spannungsdifferenz zwischen den beiden Gurten beeinflussen sollen</value>
-  </data>
-  <data name="SABT_Text_Braking" xml:space="preserve">
-    <value>• Wie stark Verzögerungskräfte die Spannung auf beiden Gurten erhöhen sollen</value>
-  </data>
-  <data name="SABT_Text_Acceleration" xml:space="preserve">
-    <value>• Wie stark Beschleunigungskräfte die Spannung auf beiden Gurten verringern sollen
-• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
-  </data>
-  <data name="SABT_Text_Jumping" xml:space="preserve">
-    <value>• Wie stark Sprünge die Spannung auf beiden Gurten verringern sollen
-• Für beste Ergebnisse die minimale „Fahrspannung“ auf einen Wert ungleich null setzen (siehe Registerkarte „Spannung“)</value>
-  </data>
-  <data name="SABT_Text_Landing" xml:space="preserve">
-    <value>• Wie stark Landungen die Spannung auf beiden Gurten erhöhen sollen</value>
-  </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
     <value>• Inwieweit Vibrationen des Motors bei niedriger Drehzahl im Leerlauf und beim Abwürgen über die Riemen spürbar sein sollen
 • Dieser Effekt basiert auf der gemeldeten Motordrehzahl und ist aufgrund von Motorbegrenzungen auf niedrige Drehzahlen beschränkt</value>
@@ -528,14 +499,8 @@
   <data name="SABT_Label_Faults" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_Diagnostics" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="SABT_Tooltip_Experimental" xml:space="preserve">
     <value>Diese Funktion oder Einstellung gilt als 'experimentell' und funktioniert möglicherweise nicht korrekt</value>
-  </data>
-  <data name="SABT_Tooltip_Unavailable" xml:space="preserve">
-    <value>Diese Einstellung ist aufgrund der Werte anderer Einstellungen nicht verfügbar</value>
   </data>
   <data name="SABT_Label_Experimental" xml:space="preserve">
     <value>EXPERIMENTELL</value>

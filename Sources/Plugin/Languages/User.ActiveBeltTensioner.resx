@@ -158,12 +158,6 @@ The profile you're creating will be labelled by the **Game Name** given by **Sim
 
 You may alter this before saving the profile, if desired:</value>
   </data>
-  <data name="SABT_Title_AlterGameName" xml:space="preserve">
-    <value>Set Game Name</value>
-  </data>
-  <data name="SABT_Title_AlterVehicleName" xml:space="preserve">
-    <value>Set Vehicle Name</value>
-  </data>
   <data name="SABT_Message_AlterVehicleName" xml:space="preserve">
     <value>#Specify Vehicle Name
 The profile you're creating will be labelled by the **Vehicle Name** given by **SimHub**, which isn't always nicely formatted (or necessarily a name at all; it might be a numerical identifier).
@@ -303,9 +297,6 @@ If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons t
   </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
     <value>Preferences</value>
-  </data>
-  <data name="SABT_Title_Effects" xml:space="preserve">
-    <value>Effects</value>
   </data>
   <data name="SABT_Tab_Connection" xml:space="preserve">
     <value>Connection</value>
@@ -498,26 +489,6 @@ For more information, to report a bug or contribute, consult the project GitHub 
     <value>• The percentage increment/decrement that should be applied when adjusting settings by an external control (via **SimHub's** _Controls &amp; Events_ functionality)
 • Set this lower for _encoder knobs_ and higher for _push-buttons_</value>
   </data>
-  <data name="SABT_Text_VerticalBias" xml:space="preserve">
-    <value>• If you've mapped motors to both the waist and shoulder belts, you can adjust the relative force bias between these</value>
-  </data>
-  <data name="SABT_Text_Cornering" xml:space="preserve">
-    <value>• How much cornering forces should affect the tension differential between the two belts</value>
-  </data>
-  <data name="SABT_Text_Braking" xml:space="preserve">
-    <value>• How much deceleration forces should increase the tension on both belts</value>
-  </data>
-  <data name="SABT_Text_Acceleration" xml:space="preserve">
-    <value>• How much acceleration forces should decrease the tension on both belts
-• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>
-  </data>
-  <data name="SABT_Text_Jumping" xml:space="preserve">
-    <value>• How much jumping should decrease the tension on both belts
-• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>
-  </data>
-  <data name="SABT_Text_Landing" xml:space="preserve">
-    <value>• How much landing should increase the tension on both belts</value>
-  </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
     <value>• To what extent low-speed engine idle and stalling vibrations should be felt through the belts
 • This effect is based upon the reported engine speed and is limited to low-RPMs due to motor limitations</value>
@@ -643,14 +614,8 @@ By setting a thermal throttling range you can protect your printed parts from da
   <data name="SABT_Label_Faults" xml:space="preserve">
     <value>Faults</value>
   </data>
-  <data name="SABT_Text_Diagnostics" xml:space="preserve">
-    <value>If you are having connectivity, thermal or reliability issues with your installation, the data below may be helpful. Note that 'Faults' numbers under 10 are considered to be normal and do not affect operation of the tensioner. However higher numbers may indicate a problem with the power supply, USB cable or hub, motor connectors, etc</value>
-  </data>
   <data name="SABT_Tooltip_Experimental" xml:space="preserve">
     <value>This feature or setting is considered 'experimental' and may not function correctly</value>
-  </data>
-  <data name="SABT_Tooltip_Unavailable" xml:space="preserve">
-    <value>This setting is unavailable due to the values of other settings</value>
   </data>
   <data name="SABT_Label_Experimental" xml:space="preserve">
     <value>EXPERIMENTAL</value>
