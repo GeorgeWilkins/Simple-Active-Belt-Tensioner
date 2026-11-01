@@ -138,11 +138,11 @@
   <data name="SABT_Title_Profiles" xml:space="preserve">
     <value>Profili</value>
   </data>
-  <data name="SABT_Status_Disconnected" xml:space="preserve">
-    <value>Disconnesso</value>
+  <data name="SABT_Status_Unavailable" xml:space="preserve">
+    <value>Non disponibile</value>
   </data>
-  <data name="SABT_Status_CommunicationFailure" xml:space="preserve">
-    <value>Errore di comunicazione</value>
+  <data name="SABT_Status_Communicating" xml:space="preserve">
+    <value>Comunicazione</value>
   </data>
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>I motori del tensionatore cintura verranno attivati. Procedere?</value>
@@ -190,23 +190,14 @@
   <data name="SABT_Message_FailedToAssignMotorIdentifier" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Message_NoAssignedMotorsDetected" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
   <data name="SABT_Plugin" xml:space="preserve">
     <value>Simple Active Belt Tensioner</value>
   </data>
-  <data name="SABT_Label_EnableEffects" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="SABT_Label_FlipChannels" xml:space="preserve">
-    <value>Inverti canali</value>
-  </data>
-  <data name="SABT_Label_ReverseDirection" xml:space="preserve">
-    <value>Inverti Direzione</value>
+  <data name="SABT_Label_EnableEffects" xml:space="preserve">
+    <value>Abilita Affetti</value>
   </data>
   <data name="SABT_Label_AutomaticSwitching" xml:space="preserve">
-    <value>Commutazione automatica</value>
+    <value>Commutazione Automatica</value>
   </data>
   <data name="SABT_Label_AutomaticTuning" xml:space="preserve">
     <value>Auto-Tuning</value>
@@ -253,14 +244,8 @@
   <data name="SABT_Button_SetTemperaturesForABS" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Button_Connect" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
-  </data>
-  <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
-    <value>Ripristina diagnostica</value>
-  </data>
-  <data name="SABT_Button_Detect" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Button_Detect" xml:space="preserve">
+    <value>Rileva</value>
   </data>
   <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
     <value>Reimposta Modificatori Di Cambio Marcia</value>
@@ -274,8 +259,8 @@
   <data name="SABT_Button_CopyForGame" xml:space="preserve">
     <value>⧉ Gioco</value>
   </data>
-  <data name="SABT_Button_Assign" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Button_Assign" xml:space="preserve">
+    <value>Assegna</value>
   </data>
   <data name="SABT_Legend_Surge" xml:space="preserve">
     <value>Ondata</value>
@@ -289,8 +274,8 @@
   <data name="SABT_Legend_RightWaistTorque" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Legend_Torque" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Legend_Torque" xml:space="preserve">
+    <value>Coppia</value>
   </data>
   <data name="SABT_Legend_RightShoulderTorque" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
@@ -301,11 +286,8 @@
   <data name="SABT_Legend_Heave" xml:space="preserve">
     <value>Sollevare</value>
   </data>
-  <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
-    <value>• Per risultati migliori, imposta la 'Tensione in guida' minima a un valore diverso da zero (vedi scheda 'Tensione')</value>
-  </data>
   <data name="SABT_Label_Upshifting" xml:space="preserve">
-    <value>Scalata in alto</value>
+    <value>Scalata in Alto</value>
   </data>
   <data name="SABT_Label_SeatDegreesFromVertical" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
@@ -331,41 +313,41 @@
   <data name="SABT_Status_Connected" xml:space="preserve">
     <value>Connesso</value>
   </data>
-  <data name="SABT_Status_NoDeviceDetected" xml:space="preserve">
-    <value>Nessun dispositivo rilevato</value>
+  <data name="SABT_Status_Overheating" xml:space="preserve">
+    <value>Surriscaldamento</value>
   </data>
-  <data name="SABT_Status_Connecting" xml:space="preserve">
-    <value>Connessione...</value>
+  <data name="SABT_Status_Overheated" xml:space="preserve">
+    <value>Surriscaldato</value>
   </data>
-  <data name="SABT_Status_AwaitingConnection" xml:space="preserve">
-    <value>In attesa di connessione...</value>
+  <data name="SABT_Status_Disabled" xml:space="preserve">
+    <value>Disabilitato</value>
   </data>
-  <data name="SABT_Status_CheckingMode" xml:space="preserve">
-    <value>Verifica modalità...</value>
+  <data name="SABT_Mapping_Unused" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Status_SettingMode" xml:space="preserve">
-    <value>Impostazione modalità...</value>
+  <data name="SABT_Direction_Clockwise" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Status_IdentifierSet" xml:space="preserve">
-    <value>Identificatore impostato (Connesso)</value>
+  <data name="SABT_Direction_AntiClockwise" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Status_SettingIdentifier" xml:space="preserve">
-    <value>Impostazione identificatore</value>
+  <data name="SABT_Mapping_LeftShoulder" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Status_TestPassed" xml:space="preserve">
-    <value>Test superato</value>
+  <data name="SABT_Mapping_RightShoulder" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
-  <data name="SABT_Status_TestFailed" xml:space="preserve">
-    <value>Test fallito</value>
+  <data name="SABT_Mapping_RightWaist" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Mapping_LeftWaist" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Status_Tensioning" xml:space="preserve">
+    <value>Tensionamento</value>
   </data>
   <data name="SABT_Status_Testing" xml:space="preserve">
-    <value>Test in corso...</value>
-  </data>
-  <data name="SABT_Status_Stopping" xml:space="preserve">
-    <value>Arresto...</value>
-  </data>
-  <data name="SABT_Status_TestPartiallyFailed" xml:space="preserve">
-    <value>Test parzialmente fallito</value>
+    <value>Test in Corso</value>
   </data>
   <data name="SABT_Text_Connection" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
@@ -430,9 +412,6 @@
   <data name="SABT_Label_ControlStep" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Label_HorizontalBias" xml:space="preserve">
-    <value>Bilanciamento sinistra/destra</value>
-  </data>
   <data name="SABT_Label_LeftStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
@@ -448,8 +427,8 @@
   <data name="SABT_Label_Mapping" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Label_Direction" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_Direction" xml:space="preserve">
+    <value>Direzione</value>
   </data>
   <data name="SABT_Label_Status" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
@@ -467,46 +446,31 @@
     <value />
   </data>
   <data name="SABT_Label_Engine" xml:space="preserve">
-    <value>Giri motore</value>
+    <value>Giri Motore</value>
   </data>
   <data name="SABT_Label_SurgeLimits" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
-    <value>Limiti sway (Curva)</value>
+    <value>Limiti Sway (Curva)</value>
   </data>
   <data name="SABT_Label_TemperatureThrottlingRange" xml:space="preserve">
-    <value>Intervallo di limitazione termica</value>
+    <value>Intervallo di Limitazione Termica</value>
   </data>
-  <data name="SABT_Label_Temperatures" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_Temperatures" xml:space="preserve">
+    <value>Temperature</value>
   </data>
   <data name="SABT_Label_HeaveLimits" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
-    <value>Fattore di smoothing</value>
-  </data>
-  <data name="SABT_Label_Motor" xml:space="preserve">
-    <value>Motore</value>
-  </data>
-  <data name="SABT_Label_LowestTemperature" xml:space="preserve">
-    <value>Temperatura minima</value>
-  </data>
-  <data name="SABT_Label_HighestTemperature" xml:space="preserve">
-    <value>Temperatura massima</value>
-  </data>
-  <data name="SABT_Label_Faults" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+    <value>Fattore di Smoothing</value>
   </data>
   <data name="SABT_Tooltip_Experimental" xml:space="preserve">
     <value>Questa funzionalità o impostazione è considerata 'sperimentale' e potrebbe non funzionare correttamente</value>
   </data>
   <data name="SABT_Label_Experimental" xml:space="preserve">
     <value>SPERIMENTALE</value>
-  </data>
-  <data name="SABT_Label_Unavailable" xml:space="preserve">
-    <value>NON DISPONIBILE</value>
   </data>
   <data name="SABT_Label_Setup" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />

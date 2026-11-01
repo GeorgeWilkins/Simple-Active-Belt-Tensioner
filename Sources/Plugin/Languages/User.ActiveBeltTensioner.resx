@@ -138,11 +138,11 @@
   <data name="SABT_Title_Profiles" xml:space="preserve">
     <value>Profiles</value>
   </data>
-  <data name="SABT_Status_Disconnected" xml:space="preserve">
-    <value>Disconnected</value>
+  <data name="SABT_Status_Unavailable" xml:space="preserve">
+    <value>Unavailable</value>
   </data>
-  <data name="SABT_Status_CommunicationFailure" xml:space="preserve">
-    <value>Communication Failure</value>
+  <data name="SABT_Status_Communicating" xml:space="preserve">
+    <value>Communicating</value>
   </data>
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
     <value>#Enabling Effects
@@ -257,22 +257,11 @@ If you continue to have issues, consider trying:
 • Assigning a _different motor_ to eliminate a general issue with the controller
 • Testing your power supply and _back-driving protection unit_ with a multimeter to ensure power is reaching the motor</value>
   </data>
-  <data name="SABT_Message_NoAssignedMotorsDetected" xml:space="preserve">
-    <value>No ASSIGNED motors were detected, but there could be one or more UNASSIGNED motors plugged in.
-
-If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons to apply an identifier to it</value>
-  </data>
   <data name="SABT_Plugin" xml:space="preserve">
     <value>Simple Active Belt Tensioner</value>
   </data>
   <data name="SABT_Label_EnableEffects" xml:space="preserve">
     <value>Enable Effects</value>
-  </data>
-  <data name="SABT_Label_FlipChannels" xml:space="preserve">
-    <value>Flip Channels</value>
-  </data>
-  <data name="SABT_Label_ReverseDirection" xml:space="preserve">
-    <value>Reverse Direction</value>
   </data>
   <data name="SABT_Label_AutomaticSwitching" xml:space="preserve">
     <value>Auto-Switching</value>
@@ -322,12 +311,6 @@ If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons t
   <data name="SABT_Button_SetTemperaturesForABS" xml:space="preserve">
     <value>Set For ABS Parts</value>
   </data>
-  <data name="SABT_Button_Connect" xml:space="preserve">
-    <value>Connect</value>
-  </data>
-  <data name="SABT_Button_ResetDiagnostics" xml:space="preserve">
-    <value>Reset Diagnostics</value>
-  </data>
   <data name="SABT_Button_Detect" xml:space="preserve">
     <value>Detect</value>
   </data>
@@ -369,9 +352,6 @@ If you have ONE UNASSIGNED motor plugged in, click one of the 'Assign' buttons t
   </data>
   <data name="SABT_Legend_Heave" xml:space="preserve">
     <value>Heave</value>
-  </data>
-  <data name="SABT_Label_SetMinimumTensionToNonZero" xml:space="preserve">
-    <value>• Set minimum 'Driving Tension' to non-zero for best results (see 'Tension' tab)</value>
   </data>
   <data name="SABT_Label_Upshifting" xml:space="preserve">
     <value>Upshifting</value>
@@ -428,41 +408,41 @@ For more information, to report a bug or contribute, consult the project GitHub 
   <data name="SABT_Status_Connected" xml:space="preserve">
     <value>Connected</value>
   </data>
-  <data name="SABT_Status_NoDeviceDetected" xml:space="preserve">
-    <value>No Device Detected</value>
+  <data name="SABT_Status_Overheating" xml:space="preserve">
+    <value>Overheating</value>
   </data>
-  <data name="SABT_Status_Connecting" xml:space="preserve">
-    <value>Connecting...</value>
+  <data name="SABT_Status_Overheated" xml:space="preserve">
+    <value>Overheated</value>
   </data>
-  <data name="SABT_Status_AwaitingConnection" xml:space="preserve">
-    <value>Awaiting Connection...</value>
+  <data name="SABT_Status_Disabled" xml:space="preserve">
+    <value>Disabled</value>
   </data>
-  <data name="SABT_Status_CheckingMode" xml:space="preserve">
-    <value>Checking Mode...</value>
+  <data name="SABT_Mapping_Unused" xml:space="preserve">
+    <value>Unused</value>
   </data>
-  <data name="SABT_Status_SettingMode" xml:space="preserve">
-    <value>Setting Mode...</value>
+  <data name="SABT_Direction_Clockwise" xml:space="preserve">
+    <value>Clockwise</value>
   </data>
-  <data name="SABT_Status_IdentifierSet" xml:space="preserve">
-    <value>Identifier Set (Connected)</value>
+  <data name="SABT_Direction_AntiClockwise" xml:space="preserve">
+    <value>Anti-Clockwise</value>
   </data>
-  <data name="SABT_Status_SettingIdentifier" xml:space="preserve">
-    <value>Setting Identifier</value>
+  <data name="SABT_Mapping_LeftShoulder" xml:space="preserve">
+    <value>Left Shoulder</value>
   </data>
-  <data name="SABT_Status_TestPassed" xml:space="preserve">
-    <value>Test Passed</value>
+  <data name="SABT_Mapping_RightShoulder" xml:space="preserve">
+    <value>Right Shoulder</value>
   </data>
-  <data name="SABT_Status_TestFailed" xml:space="preserve">
-    <value>Test Failed</value>
+  <data name="SABT_Mapping_RightWaist" xml:space="preserve">
+    <value>Right Waist</value>
+  </data>
+  <data name="SABT_Mapping_LeftWaist" xml:space="preserve">
+    <value>Left Waist</value>
+  </data>
+  <data name="SABT_Status_Tensioning" xml:space="preserve">
+    <value>Tensioning</value>
   </data>
   <data name="SABT_Status_Testing" xml:space="preserve">
-    <value>Testing...</value>
-  </data>
-  <data name="SABT_Status_Stopping" xml:space="preserve">
-    <value>Stopping...</value>
-  </data>
-  <data name="SABT_Status_TestPartiallyFailed" xml:space="preserve">
-    <value>Test Partially Failed</value>
+    <value>Testing</value>
   </data>
   <data name="SABT_Text_Connection" xml:space="preserve">
     <value>1. Select a **Serial Port** from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected
@@ -545,9 +525,6 @@ By setting a thermal throttling range you can protect your printed parts from da
   <data name="SABT_Label_ControlStep" xml:space="preserve">
     <value>External Control Step Size</value>
   </data>
-  <data name="SABT_Label_HorizontalBias" xml:space="preserve">
-    <value>Left/Right Bias</value>
-  </data>
   <data name="SABT_Label_LeftStrength" xml:space="preserve">
     <value>Left Side Strength</value>
   </data>
@@ -602,26 +579,11 @@ By setting a thermal throttling range you can protect your printed parts from da
   <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
     <value>Smoothing Factor</value>
   </data>
-  <data name="SABT_Label_Motor" xml:space="preserve">
-    <value>Motor</value>
-  </data>
-  <data name="SABT_Label_LowestTemperature" xml:space="preserve">
-    <value>Lowest Temperature</value>
-  </data>
-  <data name="SABT_Label_HighestTemperature" xml:space="preserve">
-    <value>Highest Temperature</value>
-  </data>
-  <data name="SABT_Label_Faults" xml:space="preserve">
-    <value>Faults</value>
-  </data>
   <data name="SABT_Tooltip_Experimental" xml:space="preserve">
     <value>This feature or setting is considered 'experimental' and may not function correctly</value>
   </data>
   <data name="SABT_Label_Experimental" xml:space="preserve">
     <value>EXPERIMENTAL</value>
-  </data>
-  <data name="SABT_Label_Unavailable" xml:space="preserve">
-    <value>UNAVAILABLE</value>
   </data>
   <data name="SABT_Label_Setup" xml:space="preserve">
     <value>Initial Setup Instructions</value>

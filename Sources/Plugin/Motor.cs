@@ -34,14 +34,14 @@ namespace User.ActiveBeltTensioner
                 Color = color;
             }
 
-            public static MotorStatus Disabled = new MotorStatus(0, "Disabled", (Brush)new BrushConverter().ConvertFrom("#454545"));
-            public static MotorStatus Unavailable = new MotorStatus(1, "Unavailable", (Brush)new BrushConverter().ConvertFrom("#f44336"));
-            public static MotorStatus Connected = new MotorStatus(2, "Connected", (Brush)new BrushConverter().ConvertFrom("#52D468"));
-            public static MotorStatus Communicating = new MotorStatus(3, "Communicating", (Brush)new BrushConverter().ConvertFrom("#119eda"));
-            public static MotorStatus Tensioning = new MotorStatus(5, "Tensioning", (Brush)new BrushConverter().ConvertFrom("#ffd03a"));
-            public static MotorStatus Testing = new MotorStatus(6, "Testing", (Brush)new BrushConverter().ConvertFrom("#ffd03a"));
-            public static MotorStatus Overheating = new MotorStatus(7, "Overheating", (Brush)new BrushConverter().ConvertFrom("#ff9800"));
-            public static MotorStatus Overheated = new MotorStatus(8, "Overheated", (Brush)new BrushConverter().ConvertFrom("#ff9800"));
+            public static MotorStatus Disabled = new MotorStatus(0, SLoc.GetValue("SABT_Status_Disabled"), (Brush)new BrushConverter().ConvertFrom("#454545"));
+            public static MotorStatus Unavailable = new MotorStatus(1, SLoc.GetValue("SABT_Status_Unavailable"), (Brush)new BrushConverter().ConvertFrom("#f44336"));
+            public static MotorStatus Connected = new MotorStatus(2, SLoc.GetValue("SABT_Status_Connected"), (Brush)new BrushConverter().ConvertFrom("#52D468"));
+            public static MotorStatus Communicating = new MotorStatus(3, SLoc.GetValue("SABT_Status_Communicating"), (Brush)new BrushConverter().ConvertFrom("#119eda"));
+            public static MotorStatus Tensioning = new MotorStatus(5, SLoc.GetValue("SABT_Status_Tensioning"), (Brush)new BrushConverter().ConvertFrom("#ffd03a"));
+            public static MotorStatus Testing = new MotorStatus(6, SLoc.GetValue("SABT_Status_Testing"), (Brush)new BrushConverter().ConvertFrom("#ffd03a"));
+            public static MotorStatus Overheating = new MotorStatus(7, SLoc.GetValue("SABT_Status_Overheating"), (Brush)new BrushConverter().ConvertFrom("#ff9800"));
+            public static MotorStatus Overheated = new MotorStatus(8, SLoc.GetValue("SABT_Status_Overheated"), (Brush)new BrushConverter().ConvertFrom("#ff9800"));
 
             public static MotorStatus[] Statuses = {
                 Disabled,
@@ -67,11 +67,11 @@ namespace User.ActiveBeltTensioner
                 Graphic = graphic;
             }
 
-            public static MotorMapping Unused = new MotorMapping(0, "Unused", "/User.ActiveBeltTensioner;component/Graphics/Mapping.Unused.png");
-            public static MotorMapping LeftShoulder = new MotorMapping(1, "Left Shoulder", "/User.ActiveBeltTensioner;component/Graphics/Mapping.LeftShoulder.png");
-            public static MotorMapping RightShoulder = new MotorMapping(2, "Right Shoulder", "/User.ActiveBeltTensioner;component/Graphics/Mapping.RightShoulder.png");
-            public static MotorMapping LeftWaist = new MotorMapping(3, "Left Waist", "/User.ActiveBeltTensioner;component/Graphics/Mapping.LeftWaist.png");
-            public static MotorMapping RightWaist = new MotorMapping(4, "Right Waist", "/User.ActiveBeltTensioner;component/Graphics/Mapping.RightWaist.png");
+            public static MotorMapping Unused = new MotorMapping(0, SLoc.GetValue("SABT_Mapping_Unused"), "/User.ActiveBeltTensioner;component/Graphics/Mapping.Unused.png");
+            public static MotorMapping LeftShoulder = new MotorMapping(1, SLoc.GetValue("SABT_Mapping_LeftShoulder"), "/User.ActiveBeltTensioner;component/Graphics/Mapping.LeftShoulder.png");
+            public static MotorMapping RightShoulder = new MotorMapping(2, SLoc.GetValue("SABT_Mapping_RightShoulder"), "/User.ActiveBeltTensioner;component/Graphics/Mapping.RightShoulder.png");
+            public static MotorMapping LeftWaist = new MotorMapping(3, SLoc.GetValue("SABT_Mapping_LeftWaist"), "/User.ActiveBeltTensioner;component/Graphics/Mapping.LeftWaist.png");
+            public static MotorMapping RightWaist = new MotorMapping(4, SLoc.GetValue("SABT_Mapping_RightWaist"), "/User.ActiveBeltTensioner;component/Graphics/Mapping.RightWaist.png");
 
             public static MotorMapping[] Mappings = {
                 Unused,
@@ -96,8 +96,8 @@ namespace User.ActiveBeltTensioner
                 Graphic = graphic;
             }
 
-            public static MotorDirection Clockwise = new MotorDirection(0, "Clockwise", 1, "/User.ActiveBeltTensioner;component/Graphics/Direction.Clockwise.png");
-            public static MotorDirection AntiClockwise = new MotorDirection(1, "Anti-Clockwise", -1, "/User.ActiveBeltTensioner;component/Graphics/Direction.AntiClockwise.png");
+            public static MotorDirection Clockwise = new MotorDirection(0, SLoc.GetValue("SABT_Direction_Clockwise"), 1, "/User.ActiveBeltTensioner;component/Graphics/Direction.Clockwise.png");
+            public static MotorDirection AntiClockwise = new MotorDirection(1, SLoc.GetValue("SABT_Direction_AntiClockwise"), -1, "/User.ActiveBeltTensioner;component/Graphics/Direction.AntiClockwise.png");
 
             public static MotorDirection[] Directions = {
                 Clockwise,
@@ -568,7 +568,7 @@ namespace User.ActiveBeltTensioner
 
             bool didRespond = false;
 
-            tensionTorque *= Direction.Multiplier;
+            tensionTorque *= Direction.Multiplier * -1.0;
 
             while (elapsedTime <= totalTime)
             {
