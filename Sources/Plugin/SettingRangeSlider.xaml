@@ -1,4 +1,4 @@
-<UserControl
+﻿<UserControl
     x:Class="User.ActiveBeltTensioner.SettingRangeSlider"
     x:Name="Root"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -15,6 +15,15 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0" Margin="0,0,0,4">
+            <Button x:Name="CenterButton"
+                Content="▼"
+                Margin="0,-13,0,-28"
+                Width="30"
+                Height="5"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Top"
+                Click="OnCenterClick"
+                Visibility="Collapsed" />
             <TextBlock Text="{Binding Title, ElementName=Root}" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center" />
             <TextBlock Text="{Binding Unit, ElementName=Root}" Foreground="#AAAAAA" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,0,0" />
             <TextBlock x:Name="RightValueTextBlock" Foreground="#FFFFFF" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,1,0" />
@@ -32,6 +41,8 @@
             LargeChange="{Binding Step, ElementName=Root}"
             TickFrequency="{Binding Step, ElementName=Root}"
             IsSnapToTickEnabled="True"
+            ExtendedMode="False"
+            MoveWholeRange="False"
             MinRangeWidth="10" />
     </Grid>
 </UserControl>

@@ -17,7 +17,7 @@ namespace User.ActiveBeltTensioner
             IsEnabledChanged += (s, e) =>
             {
                 UpdateSliderOpacity();
-                UpdateResetButtonVisibility();
+                UpdateCenterButtonVisibility();
             };
             UpdateDisplayValue();
         }
@@ -32,7 +32,7 @@ namespace User.ActiveBeltTensioner
             base.OnInitialized(e);
             UpdateSliderOpacity();
             UpdateDisplayValue();
-            UpdateResetButtonVisibility();
+            UpdateCenterButtonVisibility();
             EnsureLowerValuePinned();
         }
 
@@ -105,7 +105,11 @@ namespace User.ActiveBeltTensioner
             nameof(Value),
             typeof(double),
             typeof(SettingSlider),
-            new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged)
+            new FrameworkPropertyMetadata(
+                0d,
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                OnValueChanged
+            )
         );
 
         public double Value
@@ -114,32 +118,38 @@ namespace User.ActiveBeltTensioner
             set { SetValue(ValueProperty, value); }
         }
 
-        public static readonly DependencyProperty ShowResetProperty = DependencyProperty.Register(
-            nameof(ShowReset),
+        public static readonly DependencyProperty ShowCenterProperty = DependencyProperty.Register(
+            nameof(ShowCenter),
             typeof(bool),
             typeof(SettingSlider),
-            new PropertyMetadata(false, OnShowResetChanged)
+            new PropertyMetadata(false, OnShowCenterChanged)
         );
 
-        public bool ShowReset
+        public bool ShowCenter
         {
-            get { return (bool)GetValue(ShowResetProperty); }
-            set { SetValue(ShowResetProperty, value); }
+            get { return (bool)GetValue(ShowCenterProperty); }
+            set { SetValue(ShowCenterProperty, value); }
         }
 
         private static void OnStepChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((SettingSlider)d).UpdateDisplayValue();
+            var control = (SettingSlider)d;
+
+            control.UpdateDisplayValue();
         }
 
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((SettingSlider)d).UpdateDisplayValue();
+            var control = (SettingSlider)d;
+
+            control.UpdateDisplayValue();
         }
 
-        private static void OnShowResetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnShowCenterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((SettingSlider)d).UpdateResetButtonVisibility();
+            var control = (SettingSlider)d;
+
+            control.UpdateCenterButtonVisibility();
         }
 
         private void UpdateDisplayValue()
@@ -151,12 +161,12 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private void UpdateResetButtonVisibility()
+        private void UpdateCenterButtonVisibility()
         {
-            var resetButton = FindName("ResetButton") as Button;
-            if (resetButton != null)
+            var centerButton = FindName("CenterButton") as Button;
+            if (centerButton != null)
             {
-                resetButton.Visibility = (ShowReset && IsEnabled) ? Visibility.Visible : Visibility.Collapsed;
+                centerButton.Visibility = (ShowCenter && IsEnabled) ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
@@ -212,21 +222,9 @@ namespace User.ActiveBeltTensioner
             _isSynchronizingLowerValue = false;
         }
 
-        private void OnResetClick(object sender, RoutedEventArgs e)
+        private void OnCenterClick(object sender, RoutedEventArgs e)
         {
             Value = (Minimum + Maximum) * 0.5;
-        }
-
-        private static double Clamp(double value, double minimum, double maximum)
-        {
-            if (minimum > maximum)
-            {
-                var temporary = minimum;
-                minimum = maximum;
-                maximum = temporary;
-            }
-
-            return Math.Max(minimum, Math.Min(maximum, value));
         }
     }
 }

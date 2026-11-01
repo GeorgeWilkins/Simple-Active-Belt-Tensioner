@@ -19,14 +19,14 @@
         </Grid.ColumnDefinitions>
 
         <DockPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,4">
-            <Button x:Name="ResetButton"
-                Content="|"
+            <Button x:Name="CenterButton"
+                Content="▼"
                 Margin="0,-13,0,-28"
                 Width="30"
                 Height="5"
                 VerticalAlignment="Center"
                 DockPanel.Dock="Top"
-                Click="OnResetClick"
+                Click="OnCenterClick"
                 Visibility="Collapsed" />
             <TextBlock Text="{Binding Title, ElementName=Root}" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center" />
             <TextBlock Text="{Binding Unit, ElementName=Root}" Foreground="#AAAAAA" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Right" DockPanel.Dock="Right" Margin="0,0,0,0" />
@@ -43,6 +43,7 @@
             LargeChange="{Binding Step, ElementName=Root}"
             TickFrequency="{Binding Step, ElementName=Root}"
             IsSnapToTickEnabled="True"
+            ExtendedMode="False"
             MoveWholeRange="False"
             MinRangeWidth="0"
             LowerValueChanged="OnSliderLowerValueChanged"
