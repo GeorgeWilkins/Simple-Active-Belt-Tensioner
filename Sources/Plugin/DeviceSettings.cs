@@ -160,6 +160,11 @@ namespace User.ActiveBeltTensioner
             get { return _reducedOutputTemperature; }
             set
             {
+                value = Math.Min(
+                    Math.Max(value, 40),
+                    _stoppedOutputTemperature - 1
+                );
+
                 if (_reducedOutputTemperature != value)
                 {
                     _reducedOutputTemperature = value;
@@ -174,6 +179,11 @@ namespace User.ActiveBeltTensioner
             get { return _stoppedOutputTemperature; }
             set
             {
+                value = Math.Min(
+                    Math.Max(value, _reducedOutputTemperature + 1),
+                    80
+                );
+
                 if (_stoppedOutputTemperature != value)
                 {
                     _stoppedOutputTemperature = value;
@@ -182,7 +192,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private double _idleTension = 12.0;
+        private double _idleTension = 15.0;
         public double IdleTension
         {
             get { return _idleTension; }
@@ -196,7 +206,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private double _minimumTension = 20.0;
+        private double _minimumTension = 15.0;
         public double MinimumTension
         {
             get { return _minimumTension; }

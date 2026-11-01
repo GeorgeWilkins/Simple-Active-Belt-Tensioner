@@ -391,10 +391,6 @@
   <data name="SABT_Text_ControlStep" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_HorizontalBias" xml:space="preserve">
-    <value>• Si la tension semble déséquilibrée, ajustez vers la gauche ou la droite
-• Vérifiez d'abord le cheminement de la ceinture et les points de contact avant d'utiliser ce réglage</value>
-  </data>
   <data name="SABT_Text_VerticalBias" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>

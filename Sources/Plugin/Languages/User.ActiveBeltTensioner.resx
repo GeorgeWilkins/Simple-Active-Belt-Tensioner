@@ -498,10 +498,6 @@ For more information, to report a bug or contribute, consult the project GitHub 
     <value>• The percentage increment/decrement that should be applied when adjusting settings by an external control (via **SimHub's** _Controls &amp; Events_ functionality)
 • Set this lower for _encoder knobs_ and higher for _push-buttons_</value>
   </data>
-  <data name="SABT_Text_HorizontalBias" xml:space="preserve">
-    <value>• If tension feels unbalanced between sides, adjust this left or right to bias towards that side
-• Check and correct your belt path and contact points before resorting to using this setting</value>
-  </data>
   <data name="SABT_Text_VerticalBias" xml:space="preserve">
     <value>• If you've mapped motors to both the waist and shoulder belts, you can adjust the relative force bias between these</value>
   </data>

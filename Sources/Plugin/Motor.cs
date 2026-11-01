@@ -568,6 +568,8 @@ namespace User.ActiveBeltTensioner
 
             bool didRespond = false;
 
+            tensionTorque *= Direction.Multiplier;
+
             while (elapsedTime <= totalTime)
             {
                 double progress = (double) elapsedTime / totalTime;

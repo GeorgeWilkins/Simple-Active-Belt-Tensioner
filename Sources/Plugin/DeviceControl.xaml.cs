@@ -71,30 +71,45 @@ namespace User.ActiveBeltTensioner
 
         private void SetTemperaturesForPLA(object sender, RoutedEventArgs e)
         {
+            _plugin.Settings.ReducedOutputTemperature = 0;
+            _plugin.Settings.StoppedOutputTemperature = 100;
+
             _plugin.Settings.ReducedOutputTemperature = 45;
             _plugin.Settings.StoppedOutputTemperature = 55;
         }
 
         private void SetTemperaturesForABS(object sender, RoutedEventArgs e)
         {
+            _plugin.Settings.ReducedOutputTemperature = 0;
+            _plugin.Settings.StoppedOutputTemperature = 100;
+
             _plugin.Settings.ReducedOutputTemperature = 65;
             _plugin.Settings.StoppedOutputTemperature = 75;
         }
 
         private void SetTemperaturesForPETG(object sender, RoutedEventArgs e)
         {
+            _plugin.Settings.ReducedOutputTemperature = 0;
+            _plugin.Settings.StoppedOutputTemperature = 100;
+
             _plugin.Settings.ReducedOutputTemperature = 50;
             _plugin.Settings.StoppedOutputTemperature = 60;
         }
 
         private void SetTemperaturesForASA(object sender, RoutedEventArgs e)
         {
+            _plugin.Settings.ReducedOutputTemperature = 0;
+            _plugin.Settings.StoppedOutputTemperature = 100;
+
             _plugin.Settings.ReducedOutputTemperature = 70;
             _plugin.Settings.StoppedOutputTemperature = 80;
         }
 
         private void SetTemperaturesForPC(object sender, RoutedEventArgs e)
         {
+            _plugin.Settings.ReducedOutputTemperature = 0;
+            _plugin.Settings.StoppedOutputTemperature = 100;
+
             _plugin.Settings.ReducedOutputTemperature = 70;
             _plugin.Settings.StoppedOutputTemperature = 80;
         }

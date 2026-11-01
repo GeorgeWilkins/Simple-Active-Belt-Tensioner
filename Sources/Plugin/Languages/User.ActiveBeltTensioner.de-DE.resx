@@ -391,10 +391,6 @@
   <data name="SABT_Text_ControlStep" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_HorizontalBias" xml:space="preserve">
-    <value>• Wenn die Spannung zwischen den Seiten unausgewogen wirkt, nach links oder rechts anpassen
-• Prüfen und korrigieren Sie zuerst den Gurtverlauf und die Kontaktpunkte, bevor Sie diese Einstellung verwenden</value>
-  </data>
   <data name="SABT_Text_VerticalBias" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
