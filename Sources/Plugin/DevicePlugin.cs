@@ -152,6 +152,7 @@ namespace User.ActiveBeltTensioner
                 {
                     _isAutomaticallyTuning = value;
                     OnPropertyChanged(nameof(IsAutomaticallyTuning));
+                    OnPropertyChanged(nameof(IsNotAutomaticallyTuning));
 
                     if (_isAutomaticallyTuning)
                     {
@@ -571,7 +572,7 @@ namespace User.ActiveBeltTensioner
 
                     latestPhysicsCalculationTime = _controlLoopStopwatch.ElapsedMilliseconds;
 
-                    // Update Telemetry Graph
+                    // Check Game State & Tab Focus
                     if (telemetrySnapshot.IsActive && SelectedTabIndex == 2)
                     {
                         UpdateTelemetryGraph(
@@ -581,6 +582,10 @@ namespace User.ActiveBeltTensioner
                             leftShoulderTarget,
                             rightShoulderTarget
                         );
+                    }
+                    else
+                    {
+                        IsAutomaticallyTuning = false;
                     }
 
                     // Apply Automatic Tuning
