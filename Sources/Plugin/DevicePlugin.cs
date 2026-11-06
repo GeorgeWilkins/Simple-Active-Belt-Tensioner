@@ -371,15 +371,13 @@ namespace User.ActiveBeltTensioner
 
             // Initialise Motor Controller
             MotorController = new MotorController(this);
-            if (IsEnabled)
+
+            DoWithoutWaiting(devicePlugin =>
             {
-                DoWithoutWaiting(devicePlugin =>
-                {
-                    devicePlugin.MotorController.LoadMotorConfigurations();
-                    devicePlugin.MotorController.DetectDevices();
-                    devicePlugin.MotorController.DetectMotors();
-                });
-            }
+                devicePlugin.MotorController.LoadMotorConfigurations();
+                devicePlugin.MotorController.DetectDevices();
+                devicePlugin.MotorController.DetectMotors();
+            });
 
             // Initialise Physics Calculator
             _physicsCalculator = new PhysicsForceCalculator(Settings);

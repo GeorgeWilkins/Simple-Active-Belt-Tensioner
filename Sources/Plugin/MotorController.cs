@@ -283,6 +283,8 @@ namespace User.ActiveBeltTensioner
             {
                 if (_serialPort != null && _serialPort.IsOpen)
                 {
+                    Logging.Current.Info("SABT: Serial port already open on device: " + Device.Name);
+
                     if (_plugin.IsEnabled)
                     {
                         Check();
@@ -304,7 +306,7 @@ namespace User.ActiveBeltTensioner
 
                 try
                 {
-                    Logging.Current.Info("SABT: Opening serial port on device: " + Device.Port + " (" + Device.Name + ")");
+                    Logging.Current.Info("SABT: Opening serial port on device: " + Device.Name);
 
                     int retry = 0;
                     const int retries = 10;
