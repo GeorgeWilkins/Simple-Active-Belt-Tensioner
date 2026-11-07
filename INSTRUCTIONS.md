@@ -15,7 +15,7 @@ The rest of the parts can be obtained from virtually anywhere, including [Amazon
 
 Since availability and prices change constantly, I can't keep buying and verifying each component personally. Take note of the listed specifications and shop around for the best deal, or check our [Discord](https://discord.gg/SVkZv7xQ8b) for advice and recommendations.
 
-Some of these items are only sold in multiples, so the given per-unit guide prices are the approximate individual cost _when bought together_ in the required quantities.
+Some of these items are only sold in multiples, so our guide prices are calculated by dividing the total price _when bought together_ by the required quantity. They are not available _singularly_ at those prices. In some cases you'll have spares.
 
 | Guide Price (Each) | Quantity | Part | Notes | Example |
 | - | - | - | - | - |
@@ -116,51 +116,69 @@ See the diagrams above for a reference circuit design.
 
 ## Assembly
 
-Depending on your choices above, some of these assembly instructions may not be relevant to you. Please read through the instructions and only follow the steps that are applicable to your build.
+Depending on your choices above, some of these assembly instructions may not be relevant to you. Please read through them and only follow the steps that are applicable to your build.
 
-The photographs provided are for illustrative purposes and may not show the absolute latest part designs; don't worry if they aren't _exactly_ the same as the parts you've printed.
+The photographs provided are for illustrative purposes and may not show the _exact same_ part designs you are using (either due to updates or various options being available).
 
 ### Motors
 
-| Step | Instructions | Illustration |
-| :-: | :- | :-: |
-| 1 | Since the motors are technically _wheels_, they come pre-fitted with rubber treads, which we need to remove.<br /><br />Unscrew the three `M2.5` bolts holding on motor face plate and remove it. You may need to remove a 'QA' sticker covering one of the screws.<br /><br />With the face plate removed, push the motor face (with the triangular hub) firmly with your thumbs, while holding the opposing face/rim of the tire with your fingers. Gradually working your way around the rim, moving small amounts at a time works best. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/37161acb-f815-408a-b04b-bd79367bf17b" /> |
-| 2 | You'll be left with the bare motor. Keep the rubber tire, face plate and bolts safe though; in case you need to return the motors or repurpose them later. | <img alt="Motor Without Tire" src="https://github.com/user-attachments/assets/522b9d83-0a32-4464-8a26-77f0ff1cfd14" /> |
+The motors provide our belt tensioning forces. They receive power and torque commands from the motor controller.
 
-### Pulleys
+Since the motors are technically _wheels_ intended for robotics projects, they come pre-fitted with rubber treads, which we'll need to remove. Note that the data/power cables on these motors are relatively fragile. Be careful not to damage them during assembly.
 
 | Step | Instructions | Illustration |
 | :-: | :- | :-: |
-| 1 | Gather the four pulley parts; the bearing, the outer cover, the face plate and hub. | <img alt="Pulley Parts" src="https://github.com/user-attachments/assets/a71e7c59-454f-469d-a038-f88115272059" /> |
-| 2 | Press the bearing into the outer cover. This should be possible by hand. The accuracy/roughness of your print will dictate how easy this is.<br /><br />If the fit is too tight, use a hammer to _gently_ tap it in (alternating sides with each tap) or consider shaving away some material with a knife or file.<br /><br />If the fit is too loose, cut up a drinks can and shim around the edges of the bearing to fill in the gap (ensuring the shims do not protrude). | <img alt="Inserting The Bearing" src="https://github.com/user-attachments/assets/ad074009-27f4-4a20-aeaf-5cc2b9e5fe1e" /><img alt="Inserted Bearing" src="https://github.com/user-attachments/assets/36d34db8-b217-4201-b0ea-c0265f49e00e" /> |
-| 3 | Insert the pulley face from the front so it sits inside the inner ring of the bearing. The notes above regarding fitting tolerances apply here too. | <img alt="Face Inserted" src="https://github.com/user-attachments/assets/d301219f-ad1e-46d6-be3b-2027827be9d9" /> |
-| 4 | Insert the pulley hub over the top, so that the triangular shape on the face part pushes into the triangular hole of the hub. They may pop together or be loose depending on the tolerances of your print (either is fine). The slot in the hub for the cord should be facing outward. | <img alt="Hub Fitted" src="https://github.com/user-attachments/assets/74074eec-8118-420c-ae5c-088a4f61ddf7" /> |
-| 6 | Cut a `0.5M` length of the _UHMWPE/Dyneema cord_ and tie a tight knot in the end, then remove any excess cord after the knot. | <img alt="Knotting The Cord" src="https://github.com/user-attachments/assets/e8b54846-080b-41f7-bd63-63bef5716200" /> |
-| 5 | Thread one end of the cord through one of the pulley cover holes. When assembling the _Left_ pulley, use the hole marked with `L` inside the pulley cover (or `R` for the _Right_ pulley). Push the knot into the cut-out in the pulley hub. It should stay in place relatively well. | <img alt="Cord Inserted" src="https://github.com/user-attachments/assets/6f4bf1de-827f-4c2a-84de-9a5fa84f8851" /> |
-| 8 | Install the pulley onto the motor hub and insert and tighten three `M2.5x12MM` screws into the face plate. Make sure that the cord stays in the cut-out when doing so. | <img alt="Installing The Pulley" src="https://github.com/user-attachments/assets/ebaff46f-a8b5-4f85-8226-95cd5d5e60f6" /> |
+| 1 | Unscrew the three `M2.5` bolts holding on motor face plate and remove it. You may need to remove a 'QA' sticker covering one of the screws. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/37161acb-f815-408a-b04b-bd79367bf17b" /> |
+| 2 | Push the motor face (with the triangular hub) firmly with your thumbs, while holding the opposing face/rim of the tire with your fingers. Gradually working your way around the rim, moving small amounts at a time works best.<br /><br />If you have difficulty, warming the tires up with a hair dryer or heat gun will soften them and make this easier. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/11f57779-0d66-4b99-9151-42d3f9739a8f" /> /> |
+| 3 | You'll be left with the bare motor. Keep the rubber tire, face plate and bolts safe though; in case you need to return the motors or repurpose them later. | <img alt="Motor Without Tire" src="https://github.com/user-attachments/assets/522b9d83-0a32-4464-8a26-77f0ff1cfd14" /> |
 
 ### Belt Clamps
+The belt clamps join our standard harness belts to the cord that will wrap around our pulleys. There are a few different designs you can choose from.
+
+In this guide we'll be using the **End Clamps**; designed to attach to the bare end of 2" webbing. However the assembly steps are essentially the same across all clamp designs.
 
 | Step | Instructions | Illustration |
 | :-: | ------- | :-: |
-| 1 | Gather the belt clamp parts; the four `M2.5x10` bolts, four `M2.5` nuts, and the front and rear plates. | <img alt="Belt Clamp Parts" src="https://github.com/user-attachments/assets/b2617647-5f2d-4c36-b557-64a65785d3fc" /> |
-| 1 | Insert `M2.5` nuts into the hexagonal holes on the underside of the rear clamp plate (as deeply as they will go). | <img alt="Nuits Fitted" src="https://github.com/user-attachments/assets/febc264f-4dce-4fbc-a7b0-05f986c8a296" /> |
-| 2 | Tie a tight knot in other end of the cord you previously attached to the _Pulley_. Push the knot into the cut-out in the rear clamp plate, so the cord comes out the bottom. | <img alt="Cord Fitted" src="https://github.com/user-attachments/assets/d5fe03f3-3ded-4b5f-b801-8cff1d229c37" /> |
-| 3 | Place the end of the harness belt into the rectangular detent of the rear clamp plate (it may overlap the knot; that's fine). Push the front clamp plate firmly down over both. | <img alt="Belt Positioned" src="https://github.com/user-attachments/assets/fc458388-391f-4c7b-82ae-c79fb7a6a81b" /><img alt="Clamp Applied" src="https://github.com/user-attachments/assets/75c67344-5ba3-4967-80b8-f37deb5d0f67" /> |
-| 4 | Keep pressure on the assembly while securing with the four `M2.5x10` bolts. Tighen each bolt partially in a circular pattern until they are all tight, rather than trying to fully tighten one at a time. | <img alt="Tightening The Clamp" src="https://github.com/user-attachments/assets/f2bd5545-2124-48f2-95b8-cdd25818f3c8" /> |
-| 5 | Once fully tightened, the two clamp parts should be fully touching with no visible gap between them. | <img alt="Clamp Tightened" src="https://github.com/user-attachments/assets/ede38304-9e67-4346-b12a-6ac284669664" /><img alt="Clamp Fully Assembled" src="https://github.com/user-attachments/assets/e4ce1ea0-6511-4f91-b2e1-c62682849e1b" /> |
+| 1 | Gather the belt clamp parts; the four `M2.5x10` bolts, four `M2.5` nuts, and the front and rear plates.<br /><br />Note that the clamps have three cord positions. If you are using a **single motor** with this belt, use the centre position. If you are using a **pair of motors**, use the outer positions. | <img alt="Belt Clamp Parts" src="https://github.com/user-attachments/assets/35c971b6-75bb-495c-b9a5-f20d2064c719" /> |
+| 1 | Insert `M2.5` nuts into the hexagonal holes on the underside of the rear clamp plate (as deeply as they will go). | <img alt="Nuits Fitted" src="https://github.com/user-attachments/assets/8b0e9e06-9d9d-4466-8b34-5d950757cdf7" /> |
+| 2 | Tie a tight knot in other end of the cord you previously attached to the _Pulley_. Push the knot into the cut-out in the rear clamp plate, so the cord comes out the bottom.<br /><br />If using paired motors, repeat this for the second cord. | <img alt="Cord Fitted" src="https://github.com/user-attachments/assets/8b5d01b1-9f84-433b-b4ed-aa20c9cd9ab0" /> |
+| 3 | Place the end of the harness belt into the rectangular detent of the rear clamp plate (it may overlap the knot; that's fine). Push the front clamp plate firmly down over both. | <img alt="Belt Positioned" src="https://github.com/user-attachments/assets/46525793-602e-4a68-b153-8ac3b75d40fc" /><img alt="Clamp Applied" src="https://github.com/user-attachments/assets/13527a52-6bf2-4621-86c8-55bebbf0f8cc" /> |
+| 4 | Keep pressure on the assembly while securing with the four `M2.5x10` bolts. Tighen each bolt partially then move on to the next one, until they are all tight; rather than trying to fully tighten one at a time. | <img alt="Tightening The Clamp" src="https://github.com/user-attachments/assets/5b5760dd-792c-4324-875b-2024a9978939" /> |
+| 5 | Once fully tightened, the two clamp parts should be fully touching with no visible gap between them. | <img alt="Clamp Fully Assembled" src="https://github.com/user-attachments/assets/efbe1e7a-ff0c-4ac8-bca8-95196e785525" /> |
 
-### Brackets
+### Pulleys
+The pulleys turn the motor's torque into linear force by wrapping cords around small hubs. This design has self-orienting pulley covers, which orient themselves to the correct angle for your seat position. This allows for use with adjustable/sliding seats without needing to adjust the tensioning system.
+
+They can be optionally _anchored_ to your frame if you have any issues with the covers spinning or cords tangling (most commonly with **waist belts**, which are not kept taut by the weight of your harness like **shoulder belts** are).
+
+Note that attaching the pulleys to the motors is not recommended until _after_ you have fitted your motors to your rig. However we'll assemble them fully here for the purposes of this guide.
+
+| Step | Instructions | Illustration |
+| :-: | :- | :-: |
+| 1 | Gather the pulley parts; three `M2.5x12` bolts, the bearing, the outer cover, the face plate and hub. | <img alt="Pulley Parts" src="https://github.com/user-attachments/assets/20ecef0e-e12a-44bf-87e7-396b65f2046a" /> |
+| 2 | Press the bearing into the outer cover. This should be possible by hand. The accuracy/roughness of your print will dictate how easy this is.<br /><br />If the fit is too tight, use a hammer to _gently_ tap it in (alternating sides with each tap) or consider shaving away some material with a knife or file.<br /><br />If the fit is too loose, cut up a drinks can and shim around the edges of the bearing to fill in the gap (ensuring the shims do not protrude). | <img alt="Inserting The Bearing" src="https://github.com/user-attachments/assets/5488ba09-e4f6-406a-8622-1a27627ca863" /> |
+| 3 | Once installed, the bearing will be flush with the inside face of the pulley. It must be fully inserted and flat, or the pulley won't function correctly. | <img alt="Inserted Bearing" src="https://github.com/user-attachments/assets/fea62189-76d1-4eaa-9b78-85f078385c4e" /> |
+| 4 | **Optional:** Insert the _anchoring cord_ into the appropriate hole. This is just a `~0.3M` length of the same cord we use for our belts with a knot at one end.<br /><br />Once the motor and pulley are installed on your rig, you can attach the other end of this cord to the rig frame to anchor the pulley cover and prevent it from spinning freely (should that be an issue for your configuration).<br /><br />Many holes are provided so you can choose an appropriate anchoring angle relative to the belt cord exit angle (the large open slot in the side of the cover). | <img alt="Anchoring Cord" src="https://github.com/user-attachments/assets/1c1159e5-ec3a-496e-aec3-7f930c67eae3" /> |
+| 5 | Next we'll attach the pulley and belt cord to the motor. Normally you'd wait until the motor is installed on your rig to do this. | <img alt="Belt Cord" src="https://github.com/user-attachments/assets/3b1b6f60-eb70-425b-9b3b-f2ec0b786ea4" /> |
+| 6 | Place the knotted end of your belt cord into the recess inside the pulley hub. | <img alt="Cord Placement" src="https://github.com/user-attachments/assets/d54dfb8f-6569-42ab-8bba-ba0887265b58" /> |
+| 7 | Push the hub over the motor's triangular face, keeping the cord end captive. It should press fit tightly and stay in place once fitted. Make sure the cord hasn't slipped out and is held securely by the knotted end. | <img alt="Hub Installed" src="https://github.com/user-attachments/assets/60e4d662-2f5f-40ed-953a-9adb78563de9" /> |
+| 8 | Place the pulley cover over the motor face. Your belt cord must exit through the large open slot in the side of the pulley.<br /><br />If you have also installed an anchoring cord, pull it outwards while fitting the pulley cover, so that you don't trap it between the hub and cover. | <img alt="Installing The Pulley" src="https://github.com/user-attachments/assets/95318510-6dc2-45e1-b681-a0433a4c381c" /> |
+| 9 | The pulley face plate has a matching triangular shape that pops into the centre of the cover and secures everything in place.<br /><br />Take note of the alignment of the triangular hub when installing it. | <img alt="Inserting The Face Plate" src="https://github.com/user-attachments/assets/36ee9ec7-18fc-4e16-83da-c9c4876d8834" /> |
+| 10 | Insert and tighten the three `M2.5x12MM` screws into the face plate.<br /><br />You now have a completely assembled pulley. It should rotate freely without any wobble or rubbing against the motor. | <img alt="Inserting The Face Plate" src="https://github.com/user-attachments/assets/36ee9ec7-18fc-4e16-83da-c9c4876d8834" /> |
+
+### Motor Brackets
+Since there are so many different sim rig constructions, there are also various brackets designs for you to pick from. Here we're just going to show how to attach a motor to a bracket, which is the same process for every bracket design.
+
+Where necessary, additional instructions may be included in the same directory as the printable bracket parts; but they are all extremely simple to assemble. Mounting hardware (bolts, t-nuts and washers) for your specific rig are not included in the **SABT** BOM, as it is assumed you'll already have these available.
 
 | Step | Instructions | Illustration |
 | :-: | ------- | :-: |
-| 1 | Gather the bracket parts; three `M2.5x20` bolts, the bracket and the motor (with or without pulley fitted). Since there are a number of bracket designs, the hardware needed to actually attach them to your rig will vary (but should be obvious if you already have a rig). | <img alt="Bracket Parts" src="https://github.com/user-attachments/assets/ad8dff22-55bb-4067-9ee4-b4830107c591" /> |
-| 1 | _Carefully_ feed the motor connectors and wires through the hole in the bracket. Bend back the smaller connector so you're not trying to push both through at once. | <img alt="Folding Back The Connector" src="https://github.com/user-attachments/assets/1b7b2707-8864-4f94-9705-66493df46735" /><img alt="Wires Fed Through" src="https://github.com/user-attachments/assets/e8dfd768-ad01-4a7f-9c6a-ea86f61c2314" /> |
-| 3 | Insert the motor stem into the socket on the braket. The shaft and socket are three-sided and symmetrical, so rotate it until it aligns with the socket and push in. As long as it sits fully into the socket, the angle doesn't matter. | <img alt="Inserted The Motor" src="https://github.com/user-attachments/assets/b77ca3aa-80c6-4385-ae0c-92eddb5b90c2" /> |
-| 2 | Secure the motor with the three `M2.5x20MM` bolts | <img alt="Motor Bolted In" src="https://github.com/user-attachments/assets/bee30fac-97a7-4d76-a025-d396fefac354" /> |
-| 3 | Attach the bracket to your rig frame. If using the _aluminium profile_ bracket designs, secure the bracket to your rig frame with suitable t-nuts and bolts. If using the tubular mount (with truss clamp), insert the `M10` nut into the printed backet slot, then secure it to the truss clamp with the `M10x16` bolt. | <img alt="Assembled Bracket" src="https://github.com/user-attachments/assets/357d287c-e556-41b7-832f-6e56bf0db2f5" /> |
+| 1 | Gather the bracket parts; three `M2.5x20` bolts, the bracket and the motor (with or without the pulley fitted). | <img alt="Bracket Parts" src="https://github.com/user-attachments/assets/f872c7e5-08b8-489a-ab4d-dcf05c2846e3" /> |
+| 2 | _Carefully_ feed the motor connectors and wires through the hole in the bracket. Bend back the smaller connector so you're not trying to push both through at once. | <img alt="Folding Back The Connector" src="https://github.com/user-attachments/assets/d22e94b7-2e17-416f-8c49-0e0be0b90f23" /><img alt="Wires Fed Through" src="https://github.com/user-attachments/assets/342b0ea6-d163-4b98-be9c-85c0587ea623" /> |
+| 3 | Insert the motor stem into the socket on the braket. The shaft and socket are three-sided and symmetrical, so rotate it until it aligns with the socket and push in. As long as it sits fully into the socket, the angle doesn't matter.<br /><br />Secure the motor with the three `M2.5x20MM` bolts; tightening them each bolt a little at a time.  | <img alt="Inserted The Motor" src="https://github.com/user-attachments/assets/17f964a0-787b-46e2-9c83-8de3ae23d5b1" /><img alt="Motor Bolted In" src="https://github.com/user-attachments/assets/1d3dd758-c869-469a-b425-27bfa8791cb9" /> |
 
 ### Controller Board
+The controller board sends power and commands to the motors. To prevent shorting or damage, we enclose it in a printed case. There are two versions of the case; the only difference being the location of their mounting brackets. Pick whichever suits your mounting position best.
 
 | Step | Instructions | Illustration |
 | :-: | ------- | :-: |
