@@ -15,7 +15,7 @@ The rest of the parts can be obtained from virtually anywhere, including [Amazon
 
 Since availability and prices change constantly, I can't keep buying and verifying each component personally. Take note of the listed specifications and shop around for the best deal, or check our [Discord](https://discord.gg/SVkZv7xQ8b) for advice and recommendations.
 
-Some of these items are only sold in multiples, so the given per-unit guide prices are the approximate individual cost _when bought together_ in the required quantities.
+Some of these items are only sold in multiples, so our guide prices are calculated by dividing the total price _when bought together_ by the required quantity. They are not available _singularly_ at those prices. In some cases you'll have spares.
 
 | Guide Price (Each) | Quantity | Part | Notes | Example |
 | - | - | - | - | - |
@@ -116,9 +116,9 @@ See the diagrams above for a reference circuit design.
 
 ## Assembly
 
-Depending on your choices above, some of these assembly instructions may not be relevant to you. Please read through the instructions and only follow the steps that are applicable to your build.
+Depending on your choices above, some of these assembly instructions may not be relevant to you. Please read through them and only follow the steps that are applicable to your build.
 
-The photographs provided are for illustrative purposes and may not show the absolute latest part designs; don't worry if they aren't _exactly_ the same as the parts you've printed.
+The photographs provided are for illustrative purposes and may not show the _exact same_ part designs you are using (either due to updates or various options being available).
 
 ### Motors
 
@@ -166,17 +166,19 @@ Note that attaching the pulleys to the motors is not recommended until _after_ y
 | 9 | The pulley face plate has a matching triangular shape that pops into the centre of the cover and secures everything in place.<br /><br />Take note of the alignment of the triangular hub when installing it. | <img alt="Inserting The Face Plate" src="https://github.com/user-attachments/assets/36ee9ec7-18fc-4e16-83da-c9c4876d8834" /> |
 | 10 | Insert and tighten the three `M2.5x12MM` screws into the face plate.<br /><br />You now have a completely assembled pulley. It should rotate freely without any wobble or rubbing against the motor. | <img alt="Inserting The Face Plate" src="https://github.com/user-attachments/assets/36ee9ec7-18fc-4e16-83da-c9c4876d8834" /> |
 
-### Brackets
+### Motor Brackets
+Since there are so many different sim rig constructions, there are also various brackets designs for you to pick from. Here we're just going to show how to attach a motor to a bracket, which is the same process for every bracket design.
+
+Where necessary, additional instructions may be included in the same directory as the printable bracket parts; but they are all extremely simple to assemble. Mounting hardware (bolts, t-nuts and washers) for your specific rig are not included in the **SABT** BOM, as it is assumed you'll already have these available.
 
 | Step | Instructions | Illustration |
 | :-: | ------- | :-: |
-| 1 | Gather the bracket parts; three `M2.5x20` bolts, the bracket and the motor (with or without pulley fitted). Since there are a number of bracket designs, the hardware needed to actually attach them to your rig will vary (but should be obvious if you already have a rig). | <img alt="Bracket Parts" src="https://github.com/user-attachments/assets/ad8dff22-55bb-4067-9ee4-b4830107c591" /> |
-| 1 | _Carefully_ feed the motor connectors and wires through the hole in the bracket. Bend back the smaller connector so you're not trying to push both through at once. | <img alt="Folding Back The Connector" src="https://github.com/user-attachments/assets/1b7b2707-8864-4f94-9705-66493df46735" /><img alt="Wires Fed Through" src="https://github.com/user-attachments/assets/e8dfd768-ad01-4a7f-9c6a-ea86f61c2314" /> |
-| 3 | Insert the motor stem into the socket on the braket. The shaft and socket are three-sided and symmetrical, so rotate it until it aligns with the socket and push in. As long as it sits fully into the socket, the angle doesn't matter. | <img alt="Inserted The Motor" src="https://github.com/user-attachments/assets/b77ca3aa-80c6-4385-ae0c-92eddb5b90c2" /> |
-| 2 | Secure the motor with the three `M2.5x20MM` bolts | <img alt="Motor Bolted In" src="https://github.com/user-attachments/assets/bee30fac-97a7-4d76-a025-d396fefac354" /> |
-| 3 | Attach the bracket to your rig frame. If using the _aluminium profile_ bracket designs, secure the bracket to your rig frame with suitable t-nuts and bolts. If using the tubular mount (with truss clamp), insert the `M10` nut into the printed backet slot, then secure it to the truss clamp with the `M10x16` bolt. | <img alt="Assembled Bracket" src="https://github.com/user-attachments/assets/357d287c-e556-41b7-832f-6e56bf0db2f5" /> |
+| 1 | Gather the bracket parts; three `M2.5x20` bolts, the bracket and the motor (with or without the pulley fitted). | <img alt="Bracket Parts" src="https://github.com/user-attachments/assets/f872c7e5-08b8-489a-ab4d-dcf05c2846e3" /> |
+| 2 | _Carefully_ feed the motor connectors and wires through the hole in the bracket. Bend back the smaller connector so you're not trying to push both through at once. | <img alt="Folding Back The Connector" src="https://github.com/user-attachments/assets/d22e94b7-2e17-416f-8c49-0e0be0b90f23" /><img alt="Wires Fed Through" src="https://github.com/user-attachments/assets/342b0ea6-d163-4b98-be9c-85c0587ea623" /> |
+| 3 | Insert the motor stem into the socket on the braket. The shaft and socket are three-sided and symmetrical, so rotate it until it aligns with the socket and push in. As long as it sits fully into the socket, the angle doesn't matter.<br /><br />Secure the motor with the three `M2.5x20MM` bolts; tightening them each bolt a little at a time.  | <img alt="Inserted The Motor" src="https://github.com/user-attachments/assets/17f964a0-787b-46e2-9c83-8de3ae23d5b1" /><img alt="Motor Bolted In" src="https://github.com/user-attachments/assets/1d3dd758-c869-469a-b425-27bfa8791cb9" /> |
 
 ### Controller Board
+The controller board sends power and commands to the motors. To prevent shorting or damage, we enclose it in a printed case. There are two versions of the case; the only difference being the location of their mounting brackets. Pick whichever suits your mounting position best.
 
 | Step | Instructions | Illustration |
 | :-: | ------- | :-: |
