@@ -12,19 +12,17 @@ There are two main types of sim rig frame:
 - **Profile / Extrusion** (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) typically use `40-Series` aluminium extrusion that is bolted together in a modular fashion
 - **Tubular** (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) typically use `2"` steel tubing that is mandrel-bent into shape and welded together. Lighter foldable frames may use `1"` tubing instead
 
-If you have a **profile frame**, choose from the `For Aluminium Profile...` bracket designs; selecting from `Edge` or `Face` mounting options with the appropriate hole spacing for your particular size of aluminium profile. If you're uncertain, load them up into your preferred slicer and use the measuring tool to check the dimensions.
+If you have a **profile frame**, choose from the `For Aluminium Profile (...)` bracket designs, selecting the appropriate size and height for your profile type. It is recommended that you use the _measuring tool_ within your slicing software to verify hole spacing before printing.
 
-Most bracket options have `Short` and `Tall` variants to choose from. Use the latter only if you need additional clearance.
+Most bracket options have multiple heights to choose from. Use the taller options only if you need additional clearance.
 
-If you have a **tubular frame**, choose from the `For {Size} Tube...` bracket designs.
+If you have a **tubular frame**, choose from the `For Round Tube (...)` bracket designs.
 
-Alternatively there may be a _brand-specific_ bracket design available for your frame, where non-standard fitment is required.
+You may also find a _brand-specific_ bracket design for your frame, where non-standard fitment or special design considerations are required.
 
-You only need to print _two_ of a single type of bracket; though some designs have multiple parts (the tube clamps in particular). Many bracket designs are symmetrical, _but not all_. Non-symmertical designs require one of the printed brackets to be mirrored in your slicer, so check this before printing.
+For **two-motor** configurations, you will need to print _two_ of your chosen bracket. Many bracket designs are symmetrical, _but not all_. Non-symmetrical designs require one of the printed brackets to be mirrored in your slicer, so consider the orientation carefully before printing.
 
-Here are the various bracket options plated up in a slicer so you can see the intended printing orientations:
-
-![Bracket Designs](https://github.com/user-attachments/assets/7a57f8bd-5f96-40a3-8217-5ff12b6b8618)
+For **four-motor** configurations, you will need to print _four_ of your chosen bracket. Consider what orientation you are going to mount your motors in. For a paired configuration (using two motors per belt), you typically want the paired motors facing each other, so their pulleys and cords are close together.
 
 
 ### Choosing Your Belt Clamps
@@ -34,41 +32,39 @@ Since there are a variety of belt types and terminations, a few options are avai
 - [For Belt Loops](/Printables/Belt%20Clamps/For%20Belt%20Loops/): This is designed to loop through a 2" belt (up to 4mm thick) and secure back on itself using a standard belt buckle (likely to have come with your hanress)
 - [For Belt Passthrough](/Printables/Belt%20Clamps/For%20Belt%20Passthrough/): This is designed to clamp anywhere along a 2" belt without needing to shorten or terminate the belt itself
 
-The [Belt Passthrough](/Printables/Belt%20Clamps/For%20Belt%20Passthrough/) option is probably the easiest to integrate, while the [Belt Ends](/Printables/Belt%20Clamps/For%20Belt%20Ends/) option is the neatest; but needing the belts to be shortened specifically for the tensioner (or shortened non-destructively with buckles).
+The [Belt Passthrough](/Printables/Belt%20Clamps/For%20Belt%20Passthrough/) option is probably the easiest to integrate, while the [Belt Ends](/Printables/Belt%20Clamps/For%20Belt%20Ends/) option is the neatest; but requires the belts to be shortened specifically for the tensioner (or shortened non-destructively with buckles).
 
-Here are the various clamp options plated up in a slicer so you can see the intended printing orientations:
-
-![Clamp Designs](https://github.com/user-attachments/assets/9ea6e941-5708-461f-a7fb-e527a2807cee)
+Many **SABT** users have chosen to simply tie their belt cords to their existing steel anchoring plates; bypassing the need for printed clamps altogether.
 
 
 ### Opting For Belt Rollers
 
 There's a lot of variation in seat design. In cases where the belt guides have horizontal bottom surfaces (perpendicular to your pulley cords), you don't _need_ belt rollers; the belts will just slide through the guides without issue. In this case low-friction tape _is_ recommended for a smoother experience and to protect your belt guides.
 
-However with irregular or angled belt guides, you may run into issues with the belts bunching up in the corners of the guides and not sliding smoothly. For such cases, you can print and assemble two 'universal' [belt rollers](/Printables/Belt%20Roller/), which have been designed with an array of mounting holes to accommodate most belt guide shapes and angles.
+However with irregular or angled belt guides, you may run into issues with the belts bunching up in the corners of the guides and not sliding smoothly. For such cases, you can print and assemble 'universal' [belt rollers](/Printables/Belt%20Roller/), which have been designed with an array of mounting holes to accommodate most belt guide shapes and angles. These will potentially work with side/waist belt guides as well, should you be building a four-channel configuration.
 
 These will not work well with curved belt guides (where they match the curvature of the seat). In such cases you may need to design your own version of the roller. You can use the [FreeCAD source file](/Sources/Printables/Belt%20Roller.FCStd) as a reference and starting point if so.
 
 ## Printables List
 
 Regardless of your choices above, you should end up with:
-- 2x Belt Clamps > For Belt `Ends`|`Loops`|`Passthrough` > **Front**
-- 2x Belt Clamps > For Belt `Ends`|`Loops`|`Passthrough` > **Rear**
+- 2~4x Belt Clamps > For Belt `Ends`|`Loops`|`Passthrough` > **Front**
+- 2~4x Belt Clamps > For Belt `Ends`|`Loops`|`Passthrough` > **Rear**
 - 1x Controller Case > **Base** With `Side`|`End` Tabs
 - 1x Controller Case > **Top**
-- 2x Motor Brackets > _Parts Vary_
-- 2x Pulleys > **Cover**
-- 2x Pulleys > **Face**
-- 2x Pulleys > **Hub**
+- 2~4x Motor Brackets > _Parts Vary_
+- 2~4x Pulleys > **Cover**
+- 2~4x Pulleys > **Face**
+- 2~4x Pulleys > **Hub**
 
 If you're making the [Back-Driving Protection Unit](/INSTRUCTIONS.md#back-driving-protection) you'll additionally need:
 - 1x Back-Driving Protection Case > **Base**
 - 1x Back-Driving Protection Case > **Top**
 
 If you're making the [Belt Rollers](/Belt%20Rollers) you'll additionally need:
-- 2x Belt Rollers > **Bracket**
-- 2x Belt Rollers > **Plate**
-- 2x Belt Rollers > **Roller**
+- 2~4x Belt Rollers > **Bracket**
+- 2~4x Belt Rollers > **Plate**
+- 2~4x Belt Rollers > **Roller**
 - 4~8x Belt Rollers > **Spacer** \*
 
 \* These are intended to be vertically scaled in your slicer software to be slightly shorter (by `~0.5mm`) than the depth of your belt guide (usually `12~40mm`). They help to prevent the bracket and plate from bending once clamped and also protect your belt guide plastics from the screw threads. It is recommended that you print the rollers and spacers together (in a vertical orientation) and the bracket and plate together (in a horizontal orientation).
@@ -123,9 +119,6 @@ If you want a more commercial-looking end result, there are companies running SL
 
 I've had test prints done in MJF Nylon PA12 (dyed black & shot peened) which came out great. A few other builders have similarly had SLS/MJF prints made for their builds with great results. So far the tolerances of the press-fit bearings and other critical features have been fine.
 
-![FDM PLA (Left) &amp; MJF Nylon (Right)](https://github.com/user-attachments/assets/bfac6e96-2e1a-40e1-896b-42d3a9c5b132)
-![FDM PLA (Left) &amp; MJF Nylon (Right)](https://github.com/user-attachments/assets/4709e92b-cbfa-41a9-ae36-7251c432661b)
-
 ### CNC Machining
 
 At some point I'd love to see machined aluminium parts become available; but the parts included in this repository are very much designed for FDM printing, not CNC subtractive manufacturing.
@@ -138,7 +131,7 @@ If you have the means to do this and want to make them available, please get in 
 
 The printable files are provided in the `STEP` format. This provides the highest quality of geometry while being compatible with all major 3D printer slicing sofware _and_ commercial printing and CNC services.
 
-GitHub treats these as _text_ files, so displays their contents rather than offering a download. To download a printable `STEP` file, use the `Download Raw File` option, which looks like a _tray and arrow_ icon:
-![Download STEP File](https://github.com/user-attachments/assets/0109cad7-64ec-42a7-b945-4ba9ba94bee7)
+The simplest approach to getting these is to [download the entire repository](https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/archive/refs/heads/main.zip) as a ZIP file, then extract it and navigate to the `/Printables/` folder, where you'll find all the `STEP` files.
 
-You may find it simpler to download the whole repository as a ZIP file and grab the `STEP` files from there. This way, you won't need to download each file individually. To do this, click the green `Code` button at the top of the repository page and select `Download ZIP`. The printable files are located in the `/Printables/` folder within the ZIP archive.
+If you wish to download a specific file, you should note that _GitHub_ treats `STEP` files as _text_, so displays their contents rather than offering a download. To download a single printable `STEP` file, use the `Download Raw File` option, which looks like a _tray and arrow_ icon:
+![Download STEP File](https://github.com/user-attachments/assets/0109cad7-64ec-42a7-b945-4ba9ba94bee7)
