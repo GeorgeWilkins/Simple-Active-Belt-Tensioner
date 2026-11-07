@@ -122,10 +122,15 @@ The photographs provided are for illustrative purposes and may not show the abso
 
 ### Motors
 
+The motors provide our belt tensioning forces. They receive power and torque commands from the motor controller.
+
+Since the motors are technically _wheels_ intended for robotics projects, they come pre-fitted with rubber treads, which we'll need to remove. Note that the data/power cables on these motors are relatively fragile. Be careful not to damage them during assembly.
+
 | Step | Instructions | Illustration |
 | :-: | :- | :-: |
-| 1 | Since the motors are technically _wheels_, they come pre-fitted with rubber treads, which we need to remove.<br /><br />Unscrew the three `M2.5` bolts holding on motor face plate and remove it. You may need to remove a 'QA' sticker covering one of the screws.<br /><br />With the face plate removed, push the motor face (with the triangular hub) firmly with your thumbs, while holding the opposing face/rim of the tire with your fingers. Gradually working your way around the rim, moving small amounts at a time works best. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/37161acb-f815-408a-b04b-bd79367bf17b" /> |
-| 2 | You'll be left with the bare motor. Keep the rubber tire, face plate and bolts safe though; in case you need to return the motors or repurpose them later. | <img alt="Motor Without Tire" src="https://github.com/user-attachments/assets/522b9d83-0a32-4464-8a26-77f0ff1cfd14" /> |
+| 1 | Unscrew the three `M2.5` bolts holding on motor face plate and remove it. You may need to remove a 'QA' sticker covering one of the screws. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/37161acb-f815-408a-b04b-bd79367bf17b" /> |
+| 2 | Push the motor face (with the triangular hub) firmly with your thumbs, while holding the opposing face/rim of the tire with your fingers. Gradually working your way around the rim, moving small amounts at a time works best.<br /><br />If you have difficulty, warming the tires up with a hair dryer or heat gun will soften them and make this easier. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/11f57779-0d66-4b99-9151-42d3f9739a8f" /> /> |
+| 3 | You'll be left with the bare motor. Keep the rubber tire, face plate and bolts safe though; in case you need to return the motors or repurpose them later. | <img alt="Motor Without Tire" src="https://github.com/user-attachments/assets/522b9d83-0a32-4464-8a26-77f0ff1cfd14" /> |
 
 ### Belt Clamps
 
@@ -139,23 +144,24 @@ The photographs provided are for illustrative purposes and may not show the abso
 | 5 | Once fully tightened, the two clamp parts should be fully touching with no visible gap between them. | <img alt="Clamp Tightened" src="https://github.com/user-attachments/assets/ede38304-9e67-4346-b12a-6ac284669664" /><img alt="Clamp Fully Assembled" src="https://github.com/user-attachments/assets/e4ce1ea0-6511-4f91-b2e1-c62682849e1b" /> |
 
 ### Pulleys
+The pulleys turn the motor's torque into linear force by wrapping cords around small hubs. This design has self-orienting pulley covers, which orient themselves to the correct angle for your seat position. This allows for use with adjustable/sliding seats without needing to adjust the tensioning system.
 
+They can be optionally _anchored_ to your frame if you have any issues with the covers spinning or cords tangling (most commonly with **waist belts**, which are not kept taut by the weight of your harness like **shoulder belts** are).
 
-
-
-
-
+Note that attaching the pulleys to the motors is not recommended until _after_ you have fitted your motors to your rig. However we'll assemble them fully here for the purposes of this guide.
 
 | Step | Instructions | Illustration |
 | :-: | :- | :-: |
-| 1 | Gather the pulley parts; three `M2.5x12` bolts, the bearing, the outer cover, the face plate and hub. We're going to be inserting the cords and attaching the pulley to the motor here; but you'd normally do those steps once the motor is mounted to your rig. | <img alt="Pulley Parts" src="https://github.com/user-attachments/assets/20ecef0e-e12a-44bf-87e7-396b65f2046a" /> |
-| 2 | Press the bearing into the outer cover. This should be possible by hand. The accuracy/roughness of your print will dictate how easy this is.<br /><br />If the fit is too tight, use a hammer to _gently_ tap it in (alternating sides with each tap) or consider shaving away some material with a knife or file.<br /><br />If the fit is too loose, cut up a drinks can and shim around the edges of the bearing to fill in the gap (ensuring the shims do not protrude). | <img alt="Inserting The Bearing" src="https://github.com/user-attachments/assets/5488ba09-e4f6-406a-8622-1a27627ca863" /><img alt="Inserted Bearing" src="https://github.com/user-attachments/assets/fea62189-76d1-4eaa-9b78-85f078385c4e" /> |
-| 3 | **Optional:** Insert the _anchoring cord_ into the appropriate hole. This is just a `~0.3M` length of cord with a knot at one end. Once the motor and pulley are installed on your rig, you can attach the other end of this cord to the rig frame to anchor the pulley cover and prevent it from spinning freely. This is typically required for waist/side belt pulleys, as they do not have the weight of your harness keeping the cord taut and the pulley cover oriented correctly. For shoulder belts, this usually isn't required. The hole that you use for anchoring will depend on the desired angle | <img alt="Anchoring Cord" src="https://github.com/user-attachments/assets/1c1159e5-ec3a-496e-aec3-7f930c67eae3" /> |
-| 4 | Next we'll attach the pulley and belt cord to the motor. Normally you'd wait until the motor is installed on your rig to do this. | <img alt="Belt Cord" src="https://github.com/user-attachments/assets/3b1b6f60-eb70-425b-9b3b-f2ec0b786ea4" /> |
+| 1 | Gather the pulley parts; three `M2.5x12` bolts, the bearing, the outer cover, the face plate and hub. | <img alt="Pulley Parts" src="https://github.com/user-attachments/assets/20ecef0e-e12a-44bf-87e7-396b65f2046a" /> |
+| 2 | Press the bearing into the outer cover. This should be possible by hand. The accuracy/roughness of your print will dictate how easy this is.<br /><br />If the fit is too tight, use a hammer to _gently_ tap it in (alternating sides with each tap) or consider shaving away some material with a knife or file.<br /><br />If the fit is too loose, cut up a drinks can and shim around the edges of the bearing to fill in the gap (ensuring the shims do not protrude). | <img alt="Inserting The Bearing" src="https://github.com/user-attachments/assets/5488ba09-e4f6-406a-8622-1a27627ca863" /> |
+| 3 | Once installed, the bearing will be flush with the inside face of the pulley. It must be fully inserted and flat, or the pulley won't function correctly. | <img alt="Inserted Bearing" src="https://github.com/user-attachments/assets/fea62189-76d1-4eaa-9b78-85f078385c4e" /> |
+| 4 | **Optional:** Insert the _anchoring cord_ into the appropriate hole. This is just a `~0.3M` length of the same cord we use for our belts with a knot at one end.<br /><br />Once the motor and pulley are installed on your rig, you can attach the other end of this cord to the rig frame to anchor the pulley cover and prevent it from spinning freely (should that be an issue for your configuration).<br /><br />Many holes are provided so you can choose an appropriate anchoring angle relative to the belt cord exit angle (the large open slot in the side of the cover). | <img alt="Anchoring Cord" src="https://github.com/user-attachments/assets/1c1159e5-ec3a-496e-aec3-7f930c67eae3" /> |
+| 5 | Next we'll attach the pulley and belt cord to the motor. Normally you'd wait until the motor is installed on your rig to do this. | <img alt="Belt Cord" src="https://github.com/user-attachments/assets/3b1b6f60-eb70-425b-9b3b-f2ec0b786ea4" /> |
 | 6 | Place the knotted end of your belt cord into the recess inside the pulley hub. | <img alt="Cord Placement" src="https://github.com/user-attachments/assets/d54dfb8f-6569-42ab-8bba-ba0887265b58" /> |
-| 5 | Push the hub over the motor's triangular face, keeping the cord end captive. It should press fit tightly and stay in place once fitted. Make sure the cord hasn't slipped out and is held securely by the knotted end. | <img alt="Hub Installed" src="https://github.com/user-attachments/assets/60e4d662-2f5f-40ed-953a-9adb78563de9" /> |
-| 8 | Bring the pulley cover to the motor face. Your belt cord must exit through the large open slot in the side of the pulley. If you have also installed an anchoring cord, pull it outwards while fitting the pulley cover, so that you don't trap it between the hub and cover. | <img alt="Installing The Pulley" src="https://github.com/user-attachments/assets/95318510-6dc2-45e1-b681-a0433a4c381c" /> |
-| 8 | The pulley face plate pops into the centre of the cover and secures everything in place. Take note of the alignment of the triangular hub when installing it. Insert and tighten the three `M2.5x12MM` screws into the face plate. | <img alt="Inserting The Face Plate" src="https://github.com/user-attachments/assets/36ee9ec7-18fc-4e16-83da-c9c4876d8834" /> |
+| 7 | Push the hub over the motor's triangular face, keeping the cord end captive. It should press fit tightly and stay in place once fitted. Make sure the cord hasn't slipped out and is held securely by the knotted end. | <img alt="Hub Installed" src="https://github.com/user-attachments/assets/60e4d662-2f5f-40ed-953a-9adb78563de9" /> |
+| 8 | Place the pulley cover over the motor face. Your belt cord must exit through the large open slot in the side of the pulley.<br /><br />If you have also installed an anchoring cord, pull it outwards while fitting the pulley cover, so that you don't trap it between the hub and cover. | <img alt="Installing The Pulley" src="https://github.com/user-attachments/assets/95318510-6dc2-45e1-b681-a0433a4c381c" /> |
+| 9 | The pulley face plate has a matching triangular shape that pops into the centre of the cover and secures everything in place.<br /><br />Take note of the alignment of the triangular hub when installing it. | <img alt="Inserting The Face Plate" src="https://github.com/user-attachments/assets/36ee9ec7-18fc-4e16-83da-c9c4876d8834" /> |
+| 10 | Insert and tighten the three `M2.5x12MM` screws into the face plate.<br /><br />You now have a completely assembled pulley. It should rotate freely without any wobble or rubbing against the motor. | <img alt="Inserting The Face Plate" src="https://github.com/user-attachments/assets/36ee9ec7-18fc-4e16-83da-c9c4876d8834" /> |
 
 ### Brackets
 
