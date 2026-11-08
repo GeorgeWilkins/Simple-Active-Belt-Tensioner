@@ -53,11 +53,9 @@ The SimHub plugin takes care of all of the software, and is simply copy+pasted i
 
 It is also _direct-drive_, so operates silently and smoothly. This permits it to act with a 'spring' effect and auto-tension the belts, meaning you don't have to pre-tighten your harness.
 
-The maximum force output of **SABT** is roughly 10Kg per belt. This is roughly half that of the [QS BT-1](https://qubicsystem.com/product/qs-bt1).
+The maximum force output of **SABT** is 10Kg per motor. This is roughly half that of the [QS BT-1](https://qubicsystem.com/product/qs-bt1); but you can run two motors per belt to achieve equivalent force output if desired.
 
-Some other DIY options offer considerably more power; particularly those using larger geared NEMA-format motors.
-
-Remember that **SABT** is designed to be _low-cost_ and _easy-to-build_. It is not intended to compete with high-end options costing many times more. If you are seeking maximum performance, you should consider other options.
+The vast majority of **SABT** builders have commented that 10Kg is plenty, and prefer to use additional motors to actively tension their waist belts, rather than increasing the force on the shoulder belts.
 
 ### What is the latency like?
 
@@ -103,15 +101,13 @@ If there is demand, a version of the kit for more powerful motors could be devel
 
 ### Can I use a different control board?
 
-It would be possible to control the DDSM115 motors with a generic RS485-USB adapter board. In fact, that's one of the approaches I considered when designing the kit. However you'd need two of those adapters to run the motors separately (or add custom electonics to support both motors on a single adapter), and the SimHub plugin would need to be modified to support the different control hardware.
-
-Generally it would be more expensive and complicated than just using the Waveshare control board.
+It would be possible to control the motors with a generic RS485-USB serial adapter board. In fact, adapters with the same serial bridge chipset may even be detected by the **SABT** plugin as a valid controller and would theoretically function correctly if you wired up the motors appropriately. However they would not offer the plug-and-play experience **SABT** was designed to provide.
 
 If the project becomes particularly popular there's a good chance I'll look at designing and manufacturing a custom board that integrates everything we need (including the back-driving protection circuitry), but for now the Waveshare board is a good off-the-shelf solution.
 
 ### Can I use higher voltages?
 
-The recommended `15V` was chosen to protect your motors. I would strongly suggest no more than `19V`.
+Originally the recommended voltage for **SABT** was `15V`, out of concern for the motors being damaged by back-driving voltage spikes. The currently recommended power supply is `20V`, since we've now had enough time and builds to determine that it's a reasonably safe voltage for the motors.
 
 The motors are _"wide-input"_, meaning they will accept a variety of input voltages between `12V` and `24V`. The _"rated voltage"_ is given as `18V` and `5S LiPo`, because as part of a robotics platform, they're intended to be powered by a battery pack. The control board simply passes the supply voltage through to the motors, so the motors will run at whatever voltage you supply to the board.
 
@@ -121,9 +117,7 @@ An additional consideration is _back-driving_ of the motors. This is a situation
 
 In a battery-driven application, this is not a problem as the battery can absorb the energy (in effect, _regenerative braking_). In our SMPS-driven setup, without any extra protection circuitry this will typically trigger the OVP/RC features of the power supply. The [back-driving protection unit](INSTRUCTIONS.md#back-driving-protection) was devised to prevent this from happening. However it doesn't _stop_ the voltage spike; it simply blocks it from returning to the supply and instead dumps it into a capacitor. Once the voltage spike has been absorbed and the external mechanical input ceased, the motors draw this back down to the supply voltage and continue as normal.
 
-Running your motors at a higher voltage means any relative spike that occurs will also be higher; potentially exceeding the voltage limits of the motors. This is why I would never run my motors at the maximum `24V` and chose `15V` as a recommended safe operating voltage.
-
-However there is an argument to be made for running at `19V`. This is a _very common_ voltage for laptop power supplies; which means many highy-quality supplies are available for virtually nothing. You probably already have at least one in your home from an old device. A number of SABT builders have reported good results running at `19V`, but this is typically joined by higher operating temperatures. While there are temperature-throttling features built into the plugin software, you may wish to look into active cooling of the motors if you intend to run at this voltage. You'll also want to use suitable filaments for the printed parts, such as PETG or ABS, which are more heat-resistant than PLA.
+Running your motors at a higher voltage means any relative spike that occurs will also be higher; potentially exceeding the voltage limits of the motors. This is why I would never run my motors at the maximum `24V`.
 
 ### What type of harness do I need?
 
