@@ -104,8 +104,6 @@ You may instead choose to run a true **four-channel** configuration, where your 
 
 Note that this system conveys progressive constant forces (cornering, braking, etc) better than fine details (road texture, track kerbs, etc). For the latter, you should install one or more tactile transducers. The two systems work together to imply the sensation of movement without a costly motion simulator.
 
-[Force Testing.webm](https://github.com/user-attachments/assets/be7b9d7a-be3f-46f7-abf1-9659297854bb)
-
 ## Anything I Should Be Aware Of?
 
 There is considerable variation in rig, seat and harness designs, so I cannot anticipate every possible configuration. You'll need to decide if this system is suitable for your rig by looking at the installations examples and instructions.
