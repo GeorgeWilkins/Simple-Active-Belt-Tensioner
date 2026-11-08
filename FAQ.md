@@ -159,7 +159,7 @@ In rare cases, your printed pulley parts may be warped or undersized; in which c
 
 The self-orienting pulley covers are intended to prevent tangling from happening; but for them to work effectively the cords need to have at least _some_ tension applied. This usually happens naturally from the weight of your shoulder belts pulling on the cords, but in some configurations (especial four-channel builds with waist belts), this tension isn't present and the covers may simply spin with the motor, which causes tangling.
 
-The solution is to make use of the [anchoring holes](#) in the pulley covers, loosely securing the free-spinning cover to your rig.
+The solution is to make use of the [anchoring holes](INSTRUCTIONS.md#pulley-anchoring) in the pulley covers, loosely securing the free-spinning cover to your rig.
 
 ### The cords or belts are rubbing against the back of my seat
 
