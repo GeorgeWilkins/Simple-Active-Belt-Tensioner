@@ -9,8 +9,8 @@ Since there are a couple of options to choose from, you should read this before 
 <img align="right" width="30%" height="auto" style="margin: 0 0 0 5%" alt="Motor Bracket" src="https://github.com/user-attachments/assets/890b4d74-dafc-4766-a464-2187abca817e" />
 
 There are two main types of sim rig frame:
-- **Profile / Extrusion** (e.g. [GT Omega Prime](https://www.gtomega.co.uk/products/prime-cockpit)) typically use `40-Series` aluminium extrusion that is bolted together in a modular fashion
-- **Tubular** (e.g. [GT Omega Titan](https://www.gtomega.co.uk/products/titan-cockpit)) typically use `2"` steel tubing that is mandrel-bent into shape and welded together. Lighter foldable frames may use `1"` tubing instead
+- **Profile / Extrusion** typically use `40-Series` (`40x80`, `40x120`, `40x160`) aluminium extrusion that is bolted together in a modular fashion
+- **Tubular** typically use `2"` (`50mm`) steel tubing that is mandrel-bent into shape and welded together. Lighter foldable frames may use `1"` tubing instead
 
 If you have a **profile frame**, choose from the `For Aluminium Profile (...)` bracket designs, selecting the appropriate size and height for your profile type. It is recommended that you use the _measuring tool_ within your slicing software to verify hole spacing before printing.
 
