@@ -14,7 +14,8 @@ Builders also have technical questions about the setup and operation of the kit,
     - [Can I use a different type of motor?](#can-i-use-a-different-type-of-motor)
     - [Can I use a different control board?](#can-i-use-a-different-control-board)
     - [Can I use higher voltages?](#can-i-use-higher-voltages)
-    - [What ype of harness do I need?](#what-type-of-harness-do-i-need)
+    - [Which power supply should I get?](#which-power-supply-should-i-get)
+    - [What type of harness do I need?](#what-type-of-harness-do-i-need)
 - [Assembly & Adjustment](#assembly--adjustment)
     - [My pulley covers are not spinning freely](#my-pulley-covers-are-not-spinning-freely)
     - [The cords are tangling up when not under tension](#the-cords-are-tangling-up-when-not-under-tension)
@@ -119,6 +120,23 @@ In a battery-driven application, this is not a problem as the battery can absorb
 
 Running your motors at a higher voltage means any relative spike that occurs will also be higher; potentially exceeding the voltage limits of the motors. This is why I would never run my motors at the maximum `24V`.
 
+### Which power supply should I get?
+
+The basic requirements are:
+- `5.5x2.5mm` Barrel Plug (or `XT60`)
+- `15V` to `20V` Fixed Output
+- `1.5A` per motor (plus headroom)
+
+Since the number of motors in a **SABT** configuration is up to you, the total current draw will vary. Regardless, I recommend buying a `≥7A` supply capable of supporting four motors; as you'll then not need to replace it if you decide to increase the motor count later.
+
+However, should you plan on never going beyond two motors, you can opt for lower current supplies.
+
+As a guide, each motor draws `~1.5A` at full stall, so a _quality_ `6A` supply capable of handling spikes is _theoretically_ capable of handling four motors (or `3A` for two motors). However I'd suggest looking for `~1A` of headroom to accommodate spikes and power supply underperformance (particularly with generic/unbranded ones).
+
+The `7A` Meanwell `GST160A20-R7B` is a high-quality supply that has been tested and confirmed to work with four motors, but has an unusual connector that requires an adapter or modification. The smaller `6A` Meanwell `GST120A20-P1M` has the correct barrel plug for our motor controller and is currently being tested under the same load. It will become the 'standard' supply if testing is successful.
+
+All other testing to date has been performed on supplies that far exceed (or at least claim to) the current draw of the motors.
+
 ### What type of harness do I need?
 
 Conventional wisdom with _active belt tensioners_ is that a five or six-point harness is required to prevent the belts from pulling _upwards_ rather than _into_ your body, with the 'anti-submarine' belt(s) anchoring the harness into the lap (rather than serving as a safety feature in a real vehicle). This is certainly a more realistic setup for simulating race-specification vehicles, but obviously overkill road vehicles that would be fitted with inertia-reel seatbelts.
@@ -131,7 +149,6 @@ Regardless of your chosen harness configuration, a `2"` (`50mm`) belt width is r
 
 ### My pulley covers are not spinning freely
 
-
 Most likely the bearings are not seated correctly in the pulley covers, or the end of the cord is not quite inside the slot/hole in the centre of the pulley and it's pushing the cover out of alignment. One way to check is to remove the cords and re-attach the covers to see if they spin freely without the cords in place. If they do, then the cords were being pinched somewhere inside the pulleys.
 
 Reassemble the pulleys and make sure the cords are seated correctly in the pulley slots as pictured in the instructions. If the cord ends have frayed, consider trimming them back.
@@ -140,7 +157,9 @@ In rare cases, your printed pulley parts may be warped or undersized; in which c
 
 ### The cords are tangling up when not under tension
 
-With some UHMWPE/Dyneema cords, it is quite easy to twist them during installation. If done excessively, the cords will try to return to their untwisted state when the tensioner is not under load, which can cause them to tangle up. Remove the cords from the pulleys, straighten them out and re-install them, taking care not to twist them during installation.
+The self-orienting pulley covers are intended to prevent tangling from happening; but for them to work effectively the cords need to have at least _some_ tension applied. This usually happens naturally from the weight of your shoulder belts pulling on the cords, but in some configurations (especial four-channel builds with waist belts), this tension isn't present and the covers may simply spin with the motor, which causes tangling.
+
+The solution is to make use of the [anchoring holes](#) in the pulley covers, loosely securing the free-spinning cover to your rig.
 
 ### The cords or belts are rubbing against the back of my seat
 
@@ -228,6 +247,6 @@ This may change in a future release; but that will likely be a new major version
 
 The tensioner is designed to simulate sustained forces such as braking, acceleration and cornering. It can also simulate large impactful _heave_ events (such as jumps or dips). However it is not intended to simulate high-frequency vibrations or small bumps. That is the job of tactile transducers (or "bass shakers") which are designed specifically to create those effects.
 
-Adjusting the tensioner to express these small/brief impacts effects _is possible_, but it makes all other output extremely aggressive and overly sensitive. All braking, acceleration and cornering forces become oversaturated, making for an unpleasant experience.
+Adjusting the tensioner to express these small/brief impacts effects _is possible_, but it can make other output extremely aggressive and overly sensitive.
 
-There is [a feature request](https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/issues/74) being worked on that adds some additional effects (such as engine vibrations) to the plugin; however these are not strictly force-based (instead using RPM telemetry to achieve an _approximation_ of engine vibration) and will not be as realistic as a dedicated tactile transducer.
+There are special effects that can be enabled in the plugin to help simulate or accentuate some of these things, but they will never be as realistic as a dedicated tactile transducer.
