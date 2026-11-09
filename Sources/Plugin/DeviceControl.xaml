@@ -128,48 +128,6 @@
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="CollapsibleBlockStyle" TargetType="Expander">
-            <Setter Property="IsExpanded" Value="False" />
-            <Setter Property="Margin" Value="0,0,0,0" />
-            <Setter Property="Padding" Value="0,0,0,8" />
-            <Setter Property="Foreground" Value="#FFFFFF" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Expander">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <ContentPresenter Grid.Row="0" ContentSource="Header" Margin="0,0,0,0" />
-
-                            <Border x:Name="CollapsibleContentHost" Grid.Row="1" MaxHeight="50" ClipToBounds="True" Padding="{TemplateBinding Padding}">
-                                <Border.OpacityMask>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                        <GradientStop Color="#FFFFFFFF" Offset="0.0" />
-                                        <GradientStop Color="#FFFFFFFF" Offset="0.2" />
-                                        <GradientStop Color="#00FFFFFF" Offset="1.0" />
-                                    </LinearGradientBrush>
-                                </Border.OpacityMask>
-                                <ContentPresenter />
-                            </Border>
-
-                            <styles:SHButtonPrimary x:Name="CollapsibleToggleButton" Grid.Row="2" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Margin="0,0,0,0" Padding="0,0,0,2" Content="▼" Click="ToggleCollapsibleBlock" Background="#4F4F4F" />
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsExpanded" Value="True">
-                                <Setter TargetName="CollapsibleContentHost" Property="MaxHeight" Value="Infinity" />
-                                <Setter TargetName="CollapsibleContentHost" Property="OpacityMask" Value="{x:Null}" />
-                                <Setter TargetName="CollapsibleToggleButton" Property="Content" Value="▲" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
     </UserControl.Resources>
 
     <ScrollViewer>
@@ -182,43 +140,44 @@
             <StackPanel>
 
                 <styles:SHTabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <styles:SHTabItem Header="{SLoc SABT_Tab_Connection}" d:Header="Tab">
+                    <styles:SHTabItem Header="{SLoc SABT_Tab_Configuration}" d:Header="Tab">
                         <StackPanel>
-                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Connection}" d:Title="Title" Margin="10,10,10,10">
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Status}" d:Title="Title" Margin="10,10,10,10">
+
                                 <StackPanel>
 
-                                    <StackPanel>
-                                        <Expander Style="{StaticResource CollapsibleBlockStyle}" Margin="0,0,0,15">
-                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow">
-                                                <local:MarkdownFormattedText Key="SABT_Text_Setup" />
-                                            </TextBlock>
-                                        </Expander>
-
-                                        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,0">
-                                            <Label Content="{SLoc SABT_Label_EnableEffects}" Margin="-5,0,0,0" FontWeight="Bold" />
-                                            <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding MotorController.Device}" />
-                                        </TextBlock>
-
-                                        <Label Content="{SLoc SABT_Label_SerialPort}" Margin="-3,0,0,0" FontWeight="Bold" />
-                                        <ComboBox ItemsSource="{Binding MotorController.Devices}" DisplayMemberPath="Port" SelectedItem="{Binding MotorController.Device, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                                    </StackPanel>
+                                    <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,0">
+                                        <Label Content="{SLoc SABT_Label_EnableEffects}" Margin="-5,0,0,0" FontWeight="Bold" />
+                                        <styles:SHToggleCheckbox IsChecked="{Binding Plugin.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding MotorController.Device}" />
+                                    </TextBlock>
 
                                 </StackPanel>
-                                
+
+                            </styles:SHTitledGroup>
+                            
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Setup}" d:Title="Title" Margin="10,0,10,10">
+
+                                <StackPanel>
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow">
+                                        <local:MarkdownFormattedText Key="SABT_Text_Setup" />
+                                    </TextBlock>
+
+                                    <Label Content="{SLoc SABT_Label_SerialPort}" Margin="-3,0,0,0" FontWeight="Bold" />
+                                    <ComboBox ItemsSource="{Binding MotorController.Devices}" DisplayMemberPath="Port" SelectedItem="{Binding MotorController.Device, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                </StackPanel>
+
                             </styles:SHTitledGroup>
 
                             <styles:SHTitledGroup Title="{SLoc SABT_Title_Configuration}" d:Title="Title" Margin="10,0,10,10">
 
                                 <StackPanel Grid.IsSharedSizeScope="True" Cursor="{Binding Settings.PluginVersion}">
 
-                                    <Expander Style="{StaticResource CollapsibleBlockStyle}" Margin="0,0,0,15">
-                                        <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow">
-                                            <local:MarkdownFormattedText Key="SABT_Text_Configuration" />
-                                        </TextBlock>
-                                    </Expander>
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow">
+                                        <local:MarkdownFormattedText Key="SABT_Text_Configuration" />
+                                    </TextBlock>
 
-                                    <Grid Margin="0,20,0,0">
+                                    <Grid Margin="0,15,0,0">
 
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
@@ -549,13 +508,20 @@
                                 </StackPanel>
                             </styles:SHTitledGroup>
 
-                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Reset}" d:Title="Title" Margin="10,0,10,10">
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Troubleshooting}" d:Title="Title" Margin="10,0,10,10">
+                                
                                 <StackPanel>
-                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="0,0,0,0">
-                                        <local:MarkdownFormattedText Key="SABT_Text_Reset" />
+
+                                    <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow">    
+                                        <local:MarkdownFormattedText Key="SABT_Text_Troubleshooting" />
                                     </TextBlock>
+                                    
                                     <styles:SHButtonPrimary HorizontalAlignment="Stretch" Click="ResetPlugin" Margin="0,10,0,0" Content="{SLoc SABT_Button_ResetPlugin}" />
+
+                                    <styles:SHButtonPrimary HorizontalAlignment="Stretch" Click="CopyLogToClipboard" Margin="0,10,0,0" Content="{SLoc SABT_Button_CopyLogToClipboard}" />
+
                                 </StackPanel>
+                                
                             </styles:SHTitledGroup>
                             
                         </StackPanel>

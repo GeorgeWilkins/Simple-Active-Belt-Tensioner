@@ -2,6 +2,7 @@
 using SimHub.Plugins.Devices;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -230,13 +231,43 @@ namespace User.ActiveBeltTensioner
             );
         }
 
-        private void ResetDiagnostics(object sender, RoutedEventArgs e)
+        private void CopyLogToClipboard(object sender, RoutedEventArgs e)
         {
-            _plugin.DoWithoutWaiting(
-                devicePlugin =>
+            try
+            {
+                string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", "SimHub.txt");
+
+                if (File.Exists(logPath))
                 {
-                    devicePlugin.MotorController.ResetDiagnostics();
+                    string logText;
+                    using (var fileStream = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+                    using (var streamReader = new StreamReader(fileStream))
+                    {
+                        logText = streamReader.ReadToEnd();
+                    }
+
+                    Clipboard.SetText(logText ?? "");
+
+                    Logging.Current.Info($"SABT: Copied log text to clipboard from '{logPath}'");
+
+                    ForegroundPrompt.ShowDialog(
+                        SLoc.GetValue("SABT_Message_LogCopied"),
+                        "Prompt.Settings.png",
+                        false
+                    );
+
+                    return;
                 }
+            }
+            catch (Exception exception)
+            {
+                Logging.Current.Error($"SABT: Could not copy SimHub log text to clipboard ({exception.Message})\nStack: {exception.StackTrace}");
+            }
+
+            ForegroundPrompt.ShowDialog(
+                SLoc.GetValue("SABT_Message_LogCopyFailure"),
+                "Prompt.Settings.png",
+                false
             );
         }
 

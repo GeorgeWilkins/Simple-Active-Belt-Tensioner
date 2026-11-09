@@ -3,7 +3,9 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Media;
 using System.Windows.Navigation;
 using WoteverLocalization;
 
@@ -72,8 +74,15 @@ namespace User.ActiveBeltTensioner
         private static class InlineParser
         {
             private const string HttpsPrefix = "https://";
+
             private const double HeadingScale = 1.2;
             private const double HeadingMargin = 5.0;
+
+            private static readonly Brush HighlightBackground = new SolidColorBrush(Color.FromRgb(220, 53, 69));
+            private static readonly Brush HighlightForeground = Brushes.White;
+            private static readonly Thickness HighlightMargin = new Thickness(-5, -4, -5, -4);
+            private static readonly Thickness HighlightPadding = new Thickness(4, 3, 5, 4);
+            private static readonly CornerRadius HighlightCornerRadius = new CornerRadius(5);
 
             public static void AppendFormatted(InlineCollection inlines, string text, bool clearExisting = false)
             {
@@ -112,6 +121,15 @@ namespace User.ActiveBeltTensioner
                             index++;
                         }
 
+                        continue;
+                    }
+
+                    if (TryReadHighlight(text, index, out var highlightText, out var highlightConsumedLength))
+                    {
+                        FlushPlain(inlines, plain);
+                        AppendHighlight(inlines, highlightText);
+
+                        index += highlightConsumedLength - 1;
                         continue;
                     }
 
@@ -222,6 +240,66 @@ namespace User.ActiveBeltTensioner
                 inlines.Add(new LineBreak());
                 inlines.Add(new InlineUIContainer(new Border { Height = HeadingMargin, Width = 0 }));
                 inlines.Add(new LineBreak());
+            }
+
+            private static void AppendHighlight(InlineCollection inlines, string highlightText)
+            {
+                var textBlock = new TextBlock
+                {
+                    Foreground = HighlightForeground,
+                    TextWrapping = TextWrapping.Wrap,
+                    HorizontalAlignment = HorizontalAlignment.Stretch
+                };
+
+                AppendFormatted(textBlock.Inlines, highlightText);
+
+                var border = new Border
+                {
+                    Background = HighlightBackground,
+                    CornerRadius = HighlightCornerRadius,
+                    Margin = HighlightMargin,
+                    Padding = HighlightPadding,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    Child = textBlock
+                };
+
+                var container = new Grid
+                {
+                    HorizontalAlignment = HorizontalAlignment.Stretch
+                };
+
+                container.SetBinding(
+                    FrameworkElement.WidthProperty,
+                    new Binding("ActualWidth")
+                    {
+                        RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(TextBlock), 1)
+                    }
+                );
+
+                container.Children.Add(border);
+                inlines.Add(new InlineUIContainer(container));
+            }
+
+            private static bool TryReadHighlight(string text, int startIndex, out string highlightText, out int consumedLength)
+            {
+                highlightText = null;
+                consumedLength = 0;
+
+                if (startIndex + 1 >= text.Length || text[startIndex] != '[' || text[startIndex + 1] != '[')
+                {
+                    return false;
+                }
+
+                int closeIndex = text.IndexOf("]]", startIndex + 2, StringComparison.Ordinal);
+                if (closeIndex <= startIndex + 2)
+                {
+                    return false;
+                }
+
+                highlightText = text.Substring(startIndex + 2, closeIndex - (startIndex + 2));
+                consumedLength = (closeIndex + 2) - startIndex;
+
+                return true;
             }
 
             private static bool TryReadUrl(string text, int startIndex, out string url, out int consumedLength)

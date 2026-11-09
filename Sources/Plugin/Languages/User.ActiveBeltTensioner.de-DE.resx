@@ -123,8 +123,12 @@
   <data name="SABT_Tab_Credits" xml:space="preserve">
     <value>Danksagungen</value>
   </data>
-  <data name="SABT_Title_Connection" xml:space="preserve">
-    <value>Status und Einrichtung</value>
+  <data name="SABT_Title_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SABT_Title_Setup" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Title_Tension" xml:space="preserve">
     <value>Anpassung der Gurtspannung</value>
@@ -153,7 +157,6 @@
   <data name="SABT_Message_AlterVehicleName" xml:space="preserve">
     <value>Sie können den von SimHub angegebenen Fahrzeugnamen bei Bedarf ändern:</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="SABT_Message_AutomaticTuningReset" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
@@ -190,6 +193,9 @@
   <data name="SABT_Message_FailedToAssignMotorIdentifier" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="SABT_Message_DisableBeforeMappingMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Plugin" xml:space="preserve">
     <value>Simple Active Belt Tensioner</value>
   </data>
@@ -217,19 +223,22 @@
   <data name="SABT_Title_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Title_Reset" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="SABT_Title_Troubleshooting" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
     <value>Einstellungen</value>
   </data>
-  <data name="SABT_Tab_Connection" xml:space="preserve">
-    <value>Verbindung</value>
+  <data name="SABT_Tab_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Button_Shake" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Button_Tension" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Button_CopyLogToClipboard" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Button_SetTemperaturesForPLA" type="System.Resources.ResXNullRef, System.Windows.Forms">
@@ -313,13 +322,19 @@
   <data name="SABT_Text_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
-  <data name="SABT_Text_Reset" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="SABT_Text_Troubleshooting" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Text_Credits" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Message_ResetWarning" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Message_LogCopyFailure" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Message_LogCopied" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Status_Connected" xml:space="preserve">
@@ -483,9 +498,6 @@
   </data>
   <data name="SABT_Label_Experimental" xml:space="preserve">
     <value>EXPERIMENTELL</value>
-  </data>
-  <data name="SABT_Label_Setup" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
   </data>
   <data name="SABT_Message_NoDeviceDetected" xml:space="preserve">
     <value>Kein Gerät erkannt. Sie müssen ein serielles Gerät auswählen, bevor Sie die Einrichtung starten.</value>

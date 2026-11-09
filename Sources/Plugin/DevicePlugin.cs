@@ -457,7 +457,10 @@ namespace User.ActiveBeltTensioner
 
                 DoWithoutWaiting(devicePlugin =>
                 {
-                    devicePlugin.MotorController.LoadMotorConfigurations();
+                    devicePlugin.Settings.MotorConfigurations.Clear();
+
+                    devicePlugin.MotorController.ClearMotorConfigurations();
+                    devicePlugin.MotorController.SaveMotorConfigurations();
                     devicePlugin.MotorController.DetectDevices();
                     devicePlugin.MotorController.DetectMotors();
                 });

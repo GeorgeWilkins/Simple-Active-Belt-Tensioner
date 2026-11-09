@@ -1,5 +1,6 @@
 ﻿using OxyPlot;
 using SimHub;
+using SimHub.Plugins.Devices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -360,8 +361,8 @@ namespace User.ActiveBeltTensioner
                     Logging.Current.Warn("SABT: Serial communication error (" + exception.Message + ")");
 
                     ForegroundPrompt.ShowDialog(
-                        SLoc.GetValue("SABT_Message_SerialConnectionError") + "\n" + exception.Message,
-                        "GW Logo.png",
+                        SLoc.GetValue("SABT_Message_SerialConnectionError") + "\n[[" + exception.Message + "]]",
+                        "Prompt.Controller.Board.png",
                         false
                     );
                 }
@@ -410,6 +411,22 @@ namespace User.ActiveBeltTensioner
         /// <returns>Whether the proposed mapping is permitted</returns>
         public bool CanMap(Motor targetMotor, Motor.MotorMapping desiredMotorMapping)
         {
+            if (_plugin.IsEnabled)
+            {
+                if (ForegroundPrompt.ShowDialog(
+                    SLoc.GetValue("SABT_Message_DisableBeforeMappingMotors"),
+                    "Prompt.Pulley.png",
+                    true
+                ))
+                {
+                    _plugin.IsEnabled = false;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
             uint leftShoulderCount = 0;
             uint rightShoulderCount = 0;
             uint leftWaistCount = 0;
@@ -841,6 +858,22 @@ namespace User.ActiveBeltTensioner
             }
 
             Logging.Current.Info($"SABT: AFTER LOAD MOTOR CONFIGURATION COUNT = {_plugin.Settings.MotorConfigurations.Count}");
+
+            EndAction(action);
+        }
+
+        public void ClearMotorConfigurations()
+        {
+            Logging.Current.Info("SABT: Clearing motor configurations...");
+
+            StartAction(out string action);
+
+            foreach (Motor motor in Motors)
+            {
+                motor.Mapping = Motor.MotorMapping.Unused;
+                motor.Direction = Motor.MotorDirection.Clockwise;
+                motor.Status = Motor.MotorStatus.Disabled;
+            }
 
             EndAction(action);
         }

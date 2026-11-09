@@ -203,6 +203,7 @@
     <Resource Include="Graphics\Prompt.Pulley.png" />
     <Resource Include="Graphics\Prompt.Controller.Single.png" />
     <Resource Include="Graphics\Prompt.Settings.png" />
+    <Resource Include="Graphics\Prompt.Controller.Board.png" />
     <Content Include="Languages\User.ActiveBeltTensioner.resx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>

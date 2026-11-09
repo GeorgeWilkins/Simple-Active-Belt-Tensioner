@@ -154,7 +154,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _reducedOutputTemperature = 50;
+        private int _reducedOutputTemperature = 45;
         public int ReducedOutputTemperature
         {
             get { return _reducedOutputTemperature; }
@@ -173,7 +173,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _stoppedOutputTemperature = 60;
+        private int _stoppedOutputTemperature = 55;
         public int StoppedOutputTemperature
         {
             get { return _stoppedOutputTemperature; }

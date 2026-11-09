@@ -37,7 +37,7 @@ namespace User.ActiveBeltTensioner
             ResizeMode = ResizeMode.NoResize;
             ShowInTaskbar = false;
             SizeToContent = SizeToContent.Height;
-            Width = 700;
+            Width = 650;
             WindowStartupLocation = WindowStartupLocation.CenterOwner;
             Topmost = true;
             AllowsTransparency = true;
@@ -161,7 +161,7 @@ namespace User.ActiveBeltTensioner
             }
             else
             {
-                Button okButton = new Button { MinWidth = 60, Height = 30, Content = "OK" };
+                Button okButton = new Button { MinWidth = 60, Height = 30, Margin = new Thickness(0, 0, 0, 0), Content = "OK" };
                 okButton.Click += (sender, e) => closeWithResult(true);
                 buttonPanel.Children.Add(okButton);
             }
