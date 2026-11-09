@@ -217,6 +217,9 @@
   <data name="SABT_Title_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="SABT_Title_Reset" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
     <value>Preferenze</value>
   </data>
@@ -249,6 +252,9 @@
   </data>
   <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
     <value>Reimposta Modificatori Di Cambio Marcia</value>
+  </data>
+  <data name="SABT_Button_ResetPlugin" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
     <value>⧉ Gioco &amp; Veicolo</value>
@@ -307,7 +313,13 @@
   <data name="SABT_Text_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
+  <data name="SABT_Text_Reset" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Text_Credits" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Message_ResetWarning" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Status_Connected" xml:space="preserve">
@@ -349,7 +361,7 @@
   <data name="SABT_Status_Testing" xml:space="preserve">
     <value>Test in Corso</value>
   </data>
-  <data name="SABT_Text_Connection" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="SABT_Text_Setup" type="System.Resources.ResXNullRef, System.Windows.Forms">
     <value />
   </data>
   <data name="SABT_Text_TensionWhileIdle" type="System.Resources.ResXNullRef, System.Windows.Forms">

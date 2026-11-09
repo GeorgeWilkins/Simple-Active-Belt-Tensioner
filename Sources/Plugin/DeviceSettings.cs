@@ -206,10 +206,10 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private double _minimumTension = 15.0;
-        public double MinimumTension
+        private double _restingTension = 15.0;
+        public double RestingTension
         {
-            get { return _minimumTension; }
+            get { return _restingTension; }
             set
             {
                 value = Math.Min(
@@ -217,10 +217,10 @@ namespace User.ActiveBeltTensioner
                     _maximumTension - _controlStep
                 );
 
-                if (Math.Abs(_minimumTension - value) > double.Epsilon)
+                if (Math.Abs(_restingTension - value) > double.Epsilon)
                 {
-                    _minimumTension = value;
-                    InvokePropertyChange(nameof(MinimumTension));
+                    _restingTension = value;
+                    InvokePropertyChange(nameof(RestingTension));
                 }
             }
         }
@@ -232,7 +232,7 @@ namespace User.ActiveBeltTensioner
             set
             {
                 value = Math.Min(
-                    Math.Max(value, _minimumTension + _controlStep),
+                    Math.Max(value, _restingTension + _controlStep),
                     100.0
                 );
 
@@ -244,7 +244,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private double _controlStep = 0.1;
+        private double _controlStep = 1.0;
         public double ControlStep
         {
             get { return _controlStep; }

@@ -233,7 +233,7 @@ namespace User.ActiveBeltTensioner
         private double MapForceComponentToTension(double forceComponent)
         {
             // Map To Tension Range
-            double minimumTension = _settings.MinimumTension / 100.0;
+            double minimumTension = _settings.RestingTension / 100.0;
             double maximumTension = _settings.MaximumTension / 100.0;
             double baseTension = minimumTension;
             double finalTension;

@@ -320,24 +320,24 @@ namespace User.ActiveBeltTensioner
                 }
             );
             pluginManager.AddAction(
-                actionName: "SABT.IncreaseMinimumTension",
+                actionName: "SABT.IncreaseRestingTension",
                 actionStart: (PluginManager manager, string input) => {
                     DoOnMainThread(devicePlugin =>
                     {
-                        Logging.Current.Info("SABT: Increasing minimum tension from external input");
+                        Logging.Current.Info("SABT: Increasing resting tension from external input");
 
-                        devicePlugin.Settings.MinimumTension += devicePlugin.Settings.ControlStep;
+                        devicePlugin.Settings.RestingTension += devicePlugin.Settings.ControlStep;
                     });
                 }
             );
             pluginManager.AddAction(
-                actionName: "SABT.DecreaseMinimumTension",
+                actionName: "SABT.DecreaseRestingTension",
                 actionStart: (PluginManager manager, string input) => {
                     DoOnMainThread(devicePlugin =>
                     {
-                        Logging.Current.Info("SABT: Decreasing minimum tension from external input");
+                        Logging.Current.Info("SABT: Decreasing resting tension from external input");
 
-                        devicePlugin.Settings.MinimumTension -= devicePlugin.Settings.ControlStep;
+                        devicePlugin.Settings.RestingTension -= devicePlugin.Settings.ControlStep;
                     });
                 }
             );
@@ -366,7 +366,7 @@ namespace User.ActiveBeltTensioner
             // Expose Properties
             pluginManager.AttachDelegate("SABT.IsEnabled", typeof(DevicePlugin), () => IsEnabled);
             pluginManager.AttachDelegate("SABT.IdleTension", typeof(DevicePlugin), () => Settings.IdleTension / 10.0);
-            pluginManager.AttachDelegate("SABT.MinimumTension", typeof(DevicePlugin), () => Settings.MinimumTension / 10.0);
+            pluginManager.AttachDelegate("SABT.RestingTension", typeof(DevicePlugin), () => Settings.RestingTension / 10.0);
             pluginManager.AttachDelegate("SABT.MaximumTension", typeof(DevicePlugin), () => Settings.MaximumTension / 10.0);
 
             // Initialise Motor Controller
@@ -397,16 +397,73 @@ namespace User.ActiveBeltTensioner
             _controlThread.Start();
         }
 
+        private DeviceSettings ConfigureSettings(DeviceSettings settings)
+        {
+            DeviceSettings configuredSettings = settings ?? new DeviceSettings();
+
+            configuredSettings.Initialise(this);
+
+            configuredSettings.Persist = () =>
+            {
+                Logging.Current.Info($"SABT: PERSISTING SETTINGS WITH {configuredSettings.MotorConfigurations?.Count ?? 0} MOTOR CONFIGURATIONS");
+
+                this.SaveCommonSettings(_settingsName, configuredSettings);
+
+                Logging.Current.Info("SABT: PERSISTED");
+            };
+            configuredSettings.PropertyChanged += OnSettingsChanged;
+
+            return configuredSettings;
+        }
+
         private DeviceSettings LoadSettings()
         {
+            Logging.Current.Info("SABT: Loading settings...");
+
             DeviceSettings settings = this.ReadCommonSettings<DeviceSettings>(_settingsName, () => new DeviceSettings()) ?? new DeviceSettings();
 
-            settings.Initialise(this);
+            Logging.Current.Info($"SABT: LOADED {settings.MotorConfigurations?.Count ?? 0} MOTOR CONFIGURATIONS");
 
-            settings.Persist = () => this.SaveCommonSettings(_settingsName, settings);
-            settings.PropertyChanged += OnSettingsChanged;
+            return ConfigureSettings(settings);
+        }
 
-            return settings;
+        public void ResetSettings()
+        {
+            if (
+                ForegroundPrompt.ShowDialog(
+                    SLoc.GetValue("SABT_Message_ResetWarning"),
+                    "Prompt.Settings.png",
+                    true
+                )
+            )
+            {
+                Logging.Current.Info("SABT: Resetting plugin settings to defaults...");
+
+                IsEnabled = false;
+                IsAutomaticallyTuning = false;
+
+                if (Settings != null)
+                {
+                    Settings.PropertyChanged -= OnSettingsChanged;
+                }
+
+                Settings = ConfigureSettings(new DeviceSettings());
+                Settings.Persist?.Invoke();
+
+                _physicsCalculator = new PhysicsForceCalculator(Settings);
+
+                UpdateTelemetryGraphThresholds(Settings);
+                UpdateTelemetryGraphFilters();
+
+                DoWithoutWaiting(devicePlugin =>
+                {
+                    devicePlugin.MotorController.LoadMotorConfigurations();
+                    devicePlugin.MotorController.DetectDevices();
+                    devicePlugin.MotorController.DetectMotors();
+                });
+
+                Logging.Current.Info("SABT: Settings reset complete");
+            }
         }
 
         /// <summary>Selectively initiates side effects for settings property changes</summary>
@@ -499,14 +556,22 @@ namespace User.ActiveBeltTensioner
         /// <summary>Called by SimHub when the plugin is unloaded, allowing the graceful release of connections and resources</summary>
         public void End(PluginManager pluginManager)
         {
+            Logging.Current.Info($"SABT: ENDING ({pluginManager.IsApplicationExiting})");
+
             if (pluginManager.IsApplicationExiting)
             {
                 IsEnabled = false;
             }
 
+            Logging.Current.Info($"SABT: SAVING MOTOR CONFIGURATIONS COUNT = {Settings?.MotorConfigurations?.Count ?? 0}");
+
             MotorController.SaveMotorConfigurations();
 
+            Logging.Current.Info($"SABT: SAVED MOTOR CONFIGURATIONS COUNT = {Settings?.MotorConfigurations?.Count ?? 0}");
+
             this.SaveCommonSettings(_settingsName, Settings);
+
+            Logging.Current.Info("SABT: ENDED AFTER PERSISTENCE");
 
             _runControlLoop = false;
             _hasTelemetryArrived.Set();
@@ -697,7 +762,24 @@ namespace User.ActiveBeltTensioner
         /// <summary>An action wrapper for executing logic asynchronously</summary>
         public async Task DoWithoutWaiting(Action<DevicePlugin> actionToPerform)
         {
-            await Task.Run(() => actionToPerform(this));
+            string actionName = actionToPerform?.Method?.Name ?? "UnknownAction";
+            int startedAt = Environment.TickCount;
+
+            Logging.Current.Info($"SABT: DO WITHOUT WAITING: {actionName}");
+
+            try
+            {
+                await Task.Run(() => actionToPerform(this));
+
+                int elapsedMs = unchecked(Environment.TickCount - startedAt);
+                Logging.Current.Info($"SABT: DO WITHOUT WAITING COMPLETED: {actionName} ({elapsedMs}ms)");
+            }
+            catch (Exception exception)
+            {
+                Logging.Current.Error($"SABT: DO WITHOUT WAITING FAILED: {actionName} ({exception.Message})\nStack: {exception.StackTrace}");
+
+                throw;
+            }
         }
 
         /// <summary>An action wrapper for executing logic on the main thread (where triggering logic may not be)</summary>

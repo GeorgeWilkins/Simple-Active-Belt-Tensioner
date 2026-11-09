@@ -201,6 +201,12 @@ namespace User.ActiveBeltTensioner
             }
         }
 
+        private void ResetPlugin(object sender, RoutedEventArgs e)
+        {
+            _plugin.ResetSettings();
+            DataContext = new DeviceViewModel(_plugin);
+        }
+
         private void DetectDevices(object sender, EventArgs e)
         {
             if (IsLoaded)
@@ -249,7 +255,13 @@ namespace User.ActiveBeltTensioner
             _plugin.Settings.TelemetryGraphHeight += e.VerticalChange;
         }
 
-
+        private void ToggleCollapsibleBlock(object sender, RoutedEventArgs e)
+        {
+            if (sender is DependencyObject source && FindParent<Expander>(source) is Expander expander)
+            {
+                expander.IsExpanded = !expander.IsExpanded;
+            }
+        }
 
         private static T FindParent<T>(DependencyObject current) where T : DependencyObject
         {

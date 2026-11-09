@@ -284,6 +284,9 @@ If you continue to have issues, consider trying:
   <data name="SABT_Title_Configuration" xml:space="preserve">
     <value>Configuration</value>
   </data>
+  <data name="SABT_Title_Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
     <value>Preferences</value>
   </data>
@@ -316,6 +319,9 @@ If you continue to have issues, consider trying:
   </data>
   <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
     <value>Reset Upshifting Modifiers</value>
+  </data>
+  <data name="SABT_Button_ResetPlugin" xml:space="preserve">
+    <value>Reset All Plugin Settings &amp; Profiles</value>
   </data>
   <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
     <value>⧉ Game &amp; Vehicle</value>
@@ -376,7 +382,7 @@ If you continue to have issues, consider trying:
     <value>Waist Belt Angle</value>
   </data>
   <data name="SABT_Text_Configuration" xml:space="preserve">
-    <value>Anything from **one** to **four** motors are supported. These can be used separately such that each belt is driven by its own motor with roughly **10Kg** of force; or paired up to double that to **20Kg** (on the **shoulder belts** only). 
+    <value>Each motor must be mapped to a belt. Anything from **one** to **four** motors are supported. These can be used independently, such that each belt is driven by its own motor with roughly **10Kg** of force; or in pairs to double that to **20Kg** (on the **shoulder belts** only). 
 
 Use the configuration table above to indicate how you want your motors to behave:
 • **Mapping**: Which belt a motor is allocated to (**unused**, **left shoulder**, **right shoulder**, **left waist**, **right waist**)
@@ -386,6 +392,9 @@ Use the configuration table above to indicate how you want your motors to behave
 • **Tension**: Applies a brief smooth tension to the motor to take up any slack
 • **Shake**: Identifies the motor by shaking it aggressively
 • **Assign...**: Applies the ID to the currently connected motor</value>
+  </data>
+  <data name="SABT_Text_Reset" xml:space="preserve">
+    <value>If you encounter unexpected motor behaviour or broken effects, it is recommended that you reset your settings &amp; profiles to eliminate the possibility of corrupted or incompatible settings.</value>
   </data>
   <data name="SABT_Text_Credits" xml:space="preserve">
     <value>Hardware and software design by **George Wilkins**:
@@ -404,6 +413,17 @@ Extensive Testing, Feedback &amp; Contributions by **Larsen**
 
 For more information, to report a bug or contribute, consult the project GitHub repository:
 • https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner</value>
+  </data>
+  <data name="SABT_Message_ResetWarning" xml:space="preserve">
+    <value>#Reset Everything
+Using this option will clear any **SABT** settings you've previously set, including:
+• Motor Mappings
+• Belt Angles
+• Tension Preferences
+• Thermal Ranges
+• Game &amp; Vehicle Profiles
+
+Are you sure you wish to proceed?</value>
   </data>
   <data name="SABT_Status_Connected" xml:space="preserve">
     <value>Connected</value>
@@ -444,8 +464,9 @@ For more information, to report a bug or contribute, consult the project GitHub 
   <data name="SABT_Status_Testing" xml:space="preserve">
     <value>Testing</value>
   </data>
-  <data name="SABT_Text_Connection" xml:space="preserve">
-    <value>1. Select a **Serial Port** from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected
+  <data name="SABT_Text_Setup" xml:space="preserve">
+    <value>For your first-time setup, you will need to identify the correct **serial port** for your motor controller, then set motor identifiers:
+1. Select a **Serial Port** from the drop-down list below. Only ports that appear to be the belt tensioner device will be shown. If the list is empty, check that the controller is plugged in. It should appear even without power or any motors connected
 2. Connect a single motor (or unplug the power connectors on all but one motor) and click **Assign ID 1** 
 3. Disconnect that motor, connect the next motor and click **Assign ID 2**
 4. Disconnect that motor, connect the next motor and click **Assign ID 3** (where using 3+ motors)
@@ -461,9 +482,9 @@ For more information, to report a bug or contribute, consult the project GitHub 
     <value>The total amount of tension **SABT** can apply is limited by these sliders. They are relative to the maximum motor output, which is approximately **10Kg** _per motor_. All other adjustments respect these limits, so make sure these are set appropriately before tuning anything else.</value>
   </data>
   <data name="SABT_Text_TensionWhileActive" xml:space="preserve">
-    <value>• The minimum and maximum tension to be applied while in-game
-• Increasing the minimum tension to a non-zero value will apply a constant tension and enhance acceleration and jumping effects (by releasing tension)
-• Reducing the maximum tension will result in a reduction of overall tension strength and under-utilization of the motors</value>
+    <value>• The **resting** and **maximum** tension to be applied while in-game
+• Increasing the **resting** tension to a non-zero value will apply a constant tension and enhance acceleration and jumping effects (by releasing tension during acceleration)
+• Reducing the **maximum** tension will result in a reduction of overall tension strength and under-utilization of the motors</value>
   </data>
   <data name="SABT_Text_ControlStep" xml:space="preserve">
     <value>• The percentage increment/decrement that should be applied when adjusting settings by an external control (via **SimHub's** _Controls &amp; Events_ functionality)
