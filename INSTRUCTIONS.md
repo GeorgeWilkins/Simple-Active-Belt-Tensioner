@@ -219,6 +219,29 @@ The choice of which holes to use is up to you and very much specific to your sea
 | 5 | Check for any stray or loose wires and adjust if needed. Install the unit into the printed case, taking care not to disturb the fitted wires. Make sure that the black outer sheath of the cable goes _completely inside_ the case as shown, so that the case lid can clamp down on it once closed. | <img alt="Fitting Into The Case" src="https://github.com/user-attachments/assets/99450677-ceb3-4b04-8392-2bc96aac6a44" /> |
 | 8 | Install the `M2.5x16MM` screws and nuts into the case and tighten as much as they will reasonably go. Ideally if you happen to have a multimeter, before attempting to power the controller board, check that the `XT60` connector produces the expected `15V` in the correct polarity (the **flat** side should be `+` and the **beveled** side `-`) when the power supply is connected to the dc barrel plug. |  <img alt="The Completed Protection Unit" src="https://github.com/user-attachments/assets/f5234cca-f23d-4a27-9115-615e1edb59dc" /> |
 
+## Fitting
+
+Since every rig is different, the fitting process can't be covered in every possible detail and is going to require some common sense from the builder.
+
+By now you will have chosen your motor brackets (and attached the motors) and should find their installation intuitive. The simplified diagram below shows a few different layouts supported by the plugin, with two or four motors:
+
+![Diagram](https://github.com/user-attachments/assets/68b97755-a136-4e82-94e4-d153d1bd5e17)
+
+Note that you can flip the motor rotation directions and change their mappings within the plugin, so you do not need to adhere to the layouts above.
+
+Typically you would aim to mount all of your motors on the rearmost crossmember of your rig regardless of whether it is aluminium profile or tubular steel.
+
+Some rigs will prohibit certain layouts due to having insufficient mounting space, so you may need to consider other locations and orientations for your motors. I my case, the tubular steel rear bar was not wide enough for four motors, so I mounted a longer steel tube with some truss clamps, to which I then mounted the motor brackets. A number of builders have done the same but with aluminium profile instead.
+
+In rare cases some custom fabrication may be required; but typically only for more advanced four-channel configurations or unusual rig designs.
+
+It is a good idea to consult the _Google Photos_ [builds gallery](https://photos.app.goo.gl/ju7rso1PFKGxnRhJ8) or _Discord_ [builds channel](https://discord.gg/zbSNYTMFD3) for inspiration regarding layouts and mounting solutions. **SABT** builders have already come up with some innovative customisations and mounting solutions.
+
+Also consider visiting our _Discord_ [support](https://discord.gg/ccMynUxRVa) or [pre-build questions](https://discord.gg/YwW3TvEJEv) channels.
+
+### Video Guides
+[![Pulley Guide](https://github.com/user-attachments/assets/814b8002-cfd0-4495-8b5e-566ffa27c1b8)](https://youtu.be/M0-eGNMEdT8)
+
 ## Wiring Up
 
 Since the Waveshare board and motors are plug-and play, this is pretty straight forward.
@@ -237,8 +260,6 @@ If everything is connected correctly, the board will be detected by the SimHub p
 
 ## Adjustment
 
-[![Pulley & USB Port Guidance](https://github.com/user-attachments/assets/b133db7d-114e-4c2f-b4da-042420bd6363)](https://www.youtube.com/watch?v=9At6qqblOZY)
-
 If you already have a harness, you'll be accustomed to tightening it up with the buckles/straps it has. **You don't need to do that with this tensioner**, since it pre-tensions the harness for you (see `Idle Tension` in the `Tension` tab of the plugin).
 
 However when first setting up the tensioner, you'll need to ensure the following:
@@ -254,21 +275,37 @@ The method of adjustment may depend on your chosen belt clamp design:
 - **Through Clamps**: Loosen the clamp bolts and simply slide the clamp up or down the length of the harness shoulder belts, then retighten in the desired location
 - **Loop Clamps**: You'll already be using belt buckles to secure the looped harness shoulder belts against themselves, so simply adjust those buckles until you achieve the desired lengths
 
-![Adjustment](https://github.com/user-attachments/assets/36ae4e29-3134-4734-8135-1fb9f7847400)
+### Cord & Belt Lengths
 
 For reference, a _single turn_ of the pulley is about `~10CM` of cord. This is useful when working out how much cord you have wrapped around the enclosed pulley.
 
 Since our harness is going to be self-adjusting (at least in the shoulders), we should make sure we have `~25CM` of cord between the belt clamps and the pulleys. Obviously we do not want our belt clamps colliding with the pulleys under normal operation.
 
+![Adjustment](https://github.com/user-attachments/assets/36ae4e29-3134-4734-8135-1fb9f7847400)
+
 We also want there to _always_ be at least some cord wrapped around the pulleys (`10~20CM`), as the motors will be unable to apply torque properly if the cord is fully unwound. Do not wrap more than `40CM` or about _four turns_ of cord, as this will start to bind the pulley.
 
 ![Cord Wrapping](https://github.com/user-attachments/assets/23a5a874-b905-484b-865d-39467735623d)
 
+### Pulley Anchoring
+
+Should you encounter issues with the pulley covers not self-orienting properly (resulting in cord tangling), you can add **anchoring cords**.
+
+These are simply additional `~30CM` lengths of cord with a knot in one end. The other end is fed through one of the many anchoring holes around the outside of the pulley cover (from the inside to the outside), with the knot keeping it attached inside the cover.
+
+The exposed cord is then tied around (or otherwise attached) to your rig frame. This doesn't need to be particularly taut; just enough to prevent the pulley cover from spinning with the motor. A little slack is desirable, as you still want the pulley covers to self-orient to the correct angle for your current seat position.
+
+Anchoring is particularly important for waist belts, as those do not benefit from the harness weight keeping their cords inherently taut.
+
+Which anchoring hole you use will depend on the exit angle of your belt cord and the relative angle of your rig anchoring point. Rotate the pulley to the angle it would be under normal operation, then take note of which of the anchroing holes is facing your rig's frame (usually where the motor bracket is mounted).
+
+![Pulley Anchoring](https://github.com/user-attachments/assets/2af70ab6-eec1-45ef-8f11-a39acc4512db)
+
+### Cord Alignment
+
 It is important that the cord is aligned such that it does not rub against the _sides_ of the pulley housing. The housing is designed to freely rotate with the cord at any angle along the axis of the motor; so if you move your chair backwards or forwards, it doesn't cause a problem. However the motor pulleys must line up perfectly underneath the seat's belt holes to avoid rubbing. In other words, the motor axles must be _perpendicular_ to the cords:
 
 ![Pulley Alignment](https://github.com/user-attachments/assets/458a506e-d968-46da-b6e9-95d0174b4486)
-
-_(Instructional Video TBC)_
 
 ## Software
 

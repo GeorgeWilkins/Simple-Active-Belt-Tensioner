@@ -2,7 +2,7 @@
 
 ![SABT Logo](https://github.com/user-attachments/assets/b6603db9-19e0-4a30-8c0e-a23675a9797a)
 
-![Diagram](https://github.com/user-attachments/assets/2df94a31-df9a-4b21-928e-0c55b43f01dc)
+![Diagram](https://github.com/user-attachments/assets/405bf2b8-7b57-4307-a4cb-8e6dc5e54704)
 
 # Simple Active Belt Tensioner
 
@@ -57,11 +57,11 @@ Examples given below are for a standard **two-motor** configuration. The great t
 ### Purchased Parts
 | Price (GBP) | Part | Notes |
 | - | - | - |
-| 120 | 2 x Motors | Provides the tensioning force |
+| 120 | Motors | Provides the tensioning force |
 | 20 | Controller | Provides USB control of the motors |
-| 6 | 2 x Bearings | Allows the pulley covers to rotate smoothly |
+| 6 | Bearings | Allows the pulley covers to rotate smoothly |
 | 7 | Screw & Nut Set | Provides every needed fastener in one set (with _many_ spares) |
-| 5 | 2M Cord | A low-friction cord that winds around the pulleys (attached at the other end to your belts) |
+| 5 | Cord | A low-friction cord that winds around the pulleys (attached at the other end to your belts) |
 | 20 | Power Supply | Provides DC power to the motors |
 | 12 | Back Driving Protection Unit | Prevents power-supply resets if the motors are back-driven (**optional but recommended**) |
 | 25 | 4/5/6-Point 2" Harness | A low-cost Aliexpress model or used/expired FIA harness |
@@ -81,11 +81,11 @@ Note that you will also need [SimHub Licensed Edition](https://www.simhubdash.co
 
 ## How Does It Work?
 
-The two motors are anchored to your rig with printed brackets. A self-orienting pulley is attached to the face of each motor.
+The motors are anchored to your rig with printed brackets. A self-orienting pulley is attached to the face of each motor.
 
 The ends of each belt from your harness are attached to lengths UHMWPE/Dyneema cord, which wrap around each motor pulley.
 
-When SimHub sends game telemetry to our plugin, it converts this into torque commands and send them to the motors over a serial connection.
+When _SimHub_ sends game telemetry to our plugin, it converts this into torque commands and send them to the motor controller over USB.
 
 ## How Does It Perform?
 
@@ -103,8 +103,6 @@ Should this not be sufficient for your needs, **four motors** can be operated in
 You may instead choose to run a true **four-channel** configuration, where your waist belts are actively tensioned in addition to the shoulders, providing an even more immersive experience.
 
 Note that this system conveys progressive constant forces (cornering, braking, etc) better than fine details (road texture, track kerbs, etc). For the latter, you should install one or more tactile transducers. The two systems work together to imply the sensation of movement without a costly motion simulator.
-
-[Force Testing.webm](https://github.com/user-attachments/assets/be7b9d7a-be3f-46f7-abf1-9659297854bb)
 
 ## Anything I Should Be Aware Of?
 
