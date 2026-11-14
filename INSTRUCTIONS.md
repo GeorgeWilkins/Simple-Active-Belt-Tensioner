@@ -299,13 +299,13 @@ Anchoring is particularly important for waist belts, as those do not benefit fro
 
 Which anchoring hole you use will depend on the exit angle of your belt cord and the relative angle of your rig anchoring point. Rotate the pulley to the angle it would be under normal operation, then take note of which of the anchroing holes is facing your rig's frame (usually where the motor bracket is mounted).
 
-![Pulley Anchoring](https://github.com/user-attachments/assets/2af70ab6-eec1-45ef-8f11-a39acc4512db)
+![Pulley Anchoring](https://github.com/user-attachments/assets/903c60df-6b3b-4b6b-af7b-edc62e404244)
 
 ### Cord Alignment
 
 It is important that the cord is aligned such that it does not rub against the _sides_ of the pulley housing. The housing is designed to freely rotate with the cord at any angle along the axis of the motor; so if you move your chair backwards or forwards, it doesn't cause a problem. However the motor pulleys must line up perfectly underneath the seat's belt holes to avoid rubbing. In other words, the motor axles must be _perpendicular_ to the cords:
 
-![Pulley Alignment](https://github.com/user-attachments/assets/458a506e-d968-46da-b6e9-95d0174b4486)
+![Pulley Alignment](https://github.com/user-attachments/assets/6ec85e2f-677c-4701-b27d-69fdb16ac114)
 
 ## Software
 
