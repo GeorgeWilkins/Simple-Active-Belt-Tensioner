@@ -824,7 +824,6 @@ namespace User.ActiveBeltTensioner
         public void LoadMotorConfigurations()
         {
             Logging.Current.Info("SABT: Loading motor configurations...");
-            Logging.Current.Info($"SABT: BEFORE LOAD MOTOR CONFIGURATION COUNT = {_plugin.Settings.MotorConfigurations.Count}");
 
             StartAction(out string action);
 
@@ -834,7 +833,7 @@ namespace User.ActiveBeltTensioner
 
                 if (motorConfiguration == null)
                 {
-                    Logging.Current.Warn($"SABT: MOTOR {motor.Identifier} CONFIGURATION NOT FOUND, USING DEFAULTS ({motor.Mapping.Key}, {motor.Direction.Key})");
+                    Logging.Current.Warn($"SABT: Using default configuration for motor #{motor.Identifier} ({motor.Mapping.Key}, {motor.Direction.Key})");
 
                     motorConfiguration = new MotorConfiguration {
                         Identifier = motor.Identifier,
@@ -843,21 +842,15 @@ namespace User.ActiveBeltTensioner
                     };
 
                     _plugin.Settings.MotorConfigurations.Add(motorConfiguration);
-
-                    Logging.Current.Warn($"SABT: BACKFILLED MOTOR {motor.Identifier} CONFIGURATION ({motorConfiguration.Identifier}, {motorConfiguration.Mapping}, {motorConfiguration.Direction})");
                 }
                 else
                 {
-                    Logging.Current.Info($"SABT: FOUND STORED MOTOR {motor.Identifier} CONFIGURATION ({motorConfiguration.Identifier}, {motorConfiguration.Mapping}, {motorConfiguration.Direction})");
+                    Logging.Current.Info($"SABT: Using stored configuration for motor #{motor.Identifier} ({motorConfiguration.Identifier}, {motorConfiguration.Mapping}, {motorConfiguration.Direction})");
                 }
 
                 motor.Mapping = Motor.MotorMapping.Mappings.DefaultIfEmpty(Motor.MotorMapping.Unused).First(x => x.Key == motorConfiguration.Mapping);
                 motor.Direction = Motor.MotorDirection.Directions.DefaultIfEmpty(Motor.MotorDirection.Clockwise).First(x => x.Key == motorConfiguration.Direction);
-
-                Logging.Current.Info($"SABT: APPLIED MOTOR {motor.Identifier} CONFIGURATION ({motor.Identifier}, {motor.Mapping.Label}, {motor.Direction.Label})");
             }
-
-            Logging.Current.Info($"SABT: AFTER LOAD MOTOR CONFIGURATION COUNT = {_plugin.Settings.MotorConfigurations.Count}");
 
             EndAction(action);
         }
@@ -882,7 +875,6 @@ namespace User.ActiveBeltTensioner
         public void SaveMotorConfigurations()
         {
             Logging.Current.Info("SABT: Saving motor configurations...");
-            Logging.Current.Info($"SABT: BEFORE SAVE MOTOR CONFIGURATION COUNT = {_plugin.Settings.MotorConfigurations.Count}");
 
             StartAction(out string action);
 
@@ -892,7 +884,7 @@ namespace User.ActiveBeltTensioner
 
                 if (motorConfiguration == null)
                 {
-                    Logging.Current.Warn($"SABT: MOTOR {motor.Identifier} CONFIGURATION MISSING DURING SAVE, CREATING NEW ENTRY");
+                    Logging.Current.Warn($"SABT: Missing motor #{motor.Identifier} configuration, creating new entry");
 
                     motorConfiguration = new MotorConfiguration
                     {
@@ -904,11 +896,7 @@ namespace User.ActiveBeltTensioner
 
                 motorConfiguration.Mapping = motor.Mapping.Key;
                 motorConfiguration.Direction = motor.Direction.Key;
-
-                Logging.Current.Info($"SABT: CAPTURED MOTOR {motor.Identifier} CONFIGURATION FOR SAVE ({motorConfiguration.Identifier}, {motorConfiguration.Mapping}, {motorConfiguration.Direction})");
             }
-
-            Logging.Current.Info($"SABT: AFTER SAVE MOTOR CONFIGURATION COUNT = {_plugin.Settings.MotorConfigurations.Count}");
 
             EndAction(action);
         }
@@ -919,10 +907,6 @@ namespace User.ActiveBeltTensioner
         {
             Logging.Current.Info("SABT: Detecting motors...");
 
-
-
-
-
             if (shouldPrompt && !HasDevice)
             {
                 ForegroundPrompt.ShowDialog(
@@ -932,11 +916,6 @@ namespace User.ActiveBeltTensioner
                 );
                 return 0;
             }
-
-
-
-
-
 
             Connect();
 

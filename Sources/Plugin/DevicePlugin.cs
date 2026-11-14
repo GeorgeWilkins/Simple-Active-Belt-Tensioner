@@ -405,11 +405,9 @@ namespace User.ActiveBeltTensioner
 
             configuredSettings.Persist = () =>
             {
-                Logging.Current.Info($"SABT: PERSISTING SETTINGS WITH {configuredSettings.MotorConfigurations?.Count ?? 0} MOTOR CONFIGURATIONS");
+                Logging.Current.Info("SABT: Persisting settings...");
 
                 this.SaveCommonSettings(_settingsName, configuredSettings);
-
-                Logging.Current.Info("SABT: PERSISTED");
             };
             configuredSettings.PropertyChanged += OnSettingsChanged;
 
@@ -421,8 +419,6 @@ namespace User.ActiveBeltTensioner
             Logging.Current.Info("SABT: Loading settings...");
 
             DeviceSettings settings = this.ReadCommonSettings<DeviceSettings>(_settingsName, () => new DeviceSettings()) ?? new DeviceSettings();
-
-            Logging.Current.Info($"SABT: LOADED {settings.MotorConfigurations?.Count ?? 0} MOTOR CONFIGURATIONS");
 
             return ConfigureSettings(settings);
         }
@@ -559,22 +555,16 @@ namespace User.ActiveBeltTensioner
         /// <summary>Called by SimHub when the plugin is unloaded, allowing the graceful release of connections and resources</summary>
         public void End(PluginManager pluginManager)
         {
-            Logging.Current.Info($"SABT: ENDING ({pluginManager.IsApplicationExiting})");
+            Logging.Current.Info($"SABT: Ending...");
 
             if (pluginManager.IsApplicationExiting)
             {
                 IsEnabled = false;
             }
 
-            Logging.Current.Info($"SABT: SAVING MOTOR CONFIGURATIONS COUNT = {Settings?.MotorConfigurations?.Count ?? 0}");
-
             MotorController.SaveMotorConfigurations();
 
-            Logging.Current.Info($"SABT: SAVED MOTOR CONFIGURATIONS COUNT = {Settings?.MotorConfigurations?.Count ?? 0}");
-
             this.SaveCommonSettings(_settingsName, Settings);
-
-            Logging.Current.Info("SABT: ENDED AFTER PERSISTENCE");
 
             _runControlLoop = false;
             _hasTelemetryArrived.Set();
@@ -590,7 +580,7 @@ namespace User.ActiveBeltTensioner
 
         public void FinalizePlugin()
         {
-            Logging.Current.Info("SABT: Finalizing plugin");
+            Logging.Current.Info("SABT: Finalizing plugin...");
         }
 
         /// <summary>Evaluates the <see cref="TelemetrySnapshot"/> properties, then performs auto-tuning and calculates the appropriate effects to apply (sending commands to the motors if enabled)</summary>
@@ -766,20 +756,14 @@ namespace User.ActiveBeltTensioner
         public async Task DoWithoutWaiting(Action<DevicePlugin> actionToPerform)
         {
             string actionName = actionToPerform?.Method?.Name ?? "UnknownAction";
-            int startedAt = Environment.TickCount;
-
-            Logging.Current.Info($"SABT: DO WITHOUT WAITING: {actionName}");
 
             try
             {
                 await Task.Run(() => actionToPerform(this));
-
-                int elapsedMs = unchecked(Environment.TickCount - startedAt);
-                Logging.Current.Info($"SABT: DO WITHOUT WAITING COMPLETED: {actionName} ({elapsedMs}ms)");
             }
             catch (Exception exception)
             {
-                Logging.Current.Error($"SABT: DO WITHOUT WAITING FAILED: {actionName} ({exception.Message})\nStack: {exception.StackTrace}");
+                Logging.Current.Error($"SABT: Asynchronous process failed: {actionName} ({exception.Message})\nStack: {exception.StackTrace}");
 
                 throw;
             }

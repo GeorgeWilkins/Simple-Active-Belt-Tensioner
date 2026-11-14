@@ -529,11 +529,13 @@ namespace User.ActiveBeltTensioner
                     IsConnected = false;
                     Status = MotorStatus.Unavailable;
 
+                    Logging.Current.Warn("SABT: #" + this.Identifier + " motor test failed (" + bad + "/" + times + ")");
+
                     return false;
 
                 }
 
-                Logging.Current.Warn("SABT: #" + this.Identifier + " motor test partially failed (" + bad + "/" + times + ")");
+                Logging.Current.Warn("SABT: #" + this.Identifier + " motor test partially successful (" + bad + "/" + times + ")");
 
                 return true;
             }
@@ -710,7 +712,7 @@ namespace User.ActiveBeltTensioner
                     MostFaults = _commandFailures;
                 }
 
-                if (_commandFailures > 1)
+                if (_commandFailures > 5)
                 {
                     Logging.Current.Warn("SABT: #" + this.Identifier + " motor communication timeout (" + _commandFailures + "/" + _maximumConsecutiveFaults + " allowed)");
                 }
