@@ -395,6 +395,24 @@ Möchten Sie automatisch **Effekte deaktivieren**, um fortzufahren?</value>
   <data name="SABT_Label_WaistBeltDegreesFromVertical" xml:space="preserve">
     <value>Hüftgurtwinkel</value>
   </data>
+  <data name="SABT_Label_WaistMode" xml:space="preserve">
+    <value>Hüftgurtmodus</value>
+  </data>
+  <data name="SABT_WaistMode_Independent" xml:space="preserve">
+    <value>Unabhängig (Erweitert)</value>
+  </data>
+  <data name="SABT_WaistMode_Locked" xml:space="preserve">
+    <value>Fixiert</value>
+  </data>
+  <data name="SABT_WaistMode_Reactive" xml:space="preserve">
+    <value>Reaktiv</value>
+  </data>
+  <data name="SABT_Text_WaistMode" xml:space="preserve">
+    <value>• Wie die Beckengurte auf Kräfte im Spiel reagieren (falls vorhanden)
+• **Reaktiv** (empfohlen): Beide Beckengurte spannen sich gemeinsam, sodass das Gurtschloss mittig bleibt, und folgen dem jeweils stärksten Wert aus Bremsen, Kurvenfahrt und vertikaler Bewegung (Bodenwellen, Kuppen und Sprünge); fällt nie unter die **Ruhespannung**
+• **Fixiert**: Beide Beckengurte spannen sich gemeinsam, sodass das Gurtschloss mittig bleibt, und folgen dem am stärksten belasteten Schultergurt, sodass Sie fest im Sitz gehalten werden, sobald die Schultergurte arbeiten; fällt nie unter die **Ruhespannung**
+• **Unabhängig** (für Fortgeschrittene): Jeder Beckengurt wird separat anhand des Hüftgurtwinkels berechnet, wodurch sich das Gurtschloss in Kurven seitlich verschiebt; nur für Aufbauten mit mittig verankertem Gurtschloss empfohlen</value>
+  </data>
   <data name="SABT_Text_Configuration" xml:space="preserve">
     <value>Sie können jeden Motor jedem Riemen zuordnen. Sie müssen sich nicht in einer bestimmten Reihenfolge befinden, und die physischen Anschlüsse, die Sie auf der Controller-Platine verwendet haben, haben keinen Einfluss auf die Riemenzuordnung oder die numerischen Motorkennungen. Die Kennungen werden auf den Motoren gespeichert, wenn Sie sie erstmals zuweisen, und bleiben unbegrenzt erhalten (sofern sie nicht absichtlich überschrieben werden).
 

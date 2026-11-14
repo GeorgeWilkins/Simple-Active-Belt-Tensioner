@@ -49,6 +49,18 @@ namespace User.ActiveBeltTensioner
         private BeltGeometry _leftWaist;
         private BeltGeometry _rightWaist;
 
+        /// <summary>Smoothed vertical (heave) channel used by <see cref="WaistMode.Reactive" /></summary>
+        private double _smoothedWaistVertical = 0.0;
+
+        /// <summary>Whether the motor mapping supports the symmetric waist modes (both waist belts and both shoulder belts mapped)</summary>
+        public bool SymmetricWaistModesAvailable { get; set; } = false;
+
+        /// <summary>The waist mode in effect, falling back to <see cref="WaistMode.Independent" /> when the motor mapping doesn't support the selected one</summary>
+        private WaistMode ActiveWaistMode
+        {
+            get { return SymmetricWaistModesAvailable ? _settings.WaistMode : WaistMode.Independent; }
+        }
+
         private DeviceSettings _settings;
 
         private readonly EffectPipeline _effectPipeline;
@@ -146,8 +158,20 @@ namespace User.ActiveBeltTensioner
             // Apply Strength Biases
             leftShoulderTarget *= (_settings.LeftShoulderStrength / 100.0);
             rightShoulderTarget *= (_settings.RightShoulderStrength / 100.0);
-            leftWaistTarget *= (_settings.LeftWaistStrength / 100.0);
-            rightWaistTarget *= (_settings.RightWaistStrength / 100.0);
+
+            if (ActiveWaistMode == WaistMode.Independent)
+            {
+                leftWaistTarget *= (_settings.LeftWaistStrength / 100.0);
+                rightWaistTarget *= (_settings.RightWaistStrength / 100.0);
+            }
+            else
+            {
+                // Symmetric modes apply the same bias to both sides, so the waist belts never pull the buckle sideways
+                double sharedStrength = ((_settings.LeftWaistStrength + _settings.RightWaistStrength) / 2.0) / 100.0;
+
+                leftWaistTarget *= sharedStrength;
+                rightWaistTarget *= sharedStrength;
+            }
         }
 
         /// <summary>Changes the frame of reference from the vehicle to the driver seat, accounting for its angle relative to the vehicle's vertical axis</summary>
@@ -194,8 +218,47 @@ namespace User.ActiveBeltTensioner
         {
             leftShoulderTension = CalculateShoulderBeltTension(acceleration, -1.0);
             rightShoulderTension = CalculateShoulderBeltTension(acceleration, 1.0);
-            leftWaistTension = CalculateWaistBeltTension(acceleration, _leftWaist.RadiansFromVertical);
-            rightWaistTension = CalculateWaistBeltTension(acceleration, _rightWaist.RadiansFromVertical);
+
+            switch (ActiveWaistMode)
+            {
+                case WaistMode.Locked:
+                case WaistMode.Reactive:
+                    leftWaistTension = CalculateSymmetricWaistBeltTension(acceleration, leftShoulderTension, rightShoulderTension);
+                    rightWaistTension = leftWaistTension;
+                    break;
+
+                default:
+                    leftWaistTension = CalculateWaistBeltTension(acceleration, _leftWaist.RadiansFromVertical);
+                    rightWaistTension = CalculateWaistBeltTension(acceleration, _rightWaist.RadiansFromVertical);
+                    break;
+            }
+        }
+
+        /// <summary>Returns a single tension for both waist belts, never dropping below the resting tension, so the lap belt stays snug without holding a high sustained current</summary>
+        /// <remarks>Locked uses the peak active shoulder load, and Reactive the strongest of braking, vertical (smoothed) and lateral acceleration</remarks>
+        private double CalculateSymmetricWaistBeltTension(AccelerationVector acceleration, double leftShoulderTension, double rightShoulderTension)
+        {
+            double restingTension = _settings.RestingTension / 100.0;
+            double maximumTension = _settings.MaximumTension / 100.0;
+
+            if (ActiveWaistMode == WaistMode.Reactive)
+            {
+                double smoothingFactor = _settings.SmoothingFactor / 100.0;
+
+                _smoothedWaistVertical = (Math.Abs(acceleration.Z) * (1.0 - smoothingFactor)) + (_smoothedWaistVertical * smoothingFactor);
+
+                double active = Math.Max(
+                    Math.Max(0.0, acceleration.X),
+                    Math.Max(_smoothedWaistVertical, Math.Abs(acceleration.Y))
+                );
+
+                return MapForceComponentToTension(Clamp(active, 0.0, 1.0));
+            }
+
+            double activeLeft = Math.Max(0.0, leftShoulderTension - restingTension);
+            double activeRight = Math.Max(0.0, rightShoulderTension - restingTension);
+
+            return Clamp(restingTension + Math.Max(activeLeft, activeRight), 0.0, maximumTension);
         }
 
         /// <summary>Returns the calculated tension for a shoulder belt, based on the given acceleration vector</summary>

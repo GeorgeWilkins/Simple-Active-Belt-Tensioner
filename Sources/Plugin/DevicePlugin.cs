@@ -481,6 +481,7 @@ namespace User.ActiveBeltTensioner
                 e.PropertyName == nameof(Settings.UpshiftingModifiers) ||
                 e.PropertyName == nameof(Settings.LeftWaistStrength) ||
                 e.PropertyName == nameof(Settings.RightWaistStrength) ||
+                e.PropertyName == nameof(Settings.WaistMode) ||
                 e.PropertyName == nameof(Settings.LeftShoulderStrength) ||
                 e.PropertyName == nameof(Settings.RightShoulderStrength) ||
                 e.PropertyName == nameof(Settings.EngineStrength) ||
@@ -617,6 +618,7 @@ namespace User.ActiveBeltTensioner
                 try
                 {
                     // Send Telemetry To Physics Calculator
+                    _physicsCalculator.SymmetricWaistModesAvailable = MotorController?.HasCompleteWaistAndShoulder ?? false;
                     _physicsCalculator.CalculateForcesAndTorques(
                         telemetrySnapshot,
                         _controlLoopStopwatch.ElapsedMilliseconds - latestPhysicsCalculationTime,
