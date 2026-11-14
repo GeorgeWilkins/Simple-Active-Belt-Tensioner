@@ -126,12 +126,11 @@
   <data name="SABT_Title_Status" xml:space="preserve">
     <value>Status</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SABT_Title_Setup" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Title_Setup" xml:space="preserve">
+    <value>Einrichtung</value>
   </data>
   <data name="SABT_Title_Tension" xml:space="preserve">
-    <value>Anpassung der Gurtspannung</value>
+    <value>Spannung</value>
   </data>
   <data name="SABT_Title_Tuning" xml:space="preserve">
     <value>Optimierung</value>
@@ -149,52 +148,125 @@
     <value>Kommunizieren</value>
   </data>
   <data name="SABT_Message_ActivationWarning" xml:space="preserve">
-    <value>Die Motoren des Gurtstraffers werden aktiviert. Fortfahren?</value>
+    <value>#Effekte aktivieren
+Die Motoren werden aktiviert, und die Riemen können sofort unter Spannung gesetzt werden.
+
+[[Stellen Sie sicher, dass Sie und alle Anwesenden sich von allen beweglichen Teilen fernhalten!]]
+
+[[Aktivieren Sie die Effekte nicht, bevor die Motoren sicher befestigt sind!]]
+
+Möchten Sie fortfahren?</value>
   </data>
   <data name="SABT_Message_AlterGameName" xml:space="preserve">
-    <value>Sie können den von SimHub vorgegebenen Spielnamen bei Bedarf ändern:</value>
+    <value>#Spielnamen angeben
+Das Profil, das Sie erstellen, wird mit dem von **SimHub** angegebenen **Spielnamen** bezeichnet, der nicht immer gut formatiert ist.
+
+Sie können dies bei Bedarf vor dem Speichern des Profils ändern:</value>
   </data>
   <data name="SABT_Message_AlterVehicleName" xml:space="preserve">
-    <value>Sie können den von SimHub angegebenen Fahrzeugnamen bei Bedarf ändern:</value>
+    <value>#Fahrzeugnamen festlegen
+Das Profil, das Sie erstellen, wird mit dem von **SimHub** angegebenen **Fahrzeugnamen** bezeichnet, der nicht immer gut formatiert ist (oder überhaupt ein Name sein muss; es könnte sich um eine numerische Kennung handeln).
+
+Sie können dies vor dem Speichern des Profils bei Bedarf ändern:</value>
   </data>
-  <data name="SABT_Message_AutomaticTuningReset" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_AutomaticTuningReset" xml:space="preserve">
+    <value>#Zurücksetzen der Schieberegler
+Damit **Automatische Abstimmung** funktioniert, müssen die aktuellen Kraftgrenzwert-Schieberegler zurückgesetzt werden:
+• Surge-Grenzwerte
+• Sway-Grenzwerte
+• Heave-Grenzwerte
+
+Alle anderen Schieberegler und Einstellungen bleiben unverändert. Möchten Sie fortfahren?</value>
   </data>
   <data name="SABT_Message_AutomaticTuningRequiresTelemetry" xml:space="preserve">
-    <value>Eine Spielsitzung im Fenstermodus oder ein Replay muss geöffnet sein und Telemetriedaten senden, um Auto-Tuning zu aktivieren!</value>
+    <value>#Telemetrie erforderlich
+Damit die **Automatische Abstimmung** funktioniert, müssen aktiv Spiel-Telemetriedaten von **SimHub** erfasst werden. Derzeit scheinen keine Telemetriedaten vorhanden zu sein.
+
+Am besten **zeichnest** du dazu eine Spielsitzung mit **SimHubs** integriertem **Replay**-System **auf** und spielst sie dann ab. Anschließend kannst du die **Automatische Abstimmung** aktivieren und die Abschnitte deiner Wiederholung auswählen, die tatsächliche Rennen enthalten.
+
+Einige Spiele erzeugen im Menü oder zwischen Sitzungen fehlerhafte Telemetriedaten, daher solltest du vermeiden, mit diesen schlechten Daten abzustimmen.</value>
   </data>
   <data name="SABT_Message_SimHubLicenseRequired" xml:space="preserve">
-    <value>Ihre SimHub-Installation ist nicht lizenziert, daher sind Telemetrie-Updates auf 10 Hz begrenzt</value>
+    <value>#SimHub-Lizenz erforderlich
+Ihre Installation von **SimHub** ist nicht lizenziert, daher werden Telemetrie-Updates auf _10Hz_ begrenzt, was für eine sinnvolle Gurtstraffer-Funktionalität nicht ausreicht.
+
+Die Lizenz aktiviert _60Hz_-Telemetrie, die **SABT** benötigt, zusätzlich zu weiteren nützlichen Funktionen.
+
+Sie kostet nur **8 EUR** und ist eine lebenslange/unbefristete Lizenz, kein monatliches Abonnement.
+
+https://www.simhubdash.com/get-a-license</value>
   </data>
   <data name="SABT_Message_ProfileAlreadyExists" xml:space="preserve">
-    <value>Ein Profil für diese Kombination aus Spiel und Fahrzeug existiert bereits</value>
+    <value>#Profil existiert bereits
+Sie haben bereits ein **Profil** für diese Kombination aus **Spiel** und **Fahrzeug** erstellt und können daher kein weiteres erstellen.
+
+Aktivieren Sie **Automatisches Umschalten**, um automatisch das passende Profil für das aktuelle **Spiel** und **Fahrzeug** auszuwählen, sofern vorhanden.</value>
   </data>
-  <data name="SABT_Message_TooManyShoulderMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_TooManyShoulderMotors" xml:space="preserve">
+    <value>#Zu viele Schultermotoren
+Sie haben **mehr als zwei Motoren** einem einzelnen Schultergurt zugeordnet, was von **SABT** nicht unterstützt wird.
+
+Der von Ihnen zugeordnete Motor wird stattdessen auf **Nicht verwendet** geändert.</value>
   </data>
-  <data name="SABT_Message_TooManyWaistMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_TooManyWaistMotors" xml:space="preserve">
+    <value>#Zu viele Taillenmotoren
+Sie haben **mehr als einen Motor** einem einzelnen Taillengurt zugeordnet, was von **SABT** nicht unterstützt wird.
+
+Der von Ihnen zugeordnete Motor wird stattdessen auf **Unused** geändert.</value>
   </data>
-  <data name="SABT_Message_NoMappedMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_NoMappedMotors" xml:space="preserve">
+    <value>#Keine zugeordneten Motoren
+Derzeit sind keine Motoren den Gurten zugeordnet, daher passiert nichts, wenn Sie die Effekte einschalten.
+
+Verwenden Sie die Liste **Zuordnung** unter **Verbindung** &gt; **Konfiguration**, um Motoren den Gurten zuzuweisen, bevor Sie es erneut versuchen.</value>
   </data>
-  <data name="SABT_Message_PreviouslyAssignedMotorDetected" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_PreviouslyAssignedMotorDetected" xml:space="preserve">
+    <value>#Bereits zugewiesener Motor erkannt
+Ein Motor mit einer _zuvor zugewiesenen_ **Kennung** wurde erkannt. Wenn Sie **SABT** zum ersten Mal einrichten, kann dies darauf hinweisen, dass Sie den falschen Motor angeschlossen haben oder einen _zuvor verwendeten_ Motor nutzen.
+
+Beachten Sie, dass Sie **Kennungen** nicht ändern müssen, um zu ändern, welche Motoren welchen Riemen zugeordnet sind. Das kann stattdessen in der Liste **Zuordnung** unter **Verbindung** &gt; **Konfiguration** geändert werden.
+
+Ändern Sie absichtlich eine Motorkennung?</value>
   </data>
-  <data name="SABT_Message_PreviouslyAssignedMotorsDetected" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_PreviouslyAssignedMotorsDetected" xml:space="preserve">
+    <value>#Bereits zugewiesene Motoren erkannt
+Mehrere Motoren mit _zuvor zugewiesenen_ **Kennungen** wurden erkannt.
+
+Sie können eine **Kennung** nur zuweisen, wenn ein einzelner Motor angeschlossen ist.</value>
   </data>
-  <data name="SABT_Message_AssignedMotorIdentifier" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_AssignedMotorIdentifier" xml:space="preserve">
+    <value>#Zugewiesene Motorkennung
+Die **Kennung** wurde dem angeschlossenen Motor erfolgreich zugewiesen. Sie wird nun _dauerhaft_ gespeichert und vom Motor verwendet, unabhängig davon, welche Controller-Anschlüsse Sie verwenden.
+
+Sie _können_ dies später bei Bedarf ändern, aber in der Regel gibt es keinen Grund dafür.
+
+Wenn Sie weitere Motoren zuweisen möchten, können Sie jetzt _diesen abstecken_ und mit dem nächsten Motor fortfahren...</value>
   </data>
-  <data name="SABT_Message_PlugInOneMotorOnly" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_PlugInOneMotorOnly" xml:space="preserve">
+    <value>#Schließen Sie einen Motor an
+Um einem Motor eine **Kennung** zuzuweisen, darf _nur ein_ Motor mit dem Controller verbunden sein.
+
+Das liegt daran, dass der Controller versucht, die Kennung gleichzeitig _allen angeschlossenen Motoren_ zuzuweisen, was fehlschlägt, wenn zu diesem Zeitpunkt mehrere verbunden sind.
+
+#Bitte beachten Sie:
+• Es _spielt keine Rolle_, welches der vier Steckverbinderpaare Sie verwenden; sie sind alle gleich
+• Sie können die vierpoligen Datenstecker für mehrere Motoren verbunden lassen, solange die zweipoligen Stromstecker bei allen außer dem Motor, dem wir eine Kennung zuweisen, getrennt sind
+
+_Ist nur ein Motor angeschlossen?_</value>
   </data>
-  <data name="SABT_Message_FailedToAssignMotorIdentifier" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_FailedToAssignMotorIdentifier" xml:space="preserve">
+    <value>#Kennungszuweisung fehlgeschlagen
+Die **Kennung** _konnte dem angeschlossenen Motor nicht zugewiesen werden_. Bitte stellen Sie sicher, dass vor einem erneuten Versuch _nur ein Motor_ angeschlossen und _mit Strom versorgt_ ist.
+
+Wenn weiterhin Probleme auftreten, versuchen Sie Folgendes:
+• Das Zuweisen eines _anderen Motors_, um ein allgemeines Problem mit dem Controller auszuschließen
+• Das Testen Ihres Netzteils und Ihrer _Rückspeiseschutz-Einheit_ mit einem Multimeter, um sicherzustellen, dass der Motor mit Strom versorgt wird</value>
   </data>
-  <data name="SABT_Message_DisableBeforeMappingMotors" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_DisableBeforeMappingMotors" xml:space="preserve">
+    <value>#Effekte vor dem Mapping deaktivieren
+Sie versuchen, die Motorzuordnung zu ändern, _während Effekte aktiviert sind_, was zu unvorhersehbarem Verhalten führen kann.
+
+Möchten Sie automatisch **Effekte deaktivieren**, um fortzufahren?</value>
   </data>
   <data name="SABT_Plugin" xml:space="preserve">
     <value>Simple Active Belt Tensioner</value>
@@ -214,47 +286,47 @@
   <data name="SABT_Prefix_Vehicle" xml:space="preserve">
     <value>Fahrzeug</value>
   </data>
-  <data name="SABT_Title_Credits" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Title_Credits" xml:space="preserve">
+    <value>Mitwirkende</value>
   </data>
-  <data name="SABT_Title_Biases" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Title_Biases" xml:space="preserve">
+    <value>Verzerrungen</value>
   </data>
-  <data name="SABT_Title_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Title_Configuration" xml:space="preserve">
+    <value>Konfiguration</value>
   </data>
-  <data name="SABT_Title_Troubleshooting" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Title_Troubleshooting" xml:space="preserve">
+    <value>Problembehandlung</value>
   </data>
   <data name="SABT_Tab_Preferences" xml:space="preserve">
     <value>Einstellungen</value>
   </data>
-  <data name="SABT_Tab_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Tab_Configuration" xml:space="preserve">
+    <value>Konfiguration</value>
   </data>
-  <data name="SABT_Button_Shake" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Button_Shake" xml:space="preserve">
+    <value>Schütteln</value>
   </data>
-  <data name="SABT_Button_Tension" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Button_Tension" xml:space="preserve">
+    <value>Spannung</value>
   </data>
-  <data name="SABT_Button_CopyLogToClipboard" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Button_CopyLogToClipboard" xml:space="preserve">
+    <value>Protokoll in die Zwischenablage kopieren</value>
   </data>
-  <data name="SABT_Button_SetTemperaturesForPLA" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Button_SetTemperaturesForPLA" xml:space="preserve">
+    <value>Einstellung für PLA-Teile</value>
   </data>
-  <data name="SABT_Button_SetTemperaturesForASA" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Button_SetTemperaturesForASA" xml:space="preserve">
+    <value>Für ASA-Teile festlegen</value>
   </data>
-  <data name="SABT_Button_SetTemperaturesForPC" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Button_SetTemperaturesForPC" xml:space="preserve">
+    <value>Set für PC-Teile</value>
   </data>
-  <data name="SABT_Button_SetTemperaturesForPETG" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Button_SetTemperaturesForPETG" xml:space="preserve">
+    <value>Set für PETG-Teile</value>
   </data>
-  <data name="SABT_Button_SetTemperaturesForABS" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Button_SetTemperaturesForABS" xml:space="preserve">
+    <value>Satz für ABS-Teile</value>
   </data>
   <data name="SABT_Button_Detect" xml:space="preserve">
     <value>Erkennen</value>
@@ -262,17 +334,17 @@
   <data name="SABT_Button_ResetUpshiftingModifiers" xml:space="preserve">
     <value>Upshifting-Modifikatoren zurücksetzen</value>
   </data>
-  <data name="SABT_Button_ResetPlugin" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Button_ResetPlugin" xml:space="preserve">
+    <value>Einstellungen &amp; Profile zurücksetzen</value>
   </data>
   <data name="SABT_Button_CopyForGameAndVehicle" xml:space="preserve">
-    <value>⧉ Spiel &amp; Fahrzeug</value>
+    <value>Kopieren (Spiel &amp; Fahrzeug)</value>
   </data>
   <data name="SABT_Button_Delete" xml:space="preserve">
-    <value>🗑 Löschen</value>
+    <value>Löschen</value>
   </data>
   <data name="SABT_Button_CopyForGame" xml:space="preserve">
-    <value>⧉ Spiel</value>
+    <value>Kopieren (Spiel)</value>
   </data>
   <data name="SABT_Button_Assign" xml:space="preserve">
     <value>Zuweisen</value>
@@ -283,20 +355,20 @@
   <data name="SABT_Legend_Sway" xml:space="preserve">
     <value>Sway</value>
   </data>
-  <data name="SABT_Legend_LeftWaistTorque" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Legend_LeftWaistTorque" xml:space="preserve">
+    <value>Drehmoment (linke Taille)</value>
   </data>
-  <data name="SABT_Legend_RightWaistTorque" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Legend_RightWaistTorque" xml:space="preserve">
+    <value>Drehmoment (rechte Taille)</value>
   </data>
   <data name="SABT_Legend_Torque" xml:space="preserve">
     <value>Drehmoment</value>
   </data>
-  <data name="SABT_Legend_RightShoulderTorque" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Legend_RightShoulderTorque" xml:space="preserve">
+    <value>Drehmoment (rechte Schulter)</value>
   </data>
-  <data name="SABT_Legend_LeftShoulderTorque" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Legend_LeftShoulderTorque" xml:space="preserve">
+    <value>Drehmoment (linke Schulter)</value>
   </data>
   <data name="SABT_Legend_Heave" xml:space="preserve">
     <value>Heben</value>
@@ -304,38 +376,74 @@
   <data name="SABT_Label_Upshifting" xml:space="preserve">
     <value>Hochschalten</value>
   </data>
-  <data name="SABT_Label_SeatDegreesFromVertical" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_SeatDegreesFromVertical" xml:space="preserve">
+    <value>Rückenlehnenwinkel</value>
   </data>
-  <data name="SABT_Text_SeatDegreesFromVertical" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_SeatDegreesFromVertical" xml:space="preserve">
+    <value>• Wie weit die Rückenlehne des Sitzes nach hinten geneigt ist, relativ zur vertikalen Achse deines Rigs (senkrecht zum Boden)
+• Wird verwendet, um zu berechnen, wie In-Game-Kräfte auf deine Gurte angewendet werden sollen</value>
   </data>
-  <data name="SABT_Text_Strengths" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_Strengths" xml:space="preserve">
+    <value>• Passe diese Werte **nach allem anderen** an, da sie normalerweise auf dem Standardwert **100%** belassen werden sollten
+• Erhöhe oder verringere diese Werte, wenn ein Effekt für deine Vorlieben zu schwach oder zu stark ist
+• Eine unsachgemäße Anpassung dieser Werte führt zu abgeschnittenen oder übersättigten Effekten</value>
   </data>
-  <data name="SABT_Text_WaistBeltDegreesFromVertical" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_WaistBeltDegreesFromVertical" xml:space="preserve">
+    <value>• Der Winkel der Beckengurte (von der Seite betrachtet) relativ zur vertikalen Achse Ihres Rigs (senkrecht zum Boden)
+• Wird verwendet, um zu berechnen, wie Kräfte im Spiel auf Ihre Beckengurte angewendet werden sollen (falls vorhanden)</value>
   </data>
-  <data name="SABT_Label_WaistBeltDegreesFromVertical" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_WaistBeltDegreesFromVertical" xml:space="preserve">
+    <value>Hüftgurtwinkel</value>
   </data>
-  <data name="SABT_Text_Configuration" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_Configuration" xml:space="preserve">
+    <value>Sie können jeden Motor jedem Riemen zuordnen. Sie müssen sich nicht in einer bestimmten Reihenfolge befinden, und die physischen Anschlüsse, die Sie auf der Controller-Platine verwendet haben, haben keinen Einfluss auf die Riemenzuordnung oder die numerischen Motorkennungen. Die Kennungen werden auf den Motoren gespeichert, wenn Sie sie erstmals zuweisen, und bleiben unbegrenzt erhalten (sofern sie nicht absichtlich überschrieben werden).
+
+Motoren können separaten Riemen zugeordnet oder für zusätzliche Leistung gepaart werden. Hinweise zu möglichen Konfigurationen und dazu, wie Sie die Leistung ohne zusätzliche Motoren erhöhen können, finden Sie in der Projektdokumentation.</value>
   </data>
-  <data name="SABT_Text_Troubleshooting" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_Troubleshooting" xml:space="preserve">
+    <value>Wenn Sie auf unerwartetes Motorverhalten oder nicht funktionierende Effekte stoßen, wird empfohlen, Ihre Einstellungen &amp; Profile zurückzusetzen, um die Möglichkeit beschädigter oder inkompatibler Einstellungen auszuschließen. Bei der Diagnose eines Problems werden Sie möglicherweise gebeten, eine Kopie Ihres **SimHub**-Protokolls bereitzustellen, das Sie unten abrufen können.</value>
   </data>
-  <data name="SABT_Text_Credits" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_Credits" xml:space="preserve">
+    <value>Hardware- und Softwaredesign von **George Wilkins**:
+https://georgewilkins.co.uk
+https://github.com/GeorgeWilkins
+
+SimHub-Plugin basierend auf _SimHub Plugin Demo_ von **SHWotever**:
+https://github.com/SHWotever/SimHub/wiki/Plugin-and-extensions-SDKs
+https://github.com/SHWotever
+
+Pre-Release-Tests &amp; Feedback von **TurtleMenace**:
+https://github.com/turtlemenace
+
+Umfangreiche Tests, Feedback &amp; Beiträge von **Larsen**
+https://www.youtube.com/@thelarsofus69
+
+Für weitere Dokumentation, zum Melden eines Bugs oder um beizutragen, siehe das **GitHub**-Repository des Projekts:
+https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner
+
+Für Fragen, Diskussionen und das Teilen von Builds, tritt unserem **Discord**-Kanal bei:
+https://discord.gg/YwW3TvEJEv</value>
   </data>
-  <data name="SABT_Message_ResetWarning" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_ResetWarning" xml:space="preserve">
+    <value>#Alles zurücksetzen
+Wenn Sie diese Option verwenden, werden alle **SABT**-Einstellungen gelöscht, die Sie zuvor festgelegt haben, einschließlich:
+• Motorzuordnungen
+• Gurtwinkel
+• Spannungseinstellungen
+• Temperaturbereiche
+• Spiel- &amp; Fahrzeugprofile
+
+Möchten Sie wirklich fortfahren?</value>
   </data>
-  <data name="SABT_Message_LogCopyFailure" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_LogCopyFailure" xml:space="preserve">
+    <value>#Protokollkopie fehlgeschlagen
+Die **SimHub**-Protokolldatei konnte nicht in Ihre Zwischenablage kopiert werden; sie war entweder nicht vorhanden, leer oder anderweitig nicht zugänglich.</value>
   </data>
-  <data name="SABT_Message_LogCopied" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_LogCopied" xml:space="preserve">
+    <value>#Protokoll in die Zwischenablage kopiert
+Der **SimHub**-Protokolltext wurde in Ihre Zwischenablage kopiert. Dies kann:
+• In **GitHub**-Issues oder **Discord**-Nachrichten eingefügt werden
+• In **Notepad** oder einen ähnlichen Texteditor eingefügt und gespeichert werden</value>
   </data>
   <data name="SABT_Status_Connected" xml:space="preserve">
     <value>Verbunden</value>
@@ -349,26 +457,26 @@
   <data name="SABT_Status_Disabled" xml:space="preserve">
     <value>Deaktiviert</value>
   </data>
-  <data name="SABT_Mapping_Unused" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Mapping_Unused" xml:space="preserve">
+    <value>Unbenutzt</value>
   </data>
-  <data name="SABT_Direction_Clockwise" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Direction_Clockwise" xml:space="preserve">
+    <value>Im Uhrzeigersinn</value>
   </data>
-  <data name="SABT_Direction_AntiClockwise" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Direction_AntiClockwise" xml:space="preserve">
+    <value>Gegen den Uhrzeigersinn</value>
   </data>
-  <data name="SABT_Mapping_LeftShoulder" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Mapping_LeftShoulder" xml:space="preserve">
+    <value>Linke Schulter</value>
   </data>
-  <data name="SABT_Mapping_RightShoulder" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Mapping_RightShoulder" xml:space="preserve">
+    <value>Rechte Schulter</value>
   </data>
-  <data name="SABT_Mapping_RightWaist" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Mapping_RightWaist" xml:space="preserve">
+    <value>Rechte Taille</value>
   </data>
-  <data name="SABT_Mapping_LeftWaist" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Mapping_LeftWaist" xml:space="preserve">
+    <value>Linke Taille</value>
   </data>
   <data name="SABT_Status_Tensioning" xml:space="preserve">
     <value>Spannen</value>
@@ -376,107 +484,137 @@
   <data name="SABT_Status_Testing" xml:space="preserve">
     <value>Teste</value>
   </data>
-  <data name="SABT_Text_Setup" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_Setup" xml:space="preserve">
+    <value>Für Ihre **erstmalige Einrichtung** müssen Sie den richtigen seriellen Port für Ihren Motorcontroller identifizieren und dann den Motoren Kennungen zuweisen:
+1. Wählen Sie in der Liste der Ports unten einen **Serial Port** aus. Wenn keiner angezeigt wird, prüfen Sie, ob der Controller angeschlossen ist und der Schiebeschalter auf **USB** steht.
+2. Schließen Sie einen einzelnen Motor an (oder ziehen Sie die Stromanschlüsse bei allen bis auf einen Motor ab) und klicken Sie auf **Assign ID 1** 
+3. Trennen Sie diesen Motor, schließen Sie den nächsten Motor an und klicken Sie auf **Assign ID 2**
+4. Trennen Sie diesen Motor, schließen Sie den nächsten Motor an und klicken Sie auf **Assign ID 3**
+5. Trennen Sie diesen Motor, schließen Sie den nächsten Motor an und klicken Sie auf **Assign ID 4**
+6. Schließen Sie alle Motoren wieder an und klicken Sie auf **Detect Motors**
+7. Definieren Sie unten Ihre Motorzuordnungen und Drehrichtungen</value>
   </data>
-  <data name="SABT_Text_TensionWhileIdle" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_TensionWhileIdle" xml:space="preserve">
+    <value>• Wird angewendet, wenn die Motoren aktiviert sind und kein Spiel aktiv ist
+• Verhält sich wie die Rückholfeder eines Sicherheitsgurts mit Aufrollautomatik; nimmt den Durchhang automatisch auf</value>
   </data>
-  <data name="SABT_Text_Tension" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_Tension" xml:space="preserve">
+    <value>Die gesamte Spannung, die **SABT** anwenden kann, wird durch diese Regler begrenzt. Sie beziehen sich auf die maximale Motorleistung. Alle anderen Anpassungen berücksichtigen diese Grenzen, stellen Sie also sicher, dass diese passend eingestellt sind, bevor Sie irgendetwas anderes abstimmen.</value>
   </data>
-  <data name="SABT_Text_TensionWhileActive" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_TensionWhileActive" xml:space="preserve">
+    <value>• Die **Ruhe-** und **Maximalspannung**, die während des Spiels angewendet werden sollen
+• Das Erhöhen der **Ruhespannung** auf einen Wert ungleich Null bewirkt eine konstante Spannung und verstärkt Beschleunigungs- und Sprungeffekte (durch das Lösen der Spannung während der Beschleunigung)
+• Das Verringern der **Maximalspannung** führt zu einer Verringerung der gesamten Spannungsstärke und zu einer unzureichenden Auslastung der Motoren</value>
   </data>
-  <data name="SABT_Text_ControlStep" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_ControlStep" xml:space="preserve">
+    <value>• Die prozentuale Schrittweite für Erhöhung/Verringerung, die beim Anpassen von Einstellungen über eine externe Steuerung angewendet werden soll
+• Stellen Sie diesen Wert für _Encoder-Drehregler_ niedriger und für _Drucktasten_ höher ein</value>
+  </data>
+  <data name="SABT_Text_ExternalControl" xml:space="preserve">
+    <value>Sie können **SABT** mit verschiedenen externen Geräten steuern, darunter Gamepads, Tastaturen, Button-Boxen und Lenkradtasten. Dies ist eine integrierte **SimHub**-Funktion namens **Controllers Input**. Sie kann anfangs deaktiviert sein, daher müssen Sie sie im Menü **Add/Remove Features** aktivieren, um sie zu verwenden.
+
+Anschließend können Sie das Menü **Controls And Events** verwenden, um Ihre Eingabegeräte **SABT**-Aktionen zuzuweisen:
+1. Wählen Sie **New Mapping**
+2. Drücken Sie die Taste an Ihrem Gerät und wählen Sie sie im Menü **Source** aus
+3. Geben Sie '**sabt**' in das Feld **Target** ein und wählen Sie aus den verfügbaren Aktionen
+4. Wählen Sie den **Input Mode** und klicken Sie auf **OK**, um zu übernehmen</value>
   </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
-    <value>• Inwieweit Vibrationen des Motors bei niedriger Drehzahl im Leerlauf und beim Abwürgen über die Riemen spürbar sein sollen
-• Dieser Effekt basiert auf der gemeldeten Motordrehzahl und ist aufgrund von Motorbegrenzungen auf niedrige Drehzahlen beschränkt</value>
+    <value>• In welchem Ausmaß Leerlauf- und Abwürgevibrationen bei niedriger Motordrehzahl über die Gurte spürbar sein sollten
+• Dieser Effekt basiert auf der gemeldeten Motordrehzahl und ist aufgrund von Motorbeschränkungen auf niedrige RPMs begrenzt</value>
   </data>
   <data name="SABT_Text_Upshifting" xml:space="preserve">
-    <value>• Fügt beim Hochschalten einen ausgeprägteren Spannungsimpuls hinzu
-• Passen Sie den Effekt an, indem Sie eine Sequenz von durch Leerzeichen getrennten `{milliseconds}:{torque%}` Werten in das obige Feld eingeben
-• Millisekunden-Werte sind relativ zum Beginn der Schaltung, während Drehmomentwerte 0 bis 100 (%) sind
-• `0ms:100% 200ms:100% 500ms:0%` würde bedeuten `Start bei 100% Drehmoment, dort bleiben bis 200ms, dann abfallen auf 0% Drehmoment zwischen 200ms und 500ms`
-• `0ms:0% 100ms:100% 300ms:100% 600ms:0%` würde bedeuten `Start bei 0% Drehmoment, ansteigen auf 100% bei 100ms, halten bis 300ms, dann abfallen auf 0% Drehmoment zwischen 300ms und 500ms`</value>
+    <value>• Fügt beim Hochschalten unter Beschleunigung einen deutlicheren Riemenruck hinzu
+• Passe den Effekt an, indem du im Feld oben eine Folge von durch Leerzeichen getrennten `{milliseconds}:{torque%}`-Werten angibst
+• Millisekundenwerte beziehen sich auf den Beginn des Schaltvorgangs, während Drehmomentwerte zwischen 0 und 100 (%) liegen
+• `0ms:100% 200ms:100% 500ms:0%` würde `Bei 100% Drehmoment beginnen, bis 200ms dort bleiben und dann zwischen 200ms und 500ms auf 0% Drehmoment abfallen` entsprechen
+• `0ms:0% 100ms:100% 300ms:100% 600ms:0%` würde `Bei 0% Drehmoment beginnen, bis 100ms auf 100% Drehmoment ansteigen, bis 300ms halten und dann zwischen 300ms und 500ms auf 0% Drehmoment abfallen` entsprechen</value>
   </data>
   <data name="SABT_Text_Profiles" xml:space="preserve">
-    <value>• Mit aktiviertem 'Auto-Switching' werden Tuning-Profile automatisch für das aktuelle Spiel (und die Fahrzeugklasse, falls bekannt) geladen, wobei das spezifischste Profil Vorrang hat
-• Das Kopieren eines vorhandenen Profils führt dazu, dass dessen Tuning-Parameter in ein neues Profil für das aktuell aktive Spiel (und die Fahrzeugklasse, falls bekannt) geladen werden
-• Fahrzeugklassen-Profile können nicht erstellt werden, wenn das Spiel keine Fahrzeugklasse oder kein Modell meldet
-• Änderungen an Profilen werden automatisch gespeichert</value>
+    <value>• Wenn **Automatisches Umschalten** aktiviert ist, wird automatisch das am besten geeignete Tuning-Profil für das aktuelle Spiel und die Fahrzeugklasse geladen
+• Sie können ein vorhandenes Profil in das aktuell aktive Spiel (und/oder die Fahrzeugklasse) kopieren und es als Grundlage für weiteres Tuning verwenden
+• Fahrzeugklassenprofile können nicht erstellt werden, wenn das Spiel keine Fahrzeugklasse oder kein Fahrzeugmodell meldet</value>
   </data>
   <data name="SABT_Text_Tuning" xml:space="preserve">
-    <value>• Mit aktiviertem 'Auto-Tuning' passen sich die Schiebereglerwerte unten automatisch an die Werte der wiedergegebenen Telemetrie an
-• Verwenden Sie zur Erleichterung der Abstimmung eine zuvor aufgezeichnete Spielwiedergabe (optional mit der spezifischen Fahrzeugklasse, für die abgestimmt werden soll)
+    <value>• Wenn **Auto-Tuning** aktiviert ist, werden die **Limit**-Schieberegler unten automatisch an die Spieltelemetrie angepasst
+• Verwenden Sie zur einfacheren Abstimmung eine zuvor aufgezeichnete Spielwiederholung
 • Die Motorausgabe ist während der Abstimmung aus Sicherheitsgründen deaktiviert
-• 'Auto-Switching' wird bei Verwendung der automatischen Abstimmungsfunktion automatisch deaktiviert
-• 'Auto-Tuning' wird automatisch deaktiviert, wenn das aktive Profil geändert wird</value>
+• **Auto-Switching** wird bei Verwendung der Funktion **Auto-Tuning** automatisch deaktiviert
+• **Auto-Tuning** wird automatisch deaktiviert, wenn ein anderes Profil ausgewählt wird</value>
   </data>
-  <data name="SABT_Text_Biases" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_Biases" xml:space="preserve">
+    <value>Wenn du das Gefühl hast, dass ein Riemen im Vergleich zu den anderen zu stark zieht, kannst du hier die Spannungsausgabe dieses Riemens verringern. Dies ist **nicht empfohlen**, da es normalerweise darauf hinweist, dass ein mechanisches Problem mit deinem Setup vorliegt, das behoben werden muss. Wenn du keine _Riemenrollen_ verwendest, solltest du deren Einsatz in Betracht ziehen, bevor du diese Einstellungen anpasst.</value>
   </data>
   <data name="SABT_Text_Preferences" xml:space="preserve">
-    <value>Diese Einstellungen sind nicht spielabhängig und steuern den grundlegenden Betrieb des Spannmechanismus; einschließlich der Gesamtleistung sowohl während als auch zwischen Spielesitzungen. Sie sollten nach Ihren Wünschen eingestellt werden, bevor Sie Feinabstimmungen innerhalb der 'Profiles' tab vornehmen.</value>
+    <value>Diese allgemeinen Voreinstellungen gelten für alle Situationen, Spiele und Fahrzeugklassen. Stellen Sie sicher, dass diese korrekt sind, bevor Sie mit der Anpassung anderer Einstellungen fortfahren.</value>
   </data>
-  <data name="SABT_Text_TemperatureThrottlingRange" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_TemperatureThrottlingRange" xml:space="preserve">
+    <value>Die Motoren sollten während des Betriebs nicht heiß werden; aber mehrstündige Phasen intensiver Nutzung können ihre Innentemperatur auf **~35°C** _über der Umgebungstemperatur_ ansteigen lassen. Es braucht Zeit und anhaltende Nutzung, bis sich ihre Außentemperatur darauf einpendelt, aber es kann passieren; und wenn es passiert, können Filamente, die bei weniger als  **~55°C** zur Verformung neigen (z. B. **PLA**), anfällig für Schäden sein.
+
+Wenn Sie oben einen geeigneten Bereich für die thermische Drosselung festlegen, können Sie Ihre Teile vor Schäden schützen:
+• Solange die Temperatur **unterhalb** des ausgewählten Temperaturbereichs liegt, bleibt die Motorleistung unverändert
+• Am **Anfang** des ausgewählten Temperaturbereichs wird die Motorleistung beginnen, proportional zur Temperatur reduziert zu werden
+• Am **Ende** des ausgewählten Temperaturbereichs werden die Motoren deaktiviert, um Schäden zu verhindern</value>
   </data>
-  <data name="SABT_Text_Telemetry" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_Telemetry" xml:space="preserve">
+    <value>• Passen Sie diese Bereiche **vor allem anderen** an, da sie die gesamte Zuordnung von Telemetriekräften zur Gurtspannung steuern
+• Verwenden Sie **Auto-Tuning**, um diese automatisch festzulegen, oder passen Sie sie manuell an, indem Sie während einer Wiederholung grafisch dargestellte Telemetriedaten beobachten
+• Diese sollten den **maximalen Kräften** entsprechen, denen Ihr Fahrzeug bei normalem Gameplay voraussichtlich ausgesetzt ist</value>
   </data>
-  <data name="SABT_Text_Smoothing" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_Smoothing" xml:space="preserve">
+    <value>• Wendet auf die gesamte Spannungsausgabe einen Glättungseffekt an
+• Einige Effekte ignorieren diese Einstellung (z. B. **Engine RPM**)</value>
   </data>
-  <data name="SABT_Label_TensionWhileIdle" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_TensionWhileIdle" xml:space="preserve">
+    <value>Im Leerlauf (Nicht im Spiel)</value>
   </data>
-  <data name="SABT_Label_TensionWhileActive" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_TensionWhileActive" xml:space="preserve">
+    <value>Während aktiv (Im Spiel)</value>
   </data>
-  <data name="SABT_Label_ControlStep" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_ControlStep" xml:space="preserve">
+    <value>Schrittgröße der externen Steuerung</value>
   </data>
-  <data name="SABT_Label_LeftStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_ExternalControl" xml:space="preserve">
+    <value>Externe Steuerelemente</value>
   </data>
-  <data name="SABT_Label_RightStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_LeftWaistStrength" xml:space="preserve">
+    <value>Kraft der linken Taille</value>
   </data>
-  <data name="SABT_Label_WaistStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_RightWaistStrength" xml:space="preserve">
+    <value>Kraft der rechten Taille</value>
   </data>
-  <data name="SABT_Label_ShoulderStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_LeftShoulderStrength" xml:space="preserve">
+    <value>Kraft der linken Schulter</value>
   </data>
-  <data name="SABT_Label_Mapping" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_RightShoulderStrength" xml:space="preserve">
+    <value>Kraft der rechten Schulter</value>
+  </data>
+  <data name="SABT_Label_Mapping" xml:space="preserve">
+    <value>Zuordnung</value>
   </data>
   <data name="SABT_Label_Direction" xml:space="preserve">
     <value>Richtung</value>
   </data>
-  <data name="SABT_Label_Status" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_Status" xml:space="preserve">
+    <value>Status</value>
   </data>
-  <data name="SABT_Label_SurgeStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_SurgeStrength" xml:space="preserve">
+    <value>Schubstärke (Beschleunigung &amp; Bremsen)</value>
   </data>
-  <data name="SABT_Label_SwayStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_SwayStrength" xml:space="preserve">
+    <value>Wankstärke (Kurvenfahrt)</value>
   </data>
-  <data name="SABT_Label_HeaveStrength" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_HeaveStrength" xml:space="preserve">
+    <value>Heave-Stärke (Unebenheiten &amp; Sprünge)</value>
   </data>
-  <data name="SABT_Label_SerialPort" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_SerialPort" xml:space="preserve">
+    <value>Serieller Anschluss</value>
   </data>
   <data name="SABT_Label_Engine" xml:space="preserve">
     <value>Motordrehzahl</value>
   </data>
-  <data name="SABT_Label_SurgeLimits" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_SurgeLimits" xml:space="preserve">
+    <value>Grenzwerte (Beschleunigung &amp; Bremsen)</value>
   </data>
   <data name="SABT_Label_SwayLimits" xml:space="preserve">
     <value>Sway-Grenzen (Kurvenfahrt)</value>
@@ -487,8 +625,8 @@
   <data name="SABT_Label_Temperatures" xml:space="preserve">
     <value>Temperaturen</value>
   </data>
-  <data name="SABT_Label_HeaveLimits" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_HeaveLimits" xml:space="preserve">
+    <value>Hubgrenzen (Bodenwellen &amp; Sprünge)</value>
   </data>
   <data name="SABT_Label_SmoothingFactor" xml:space="preserve">
     <value>Glättungsfaktor</value>
@@ -500,9 +638,20 @@
     <value>EXPERIMENTELL</value>
   </data>
   <data name="SABT_Message_NoDeviceDetected" xml:space="preserve">
-    <value>Kein Gerät erkannt. Sie müssen ein serielles Gerät auswählen, bevor Sie die Einrichtung starten.</value>
+    <value>#Kein Gerät erkannt
+Der Motorcontroller konnte nicht gefunden werden. Er muss an einen USB-Port Ihres Computers angeschlossen sein. Bitte prüfen Sie:
+• Der **Schiebeschalter** am Controller ist auf **USB** eingestellt (schieben Sie ihn in Richtung der Anschlüsse)
+• Sie verwenden den **USB-Port**, der den Stromanschlüssen am nächsten ist
+
+Die Motoren müssen nicht angeschlossen sein, damit der Controller erkannt wird.
+
+Wenn Ihr Motorcontroller immer noch nicht erkannt wird, können Sie auch Folgendes versuchen:
+• Einen anderen **USB-Port** an Ihrem Computer (vorzugsweise ohne Hub)
+• Ein anderes **USB-Kabel** (USB 2.0 ist in Ordnung)
+• Das Deaktivieren anderer **Plugins** oder **Anwendungen**, die möglicherweise mit **SABT** in Konflikt stehen</value>
   </data>
-  <data name="SABT_Message_SerialConnectionError" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Message_SerialConnectionError" xml:space="preserve">
+    <value>#Fehler bei der seriellen Verbindung
+Es konnte keine Verbindung zum Motorcontroller hergestellt werden. Der Host hat den Zugriff auf den seriellen Port mit der folgenden Meldung verweigert:</value>
   </data>
 </root>

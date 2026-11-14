@@ -483,10 +483,10 @@ namespace User.ActiveBeltTensioner
 
             if (
                 e.PropertyName == nameof(Settings.UpshiftingModifiers) ||
-                e.PropertyName == nameof(Settings.LeftStrength) ||
-                e.PropertyName == nameof(Settings.RightStrength) ||
-                e.PropertyName == nameof(Settings.WaistStrength) ||
-                e.PropertyName == nameof(Settings.ShoulderStrength) ||
+                e.PropertyName == nameof(Settings.LeftWaistStrength) ||
+                e.PropertyName == nameof(Settings.RightWaistStrength) ||
+                e.PropertyName == nameof(Settings.LeftShoulderStrength) ||
+                e.PropertyName == nameof(Settings.RightShoulderStrength) ||
                 e.PropertyName == nameof(Settings.EngineStrength) ||
                 e.PropertyName == nameof(Settings.UpshiftingStrength)
             )

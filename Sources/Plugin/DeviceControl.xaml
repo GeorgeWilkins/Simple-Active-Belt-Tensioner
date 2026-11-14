@@ -538,6 +538,15 @@
 
                                         <ContentControl Style="{StaticResource SettingStyle}">
                                             <StackPanel>
+                                                <Label Content="{SLoc SABT_Label_ExternalControl}" Margin="-5,-4,0,0" FontWeight="Bold" />
+                                                <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="1,0,0,5">
+                                                    <local:MarkdownFormattedText Key="SABT_Text_ExternalControl" />
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ContentControl>
+                                        
+                                        <ContentControl Style="{StaticResource SettingStyle}">
+                                            <StackPanel>
                                                 <local:SettingSlider Title="{SLoc SABT_Label_ControlStep}" Unit="%" Minimum="0.5" Maximum="10.0" Step="0.5" Value="{Binding Settings.ControlStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                 <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">
                                                     <local:MarkdownFormattedText Key="SABT_Text_ControlStep" />
@@ -624,23 +633,22 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition />
                                             <RowDefinition />
-                                            <RowDefinition />
                                         </Grid.RowDefinitions>
 
-                                        <ContentControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Style="{StaticResource SettingStyle}" Margin="0,0,5,0">
-                                            <local:SettingSlider Grid.Column="0" Title="{SLoc SABT_Label_LeftStrength}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.LeftStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <ContentControl Grid.Row="0" Grid.Column="0" Style="{StaticResource SettingStyle}" Margin="0,0,5,0">
+                                            <local:SettingSlider Grid.Column="0" Title="{SLoc SABT_Label_LeftWaistStrength}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.LeftWaistStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </ContentControl>
 
-                                        <ContentControl Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Style="{StaticResource SettingStyle}" Margin="5,0,0,0">
-                                            <local:SettingSlider Grid.Column="0" Title="{SLoc SABT_Label_RightStrength}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.RightStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <ContentControl Grid.Row="0" Grid.Column="1" Style="{StaticResource SettingStyle}" Margin="5,0,0,0">
+                                            <local:SettingSlider Grid.Column="0" Title="{SLoc SABT_Label_RightWaistStrength}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.RightWaistStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </ContentControl>
 
-                                        <ContentControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource SettingStyle}">
-                                            <local:SettingSlider Grid.Column="0" Title="{SLoc SABT_Label_WaistStrength}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.WaistStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <ContentControl Grid.Row="1" Grid.Column="0" Style="{StaticResource SettingStyle}" Margin="0,0,5,0">
+                                            <local:SettingSlider Grid.Column="0" Title="{SLoc SABT_Label_LeftShoulderStrength}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.LeftShoulderStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </ContentControl>
 
-                                        <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource SettingStyle}">
-                                            <local:SettingSlider Grid.Column="0" Title="{SLoc SABT_Label_ShoulderStrength}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.ShoulderStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <ContentControl Grid.Row="1" Grid.Column="1" Style="{StaticResource SettingStyle}" Margin="5,0,0,0">
+                                            <local:SettingSlider Grid.Column="0" Title="{SLoc SABT_Label_RightShoulderStrength}" Unit="%" Minimum="0" Maximum="100" Step="0.5" Value="{Binding Settings.RightShoulderStrength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </ContentControl>
 
                                     </Grid>
@@ -685,9 +693,9 @@
                                                     </Border.Style>
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="10*" />
-                                                            <ColumnDefinition Width="2*" />
+                                                            <ColumnDefinition Width="20*" />
                                                             <ColumnDefinition Width="4*" />
+                                                            <ColumnDefinition Width="7*" />
                                                             <ColumnDefinition Width="2*" />
                                                         </Grid.ColumnDefinitions>
 

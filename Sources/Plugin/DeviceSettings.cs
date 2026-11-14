@@ -443,62 +443,62 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private double _leftStrength = 100.0;
-        public double LeftStrength
+        private double _leftWaistStrength = 100.0;
+        public double LeftWaistStrength
         {
-            get { return _leftStrength; }
+            get { return _leftWaistStrength; }
             set
             {
                 double clampedValue = Math.Max(0.0, Math.Min(100.0, value));
-                if (Math.Abs(_leftStrength - clampedValue) > double.Epsilon)
+                if (Math.Abs(_leftWaistStrength - clampedValue) > double.Epsilon)
                 {
-                    _leftStrength = clampedValue;
-                    InvokePropertyChange(nameof(LeftStrength));
+                    _leftWaistStrength = clampedValue;
+                    InvokePropertyChange(nameof(LeftWaistStrength));
                 }
             }
         }
 
-        private double _rightStrength = 100.0;
-        public double RightStrength
+        private double _rightWaistStrength = 100.0;
+        public double RightWaistStrength
         {
-            get { return _rightStrength; }
+            get { return _rightWaistStrength; }
             set
             {
                 double clampedValue = Math.Max(0.0, Math.Min(100.0, value));
-                if (Math.Abs(_rightStrength - clampedValue) > double.Epsilon)
+                if (Math.Abs(_rightWaistStrength - clampedValue) > double.Epsilon)
                 {
-                    _rightStrength = clampedValue;
-                    InvokePropertyChange(nameof(RightStrength));
+                    _rightWaistStrength = clampedValue;
+                    InvokePropertyChange(nameof(RightWaistStrength));
                 }
             }
         }
 
-        private double _waistStrength = 100.0;
-        public double WaistStrength
+        private double _leftShoulderStrength = 100.0;
+        public double LeftShoulderStrength
         {
-            get { return _waistStrength; }
+            get { return _leftShoulderStrength; }
             set
             {
                 double clampedValue = Math.Max(0.0, Math.Min(100.0, value));
-                if (Math.Abs(_waistStrength - clampedValue) > double.Epsilon)
+                if (Math.Abs(_leftShoulderStrength - clampedValue) > double.Epsilon)
                 {
-                    _waistStrength = clampedValue;
-                    InvokePropertyChange(nameof(WaistStrength));
+                    _leftShoulderStrength = clampedValue;
+                    InvokePropertyChange(nameof(LeftShoulderStrength));
                 }
             }
         }
 
-        private double _shoulderStrength = 100.0;
-        public double ShoulderStrength
+        private double _rightShoulderStrength = 100.0;
+        public double RightShoulderStrength
         {
-            get { return _shoulderStrength; }
+            get { return _rightShoulderStrength; }
             set
             {
                 double clampedValue = Math.Max(0.0, Math.Min(100.0, value));
-                if (Math.Abs(_shoulderStrength - clampedValue) > double.Epsilon)
+                if (Math.Abs(_rightShoulderStrength - clampedValue) > double.Epsilon)
                 {
-                    _shoulderStrength = clampedValue;
-                    InvokePropertyChange(nameof(ShoulderStrength));
+                    _rightShoulderStrength = clampedValue;
+                    InvokePropertyChange(nameof(RightShoulderStrength));
                 }
             }
         }

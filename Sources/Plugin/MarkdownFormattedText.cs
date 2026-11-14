@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using System.Windows.Input;
 using WoteverLocalization;
 
 namespace User.ActiveBeltTensioner
@@ -84,6 +85,14 @@ namespace User.ActiveBeltTensioner
             private static readonly Thickness HighlightPadding = new Thickness(4, 3, 5, 4);
             private static readonly CornerRadius HighlightCornerRadius = new CornerRadius(5);
 
+            private static readonly Brush LinkBackground = new SolidColorBrush(Color.FromRgb(27, 127, 170));
+            private static readonly Brush LinkForeground = Brushes.White;
+            private static readonly Brush LinkHoverBackground = new SolidColorBrush(Color.FromRgb(91, 163, 194));
+            private static readonly Brush LinkHoverForeground = Brushes.White;
+            private static readonly Thickness LinkPadding = new Thickness(5, 2, 5, 2);
+            private static readonly Thickness LinkMargin = new Thickness(0, 1, 0, 1);
+            private static readonly CornerRadius LinkCornerRadius = new CornerRadius(4);
+
             public static void AppendFormatted(InlineCollection inlines, string text, bool clearExisting = false)
             {
                 if (inlines == null || string.IsNullOrEmpty(text))
@@ -136,15 +145,8 @@ namespace User.ActiveBeltTensioner
                     if (TryReadUrl(text, index, out var url, out var consumedLength))
                     {
                         FlushPlain(inlines, plain);
+                        AppendLink(inlines, url);
 
-                        var link = new Hyperlink(new Run(url))
-                        {
-                            NavigateUri = new Uri(url, UriKind.Absolute),
-                            ToolTip = url
-                        };
-                        link.RequestNavigate += OnLinkRequestNavigate;
-
-                        inlines.Add(link);
                         index += consumedLength - 1;
                         continue;
                     }
@@ -278,6 +280,47 @@ namespace User.ActiveBeltTensioner
 
                 container.Children.Add(border);
                 inlines.Add(new InlineUIContainer(container));
+            }
+
+            private static void AppendLink(InlineCollection inlines, string url)
+            {
+                var link = new Hyperlink(new Run(url))
+                {
+                    NavigateUri = new Uri(url, UriKind.Absolute),
+                    ToolTip = url,
+                    Foreground = LinkForeground,
+                    TextDecorations = null
+                };
+                link.RequestNavigate += OnLinkRequestNavigate;
+
+                var textBlock = new TextBlock
+                {
+                    Cursor = Cursors.Hand
+                };
+                textBlock.Inlines.Add(link);
+
+                var border = new Border
+                {
+                    Background = LinkBackground,
+                    CornerRadius = LinkCornerRadius,
+                    Padding = LinkPadding,
+                    Margin = LinkMargin,
+                    Child = textBlock
+                };
+
+                border.MouseEnter += (_, __) =>
+                {
+                    border.Background = LinkHoverBackground;
+                    link.Foreground = LinkHoverForeground;
+                };
+
+                border.MouseLeave += (_, __) =>
+                {
+                    border.Background = LinkBackground;
+                    link.Foreground = LinkForeground;
+                };
+
+                inlines.Add(new InlineUIContainer(border));
             }
 
             private static bool TryReadHighlight(string text, int startIndex, out string highlightText, out int consumedLength)

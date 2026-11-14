@@ -144,15 +144,10 @@ namespace User.ActiveBeltTensioner
             }
 
             // Apply Strength Biases
-            double leftStrength = _settings.LeftStrength / 100.0;
-            double rightStrength = _settings.RightStrength / 100.0;
-            double waistStrength = _settings.WaistStrength / 100.0;
-            double shoulderStrength = _settings.ShoulderStrength / 100.0;
-
-            leftShoulderTarget *= leftStrength * shoulderStrength;
-            rightShoulderTarget *= rightStrength * shoulderStrength;
-            leftWaistTarget *= leftStrength * waistStrength;
-            rightWaistTarget *= rightStrength * waistStrength;
+            leftShoulderTarget *= (_settings.LeftShoulderStrength / 100.0);
+            rightShoulderTarget *= (_settings.RightShoulderStrength / 100.0);
+            leftWaistTarget *= (_settings.LeftWaistStrength / 100.0);
+            rightWaistTarget *= (_settings.RightWaistStrength / 100.0);
         }
 
         /// <summary>Changes the frame of reference from the vehicle to the driver seat, accounting for its angle relative to the vehicle's vertical axis</summary>
