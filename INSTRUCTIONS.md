@@ -13,7 +13,7 @@ You should be able to order the [motors](https://www.waveshare.com/wiki/DDSM115)
 
 The rest of the parts can be obtained from virtually anywhere, including [Amazon](https://www.amazon.co.uk) or [AliExpress](https://www.aliexpress.com). Where I've linked to particular products, these are not endorsements or necessarilyitems I've tested; simply representative examples.
 
-Since availability and prices change constantly, I can't keep buying and verifying each component personally. Take note of the listed specifications and shop around for the best deal, or check our [Discord](https://discord.gg/SVkZv7xQ8b) for advice and recommendations.
+Since availability and prices change constantly, I can't keep buying and verifying each component personally. Take note of the listed specifications and shop around for the best deal, or check our [Discord](https://discord.gg/26wcbKJMpR) for advice and recommendations.
 
 Some of these items are only sold in multiples, so our guide prices are calculated by dividing the total price _when bought together_ by the required quantity. They are not available _singularly_ at those prices. In some cases you'll have spares.
 
@@ -24,16 +24,27 @@ Some of these items are only sold in multiples, so our guide prices are calculat
 | `2 GBP` | `2x`-`4x` | `6706` Bearing | `30x37x4mm` bearings for the self-orienting pulley covers (in the same quantity as the motors) | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DN3RW8) |
 | `7 GBP` | `1x` | `M2.5` Screw & Nut Set | A selection of `M2.5` screws and nuts that we use to fit the various parts together. The kit includes everything you need for any possible motor configuration, including a hex key | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
 | `5 GBP` | `~5M` | `~1.8MM` UHMWPE/Dyneema Cord | Low-friction high-strength cord for up to four motors and pulley anchors. Avoid _'Paracord'_ style products with outer sheaths; go for _100% braided UHMWPE/Dyneema_ in `1.6mm` to `2.0mm` diameters | eBay, Kite/Sail stores, etc |
-| `40 GBP` | `1x` | `20V` `120W` DC Power Supply | The power supply for the board and motors (with a standard `5.5x2.5MM` centre-positive barrel plug). This can handle up to `4x` motor configurations | GST120A20-P1M |
+| `40 GBP` | `1x` | `20V` `≥120W` DC Power Supply | The power supply for the motors. `120W` is the verified _absolute minimum_ required for `4x` motor configurations; `≥140W` is strongly recommended (`≥7A` at `20V`) | [DigiKey](https://www.digikey.co.uk/en/products/detail/fsp-technology-inc/FSP135-AJBU3/16164268) / [AliExpress](https://www.aliexpress.com/item/1005011817355175.html) |
 | `25 GBP` | `1x` | 4/5/6-Point `2"` Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
-
 
 > 📢 **Important:**
 > - The motors are _sometimes_ sold in **pairs** rather than individually. Make sure you're ordering the correct quantity for your preferred setup
-> - There are multiple motor models in the `DDSMXXX` series. Make sure you're buying the [DDSM115](https://www.waveshare.com/wiki/DDSM115)
-> - There are multiple motor controllers in the `DDSM` series that are visually similar. Make sure you're buying the [DDSM Driver HAT (A)](https://www.waveshare.com/wiki/DDSM_Driver_HAT_(A))
-> - You can use power supplies from `15V` to `20V` as long as they are capable of `6A` continuous output; but exceeding `20V` may damage your motors during back-driving conditions
-> - If using the _tubular_ motor brackets, you'll also need [M5x25mm Clamping Knobs](https://www.amazon.co.uk/dp/B0CP2GQLQJ) and [M5 Nuts (8mm Hex)](https://www.amazon.co.uk/dp/B0FMRFPWJ3) to secure them to the tubing
+> - There are many products in the `DDSM` series. Make sure you're buying the [DDSM115](https://www.waveshare.com/wiki/DDSM115) and [DDSM Driver HAT (A)](https://www.waveshare.com/wiki/DDSM_Driver_HAT_(A))
+> - You can use power supplies from `15V` to `20V` as long as they are capable of _at least_ `6A` continuous output; but exceeding `20V` is **not recommended**
+
+### Power Supply
+Since the power requirements depend on the number of motors you are using, it is recommended that you buy a supply capable of handling the maximum of **four motors**; then if you decide to add motors later, you won't have to replace it.
+
+At minimum, this means you need:
+- `5.5x2.5mm` Barrel Plug (or `XT60`)
+- `15V` to `20V` Fixed Output
+- `≥1.5A` per motor
+
+The `GST120A20-P1M` is a high-quality `6A` supply that has been tested and verified with four motors under reasonable conditions. However it offers no headroom whatsoever; so hot environments or long sessions of heavy load may cause problems. Something like the `FSP135-AJBU3` is theoretically a better choice with more headroom; but you should shop around for quality supplies. `≥7A` is strongly recommended; the wattage will vary depending on your chosen voltage.
+
+Low quality supplies are unlikely to sustain their claimed output or handle spikes well.
+
+An issue you'll run into is that `≥7A` is around the threshold where common `5.5x2.5mm` barrel plugs hit their current limit, so manufacturers start using other types of connector. Gaming laptop supplies are a good source of high-current `19~20V` suppliers; but watch out for the connector type and size.
 
 ### Belt Rollers
 
