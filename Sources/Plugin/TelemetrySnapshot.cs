@@ -11,7 +11,7 @@ namespace User.ActiveBeltTensioner
         public double Heave;
         public double Speed;
         public double Revolutions;
-        public bool DidUpshift;
+        public short Gear;
         public bool IsActive;
         public string Game;
 
@@ -26,15 +26,15 @@ namespace User.ActiveBeltTensioner
                     Heave = 0.0,
                     Speed = 0.0,
                     Revolutions = 0.0,
-                    DidUpshift = false,
+                    Gear = 0,
                     IsActive = false,
                     Game = string.Empty,
                 };
             }
 
-            short oldGear = 0;
-            short newGear = 0;
-            bool inGear = Int16.TryParse(data.OldData?.Gear, out oldGear) && Int16.TryParse(data.NewData?.Gear, out newGear);
+            short gear = 0;
+
+            Int16.TryParse(data.NewData?.Gear, out gear);
 
             TelemetrySnapshot telemetrySnapshot = new TelemetrySnapshot
             {
@@ -43,7 +43,7 @@ namespace User.ActiveBeltTensioner
                 Heave = data.NewData?.AccelerationHeave ?? 0.0,
                 Speed = data.NewData?.SpeedKmh ?? 0.0,
                 Revolutions = data.NewData?.Rpms ?? 0.0,
-                DidUpshift = inGear && (newGear > oldGear),
+                Gear = gear,
                 IsActive = (data.GameRunning && !data.GameInMenu && !data.GamePaused) || data.GameReplay,
                 Game = data.GameName ?? string.Empty,
             };

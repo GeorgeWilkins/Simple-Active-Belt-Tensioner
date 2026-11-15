@@ -409,9 +409,9 @@ namespace User.ActiveBeltTensioner
 
         /// <summary>Checks the current configuration to see if the given <see cref="Motor"/> and <see cref="Motor.MotorMapping"/> can be applied</summary>
         /// <returns>Whether the proposed mapping is permitted</returns>
-        public bool CanMap(Motor targetMotor, Motor.MotorMapping desiredMotorMapping)
+        public bool CanMap(Motor targetMotor, Motor.MotorMapping desiredMotorMapping, bool shouldPrompt = false)
         {
-            if (_plugin.IsEnabled)
+            if (_plugin.IsEnabled && shouldPrompt)
             {
                 if (ForegroundPrompt.ShowDialog(
                     SLoc.GetValue("SABT_Message_DisableBeforeMappingMotors"),

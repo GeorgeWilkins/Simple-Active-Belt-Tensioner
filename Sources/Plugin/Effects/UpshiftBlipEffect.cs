@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using User.ActiveBeltTensioner;
 
@@ -6,6 +7,10 @@ namespace User.ActiveBeltTensioner.Effects
     internal sealed class UpshiftBlipEffect : IEffect
     {
         private readonly Stopwatch _upshiftStopwatch = new Stopwatch();
+        private const double _neutralPeriod = 100.0;
+        private double _neutralDuration;
+        private short? _previousGear;
+        private bool _inNeutral;
 
         public int Order => 20;
 
@@ -13,7 +18,7 @@ namespace User.ActiveBeltTensioner.Effects
         {
             if (settings == null || !telemetrySnapshot.IsActive)
             {
-                _upshiftStopwatch.Reset();
+                Reset();
                 return;
             }
 
@@ -23,13 +28,41 @@ namespace User.ActiveBeltTensioner.Effects
 
             if (upshiftingStrength <= 0.0 || modifierCurve == null || modifierCurve.Length == 0)
             {
-                _upshiftStopwatch.Reset();
+                Reset();
                 return;
             }
 
-            if (telemetrySnapshot.DidUpshift)
+            short currentGear = telemetrySnapshot.Gear;
+            if (_inNeutral)
             {
-                _upshiftStopwatch.Restart();
+                _neutralDuration += Math.Max(0.0, millisecondsSinceLastUpdate);
+                if (_neutralDuration > _neutralPeriod)
+                {
+                    _previousGear = null;
+                }
+            }
+
+            if (currentGear == 0)
+            {
+                if (!_inNeutral)
+                {
+                    _inNeutral = true;
+                    _neutralDuration = 0.0;
+                    if (_previousGear <= 0)
+                    {
+                        _previousGear = null;
+                    }
+                }
+            }
+            else
+            {
+                if (_previousGear.HasValue && currentGear > _previousGear.Value && (!_inNeutral || currentGear > 0))
+                {
+                    _upshiftStopwatch.Restart();
+                }
+
+                _previousGear = currentGear;
+                _inNeutral = false;
             }
 
             if (!_upshiftStopwatch.IsRunning)
@@ -62,6 +95,14 @@ namespace User.ActiveBeltTensioner.Effects
                 ApplyTowardsZero(ref beltTensionTargets.LeftWaist, upshiftModifier);
                 ApplyTowardsZero(ref beltTensionTargets.RightWaist, upshiftModifier);
             }
+        }
+
+        private void Reset()
+        {
+            _upshiftStopwatch.Reset();
+            _previousGear = null;
+            _inNeutral = false;
+            _neutralDuration = 0.0;
         }
 
         private static double GetUpshiftModifier(double upshiftOffset, (int timeOffset, int tensionModifier)[] modifierCurve)

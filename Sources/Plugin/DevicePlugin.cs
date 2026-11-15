@@ -210,8 +210,6 @@ namespace User.ActiveBeltTensioner
             get { return !_isAutomaticallyTuning; }
         }
 
-
-
         public System.Windows.Controls.Control GetWPFSettingsControl(PluginManager pluginManager)
         {
             return new DeviceControl(this);
