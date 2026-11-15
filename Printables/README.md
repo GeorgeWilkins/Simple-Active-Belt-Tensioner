@@ -6,15 +6,10 @@ Since there are a couple of options to choose from, you should read this before 
 
 ### Choosing Your Brackets
 
-<img align="right" width="30%" height="auto" style="margin: 0 0 0 5%" alt="Motor Bracket" src="https://github.com/user-attachments/assets/890b4d74-dafc-4766-a464-2187abca817e" />
-
 These attach your motors to your sim rig, so you'll need one per motor. Follow the [selection and printing instructions](/Motor%20Brackets/README.md) for guidance.
 
 ### Choosing Your Belt Clamps
 These connect your harness belts to the cord we wrap around our pulleys. Follow the [selection and printing instructions](/Belt%20Clamps/README.md) for guidance.
-
-
-
 
 ### Opting For Belt Rollers
 
@@ -27,11 +22,10 @@ These will not work well with curved belt guides (where they match the curvature
 ## Printables List
 
 Regardless of your choices above, you should end up with:
-- 2~4x Belt Clamps > For Belt `Ends`|`Loops`|`Passthrough` > **Front**
-- 2~4x Belt Clamps > For Belt `Ends`|`Loops`|`Passthrough` > **Rear**
+- 2~4x Belt Clamps > For Belt `Ends`|`Loops`|`Passthrough`
 - 1x Controller Case > **Base** With `Side`|`End` Tabs
 - 1x Controller Case > **Top**
-- 2~4x Motor Brackets > _Parts Vary_
+- 2~4x Motor Brackets
 - 2~4x Pulleys > **Cover**
 - 2~4x Pulleys > **Face**
 - 2~4x Pulleys > **Hub**
