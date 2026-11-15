@@ -44,7 +44,7 @@ The `GST120A20-P1M` is a high-quality `6A` supply that has been tested and verif
 
 Low quality supplies are unlikely to sustain their claimed output or handle spikes well.
 
-An issue you'll run into is that `≥7A` is around the threshold where common `5.5x2.5mm` barrel plugs hit their current limit, so manufacturers start using other types of connector. Gaming laptop supplies are a good source of high-current `19~20V` suppliers; but watch out for the connector type and size.
+An issue you'll run into is that `≥7A` is around the threshold where common `5.5x2.5mm` barrel plugs hit their current limit, so manufacturers start using other types of connector. Gaming laptop supplies are a good source of high-current `19~20V` units; but watch out for the connector type and size.
 
 ### Belt Rollers
 
