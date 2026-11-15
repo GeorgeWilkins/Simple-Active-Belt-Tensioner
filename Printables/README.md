@@ -6,37 +6,32 @@ Since there are a couple of options to choose from, you should read this before 
 
 ### Choosing Your Brackets
 
-These attach your motors to your sim rig, so you'll need one per motor. Follow the [selection and printing instructions](/Motor%20Brackets/README.md) for guidance.
+These attach your motors to your sim rig, so you'll need one per motor. Follow the [selection and printing instructions](Motor%20Brackets/) for guidance.
 
 ### Choosing Your Belt Clamps
-These connect your harness belts to the cord we wrap around our pulleys. Follow the [selection and printing instructions](/Belt%20Clamps/README.md) for guidance.
+These connect your harness belts to the cord we wrap around our pulleys. Follow the [selection and printing instructions](Belt%20Clamps/) for guidance.
 
 ### Opting For Belt Rollers
 
 There's a lot of variation in seat design. In cases where the belt guides have horizontal bottom surfaces (perpendicular to your pulley cords), you don't _need_ belt rollers; the belts will just slide through the guides without issue. In this case low-friction tape _is_ recommended for a smoother experience and to protect your belt guides.
 
-However with irregular or angled belt guides, you may run into issues with the belts bunching up in the corners of the guides and not sliding smoothly. For such cases, you can print and assemble 'universal' [belt rollers](/Printables/Belt%20Roller/), which have been designed with an array of mounting holes to accommodate most belt guide shapes and angles. These will potentially work with side/waist belt guides as well, should you be building a four-channel configuration.
+However with irregular or angled belt guides, you may run into issues with the belts bunching up in the corners of the guides and not sliding smoothly. For such cases, you can print and assemble 'universal' [belt rollers](/Printables/Belt%20Rollers/), which have been designed with an array of mounting holes to accommodate most belt guide shapes and angles. These will potentially work with side/waist belt guides as well, should you be building a four-channel configuration.
 
-These will not work well with curved belt guides (where they match the curvature of the seat). In such cases you may need to design your own version of the roller. You can use the [FreeCAD source file](/Sources/Printables/Belt%20Roller.FCStd) as a reference and starting point if so.
+These will not work well with curved belt guides (where they match the curvature of the seat).
 
 ## Printables List
 
 Regardless of your choices above, you should end up with:
-- 2~4x Belt Clamps _(2 or 3 Parts Each)_
-- 1x Controller Case _(2 Parts)_
-- 2~4x Motor Brackets _(1 or 2 Parts Each)_
-- 2~4x Pulleys _(3 Parts Each)_
+- 2~4x Belt Clamps
+- 1x Controller Case
+- 2~4x Motor Brackets
+- 2~4x Pulleys
 
 If you're making the [Back-Driving Protection Unit](/INSTRUCTIONS.md#back-driving-protection) you'll additionally need:
 - 1x Back-Driving Protection Case
 
-If you're making the [Belt Rollers](/Belt%20Rollers) you'll additionally need:
-- 2~4x Belt Rollers > **Bracket**
-- 2~4x Belt Rollers > **Plate**
-- 2~4x Belt Rollers > **Roller**
-- 4~8x Belt Rollers > **Spacer** \*
-
-\* These are intended to be vertically scaled in your slicer software to be slightly shorter (by `~0.5mm`) than the depth of your belt guide (usually `12~40mm`). They help to prevent the bracket and plate from bending once clamped and also protect your belt guide plastics from the screw threads. It is recommended that you print the rollers and spacers together (in a vertical orientation) and the bracket and plate together (in a horizontal orientation).
+If you're making the [Belt Rollers](Belt%20Rollers/) you'll additionally need:
+- 2~4x Belt Rollers
 
 ### Self Printing
 
