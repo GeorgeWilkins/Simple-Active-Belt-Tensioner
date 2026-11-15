@@ -11,8 +11,12 @@ Select the appropriate size and height for your profile type. It is recommended 
 
 There are also `Edge` and `Face` variants that allow you to mount the bracket on the edge or face of the aluminium profile, respectively.
 
+These brackets attach the motors using `3x` `M2.5x20mm` screws from the standard kit needed by the project.
+
 ### For Tubular Steel (1" & 2")
 Choose from the `For Round Tube (...).step` bracket designs. All of these are **non-symmetrical**, so you **do** need to mirror parts in your slicer.
+
+These brackets require [M5x25mm Clamping Knobs](https://www.amazon.co.uk/dp/B0CP2GQLQJ) and [M5 Nuts (8mm Hex)](https://www.amazon.co.uk/dp/B0FMRFPWJ3) to secure them to the tubing, in addition to the `3x` `M2.5x20mm` screws from the standard kit needed by the project.
 
 ## Quantity
 You'll need one bracket per motor. Multi-part brackets include all needed parts and can be _printed-in-place_.
