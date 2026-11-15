@@ -15,9 +15,9 @@ SimHub is going to already be on your machine or at least familiar to you if you
 
 ## Licensing Simhub
 
-The free version of SimHub offers 10Hz telemetry updates, which is sufficient for some devicces; but not for our tensioner. We'll need to buy a license to unlock 60Hz updates. It's cheap (as little as 8 EUR for a perpetual license) and absolutely worth the money.
+The free version of SimHub offers 10Hz telemetry updates, which is sufficient for some devicces; but not for our tensioner. We'll need to buy a license to unlock `60Hz` updates. It's cheap (as little as `8 EUR` for a perpetual license) and absolutely worth the money.
 
-Note that you do not need a _'Motion License'_ to use this tensioner; that is a more costly thing for full motion rigs. The regular license is sufficient for our needs.
+Note that you **do not** need a _'Motion License'_ to use this tensioner. The regular license is sufficient for our needs.
 
 1. Go to [https://www.simhubdash.com/](https://www.simhubdash.com/) and click on the `Get a license` link at the top of the page
 2. Enter your details and complete payment
