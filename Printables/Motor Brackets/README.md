@@ -1,7 +1,7 @@
 # Motor Brackets
 These attach the motors to your rig. Since there are various rig frame types, a number of options are available.
 
-(IMAGE HERE)
+![Parts](https://github.com/user-attachments/assets/b23eb74e-2c56-4610-be5a-b5752f0bc731)
 
 ## Choosing Your Brackets
 ### For Aluminium Profile (30, 40 & 45 Series)
