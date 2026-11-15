@@ -22,14 +22,13 @@ These will not work well with curved belt guides (where they match the curvature
 ## Printables List
 
 Regardless of your choices above, you should end up with:
-- 2~4x Belt Clamps _(2~3 Parts Each)_
+- 2~4x Belt Clamps _(2 or 3 Parts Each)_
 - 1x Controller Case _(2 Parts)_
-- 2~4x Motor Brackets _(1~2 Parts Each)_
+- 2~4x Motor Brackets _(1 or 2 Parts Each)_
 - 2~4x Pulleys _(3 Parts Each)_
 
 If you're making the [Back-Driving Protection Unit](/INSTRUCTIONS.md#back-driving-protection) you'll additionally need:
-- 1x Back-Driving Protection Case > **Base**
-- 1x Back-Driving Protection Case > **Top**
+- 1x Back-Driving Protection Case
 
 If you're making the [Belt Rollers](/Belt%20Rollers) you'll additionally need:
 - 2~4x Belt Rollers > **Bracket**
