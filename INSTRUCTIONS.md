@@ -28,7 +28,6 @@ Some of these items are only sold in multiples, so our guide prices are calculat
 | `25 GBP` | `1x` | 4/5/6-Point `2"` Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
 
 
-
 > 📢 **Important:**
 > - The motors are _sometimes_ sold in **pairs** rather than individually. Make sure you're ordering the correct quantity for your preferred setup
 > - There are multiple motor models in the `DDSMXXX` series. Make sure you're buying the [DDSM115](https://www.waveshare.com/wiki/DDSM115)
@@ -52,6 +51,12 @@ These are considered to be _optional_, but are usually required for seats with a
 > - If you use bolts that are longer than needed, they may interfere with the belts and rollers
 
 If _not_ using rollers, you can reduce friction (and wear) on your seat's belt loops if you apply some low-friction tape over the contact points. I've had success with [2-3/8" PTFE Tape](https://www.amazon.co.uk/dp/B0F3XKJW2V).
+
+### Belt Clamps
+
+The standard [Belt Clamps](Printables/Belt%20Clamps/) make use of screws and nuts from the `M2.5` screw set, so don't require any extra hardware.
+
+Only the _idler-equipped_ clamp designs require additional hardware; `2x` `682XZZ` `2.5x6x2.5mm` bearings _per clamp_ (so a maximum of `8x` for any possible **SABT** configuration).
 
 ### Back-Driving Protection
 
