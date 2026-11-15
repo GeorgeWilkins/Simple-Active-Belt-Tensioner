@@ -1,9 +1,6 @@
 # Controller Case
-![Parts](https://github.com/user-attachments/assets/f594ab18-8e85-4c38-b32c-df590c5ecb56)
+This protects your motor controller board from damage while providing convenient mounting lugs for your rig.
 
-The case consists of two printed parts (one with two variations):
-- [Top](Top.step): The lid of the case
-- [Base (With End Tabs)](Base%20(With%20End%20Tabs).step): The base of the case with mounting tabs at the ends
-- [Base (With Side Tabs)](Base%20(With%20Side%20Tabs).step): The base of the case with mounting tabs on the sides
+(IMAGE HERE)
 
-Choose whichever of the base options suits your mounting position best.
+This uses `M2.5` screws and nuts from the standard kit needed by the project.
