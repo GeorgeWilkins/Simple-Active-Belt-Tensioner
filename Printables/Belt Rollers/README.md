@@ -1,7 +1,7 @@
 # Belt Rollers
 These attach to your seat's belt guides and reduce friction between your belts and the guides. These are optional but recommended for smoother belt operation.
 
-(IMAGE HERE)
+![Parts](https://github.com/user-attachments/assets/9da40a67-5621-42da-b48b-646b8b47038a)
 
 The small cylindrical spacer parts are _optional but recommended_ to protect your (usually plastic) belt guides from the screws used to mount the belt rollers. If correctly sized, they also prevent the rollers from deforming when tightly clamped onto the belt guides. These should be vertically scaled in your slicer software to be the same height as the depth of your belt guides. You may need to `'Split'` or `'Ungroup'` the parts in your slicer to scale the spacers separately from the rest of the parts.
 
