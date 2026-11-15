@@ -98,11 +98,13 @@ The benefits of this are:
 - Compact & clean design
 - Auto-adjusting of the harness (adjustable idle tension)
 
-The motors are each capable of exerting about **10Kgf**; roughly equivalent to having **10Kg of weights** attached to each belt, hanging down from the back of your seat.
+The motors are each capable of exerting about `10Kgf`; roughly equivalent to having **10Kg of weights** attached to each belt, hanging down from the back of your seat. This is _plenty_ for most users.
 
-Should this not be sufficient for your needs, **four motors** can be operated in pairs, such that each belt offers up to **20Kgf**, which is roughly equivalent to the [QS-BT1](https://qubicsystem.com/product/qs-bt1).
+Should this not be sufficient for your needs, there are two optional approaches to increasing output:
+- Using **four motors** in two pairs, applying up to `20Kgf` per belt
+- Using **pulley-equipped belt clamps**, allowing a single motor to apply `~18Kg` to a belt, at the cost of slightly reduced responsiveness
 
-You may instead choose to run a true **four-channel** configuration, where your waist belts are actively tensioned in addition to the shoulders, providing an even more immersive experience.
+With **four motors** you may choose to run a true **four-channel** configuration, where your waist belts are actively tensioned in addition to the shoulders, providing an even more immersive experience.
 
 Note that this system conveys progressive constant forces (cornering, braking, etc) better than fine details (road texture, track kerbs, etc). For the latter, you should install one or more tactile transducers. The two systems work together to imply the sensation of movement without a costly motion simulator.
 
@@ -114,7 +116,6 @@ Of particular note:
 - The belt clamp designs are intended for 2" wide belts of up to 2MM thickness. If your belts are wider or thicker than this, you will need to modify the design (or let me know and I'll create additional designs)
 - The need for belt rollers depends on the seat design. In many cases applying low-friction tape is sufficient. A 'universal' [Belt Roller](INSTRUCTIONS.md#belt-rollers) design is included should you wish to use it
 - The system includes a design for a [Back Driving Protection Unit](INSTRUCTIONS.md#back-driving-protection), which prevents your power supply's protection circuitry from tripping when the motors are back-driven (e.g. by pulling fast on the belts). This is an optional component, but highly recommended. A _zero-soldering solution_ is available, but even the soldered version is very simple to assemble
-- Although the motors and driver board can tolerate up to `24V`, I've found that `15V` works just fine. Common `19V~20V` laptop power supplies are used by many SABT builders without issue; but using anything higher risks damage to the motors under back-driving conditions (pulling aggressively on the belts)
 
 ## Is It Safe?
 
