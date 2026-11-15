@@ -208,7 +208,7 @@ The controller board sends power and commands to the motors. To prevent shorting
 
 | Step | Instructions | Illustration |
 | :-: | ------- | :-: |
-| 1 | Gather the parts for each belt roller; the five `M5` bolts (length according to your belt guide depth), five `M5` nuts, three spacers, two `605` bearings, bracket, plate and roller. | <img alt="Belt Roller Parts" src="https://github.com/user-attachments/assets/0f2454af-8aa6-4cf3-8b0c-d099daece124" /> |
+| 1 | Gather the parts for each belt roller; the five `M5` bolts (length according to your belt guide depth), five `M5` nuts, spacers, two `605` bearings, bracket, plate and roller. | <img alt="Belt Roller Parts" src="https://github.com/user-attachments/assets/0f2454af-8aa6-4cf3-8b0c-d099daece124" /> |
 | 2 | Press-fit the bearings into the ends of the roller. | <img alt="Fitting The Bearings" src="https://github.com/user-attachments/assets/c9431d04-51e4-4df5-9a9f-c9de150d6fa1" /> |
 | 3 | Insert two `M5` nuts into the inside faces of the bracket ends and thread in the `M5` bolts from the outside; no more than a couple turns (so their ends are flush with the nuts). | <img alt="Inserting Nuts &amp; Bolts" src="https://github.com/user-attachments/assets/101801b7-8bd0-4d2d-87ea-de82c328abc3" /> |
 | 4 | Position the roller between the bracket ends and start screwing in the bolts all the way, securing the roller in place. | <img alt="Attaching The Roller" src="https://github.com/user-attachments/assets/e11869d2-476c-4c38-9d3c-7a2a77a1a002" /> |
