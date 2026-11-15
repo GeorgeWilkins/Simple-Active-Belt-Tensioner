@@ -1,5 +1,7 @@
 > 📢 **Important:** This is a _pre-release_ of the project and considered to be under active development and testing. If you're not prepared to do some tinkering and/or deal with initial usability issues, it is recommended that you do not attempt to build it right now and instead wait for the `v1.0` release
 
+> 📰 **Latest News:** We now have a [Discord Server](https://discord.gg/YwW3TvEJEv) for pre-build questions, troubleshooting and technical support. You can also share details and photos of your build there!
+
 ![SABT Logo](https://github.com/user-attachments/assets/b6603db9-19e0-4a30-8c0e-a23675a9797a)
 
 ![Diagram](https://github.com/user-attachments/assets/405bf2b8-7b57-4307-a4cb-8e6dc5e54704)
