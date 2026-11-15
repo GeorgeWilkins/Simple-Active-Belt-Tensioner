@@ -1,14 +1,14 @@
 # Pulleys
 These attach to your motors and wind the cord to apply tension to your belts.
 
-![Parts](https://github.com/user-attachments/assets/bfb17203-2bb1-4e9f-a6be-a8232badc16d)
+![Parts](https://github.com/user-attachments/assets/fecfe26a-7651-42fb-95fe-5ea35f9e53b7)
 
 ## Choosing Your Pulleys
 There are two versions of the pulley design available:
-- [Non-Anchorable](/Printables/Pulleys/Non-Anchorable.step): A simple self-orienting pulley
+- [Non-Anchorable](/Printables/Pulleys/Non-Anchorable.step): A simple self-orienting pulley with a plain exterior
 - [Anchorable](/Printables/Pulleys/Anchorable.step): As above, but with additional anchoring holes around the outside (intended for **waist belts** or solving issues with excessive slack)
 
-Both of these designs are secured to your motors with `M2.5` screws.
+Both of these designs are secured to your motors with `3x` `M2.5x12mm` screws.
 
 Each pulley requires one `6706` (`30x37x4mm`) bearing, which press-fits betwen the outer cover and fascia parts.
 
