@@ -1,7 +1,7 @@
 # Belt Clamps
 These connect your harness belts to the cord we wrap around our pulleys. Depending on how your belts are terminated, you may not need these.
 
-(IMAGE HERE)
+![Parts](https://github.com/user-attachments/assets/bd11f18b-6f1f-488c-95bb-59b1145b23c9)
 
 ## Choosing Your Clamps
 Since there are a variety of belt types and terminations, a few options are available:
@@ -9,7 +9,7 @@ Since there are a variety of belt types and terminations, a few options are avai
 - [For Belt Loops](/Printables/Belt%20Clamps/For%20Belt%20Loops.step): This has an open slot through which a 2" belt (up to 4mm thick) can be looped and secured back on itself using a standard belt buckle (likely to have come with your harness)
 - [For Belt Passthrough](/Printables/Belt%20Clamps/For%20Belt%20Passthrough.step): This is designed to clamp anywhere along a 2" belt without needing to shorten or terminate the belt itself
 
-All of these clamp designs use `M2.5` screws and nuts from the standard kit needed by the project, so require no additional hardware.
+All of these clamp designs use `4x` `M2.5x10mm` screws and `4x` `M2.5` nuts from the standard kit needed by the project, so require no additional hardware.
 
 ## Alternatives
 Many **SABT** users have chosen to simply tie their belt cords to their existing steel anchoring plates; bypassing the need for printed clamps altogether.
@@ -22,6 +22,6 @@ These are considered to be for _advanced users only_.
 - [For Belt Ends (With Idler Pulley)](/Printables/Belt%20Clamps/For%20Belt%20Ends%20(With%20Idler%20Pulley).step)
 - [For Belt Loops (With Idler Pulley)](/Printables/Belt%20Clamps/For%20Belt%20Loops%20(With%20Idler%20Pulley).step)
 
-These require additional hardware; specifically `2x` `682XZZ` `2.5x6x2.5mm` bearings per clamp, to properly mount the idler pulley. No other additional hardware is required, other than a longer length of cord (since it now has to route around the idler and back to the motor bracket). Otherwise they are identical to the standard belt clamp designs.
+These idler pulley clamp designs use `5x` `M2.5x12mm` screws and `5x` `M2.5` nuts from the standard kit needed by the project. They also require `2x` `682XZZ` `2.5x6x2.5mm` bearings per clamp.
 
 All [Motor Bracket](/Printables/Motor%20Brackets/) designs feature a place to tie off the anchored end of the cord when using these idler-equipped belt clamps.
