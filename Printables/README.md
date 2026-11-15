@@ -8,33 +8,12 @@ Since there are a couple of options to choose from, you should read this before 
 
 <img align="right" width="30%" height="auto" style="margin: 0 0 0 5%" alt="Motor Bracket" src="https://github.com/user-attachments/assets/890b4d74-dafc-4766-a464-2187abca817e" />
 
-There are two main types of sim rig frame:
-- **Profile / Extrusion** typically use `40-Series` (`40x80`, `40x120`, `40x160`) aluminium extrusion that is bolted together in a modular fashion
-- **Tubular** typically use `2"` (`50mm`) steel tubing that is mandrel-bent into shape and welded together. Lighter foldable frames may use `1"` tubing instead
-
-If you have a **profile frame**, choose from the `For Aluminium Profile (...)` bracket designs, selecting the appropriate size and height for your profile type. It is recommended that you use the _measuring tool_ within your slicing software to verify hole spacing before printing.
-
-Most bracket options have multiple heights to choose from. Use the taller options only if you need additional clearance.
-
-If you have a **tubular frame**, choose from the `For Round Tube (...)` bracket designs.
-
-You may also find a _brand-specific_ bracket design for your frame, where non-standard fitment or special design considerations are required.
-
-For **two-motor** configurations, you will need to print _two_ of your chosen bracket. Many bracket designs are symmetrical, _but not all_. Non-symmetrical designs require one of the printed brackets to be mirrored in your slicer, so consider the orientation carefully before printing.
-
-For **four-motor** configurations, you will need to print _four_ of your chosen bracket. Consider what orientation you are going to mount your motors in. For a paired configuration (using two motors per belt), you typically want the paired motors facing each other, so their pulleys and cords are close together.
-
+These attach your motors to your sim rig, so you'll need one per motor. Follow the [selection and printing instructions](/Motor%20Brackets/README.md) for guidance.
 
 ### Choosing Your Belt Clamps
+These connect your harness belts to the cord we wrap around our pulleys. Follow the [selection and printing instructions](/Belt%20Clamps/README.md) for guidance.
 
-Since there are a variety of belt types and terminations, a few options are available:
-- [For Belt Ends](/Printables/Belt%20Clamps/For%20Belt%20Ends/): This is designed to clamp the plain end of an unterminated 2" belt (suitable for bare belt ends, or belts you are happy to shorten to the ideal length)
-- [For Belt Loops](/Printables/Belt%20Clamps/For%20Belt%20Loops/): This is designed to loop through a 2" belt (up to 4mm thick) and secure back on itself using a standard belt buckle (likely to have come with your hanress)
-- [For Belt Passthrough](/Printables/Belt%20Clamps/For%20Belt%20Passthrough/): This is designed to clamp anywhere along a 2" belt without needing to shorten or terminate the belt itself
 
-The [Belt Passthrough](/Printables/Belt%20Clamps/For%20Belt%20Passthrough/) option is probably the easiest to integrate, while the [Belt Ends](/Printables/Belt%20Clamps/For%20Belt%20Ends/) option is the neatest; but requires the belts to be shortened specifically for the tensioner (or shortened non-destructively with buckles).
-
-Many **SABT** users have chosen to simply tie their belt cords to their existing steel anchoring plates; bypassing the need for printed clamps altogether.
 
 
 ### Opting For Belt Rollers
