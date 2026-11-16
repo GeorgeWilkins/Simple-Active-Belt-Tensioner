@@ -561,8 +561,8 @@ namespace User.ActiveBeltTensioner
             Disconnect();
         }
 
-        /// <summary>Stops all motor activity immediately</summary>
-        public void Stop()
+        /// <summary>Stops all motor activity immediately; optionally also disabling effects</summary>
+        public void Stop(bool disableEffects = false)
         {
             if (_serialPort == null || !_serialPort.IsOpen)
             {
@@ -577,6 +577,11 @@ namespace User.ActiveBeltTensioner
             }
 
             EndAction(action);
+
+            if (disableEffects)
+            {
+                _plugin.IsEnabled = false;
+            }
         }
 
         /// <summary>Sends the given torque values (as fractions of maximum torque) to the motors, cycling through motors to reduce bus conflicts</summary>

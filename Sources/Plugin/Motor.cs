@@ -270,7 +270,7 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private const short _maximumConsecutiveFaults = 100;
+        private const short _maximumConsecutiveFaults = 50;
         private const byte _torqueMode = 0x01;
         private const short _torqueLimit = 12000;
 
@@ -456,10 +456,12 @@ namespace User.ActiveBeltTensioner
 
             if (_controller.WriteFrameReadFrame(tx, rx, 300, true))
             {
-                if (rx[0] != Identifier) { return false; }
-                if (isInTorqueMode && rx[1] != _torqueMode) { return false; }
-                if (rx[6] >= 90) { return false; } // Temperature Out Of Range
-                if (rx[8] != 0x00) { return false; } // Error Code Present
+                if (
+                    (rx[0] != Identifier) ||                        // Wrong Identifier
+                    (isInTorqueMode && rx[1] != _torqueMode) ||     // Wrong Mode
+                    (rx[6] >= 90) ||                                // Temperature Out Of Range
+                    (rx[8] != 0x00)                                 // Error Code Present
+                ) { return false; }
 
                 Temperature = rx[6];
                 Angle = rx[7];
@@ -717,7 +719,18 @@ namespace User.ActiveBeltTensioner
                     Logging.Current.Warn("SABT: #" + this.Identifier + " motor communication timeout (" + _commandFailures + "/" + _maximumConsecutiveFaults + " allowed)");
                 }
 
-                return (_commandFailures < _maximumConsecutiveFaults);
+                if (_commandFailures >= _maximumConsecutiveFaults)
+                {
+                    _controller.Stop(true);
+
+                    ForegroundPrompt.ShowDialog(
+                        SLoc.GetValue("SABT_Message_MotorConnectionLoss"),
+                        "Prompt.Pulley.png",
+                        false
+                    );
+                }
+
+                return true;
             }
 
             _commandFailures = 0;

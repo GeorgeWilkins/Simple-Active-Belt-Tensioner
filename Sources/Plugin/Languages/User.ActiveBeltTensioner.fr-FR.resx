@@ -157,6 +157,16 @@ Les moteurs seront activés et une tension peut être appliquée immédiatement 
 
 Souhaitez-vous continuer ?</value>
   </data>
+  <data name="SABT_Message_MotorConnectionLoss" xml:space="preserve">
+    <value>#Connexion au moteur perdue
+Un ou plusieurs moteurs n'ont pas répondu à des commandes répétées.
+
+[[Cela indique une perte de connexion d'alimentation ou de données. Vérifiez vos connexions et votre alimentation électrique pour détecter d'éventuels problèmes !]]
+
+Si vous n'utilisez pas une **unité de protection anti-recul**, il se peut que vous ayez causé cela en tirant sur vos courroies. Si c'est le cas, envisagez d'installer ce dispositif pour éviter que cela ne se reproduise à l'avenir.
+
+Les effets ont été désactivés automatiquement.</value>
+  </data>
   <data name="SABT_Message_AlterGameName" xml:space="preserve">
     <value>#Spécifier le nom du jeu
 Le profil que vous créez sera étiqueté avec le **nom du jeu** fourni par **SimHub**, qui n'est pas toujours bien formaté.

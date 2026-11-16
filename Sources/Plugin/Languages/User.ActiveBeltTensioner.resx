@@ -157,6 +157,16 @@ The motors will be enabled and tension may be applied to the belts immediately.
 
 Do you wish to proceed?</value>
   </data>
+  <data name="SABT_Message_MotorConnectionLoss" xml:space="preserve">
+    <value>#Motor Connection Lost
+One or more motors have failed to respond to repeated commands.
+
+[[This indicates a power or data connection loss. Check your connections and power supply for problems!]]
+
+If you are not using a **back-driving protection unit**, you may have caused this by pulling on your belts. If so, consider installing the device to avoid this happening again in future.
+
+Effects have been disabled automatically.</value>
+  </data>
   <data name="SABT_Message_AlterGameName" xml:space="preserve">
     <value>#Specify Game Name
 The profile you're creating will be labelled by the **Game Name** given by **SimHub**, which isn't always nicely formatted.

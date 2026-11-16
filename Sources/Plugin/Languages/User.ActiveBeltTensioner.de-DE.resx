@@ -157,6 +157,16 @@ Die Motoren werden aktiviert, und die Riemen können sofort unter Spannung geset
 
 Möchten Sie fortfahren?</value>
   </data>
+  <data name="SABT_Message_MotorConnectionLoss" xml:space="preserve">
+    <value>#Motorverbindung verloren
+Ein oder mehrere Motoren haben auf wiederholte Befehle nicht reagiert.
+
+[[Dies deutet auf einen Verlust der Strom- oder Datenverbindung hin. Überprüfen Sie Ihre Anschlüsse und die Stromversorgung auf Probleme!]]
+
+Wenn Sie keine **Rückantriebsschutzeinheit** verwenden, könnten Sie dies durch Ziehen an Ihren Riemen verursacht haben. Erwägen Sie in diesem Fall die Installation des Geräts, um dies in Zukunft zu vermeiden.
+
+Effekte wurden automatisch deaktiviert.</value>
+  </data>
   <data name="SABT_Message_AlterGameName" xml:space="preserve">
     <value>#Spielnamen angeben
 Das Profil, das Sie erstellen, wird mit dem von **SimHub** angegebenen **Spielnamen** bezeichnet, der nicht immer gut formatiert ist.

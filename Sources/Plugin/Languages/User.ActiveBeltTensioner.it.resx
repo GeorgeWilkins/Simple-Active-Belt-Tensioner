@@ -157,6 +157,16 @@ I motori verranno abilitati e potrebbe essere immediatamente applicata tensione 
 
 Vuoi procedere?</value>
   </data>
+  <data name="SABT_Message_MotorConnectionLoss" xml:space="preserve">
+    <value>#Connessione al motore persa
+Uno o più motori non hanno risposto ai comandi ripetuti.
+
+[[Questo indica una perdita di connessione di alimentazione o dati. Controlla le tue connessioni e l'alimentazione per eventuali problemi!]]
+
+Se non stai utilizzando un'**unità di protezione back-driving**, potresti aver causato questo problema tirando le cinghie. In tal caso, valuta l'installazione del dispositivo per evitare che ciò si ripeta in futuro.
+
+Gli effetti sono stati disabilitati automaticamente.</value>
+  </data>
   <data name="SABT_Message_AlterGameName" xml:space="preserve">
     <value>#Specifica il nome del gioco
 Il profilo che stai creando verrà etichettato con il **Nome del gioco** fornito da **SimHub**, che non è sempre formattato bene.

@@ -196,7 +196,6 @@
     <Resource Include="Graphics\Configuration.Seat.Side.Waist.Present.png" />
     <Resource Include="Graphics\Prompt.Default.png" />
     <Resource Include="Graphics\Prompt.Telemetry.png" />
-    <Resource Include="Graphics\Prompt.Pulley.jpg" />
     <Resource Include="Graphics\Prompt.Car.png" />
     <Resource Include="Graphics\Prompt.Controller.Configuration.png" />
     <Resource Include="Graphics\Prompt.Controller.Connectors.png" />
