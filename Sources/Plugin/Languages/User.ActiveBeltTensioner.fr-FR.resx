@@ -407,9 +407,13 @@ Voulez-vous **désactiver les effets** automatiquement pour continuer ?</value>
   <data name="SABT_WaistMode_Reactive" xml:space="preserve">
     <value>Réactif</value>
   </data>
+  <data name="SABT_WaistMode_ReactiveSignedHeave" xml:space="preserve">
+    <value>Réactif (pilonnement signé)</value>
+  </data>
   <data name="SABT_Text_WaistMode" xml:space="preserve">
     <value>• La façon dont les ceintures de taille réagissent aux forces en jeu (le cas échéant)
 • **Réactif** (recommandé) : les deux ceintures de taille se tendent ensemble, ce qui garde la boucle centrée, en suivant la plus forte des sollicitations entre freinage, virage et mouvement vertical (bosses, crêtes et sauts) ; ne descend jamais sous la tension **au repos**
+• **Réactif (pilonnement signé)** : comme **Réactif**, mais le mouvement vertical garde son sens : les ceintures de taille se tendent quand votre corps se soulève (crêtes et sauts) et se relâchent en compression, comme les ceintures d’épaule ; peut descendre sous la tension **au repos** (jusqu’à 5 %)
 • **Verrouillé** : les deux ceintures de taille se tendent ensemble, ce qui garde la boucle centrée, en suivant la ceinture d’épaule la plus sollicitée, pour vous maintenir fermement dans le siège dès que les ceintures d’épaule travaillent ; ne descend jamais sous la tension **au repos**
 • **Indépendant** (avancé) : chaque ceinture de taille est calculée séparément à partir de l’angle de la ceinture de taille, ce qui déplace la boucle d’un côté à l’autre dans les virages ; recommandé uniquement pour les installations avec une boucle ancrée au centre</value>
   </data>

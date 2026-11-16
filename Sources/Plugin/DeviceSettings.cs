@@ -13,9 +13,9 @@ using WoteverLocalization;
 
 namespace User.ActiveBeltTensioner
 {
-    /// <summary>How waist belt tension is derived: symmetrically, with equal tension on both waist belts (<see cref="Reactive" />, <see cref="Locked" />), or from the waist belt geometry (<see cref="Independent" />)</summary>
-    /// <remarks>Reactive = strongest of braking, smoothed vertical and lateral acceleration, Locked = peak active shoulder load, Independent = per-belt calculation from the waist belt angle. Values are persisted, so they must not be renumbered</remarks>
-    public enum WaistMode { Independent = 0, Locked = 1, Reactive = 2 }
+    /// <summary>How waist belt tension is derived: symmetrically, with equal tension on both waist belts (<see cref="Reactive" />, <see cref="ReactiveSignedHeave" />, <see cref="Locked" />), or from the waist belt geometry (<see cref="Independent" />)</summary>
+    /// <remarks>Reactive = strongest of braking, smoothed absolute vertical and lateral acceleration, ReactiveSignedHeave = strongest of braking, lateral and smoothed upward (lift) acceleration, minus compression, Locked = peak active shoulder load, Independent = per-belt calculation from the waist belt angle. Values are persisted, so they must not be renumbered</remarks>
+    public enum WaistMode { Independent = 0, Locked = 1, Reactive = 2, ReactiveSignedHeave = 3 }
 
     public class DeviceSettings : INotifyPropertyChanged
     {
@@ -312,7 +312,7 @@ namespace User.ActiveBeltTensioner
         }
 
         /// <summary>The waist modes in the order they are listed in the selector</summary>
-        private static readonly WaistMode[] WaistModeOrder = { WaistMode.Reactive, WaistMode.Locked, WaistMode.Independent };
+        private static readonly WaistMode[] WaistModeOrder = { WaistMode.Reactive, WaistMode.ReactiveSignedHeave, WaistMode.Locked, WaistMode.Independent };
 
         private WaistMode _waistMode = WaistMode.Reactive;
         public WaistMode WaistMode

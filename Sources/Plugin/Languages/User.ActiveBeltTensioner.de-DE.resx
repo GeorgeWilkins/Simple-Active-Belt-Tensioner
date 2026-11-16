@@ -407,9 +407,13 @@ Möchten Sie automatisch **Effekte deaktivieren**, um fortzufahren?</value>
   <data name="SABT_WaistMode_Reactive" xml:space="preserve">
     <value>Reaktiv</value>
   </data>
+  <data name="SABT_WaistMode_ReactiveSignedHeave" xml:space="preserve">
+    <value>Reaktiv (Heave mit Vorzeichen)</value>
+  </data>
   <data name="SABT_Text_WaistMode" xml:space="preserve">
     <value>• Wie die Beckengurte auf Kräfte im Spiel reagieren (falls vorhanden)
 • **Reaktiv** (empfohlen): Beide Beckengurte spannen sich gemeinsam, sodass das Gurtschloss mittig bleibt, und folgen dem jeweils stärksten Wert aus Bremsen, Kurvenfahrt und vertikaler Bewegung (Bodenwellen, Kuppen und Sprünge); fällt nie unter die **Ruhespannung**
+• **Reaktiv (Heave mit Vorzeichen)**: wie **Reaktiv**, jedoch behält die vertikale Bewegung ihre Richtung: Die Beckengurte spannen sich, wenn Ihr Körper angehoben wird (Kuppen und Sprünge), und werden bei Kompressionen lockerer, passend zu den Schultergurten; kann unter die **Ruhespannung** fallen (bis auf 5 %)
 • **Fixiert**: Beide Beckengurte spannen sich gemeinsam, sodass das Gurtschloss mittig bleibt, und folgen dem am stärksten belasteten Schultergurt, sodass Sie fest im Sitz gehalten werden, sobald die Schultergurte arbeiten; fällt nie unter die **Ruhespannung**
 • **Unabhängig** (für Fortgeschrittene): Jeder Beckengurt wird separat anhand des Hüftgurtwinkels berechnet, wodurch sich das Gurtschloss in Kurven seitlich verschiebt; nur für Aufbauten mit mittig verankertem Gurtschloss empfohlen</value>
   </data>

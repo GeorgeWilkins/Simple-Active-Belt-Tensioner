@@ -49,8 +49,14 @@ namespace User.ActiveBeltTensioner
         private BeltGeometry _leftWaist;
         private BeltGeometry _rightWaist;
 
-        /// <summary>Smoothed vertical (heave) channel used by <see cref="WaistMode.Reactive" /></summary>
+        /// <summary>Smoothed vertical (heave) channel used by <see cref="WaistMode.Reactive" /> (absolute) and <see cref="WaistMode.ReactiveSignedHeave" /> (signed)</summary>
         private double _smoothedWaistVertical = 0.0;
+
+        /// <summary>Lowest tension the waist belts may drop to in <see cref="WaistMode.ReactiveSignedHeave" /> under compression (as a fraction of maximum torque)</summary>
+        private const double SignedHeaveWaistFloorTension = 0.05;
+
+        /// <summary>The strength-adjusted heave in the vehicle frame of reference (positive = compression, matching how heave lightens the shoulder belts)</summary>
+        private double _vehicleHeave = 0.0;
 
         /// <summary>Whether the motor mapping supports the symmetric waist modes (both waist belts and both shoulder belts mapped)</summary>
         public bool SymmetricWaistModesAvailable { get; set; } = false;
@@ -117,6 +123,9 @@ namespace User.ActiveBeltTensioner
 
                 // Apply Per-Axis Strength Gains
                 AccelerationVector strengthAdjustedAcceleration = ApplyStrengthGains(normalizedAcceleration);
+
+                // Keep Vehicle-Frame Heave (So Braking Doesn't Leak Into The Signed Waist Heave Through The Seat Angle)
+                _vehicleHeave = strengthAdjustedAcceleration.Z;
 
                 // Translate To Seat Frame Of Reference & Calculate Belt Tensions
                 CalculateBeltTensions(
@@ -223,6 +232,7 @@ namespace User.ActiveBeltTensioner
             {
                 case WaistMode.Locked:
                 case WaistMode.Reactive:
+                case WaistMode.ReactiveSignedHeave:
                     leftWaistTension = CalculateSymmetricWaistBeltTension(acceleration, leftShoulderTension, rightShoulderTension);
                     rightWaistTension = leftWaistTension;
                     break;
@@ -235,7 +245,7 @@ namespace User.ActiveBeltTensioner
         }
 
         /// <summary>Returns a single tension for both waist belts, never dropping below the resting tension, so the lap belt stays snug without holding a high sustained current</summary>
-        /// <remarks>Locked uses the peak active shoulder load, and Reactive the strongest of braking, vertical (smoothed) and lateral acceleration</remarks>
+        /// <remarks>Locked uses the peak active shoulder load, Reactive the strongest of braking, vertical (smoothed, absolute) and lateral acceleration, and Reactive (Signed Heave) the strongest of braking, lateral and upward (lift) movement, minus compression</remarks>
         private double CalculateSymmetricWaistBeltTension(AccelerationVector acceleration, double leftShoulderTension, double rightShoulderTension)
         {
             double restingTension = _settings.RestingTension / 100.0;
@@ -253,6 +263,27 @@ namespace User.ActiveBeltTensioner
                 );
 
                 return MapForceComponentToTension(Clamp(active, 0.0, 1.0));
+            }
+
+            if (ActiveWaistMode == WaistMode.ReactiveSignedHeave)
+            {
+                double smoothingFactor = _settings.SmoothingFactor / 100.0;
+
+                // Signed Heave: Positive = Compression (Body Pressed Into Seat), Negative = Lift (Crests & Jumps)
+                _smoothedWaistVertical = (_vehicleHeave * (1.0 - smoothingFactor)) + (_smoothedWaistVertical * smoothingFactor);
+
+                double lift = Math.Max(0.0, -_smoothedWaistVertical);
+                double compression = Math.Max(0.0, _smoothedWaistVertical);
+
+                // Lift Tightens Like Braking/Cornering, Compression Lightens (Below Resting Tension), Like The Shoulder Belts
+                double active = Math.Max(
+                    Math.Max(0.0, acceleration.X),
+                    Math.Max(lift, Math.Abs(acceleration.Y))
+                ) - compression;
+
+                double tension = MapForceComponentToTension(Clamp(active, -1.0, 1.0));
+
+                return Math.Max(tension, Math.Min(restingTension, SignedHeaveWaistFloorTension));
             }
 
             double activeLeft = Math.Max(0.0, leftShoulderTension - restingTension);

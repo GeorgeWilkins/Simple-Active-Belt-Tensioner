@@ -407,9 +407,13 @@ Would you like to automatically **disable effects** to proceed?</value>
   <data name="SABT_WaistMode_Reactive" xml:space="preserve">
     <value>Reactive</value>
   </data>
+  <data name="SABT_WaistMode_ReactiveSignedHeave" xml:space="preserve">
+    <value>Reactive (Signed Heave)</value>
+  </data>
   <data name="SABT_Text_WaistMode" xml:space="preserve">
     <value>• How the waist belts respond to in-game forces (where present)
 • **Reactive** (recommended): both waist belts tighten together, keeping the buckle centred, following whichever is strongest of braking, cornering and vertical movement (bumps, crests and jumps); never drops below the resting tension
+• **Reactive (Signed Heave)**: like **Reactive**, but vertical movement keeps its direction: the waist belts tighten when your body lifts (crests and jumps) and go lighter under compression, matching the shoulder belts; may drop below the resting tension (down to 5%)
 • **Locked**: both waist belts tighten together, keeping the buckle centred, following the most loaded shoulder belt, so you are held firmly in the seat whenever the shoulder belts are working; never drops below the resting tension
 • **Independent** (advanced): each waist belt is calculated separately from the waist belt angle, which shifts the buckle from side to side when cornering; only recommended for setups with a centrally anchored buckle</value>
   </data>

@@ -520,6 +520,7 @@
                                             <Label Content="{SLoc SABT_Label_WaistMode}" Margin="-3,0,0,0" FontWeight="Bold" />
                                             <ComboBox SelectedIndex="{Binding Settings.WaistModeIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                                 <ComboBoxItem Content="{SLoc SABT_WaistMode_Reactive}" />
+                                                <ComboBoxItem Content="{SLoc SABT_WaistMode_ReactiveSignedHeave}" />
                                                 <ComboBoxItem Content="{SLoc SABT_WaistMode_Locked}" />
                                                 <ComboBoxItem Content="{SLoc SABT_WaistMode_Independent}" />
                                             </ComboBox>
