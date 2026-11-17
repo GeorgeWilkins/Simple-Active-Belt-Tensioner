@@ -405,6 +405,28 @@ Vuoi **disabilitare gli effetti** automaticamente per procedere?</value>
   <data name="SABT_Label_WaistBeltDegreesFromVertical" xml:space="preserve">
     <value>Angolo della cintura in vita</value>
   </data>
+  <data name="SABT_Label_WaistMode" xml:space="preserve">
+    <value>Modalità cintura in vita</value>
+  </data>
+  <data name="SABT_WaistMode_Independent" xml:space="preserve">
+    <value>Indipendente (avanzata)</value>
+  </data>
+  <data name="SABT_WaistMode_Locked" xml:space="preserve">
+    <value>Bloccata</value>
+  </data>
+  <data name="SABT_WaistMode_Reactive" xml:space="preserve">
+    <value>Reattiva</value>
+  </data>
+  <data name="SABT_WaistMode_ReactiveSignedHeave" xml:space="preserve">
+    <value>Reattiva (movimento verticale con segno)</value>
+  </data>
+  <data name="SABT_Text_WaistMode" xml:space="preserve">
+    <value>• Come le cinture in vita rispondono alle forze in gioco (se presenti)
+• **Reattiva** (consigliata): entrambe le cinture in vita si tendono insieme, mantenendo la fibbia centrata, seguendo la sollecitazione più forte tra frenata, curva e movimento verticale (dossi, cunette e salti); non scende mai sotto la tensione **a riposo**
+• **Reattiva (movimento verticale con segno)**: come **Reattiva**, ma il movimento verticale mantiene la sua direzione: le cinture in vita si tendono quando il corpo si solleva (cunette e salti) e si allentano in compressione, come le cinture delle spalle; può scendere sotto la tensione **a riposo** (fino al 5%)
+• **Bloccata**: entrambe le cinture in vita si tendono insieme, mantenendo la fibbia centrata, seguendo la cintura della spalla più caricata, così resti saldamente nel sedile ogni volta che le cinture delle spalle lavorano; non scende mai sotto la tensione **a riposo**
+• **Indipendente** (avanzata): ogni cintura in vita viene calcolata separatamente in base all'angolo della cintura in vita, il che sposta la fibbia da un lato all'altro in curva; consigliata solo per configurazioni con fibbia ancorata al centro</value>
+  </data>
   <data name="SABT_Text_Configuration" xml:space="preserve">
     <value>Puoi associare qualsiasi motore a qualsiasi cinghia. Non devono essere in un ordine specifico e i connettori fisici che hai usato sulla scheda di controllo non hanno alcun impatto sull'associazione delle cinghie o sugli identificatori numerici dei motori. Gli identificatori vengono memorizzati sui motori quando li assegni per la prima volta e persisteranno indefinitamente (a meno che non vengano sovrascritti intenzionalmente).
 

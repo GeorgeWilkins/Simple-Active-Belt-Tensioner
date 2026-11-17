@@ -52,6 +52,7 @@ namespace User.ActiveBeltTensioner
                     InvokePropertyChange(nameof(HasSingleLeftShoulder));
                     InvokePropertyChange(nameof(HasShoulder));
                     InvokePropertyChange(nameof(HasWaistAndShoulder));
+                    InvokePropertyChange(nameof(HasCompleteWaistAndShoulder));
                 }
             }
         }
@@ -68,6 +69,7 @@ namespace User.ActiveBeltTensioner
                     InvokePropertyChange(nameof(HasSingleRightShoulder));
                     InvokePropertyChange(nameof(HasShoulder));
                     InvokePropertyChange(nameof(HasWaistAndShoulder));
+                    InvokePropertyChange(nameof(HasCompleteWaistAndShoulder));
                 }
             }
         }
@@ -84,6 +86,7 @@ namespace User.ActiveBeltTensioner
                     InvokePropertyChange(nameof(HasPairedLeftShoulder));
                     InvokePropertyChange(nameof(HasShoulder));
                     InvokePropertyChange(nameof(HasWaistAndShoulder));
+                    InvokePropertyChange(nameof(HasCompleteWaistAndShoulder));
                 }
             }
         }
@@ -100,6 +103,7 @@ namespace User.ActiveBeltTensioner
                     InvokePropertyChange(nameof(HasPairedRightShoulder));
                     InvokePropertyChange(nameof(HasShoulder));
                     InvokePropertyChange(nameof(HasWaistAndShoulder));
+                    InvokePropertyChange(nameof(HasCompleteWaistAndShoulder));
                 }
             }
         }
@@ -116,6 +120,7 @@ namespace User.ActiveBeltTensioner
                     InvokePropertyChange(nameof(HasLeftWaist));
                     InvokePropertyChange(nameof(HasWaist));
                     InvokePropertyChange(nameof(HasWaistAndShoulder));
+                    InvokePropertyChange(nameof(HasCompleteWaistAndShoulder));
                 }
             }
         }
@@ -132,6 +137,7 @@ namespace User.ActiveBeltTensioner
                     InvokePropertyChange(nameof(HasRightWaist));
                     InvokePropertyChange(nameof(HasWaist));
                     InvokePropertyChange(nameof(HasWaistAndShoulder));
+                    InvokePropertyChange(nameof(HasCompleteWaistAndShoulder));
                 }
             }
         }
@@ -168,6 +174,24 @@ namespace User.ActiveBeltTensioner
                 ) && (
                     _hasSingleLeftShoulder ||
                     _hasPairedLeftShoulder ||
+                    _hasSingleRightShoulder ||
+                    _hasPairedRightShoulder
+                );
+            }
+        }
+
+        /// <summary>Whether both waist belts and both shoulder belts are mapped, as required by the symmetric waist modes (which tension both waist belts together and follow the shoulder belt loads)</summary>
+        public bool HasCompleteWaistAndShoulder
+        {
+            get
+            {
+                return (
+                    _hasLeftWaist &&
+                    _hasRightWaist
+                ) && (
+                    _hasSingleLeftShoulder ||
+                    _hasPairedLeftShoulder
+                ) && (
                     _hasSingleRightShoulder ||
                     _hasPairedRightShoulder
                 );
@@ -584,6 +608,41 @@ namespace User.ActiveBeltTensioner
             }
         }
 
+        /// <summary>Whether the waist belts are driven as a pair (both belts mapped and a symmetric waist mode selected)</summary>
+        private bool AreWaistBeltsLinked
+        {
+            get { return HasCompleteWaistAndShoulder && _plugin.Settings.WaistMode != WaistMode.Independent; }
+        }
+
+        /// <summary>Whether the given motor is mapped to either waist belt</summary>
+        private static bool IsWaistMotor(Motor motor)
+        {
+            return (
+                motor.Mapping.Key == Motor.MotorMapping.LeftWaist.Key ||
+                motor.Mapping.Key == Motor.MotorMapping.RightWaist.Key
+            );
+        }
+
+        /// <summary>Returns the output multiplier (0.0 to 1.0) for the given motor, based on its last reported temperature and the thermal throttling settings</summary>
+        private double GetThermalReduction(Motor motor)
+        {
+            if (motor.Temperature >= _plugin.Settings.StoppedOutputTemperature)
+            {
+                return 0.0;
+            }
+
+            if (motor.Temperature >= _plugin.Settings.ReducedOutputTemperature)
+            {
+                int reductionRange = _plugin.Settings.StoppedOutputTemperature - _plugin.Settings.ReducedOutputTemperature;
+
+                return Math.Max(0.0, Math.Min(1.0,
+                    (_plugin.Settings.StoppedOutputTemperature - (motor.Temperature ?? 0)) / (double)reductionRange
+                ));
+            }
+
+            return 1.0;
+        }
+
         /// <summary>Sends the given torque values (as fractions of maximum torque) to the motors, cycling through motors to reduce bus conflicts</summary>
         /// <remarks>Periodically checks motor status and applies thermal throttling if necessary</remarks>
         /// <returns>Whether the motor commands were sent successfully (if applicable)</returns>
@@ -623,25 +682,24 @@ namespace User.ActiveBeltTensioner
                         }
 
                         // Apply Thermal Throttling
-                        int reductionRange = _plugin.Settings.StoppedOutputTemperature - _plugin.Settings.ReducedOutputTemperature;
-                        double outputReduction = 1.0;
-
-                        if (motor.Temperature >= _plugin.Settings.ReducedOutputTemperature)
-                        {
-                            motor.Status = Motor.MotorStatus.Overheating;
-
-                            double motorReduction = Math.Max(0.0, Math.Min(1.0,
-                                (_plugin.Settings.StoppedOutputTemperature - (motor.Temperature ?? 0)) / (double)reductionRange
-                            ));
-
-                            outputReduction = Math.Min(outputReduction, motorReduction);
-                        }
+                        double outputReduction = GetThermalReduction(motor);
 
                         if (motor.Temperature >= _plugin.Settings.StoppedOutputTemperature)
                         {
                             motor.Status = Motor.MotorStatus.Overheated;
+                        }
+                        else if (motor.Temperature >= _plugin.Settings.ReducedOutputTemperature)
+                        {
+                            motor.Status = Motor.MotorStatus.Overheating;
+                        }
 
-                            outputReduction = 0.0;
+                        // Symmetric waist modes tension both waist belts equally, so throttle them together to keep the buckle centred
+                        if (AreWaistBeltsLinked && IsWaistMotor(motor))
+                        {
+                            foreach (Motor otherWaistMotor in Motors.Where(m => m != motor && m.IsConnected && IsWaistMotor(m)))
+                            {
+                                outputReduction = Math.Min(outputReduction, GetThermalReduction(otherWaistMotor));
+                            }
                         }
 
                         // Map Torque Output

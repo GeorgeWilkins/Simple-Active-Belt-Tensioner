@@ -505,6 +505,31 @@
                                         </StackPanel>
                                     </ContentControl>
 
+                                    <ContentControl>
+                                        <ContentControl.Style>
+                                            <Style TargetType="ContentControl" BasedOn="{StaticResource SettingStyle}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding MotorController.HasCompleteWaistAndShoulder}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ContentControl.Style>
+                                        <StackPanel>
+                                            <Label Content="{SLoc SABT_Label_WaistMode}" Margin="-3,0,0,0" FontWeight="Bold" />
+                                            <ComboBox SelectedIndex="{Binding Settings.WaistModeIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                <ComboBoxItem Content="{SLoc SABT_WaistMode_Reactive}" />
+                                                <ComboBoxItem Content="{SLoc SABT_WaistMode_ReactiveSignedHeave}" />
+                                                <ComboBoxItem Content="{SLoc SABT_WaistMode_Locked}" />
+                                                <ComboBoxItem Content="{SLoc SABT_WaistMode_Independent}" />
+                                            </ComboBox>
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,5,0,5">
+                                                <local:MarkdownFormattedText Key="SABT_Text_WaistMode" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ContentControl>
+
                                 </StackPanel>
                             </styles:SHTitledGroup>
 

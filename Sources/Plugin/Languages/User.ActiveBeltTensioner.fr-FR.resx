@@ -405,6 +405,28 @@ Voulez-vous **désactiver les effets** automatiquement pour continuer ?</value>
   <data name="SABT_Label_WaistBeltDegreesFromVertical" xml:space="preserve">
     <value>Angle de la ceinture de taille</value>
   </data>
+  <data name="SABT_Label_WaistMode" xml:space="preserve">
+    <value>Mode de la ceinture de taille</value>
+  </data>
+  <data name="SABT_WaistMode_Independent" xml:space="preserve">
+    <value>Indépendant (avancé)</value>
+  </data>
+  <data name="SABT_WaistMode_Locked" xml:space="preserve">
+    <value>Verrouillé</value>
+  </data>
+  <data name="SABT_WaistMode_Reactive" xml:space="preserve">
+    <value>Réactif</value>
+  </data>
+  <data name="SABT_WaistMode_ReactiveSignedHeave" xml:space="preserve">
+    <value>Réactif (pilonnement signé)</value>
+  </data>
+  <data name="SABT_Text_WaistMode" xml:space="preserve">
+    <value>• La façon dont les ceintures de taille réagissent aux forces en jeu (le cas échéant)
+• **Réactif** (recommandé) : les deux ceintures de taille se tendent ensemble, ce qui garde la boucle centrée, en suivant la plus forte des sollicitations entre freinage, virage et mouvement vertical (bosses, crêtes et sauts) ; ne descend jamais sous la tension **au repos**
+• **Réactif (pilonnement signé)** : comme **Réactif**, mais le mouvement vertical garde son sens : les ceintures de taille se tendent quand votre corps se soulève (crêtes et sauts) et se relâchent en compression, comme les ceintures d’épaule ; peut descendre sous la tension **au repos** (jusqu’à 5 %)
+• **Verrouillé** : les deux ceintures de taille se tendent ensemble, ce qui garde la boucle centrée, en suivant la ceinture d’épaule la plus sollicitée, pour vous maintenir fermement dans le siège dès que les ceintures d’épaule travaillent ; ne descend jamais sous la tension **au repos**
+• **Indépendant** (avancé) : chaque ceinture de taille est calculée séparément à partir de l’angle de la ceinture de taille, ce qui déplace la boucle d’un côté à l’autre dans les virages ; recommandé uniquement pour les installations avec une boucle ancrée au centre</value>
+  </data>
   <data name="SABT_Text_Configuration" xml:space="preserve">
     <value>Vous pouvez associer n'importe quel moteur à n'importe quelle courroie. Ils n'ont pas besoin d'être dans un ordre spécifique et les connecteurs physiques que vous avez utilisés sur la carte de contrôle n'ont aucun impact sur l'association des courroies ou les identifiants numériques des moteurs. Les identifiants sont enregistrés sur les moteurs lors de leur première attribution et persisteront indéfiniment (sauf en cas de remplacement intentionnel).
 

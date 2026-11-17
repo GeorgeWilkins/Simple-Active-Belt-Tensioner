@@ -405,6 +405,28 @@ Would you like to automatically **disable effects** to proceed?</value>
   <data name="SABT_Label_WaistBeltDegreesFromVertical" xml:space="preserve">
     <value>Waist Belt Angle</value>
   </data>
+  <data name="SABT_Label_WaistMode" xml:space="preserve">
+    <value>Waist Belt Mode</value>
+  </data>
+  <data name="SABT_WaistMode_Independent" xml:space="preserve">
+    <value>Independent (Advanced)</value>
+  </data>
+  <data name="SABT_WaistMode_Locked" xml:space="preserve">
+    <value>Locked</value>
+  </data>
+  <data name="SABT_WaistMode_Reactive" xml:space="preserve">
+    <value>Reactive</value>
+  </data>
+  <data name="SABT_WaistMode_ReactiveSignedHeave" xml:space="preserve">
+    <value>Reactive (Signed Heave)</value>
+  </data>
+  <data name="SABT_Text_WaistMode" xml:space="preserve">
+    <value>• How the waist belts respond to in-game forces (where present)
+• **Reactive** (recommended): both waist belts tighten together, keeping the buckle centred, following whichever is strongest of braking, cornering and vertical movement (bumps, crests and jumps); never drops below the resting tension
+• **Reactive (Signed Heave)**: like **Reactive**, but vertical movement keeps its direction: the waist belts tighten when your body lifts (crests and jumps) and go lighter under compression, matching the shoulder belts; may drop below the resting tension (down to 5%)
+• **Locked**: both waist belts tighten together, keeping the buckle centred, following the most loaded shoulder belt, so you are held firmly in the seat whenever the shoulder belts are working; never drops below the resting tension
+• **Independent** (advanced): each waist belt is calculated separately from the waist belt angle, which shifts the buckle from side to side when cornering; only recommended for setups with a centrally anchored buckle</value>
+  </data>
   <data name="SABT_Text_Configuration" xml:space="preserve">
     <value>You can map any motor to any belt. They don't need to be in any specific order and the physical connectors you've used on the controller board have no impact on belt mapping or numerical motor identifiers. The identifiers are stored on the motors when you first assign them and will persist indefinitely (unless intentionally overridden).
 
