@@ -323,6 +323,9 @@ Vuoi **disabilitare gli effetti** automaticamente per procedere?</value>
   <data name="SABT_Button_CopyLogToClipboard" xml:space="preserve">
     <value>Copia registro negli appunti</value>
   </data>
+  <data name="SABT_Button_CopySettingsToClipboard" xml:space="preserve">
+    <value>Copia impostazioni negli appunti</value>
+  </data>
   <data name="SABT_Button_SetTemperaturesForPLA" xml:space="preserve">
     <value>Imposta per parti in PLA</value>
   </data>
@@ -449,11 +452,23 @@ Sei sicuro di voler procedere?</value>
     <value>#Copia del log non riuscita
 Il file di log di **SimHub** non è stato copiato negli appunti; era mancante, vuoto o altrimenti inaccessibile.</value>
   </data>
+  <data name="SABT_Message_SettingsCopyFailure" xml:space="preserve">
+    <value>---BEGIN TEXT---
+#Copia delle impostazioni non riuscita
+Il **JSON** delle impostazioni non è stato copiato negli appunti; era mancante, vuoto o altrimenti inaccessibile.
+---END TEXT---</value>
+  </data>
   <data name="SABT_Message_LogCopied" xml:space="preserve">
     <value>#Log copiato negli appunti
 Il testo di log di **SimHub** è stato copiato negli appunti. Può essere:
 • Incollato nelle issue di **GitHub** o nei messaggi di **Discord**
 • Incollato in **Notepad** o in un editor di testo simile e salvato</value>
+  </data>
+  <data name="SABT_Message_SettingsCopied" xml:space="preserve">
+    <value>#Impostazioni copiate negli appunti
+Le impostazioni del plugin in formato **JSON** sono state copiate negli appunti. Questo può essere:
+• Incollato in issue di **GitHub** o messaggi **Discord**
+• Incollato in **Blocco note** o editor di testo simile e salvato</value>
   </data>
   <data name="SABT_Status_Connected" xml:space="preserve">
     <value>Connesso</value>

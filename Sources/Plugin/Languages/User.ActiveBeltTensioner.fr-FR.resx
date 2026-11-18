@@ -323,6 +323,9 @@ Voulez-vous **désactiver les effets** automatiquement pour continuer ?</value>
   <data name="SABT_Button_CopyLogToClipboard" xml:space="preserve">
     <value>Copier le journal dans le presse-papiers</value>
   </data>
+  <data name="SABT_Button_CopySettingsToClipboard" xml:space="preserve">
+    <value>Copier les paramètres dans le presse-papiers</value>
+  </data>
   <data name="SABT_Button_SetTemperaturesForPLA" xml:space="preserve">
     <value>Réglage pour pièces en PLA</value>
   </data>
@@ -449,11 +452,23 @@ L'utilisation de cette option effacera tous les paramètres **SABT** que vous av
     <value>#Échec de la copie du journal
 Le fichier journal **SimHub** n’a pas pu être copié dans votre presse-papiers ; il était soit manquant, vide ou autrement inaccessible.</value>
   </data>
+  <data name="SABT_Message_SettingsCopyFailure" xml:space="preserve">
+    <value>---BEGIN TEXT---
+#Échec de la copie des paramètres
+Les paramètres **JSON** n'ont pas pu être copiés dans votre presse-papiers ; ils étaient soit manquants, vides ou inaccessibles.
+---END TEXT---</value>
+  </data>
   <data name="SABT_Message_LogCopied" xml:space="preserve">
     <value>#Journal copié dans le presse-papiers
 Le texte du journal **SimHub** a été copié dans votre presse-papiers. Vous pouvez :
 • Le coller dans des tickets **GitHub** ou des messages **Discord**
 • Le coller dans le **Bloc-notes** ou un éditeur de texte similaire, puis l’enregistrer</value>
+  </data>
+  <data name="SABT_Message_SettingsCopied" xml:space="preserve">
+    <value>#Paramètres copiés dans le presse-papiers
+Le **JSON** des paramètres du plugin a été copié dans votre presse-papiers. Il peut être :
+• Collé dans des issues **GitHub** ou des messages **Discord**
+• Collé dans le **Bloc-notes** ou un éditeur de texte similaire puis enregistré</value>
   </data>
   <data name="SABT_Status_Connected" xml:space="preserve">
     <value>Connecté</value>

@@ -520,8 +520,10 @@
 
                                     <styles:SHButtonPrimary HorizontalAlignment="Stretch" Click="CopyLogToClipboard" Margin="0,10,0,0" Content="{SLoc SABT_Button_CopyLogToClipboard}" />
 
+                                    <styles:SHButtonPrimary HorizontalAlignment="Stretch" Click="CopySettingsToClipboard" Margin="0,10,0,0" Content="{SLoc SABT_Button_CopySettingsToClipboard}" />
+
                                 </StackPanel>
-                                
+
                             </styles:SHTitledGroup>
                             
                         </StackPanel>

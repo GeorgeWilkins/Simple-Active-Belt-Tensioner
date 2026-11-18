@@ -323,6 +323,9 @@ Would you like to automatically **disable effects** to proceed?</value>
   <data name="SABT_Button_CopyLogToClipboard" xml:space="preserve">
     <value>Copy Log To Clipboard</value>
   </data>
+  <data name="SABT_Button_CopySettingsToClipboard" xml:space="preserve">
+    <value>Copy Settings To Clipboard</value>
+  </data>
   <data name="SABT_Button_SetTemperaturesForPLA" xml:space="preserve">
     <value>Set For PLA Parts</value>
   </data>
@@ -449,9 +452,19 @@ Are you sure you wish to proceed?</value>
     <value>#Log Copy Failed
 The **SimHub** log file could not be copied to your clipboard; it was either missing, empty or otherwise inaccessible.</value>
   </data>
+  <data name="SABT_Message_SettingsCopyFailure" xml:space="preserve">
+    <value>#Settings Copy Failed
+The settings **JSON** could not be copied to your clipboard; it was either missing, empty or otherwise inaccessible.</value>
+  </data>
   <data name="SABT_Message_LogCopied" xml:space="preserve">
     <value>#Log Copied To Clipboard
 The **SimHub** log text has been copied to your clipboard. This can be:
+• Pasted into **GitHub** issues or **Discord** messages
+• Pasted into **Notepad** or similar text editor and saved</value>
+  </data>
+  <data name="SABT_Message_SettingsCopied" xml:space="preserve">
+    <value>#Settings Copied To Clipboard
+The plugin settings **JSON** has been copied to your clipboard. This can be:
 • Pasted into **GitHub** issues or **Discord** messages
 • Pasted into **Notepad** or similar text editor and saved</value>
   </data>

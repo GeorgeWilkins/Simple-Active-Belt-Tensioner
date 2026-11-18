@@ -323,6 +323,9 @@ Möchten Sie automatisch **Effekte deaktivieren**, um fortzufahren?</value>
   <data name="SABT_Button_CopyLogToClipboard" xml:space="preserve">
     <value>Protokoll in die Zwischenablage kopieren</value>
   </data>
+  <data name="SABT_Button_CopySettingsToClipboard" xml:space="preserve">
+    <value>Einstellungen in die Zwischenablage kopieren</value>
+  </data>
   <data name="SABT_Button_SetTemperaturesForPLA" xml:space="preserve">
     <value>Einstellung für PLA-Teile</value>
   </data>
@@ -449,9 +452,21 @@ Möchten Sie wirklich fortfahren?</value>
     <value>#Protokollkopie fehlgeschlagen
 Die **SimHub**-Protokolldatei konnte nicht in Ihre Zwischenablage kopiert werden; sie war entweder nicht vorhanden, leer oder anderweitig nicht zugänglich.</value>
   </data>
+  <data name="SABT_Message_SettingsCopyFailure" xml:space="preserve">
+    <value>---BEGIN TEXT---
+#Kopieren der Einstellungen fehlgeschlagen
+Die **JSON**-Einstellungen konnten nicht in die Zwischenablage kopiert werden; sie fehlten entweder, waren leer oder anderweitig nicht zugänglich.
+---END TEXT---</value>
+  </data>
   <data name="SABT_Message_LogCopied" xml:space="preserve">
     <value>#Protokoll in die Zwischenablage kopiert
 Der **SimHub**-Protokolltext wurde in Ihre Zwischenablage kopiert. Dies kann:
+• In **GitHub**-Issues oder **Discord**-Nachrichten eingefügt werden
+• In **Notepad** oder einen ähnlichen Texteditor eingefügt und gespeichert werden</value>
+  </data>
+  <data name="SABT_Message_SettingsCopied" xml:space="preserve">
+    <value>#Einstellungen in die Zwischenablage kopiert
+Die Plugin-Einstellungen im **JSON**-Format wurden in die Zwischenablage kopiert. Diese können:
 • In **GitHub**-Issues oder **Discord**-Nachrichten eingefügt werden
 • In **Notepad** oder einen ähnlichen Texteditor eingefügt und gespeichert werden</value>
   </data>

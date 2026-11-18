@@ -271,6 +271,46 @@ namespace User.ActiveBeltTensioner
             );
         }
 
+        private void CopySettingsToClipboard(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string settingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PluginsData", "Common", "DevicePlugin.SimpleActiveBeltTensioner.json");
+
+                if (File.Exists(settingsPath))
+                {
+                    string settingsText;
+                    using (var fileStream = new FileStream(settingsPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+                    using (var streamReader = new StreamReader(fileStream))
+                    {
+                        settingsText = streamReader.ReadToEnd();
+                    }
+
+                    Clipboard.SetText(settingsText ?? "");
+
+                    Logging.Current.Info($"SABT: Copied plugin settings text to clipboard from '{settingsPath}'");
+
+                    ForegroundPrompt.ShowDialog(
+                        SLoc.GetValue("SABT_Message_SettingsCopied"),
+                        "Prompt.Settings.png",
+                        false
+                    );
+
+                    return;
+                }
+            }
+            catch (Exception exception)
+            {
+                Logging.Current.Error($"SABT: Could not copy plugin settings text to clipboard ({exception.Message})\nStack: {exception.StackTrace}");
+            }
+
+            ForegroundPrompt.ShowDialog(
+                SLoc.GetValue("SABT_Message_SettingsCopyFailure"),
+                "Prompt.Settings.png",
+                false
+            );
+        }
+
         private void ResetUpshiftingModifiers(object sender, RoutedEventArgs e)
         {
             _plugin.Settings.UpshiftingModifiers = _plugin.Settings.DefaultUpshiftingModifiers;
