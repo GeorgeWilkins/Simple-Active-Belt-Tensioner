@@ -363,9 +363,9 @@ namespace User.ActiveBeltTensioner
 
             // Expose Properties
             pluginManager.AttachDelegate("SABT.IsEnabled", typeof(DevicePlugin), () => IsEnabled);
-            pluginManager.AttachDelegate("SABT.IdleTension", typeof(DevicePlugin), () => Settings.IdleTension / 10.0);
-            pluginManager.AttachDelegate("SABT.RestingTension", typeof(DevicePlugin), () => Settings.RestingTension / 10.0);
-            pluginManager.AttachDelegate("SABT.MaximumTension", typeof(DevicePlugin), () => Settings.MaximumTension / 10.0);
+            pluginManager.AttachDelegate("SABT.IdleTension", typeof(DevicePlugin), () => Settings.IdleTension);
+            pluginManager.AttachDelegate("SABT.RestingTension", typeof(DevicePlugin), () => Settings.RestingTension);
+            pluginManager.AttachDelegate("SABT.MaximumTension", typeof(DevicePlugin), () => Settings.MaximumTension);
 
             // Initialise Motor Controller
             MotorController = new MotorController(this);
