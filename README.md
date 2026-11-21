@@ -106,6 +106,10 @@ Should this not be sufficient for your needs, there are two optional approaches 
 
 With **four motors** you may choose to run a true **four-channel** configuration, where your waist belts are actively tensioned in addition to the shoulders, providing an even more immersive experience.
 
+**SABT** is incredibly flexible. Just a few of the supported configuration are shown below:
+
+![Layouts](https://github.com/user-attachments/assets/08ea101a-9048-48ad-88ee-3bb640d5036d)
+
 Note that this system conveys progressive constant forces (cornering, braking, etc) better than fine details (road texture, track kerbs, etc). For the latter, you should install one or more tactile transducers. The two systems work together to imply the sensation of movement without a costly motion simulator.
 
 ## Anything I Should Be Aware Of?
