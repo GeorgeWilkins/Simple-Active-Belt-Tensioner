@@ -135,6 +135,9 @@
   <data name="SABT_Title_Tuning" xml:space="preserve">
     <value>Tuning</value>
   </data>
+  <data name="SABT_Title_Effects" xml:space="preserve">
+    <value>Effects</value>
+  </data>
   <data name="SABT_Title_Preferences" xml:space="preserve">
     <value>Preferences</value>
   </data>
@@ -542,6 +545,9 @@ You can then use the **Controls And Events** menu to assign your input devices t
 3. Type '**sabt**' into the **Target** field and select from the available actions
 4. Choose the **Input Mode** and click **OK** to apply</value>
   </data>
+  <data name="SABT_Text_ForceInversion" xml:space="preserve">
+    <value>In rare cases you may wish to invert the way each in-game force is interpreted by the plugin. Do not enable these under normal circumstances.</value>
+  </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
     <value>• To what extent low-speed engine idle and stalling vibrations should be felt through the belts
 • This effect is based upon the reported engine speed and is limited to low-RPMs due to motor limitations</value>
@@ -617,6 +623,15 @@ Setting an appropriate thermal throttling range above can protect your parts fro
   </data>
   <data name="SABT_Label_Direction" xml:space="preserve">
     <value>Direction</value>
+  </data>
+  <data name="SABT_Label_SurgeInverted" xml:space="preserve">
+    <value>Surge Inverted</value>
+  </data>
+  <data name="SABT_Label_SwayInverted" xml:space="preserve">
+    <value>Sway Inverted</value>
+  </data>
+  <data name="SABT_Label_HeaveInverted" xml:space="preserve">
+    <value>Heave Inverted</value>
   </data>
   <data name="SABT_Label_Status" xml:space="preserve">
     <value>Status</value>

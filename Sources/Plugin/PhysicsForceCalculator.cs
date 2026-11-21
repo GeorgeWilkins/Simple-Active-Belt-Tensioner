@@ -86,7 +86,7 @@ namespace User.ActiveBeltTensioner
             out double rightWaistTarget
         )
         {
-            // Apply Idle Tension While In-Menus
+            // Check Game State
             if (telemetrySnapshot.IsActive)
             {
                 // Convert Telemetry To Vehicle Acceleration
@@ -98,9 +98,9 @@ namespace User.ActiveBeltTensioner
 
                 // Normalize Vehicle Acceleration (Before Adapting To Seat Frame Of Reference)
                 AccelerationVector normalizedAcceleration = new AccelerationVector(
-                    NormalizeAcceleration(vehicleAcceleration.X, _settings.MinimumSurge, _settings.MaximumSurge),
-                    NormalizeAcceleration(vehicleAcceleration.Y, _settings.MinimumSway, _settings.MaximumSway),
-                    NormalizeAcceleration(vehicleAcceleration.Z, _settings.MinimumHeave, _settings.MaximumHeave)
+                    NormalizeAcceleration(vehicleAcceleration.X, _settings.MinimumSurge, _settings.MaximumSurge, _settings.SurgeInverted),
+                    NormalizeAcceleration(vehicleAcceleration.Y, _settings.MinimumSway, _settings.MaximumSway, _settings.SwayInverted),
+                    NormalizeAcceleration(vehicleAcceleration.Z, _settings.MinimumHeave, _settings.MaximumHeave, _settings.HeaveInverted)
                 );
 
                 // Apply Per-Axis Strength Gains
@@ -137,6 +137,7 @@ namespace User.ActiveBeltTensioner
             }
             else
             {
+                // Apply Idle Tension While In-Menus
                 leftShoulderTarget = _settings.IdleTension / 100.0;
                 rightShoulderTarget = _settings.IdleTension / 100.0;
                 leftWaistTarget = _settings.IdleTension / 100.0;
@@ -247,20 +248,22 @@ namespace User.ActiveBeltTensioner
             return Clamp(finalTension, 0.0, maximumTension);
         }
 
-        /// <summary>Normalizes the given acceleration value to -1.0 to +1.0, relative to the given range</summary>
-        private static double NormalizeAcceleration(double value, double minimum, double maximum)
+        /// <summary>Normalizes the given acceleration value to -1.0 to +1.0, relative to the given range (optionally inverting sign)</summary>
+        private static double NormalizeAcceleration(double value, double minimum, double maximum, bool shouldInvert = false)
         {
+            double multiplier = shouldInvert ? -1.0 : 1.0;
+
             if (value >= 0)
             {
-                return (maximum > 0)
-                    ? Clamp(value / maximum, 0.0, 1.0)
-                    : 0.0;
+                return multiplier * (
+                    (maximum > 0) ? Clamp(value / maximum, 0.0, 1.0) : 0.0
+                );
             }
             else
             {
-                return (minimum < 0)
-                    ? Clamp(value / Math.Abs(minimum), -1.0, 0.0)
-                    : 0.0;
+                return multiplier * (
+                    (minimum < 0) ? Clamp(value / Math.Abs(minimum), -1.0, 0.0) : 0.0
+                );
             }
         }
 

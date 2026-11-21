@@ -135,6 +135,10 @@
   <data name="SABT_Title_Tuning" xml:space="preserve">
     <value>Optimierung</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="SABT_Title_Effects" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Title_Preferences" xml:space="preserve">
     <value>Einstellungen</value>
   </data>
@@ -544,6 +548,9 @@ Anschließend können Sie das Menü **Controls And Events** verwenden, um Ihre E
 3. Geben Sie '**sabt**' in das Feld **Target** ein und wählen Sie aus den verfügbaren Aktionen
 4. Wählen Sie den **Input Mode** und klicken Sie auf **OK**, um zu übernehmen</value>
   </data>
+  <data name="SABT_Text_ForceInversion" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
     <value>• In welchem Ausmaß Leerlauf- und Abwürgevibrationen bei niedriger Motordrehzahl über die Gurte spürbar sein sollten
 • Dieser Effekt basiert auf der gemeldeten Motordrehzahl und ist aufgrund von Motorbeschränkungen auf niedrige RPMs begrenzt</value>
@@ -619,6 +626,15 @@ Wenn Sie oben einen geeigneten Bereich für die thermische Drosselung festlegen,
   </data>
   <data name="SABT_Label_Direction" xml:space="preserve">
     <value>Richtung</value>
+  </data>
+  <data name="SABT_Label_SurgeInverted" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Label_SwayInverted" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="SABT_Label_HeaveInverted" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
   </data>
   <data name="SABT_Label_Status" xml:space="preserve">
     <value>Status</value>

@@ -797,7 +797,28 @@
                                         </StackPanel>
                                     </ContentControl>
 
-                                    <ContentControl Style="{StaticResource SettingStyle}">
+                                    <ContentControl Style="{StaticResource SettingStyle}" Tag="Experimental">
+                                        <StackPanel>
+                                            <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,5">
+                                            <Label Content="{SLoc SABT_Label_SurgeInverted}" Margin="-5,0,0,0" FontWeight="Bold" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.SurgeInverted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Label Content="{SLoc SABT_Label_SwayInverted}" Margin="-5,0,0,0" FontWeight="Bold" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.SwayInverted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Label Content="{SLoc SABT_Label_HeaveInverted}" Margin="-5,0,0,0" FontWeight="Bold" />
+                                            <styles:SHToggleCheckbox IsChecked="{Binding Settings.HeaveInverted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </TextBlock>
+                                            <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="0,0,0,5">
+                                                <local:MarkdownFormattedText Key="SABT_Text_ForceInversion" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ContentControl>
+
+                                </StackPanel>
+                            </styles:SHTitledGroup>
+                            <styles:SHTitledGroup Title="{SLoc SABT_Title_Effects}" d:Title="Title" Margin="10,0,10,10">
+                                <StackPanel>
+
+                                    <ContentControl Style="{StaticResource SettingStyle}" Margin="0,-5,0,0">
                                         <StackPanel>
                                             <local:SettingSlider Title="{SLoc SABT_Label_SmoothingFactor}" Unit="%" Minimum="0" Maximum="75" Step="0.5" Value="{Binding Settings.SmoothingFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <TextBlock LineHeight="20" TextWrapping="WrapWithOverflow" Margin="5,0,0,5">

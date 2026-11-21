@@ -355,6 +355,39 @@ namespace User.ActiveBeltTensioner
             }
         }
 
+        private bool _surgeInverted = false;
+        public bool SurgeInverted
+        {
+            get { return _surgeInverted;  }
+            set
+            {
+                _surgeInverted = value;
+                InvokePropertyChange(nameof(SurgeInverted));
+            }
+        }
+
+        private bool _swayInverted = false;
+        public bool SwayInverted
+        {
+            get { return _swayInverted; }
+            set
+            {
+                _swayInverted = value;
+                InvokePropertyChange(nameof(SwayInverted));
+            }
+        }
+
+        private bool _heaveInverted = false;
+        public bool HeaveInverted
+        {
+            get { return _heaveInverted; }
+            set
+            {
+                _heaveInverted = value;
+                InvokePropertyChange(nameof(HeaveInverted));
+            }
+        }
+
         private double _minimumSurge = -8.0;
         public double MinimumSurge
         {
@@ -731,6 +764,9 @@ namespace User.ActiveBeltTensioner
             SurgeStrength = profile.SurgeStrength;
             SwayStrength = profile.SwayStrength;
             HeaveStrength = profile.HeaveStrength;
+            SurgeInverted = profile.SurgeInverted;
+            SwayInverted = profile.SwayInverted;
+            HeaveInverted = profile.HeaveInverted;
             SmoothingFactor = profile.SmoothingFactor;
             EngineStrength = profile.EngineStrength;
             UpshiftingStrength = profile.UpshiftingStrength;
@@ -920,6 +956,9 @@ namespace User.ActiveBeltTensioner
         public double SurgeStrength { get; set; }
         public double SwayStrength { get; set; }
         public double HeaveStrength { get; set; }
+        public bool SurgeInverted { get; set; }
+        public bool SwayInverted { get; set; }
+        public bool HeaveInverted { get; set; }
         public double SmoothingFactor { get; set; }
         public double EngineStrength { get; set; }
         public double UpshiftingStrength { get; set; }
@@ -981,6 +1020,9 @@ namespace User.ActiveBeltTensioner
                 SurgeStrength = settings.SurgeStrength,
                 SwayStrength = settings.SwayStrength,
                 HeaveStrength = settings.HeaveStrength,
+                SurgeInverted = settings.SurgeInverted,
+                SwayInverted = settings.SwayInverted,
+                HeaveInverted = settings.HeaveInverted,
                 SmoothingFactor = settings.SmoothingFactor,
                 EngineStrength = settings.EngineStrength,
                 UpshiftingStrength = settings.UpshiftingStrength,
@@ -1004,6 +1046,9 @@ namespace User.ActiveBeltTensioner
                 SurgeStrength = this.SurgeStrength,
                 SwayStrength = this.SwayStrength,
                 HeaveStrength = this.HeaveStrength,
+                SurgeInverted = this.SurgeInverted,
+                SwayInverted = this.SwayInverted,
+                HeaveInverted = this.HeaveInverted,
                 SmoothingFactor = this.SmoothingFactor,
                 EngineStrength = this.EngineStrength,
                 UpshiftingStrength = this.UpshiftingStrength,
