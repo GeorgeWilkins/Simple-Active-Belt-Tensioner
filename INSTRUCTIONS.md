@@ -145,7 +145,7 @@ Since the motors are technically _wheels_ intended for robotics projects, they c
 | Step | Instructions | Illustration |
 | :-: | :- | :-: |
 | 1 | Unscrew the three `M2.5` bolts holding on motor face plate and remove it. You may need to remove a 'QA' sticker covering one of the screws. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/37161acb-f815-408a-b04b-bd79367bf17b" /> |
-| 2 | Push the motor face (with the triangular hub) firmly with your thumbs, while holding the opposing face/rim of the tire with your fingers. Gradually working your way around the rim, moving small amounts at a time works best.<br /><br />If you have difficulty, warming the tires up with a hair dryer or heat gun will soften them and make this easier. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/11f57779-0d66-4b99-9151-42d3f9739a8f" /> /> |
+| 2 | Push the motor face (with the triangular hub) firmly with your thumbs, while holding the opposing face/rim of the tire with your fingers. Gradually working your way around the rim, moving small amounts at a time works best.<br /><br />If you have difficulty, warming the tires up with a hair dryer or heat gun will soften them and make this easier. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/11f57779-0d66-4b99-9151-42d3f9739a8f" /> |
 | 3 | You'll be left with the bare motor. Keep the rubber tire, face plate and bolts safe though; in case you need to return the motors or repurpose them later. | <img alt="Motor Without Tire" src="https://github.com/user-attachments/assets/522b9d83-0a32-4464-8a26-77f0ff1cfd14" /> |
 
 ### Belt Clamps
@@ -156,11 +156,21 @@ In this guide we'll be using the **End Clamps**; designed to attach to the bare 
 | Step | Instructions | Illustration |
 | :-: | ------- | :-: |
 | 1 | Gather the belt clamp parts; the four `M2.5x10` bolts, four `M2.5` nuts, and the front and rear plates.<br /><br />Note that the clamps have three cord positions. If you are using a **single motor** with this belt, use the centre position. If you are using a **pair of motors**, use the outer positions. | <img alt="Belt Clamp Parts" src="https://github.com/user-attachments/assets/35c971b6-75bb-495c-b9a5-f20d2064c719" /> |
-| 1 | Insert `M2.5` nuts into the hexagonal holes on the underside of the rear clamp plate (as deeply as they will go). | <img alt="Nuits Fitted" src="https://github.com/user-attachments/assets/8b0e9e06-9d9d-4466-8b34-5d950757cdf7" /> |
-| 2 | Tie a tight knot in other end of the cord you previously attached to the _Pulley_. Push the knot into the cut-out in the rear clamp plate, so the cord comes out the bottom.<br /><br />If using paired motors, repeat this for the second cord. | <img alt="Cord Fitted" src="https://github.com/user-attachments/assets/8b5d01b1-9f84-433b-b4ed-aa20c9cd9ab0" /> |
-| 3 | Place the end of the harness belt into the rectangular detent of the rear clamp plate (it may overlap the knot; that's fine). Push the front clamp plate firmly down over both. | <img alt="Belt Positioned" src="https://github.com/user-attachments/assets/46525793-602e-4a68-b153-8ac3b75d40fc" /><img alt="Clamp Applied" src="https://github.com/user-attachments/assets/13527a52-6bf2-4621-86c8-55bebbf0f8cc" /> |
-| 4 | Keep pressure on the assembly while securing with the four `M2.5x10` bolts. Tighen each bolt partially then move on to the next one, until they are all tight; rather than trying to fully tighten one at a time. | <img alt="Tightening The Clamp" src="https://github.com/user-attachments/assets/5b5760dd-792c-4324-875b-2024a9978939" /> |
-| 5 | Once fully tightened, the two clamp parts should be fully touching with no visible gap between them. | <img alt="Clamp Fully Assembled" src="https://github.com/user-attachments/assets/efbe1e7a-ff0c-4ac8-bca8-95196e785525" /> |
+| 2 | Insert `M2.5` nuts into the hexagonal holes on the underside of the rear clamp plate (as deeply as they will go). | <img alt="Nuts Fitted" src="https://github.com/user-attachments/assets/8b0e9e06-9d9d-4466-8b34-5d950757cdf7" /> |
+| 3 | Tie a tight knot in other end of the cord you previously attached to the _Pulley_. Push the knot into the cut-out in the rear clamp plate, so the cord comes out the bottom.<br /><br />If using paired motors, repeat this for the second cord. | <img alt="Cord Fitted" src="https://github.com/user-attachments/assets/8b5d01b1-9f84-433b-b4ed-aa20c9cd9ab0" /> |
+| 4 | Place the end of the harness belt into the rectangular detent of the rear clamp plate (it may overlap the knot; that's fine). Push the front clamp plate firmly down over both. | <img alt="Belt Positioned" src="https://github.com/user-attachments/assets/46525793-602e-4a68-b153-8ac3b75d40fc" /><img alt="Clamp Applied" src="https://github.com/user-attachments/assets/13527a52-6bf2-4621-86c8-55bebbf0f8cc" /> |
+| 5 | Keep pressure on the assembly while securing with the four `M2.5x10` bolts. Tighen each bolt partially then move on to the next one, until they are all tight; rather than trying to fully tighten one at a time. | <img alt="Tightening The Clamp" src="https://github.com/user-attachments/assets/5b5760dd-792c-4324-875b-2024a9978939" /> |
+| 6 | Once fully tightened, the two clamp parts should be fully touching with no visible gap between them. | <img alt="Clamp Fully Assembled" src="https://github.com/user-attachments/assets/efbe1e7a-ff0c-4ac8-bca8-95196e785525" /> |
+
+### Belt Clamps (Idler Equipped)
+For the special versions of the clamps with idler-pulleys (for increased force output), the instructions are much the same.
+
+| Step | Instructions | Illustration |
+| :-: | ------- | :-: |
+| 1 | Gather the belt clamp parts; the five `M2.5x12` bolts, five `M2.5` nuts, two `682XZZ` bearings, the printed pulley, and the front and rear plates.<br /><br />Press-fit the two bearings into the centre of the pulley. | <img alt="Belt Clamp Parts" src="https://github.com/user-attachments/assets/3f95405c-81ee-4e53-a030-67bdcf9a7d23" /> |
+| 2~3 | Same steps as the other clamp designs... | - |
+| 4 | When closing the two halves of the clamp together, insert the assembled pulley into the cavity and secure it with the fifth `M2.5` bolt and nut.<br /><br />You won't be able to do this after the clamp parts are tightened together. | <img alt="Pulley Inserted" src="https://github.com/user-attachments/assets/2819236b-f9d8-4721-89ca-e240f726d8fd" /> |
+| 5~7 | Same steps as the other clamp designs... | - |
 
 ### Pulleys
 The pulleys turn the motor's torque into linear force by wrapping cords around small hubs. This design has self-orienting pulley covers, which orient themselves to the correct angle for your seat position. This allows for use with adjustable/sliding seats without needing to adjust the tensioning system.
