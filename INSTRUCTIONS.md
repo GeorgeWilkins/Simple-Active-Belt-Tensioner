@@ -235,15 +235,34 @@ The choice of which holes to use is up to you and very much specific to your sea
 | 5 | Check for any stray or loose wires and adjust if needed. Install the unit into the printed case, taking care not to disturb the fitted wires. Make sure that the black outer sheath of the cable goes _completely inside_ the case as shown, so that the case lid can clamp down on it once closed. | <img alt="Fitting Into The Case" src="https://github.com/user-attachments/assets/99450677-ceb3-4b04-8392-2bc96aac6a44" /> |
 | 8 | Install the `M2.5x16MM` screws and nuts into the case and tighten as much as they will reasonably go. Ideally if you happen to have a multimeter, before attempting to power the controller board, check that the `XT60` connector produces the expected `15V` in the correct polarity (the **flat** side should be `+` and the **beveled** side `-`) when the power supply is connected to the dc barrel plug. |  <img alt="The Completed Protection Unit" src="https://github.com/user-attachments/assets/f5234cca-f23d-4a27-9115-615e1edb59dc" /> |
 
+## Configurations
+**SABT** supports a wide variety of configurations; some of which are illustrated below:
+
+![Layouts](https://github.com/user-attachments/assets/08ea101a-9048-48ad-88ee-3bb640d5036d)
+
+The main options are which belts you'd like to be **active** and how much **force** you desire:
+- I want **active shoulder belts**
+    - You'll need **two motors** (with **one motor per belt**)
+    - Your waist belts will be passive
+    - You'll get `~10Kg` per belt
+        - You can increase this to `~18Kg` by using **idler-pulley belt clamps**
+        - You can increase this to `~20Kg` by using **paired motors** (**four motors** total)
+- I want **active shoulder belts** and **active waist belts**
+    - You'll need **four motors** (with **one motor per belt**)
+    - You'll get `~10Kg` per belt
+        - You can increase this to `~18Kg` by using **idler-pulley belt clamps**
+
+Other configurations (such as **single motor** inertia-reel style layouts) can be used, but are not formally supported.
+
+Within the plugin you can map any motor to any belt position.
+
+> 📢 **Important:** Since **SABT** can be upgraded over time by adding more motors or printing different parts, it is suggested that you try the standard `10Kg` output before choosing to go for more force. Most **SABT** builders have expressed satisfaction with the standard force output.
+
 ## Fitting
 
 Since every rig is different, the fitting process can't be covered in every possible detail and is going to require some common sense from the builder.
 
-By now you will have chosen your motor brackets (and attached the motors) and should find their installation intuitive. The simplified diagram below shows a few different layouts supported by the plugin, with two or four motors:
-
-![Diagram](https://github.com/user-attachments/assets/68b97755-a136-4e82-94e4-d153d1bd5e17)
-
-Note that you can flip the motor rotation directions and change their mappings within the plugin, so you do not need to adhere to the layouts above.
+By now you will have chosen your motor brackets (and attached the motors) and should find their installation intuitive.
 
 Typically you would aim to mount all of your motors on the rearmost crossmember of your rig regardless of whether it is aluminium profile or tubular steel.
 
