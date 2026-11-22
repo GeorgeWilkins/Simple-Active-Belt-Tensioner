@@ -53,7 +53,9 @@ Fibre-reinforced filament is okay for the mounting brackets but _not recommended
 
 #### Printing Settings
 
-If you're self-printing you probably know what works best for your printer, but here are the settings I use for reference:
+If you're able to, printing in a more heat-resistant filament such as ABS or PETG is preferred over PLA. The motors are capable of operating at _much_ higher temperatures than PLA can cope with; but under normal operation they should not get warm enough to pose a problem. The **SABT** plugin has thermal controls that allow you to reduce the motor output if the temperatures reach a threshold you set; so whatever you print in, you can adjust that to match your material.
+
+As for printing settings, I would suggest:
 | Setting | Value |
 | - | - |
 | Layer Height | `0.16` |
