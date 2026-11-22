@@ -1,4 +1,4 @@
-> 📢 **Important:** This is a _pre-release_ of the project and considered to be under active development and testing. If you're not prepared to do some tinkering and/or deal with initial usability issues, it is recommended that you do not attempt to build it right now and instead wait for the `v1.0` release
+> 📢 **Important:** This is a _pre-release_ of the project and considered to be under active development and testing. If you're not prepared to do some tinkering and/or deal with initial usability issues, it is recommended that you do not attempt to build it right now and instead wait for the `v1.0` release (expected _mid-December_)
 
 > 📰 **Latest News:** We now have a [Discord Server](https://discord.gg/YwW3TvEJEv) for pre-build questions, troubleshooting and technical support. You can also share details and photos of your build there!
 
@@ -59,7 +59,7 @@ Examples given below are for a standard **two-motor** configuration. The great t
 ### Purchased Parts
 | Price (GBP) | Part | Notes |
 | - | - | - |
-| 120 | Motors | Provides the tensioning force |
+| 120 | Motors | Provide the tensioning force |
 | 20 | Controller | Provides USB control of the motors |
 | 6 | Bearings | Allows the pulley covers to rotate smoothly |
 | 7 | Screw & Nut Set | Provides every needed fastener in one set (with _many_ spares) |
@@ -74,7 +74,7 @@ There is a [detailed parts list](/INSTRUCTIONS.md#motors-electronics--fixings) w
 ### Printing Options
 | Price (GBP) | Method | Notes |
 | - | - | - |
-| 5~10 | Self-Print | Roughly 200g or 75M of filament |
+| 5~10 | Self-Print | Roughly 200g or 75M of filament (double for **four-motor** configurations) |
 | 30~60 | FDM Service | Assuming an _eBay-tier_ printing provider, not a professional company |
 | 60~90 | MJF/SLS Service | [JLC3DP](http://jlc3dp.com/) and [3DPrintUK](http://3dprint-uk.co.uk/) used for reference pricing (nylon dyed black with peening) |
 
@@ -98,7 +98,7 @@ The benefits of this are:
 - Compact & clean design
 - Auto-adjusting of the harness (adjustable idle tension)
 
-The motors are each capable of exerting about `10Kgf`; roughly equivalent to having **10Kg of weights** attached to each belt, hanging down from the back of your seat. This is _plenty_ for most users.
+The motors are each capable of exerting about `10Kgf`; roughly equivalent to having **10Kg of weight** attached to each belt, hanging down from the back of your seat. This is _plenty_ for most users.
 
 Should this not be sufficient for your needs, there are two optional approaches to increasing output:
 - Using **four motors** in two pairs, applying up to `20Kgf` per belt
@@ -133,4 +133,4 @@ With that said, design measures have been taken with safety in mind. See [SAFETY
 
 Read through the [instructions](/INSTRUCTIONS.md) to get a better idea of what's involved and how to proceed.
 
-> 📢 **Important:** This is a _pre-release_ of the project and considered to be under active development and testing. If you're not prepared to do some tinkering and/or deal with initial usability issues, it is recommended that you do not attempt to build it right now and instead wait for the `v1.0` release
+> 📢 **Important:** This is a _pre-release_ of the project and considered to be under active development and testing. If you're not prepared to do some tinkering and/or deal with initial usability issues, it is recommended that you do not attempt to build it right now and instead wait for the `v1.0` release (expected _mid-December_)
