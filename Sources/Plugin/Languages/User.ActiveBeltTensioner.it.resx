@@ -135,9 +135,8 @@
   <data name="SABT_Title_Tuning" xml:space="preserve">
     <value>Messa a punto</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SABT_Title_Effects" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Title_Effects" xml:space="preserve">
+    <value>Effetti</value>
   </data>
   <data name="SABT_Title_Preferences" xml:space="preserve">
     <value>Preferenze</value>
@@ -548,8 +547,8 @@ Puoi quindi usare il menu **Controls And Events** per assegnare i tuoi dispositi
 3. Digita '**sabt**' nel campo **Target** e seleziona tra le azioni disponibili
 4. Scegli la **Input Mode** e fai clic su **OK** per applicare</value>
   </data>
-  <data name="SABT_Text_ForceInversion" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Text_ForceInversion" xml:space="preserve">
+    <value>In rari casi potresti voler invertire il modo in cui ogni forza di gioco viene interpretata dal plugin. Non abilitare questa opzione in circostanze normali.</value>
   </data>
   <data name="SABT_Text_Engine" xml:space="preserve">
     <value>• In che misura le vibrazioni del motore al minimo e in stallo a bassa velocità devono essere percepite attraverso le cinture
@@ -627,14 +626,14 @@ Impostare qui sopra un intervallo appropriato di limitazione termica può proteg
   <data name="SABT_Label_Direction" xml:space="preserve">
     <value>Direzione</value>
   </data>
-  <data name="SABT_Label_SurgeInverted" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_SurgeInverted" xml:space="preserve">
+    <value>Surge Invertito</value>
   </data>
-  <data name="SABT_Label_SwayInverted" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_SwayInverted" xml:space="preserve">
+    <value>Oscillazione invertita</value>
   </data>
-  <data name="SABT_Label_HeaveInverted" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="SABT_Label_HeaveInverted" xml:space="preserve">
+    <value>Sollevamento invertito</value>
   </data>
   <data name="SABT_Label_Status" xml:space="preserve">
     <value>Stato</value>

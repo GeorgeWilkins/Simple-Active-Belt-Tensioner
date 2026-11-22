@@ -242,6 +242,20 @@ namespace User.ActiveBeltTensioner
             }
         }
 
+        private double? _torque = null;
+        public double? Torque
+        {
+            get { return _torque * 100; }
+            set
+            {
+                if (_torque != value)
+                {
+                    _torque = value;
+                    InvokePropertyChange();
+                }
+            }
+        }
+
         private byte? _highestTemperature = null;
         public byte? HighestTemperature
         {
@@ -302,6 +316,7 @@ namespace User.ActiveBeltTensioner
         /// <summary>Resets the session diagnostic data for the motor</summary>
         public void ResetDiagnostics()
         {
+            Torque = null;
             Angle = null;
             Temperature = null;
             HighestTemperature = null;
@@ -413,6 +428,7 @@ namespace User.ActiveBeltTensioner
             Status = (Mapping.Key == MotorMapping.Unused.Key)
                 ? MotorStatus.Disabled
                 :MotorStatus.Unavailable;
+            Torque = null;
             Angle = null;
             Temperature = null;
 
@@ -441,6 +457,7 @@ namespace User.ActiveBeltTensioner
             }
 
             Status = MotorStatus.Unavailable;
+            Torque = null;
             Angle = null;
             Temperature = null;
 
@@ -470,6 +487,7 @@ namespace User.ActiveBeltTensioner
                 return true;
             }
 
+            Torque = null;
             Angle = null;
             Temperature = null;
 
@@ -518,6 +536,8 @@ namespace User.ActiveBeltTensioner
                 Thread.Sleep(TimeSpan.FromMilliseconds(20));
 
                 torque = (short)(testTorque * direction * _torqueLimit);
+
+                Torque = testTorque * direction;
 
                 direction *= -1;
             }
@@ -594,6 +614,8 @@ namespace User.ActiveBeltTensioner
                     // 20%-80% At Target Torque
                     currentTorque = tensionTorque;
                 }
+
+                Torque = currentTorque;
 
                 short torque = (short)(currentTorque * _torqueLimit);
 
@@ -692,6 +714,8 @@ namespace User.ActiveBeltTensioner
         public bool SetTorque(double torque)
         {
             torque *= Direction.Multiplier;
+
+            Torque = torque;
 
             short newTorque = ClampValue(
                 (short)(torque * _torqueLimit * -1.0),
@@ -801,4 +825,4 @@ namespace User.ActiveBeltTensioner
         }
     }
 
-    }
+}

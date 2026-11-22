@@ -366,6 +366,14 @@ namespace User.ActiveBeltTensioner
             pluginManager.AttachDelegate("SABT.IdleTension", typeof(DevicePlugin), () => Settings.IdleTension);
             pluginManager.AttachDelegate("SABT.RestingTension", typeof(DevicePlugin), () => Settings.RestingTension);
             pluginManager.AttachDelegate("SABT.MaximumTension", typeof(DevicePlugin), () => Settings.MaximumTension);
+            pluginManager.AttachDelegate("SABT.MotorTemperature1", typeof(DevicePlugin), () => MotorController.Motors[0].Temperature);
+            pluginManager.AttachDelegate("SABT.MotorTemperature2", typeof(DevicePlugin), () => MotorController.Motors[1].Temperature);
+            pluginManager.AttachDelegate("SABT.MotorTemperature3", typeof(DevicePlugin), () => MotorController.Motors[2].Temperature);
+            pluginManager.AttachDelegate("SABT.MotorTemperature4", typeof(DevicePlugin), () => MotorController.Motors[3].Temperature);
+            pluginManager.AttachDelegate("SABT.MotorTorque1", typeof(DevicePlugin), () => MotorController.Motors[0].Torque);
+            pluginManager.AttachDelegate("SABT.MotorTorque2", typeof(DevicePlugin), () => MotorController.Motors[1].Torque);
+            pluginManager.AttachDelegate("SABT.MotorTorque3", typeof(DevicePlugin), () => MotorController.Motors[2].Torque);
+            pluginManager.AttachDelegate("SABT.MotorTorque4", typeof(DevicePlugin), () => MotorController.Motors[3].Torque);
 
             // Initialise Motor Controller
             MotorController = new MotorController(this);
