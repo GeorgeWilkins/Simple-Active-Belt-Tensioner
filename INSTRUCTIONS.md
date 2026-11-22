@@ -24,7 +24,7 @@ Some of these items are only sold in multiples, so our guide prices are calculat
 | `2 GBP` | `2x`-`4x` | `6706` Bearing | `30x37x4mm` bearings for the self-orienting pulley covers (in the same quantity as the motors) | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DN3RW8) |
 | `7 GBP` | `1x` | `M2.5` Screw & Nut Set | A selection of `M2.5` screws and nuts that we use to fit the various parts together. The kit includes everything you need for any possible motor configuration, including a hex key | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
 | `5 GBP` | `~5M` | `~1.8MM` UHMWPE/Dyneema Cord | Low-friction high-strength cord for up to four motors and pulley anchors. Avoid _'Paracord'_ style products with outer sheaths; go for _100% braided UHMWPE/Dyneema_ in `1.6mm` to `2.0mm` diameters | eBay, Kite/Sail stores, etc |
-| `40 GBP` | `1x` | `20V` `≥120W` DC Power Supply | The power supply for the motors. `120W` is the verified _absolute minimum_ required for `4x` motor configurations; `≥140W` is strongly recommended (`≥7A` at `20V`) | [DigiKey](https://www.digikey.co.uk/en/products/detail/fsp-technology-inc/FSP135-AJBU3/16164268) / [AliExpress](https://www.aliexpress.com/item/1005011817355175.html) |
+| `40 GBP` | `1x` | `20V` `≥120W` DC Power Supply | The power supply for the motors. `120W` (`6A` at `20V`) is the verified _absolute minimum_ required for `4x` motor configurations; `≥140W` is strongly recommended (`≥7A` at `20V`) | [DigiKey](https://www.digikey.co.uk/en/products/detail/fsp-technology-inc/FSP135-AJBU3/16164268) / [AliExpress](https://www.aliexpress.com/item/1005011817355175.html) |
 | `25 GBP` | `1x` | 4/5/6-Point `2"` Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
 
 > 📢 **Important:**
@@ -44,7 +44,9 @@ The `GST120A20-P1M` is a high-quality `6A` supply that has been tested and verif
 
 Low quality supplies are unlikely to sustain their claimed output or handle spikes well.
 
-An issue you'll run into is that `≥7A` is around the threshold where common `5.5x2.5mm` barrel plugs hit their current limit, so manufacturers start using other types of connector. Gaming laptop supplies are a good source of high-current `19~20V` units; but watch out for the connector type and size.
+Gaming laptop supplies are a good source of high-current `19~20V` units; but watch out for the connector type and size.
+
+The motor controller accepts `5.5x2.5mm` barrel plugs or `XT60` connectors. Virtually no power supplies provide `XT60` output, but adapter cables exist. We use one of those to create our **back-driving protection unit**, which acts as a `5.5x2.5mm` barrel plug to `XT60` adapter.
 
 ### Belt Rollers
 
@@ -212,7 +214,7 @@ The controller board sends power and commands to the motors. To prevent shorting
 | 2 | Flip the switch on the control board to the `USB` setting. | <img alt="Switch Set To 'USB'" src="https://github.com/user-attachments/assets/535d4f6b-7255-40b4-9976-2180dd30fd0d" /> |
 | 3 | Insert `M2.5` nuts into the hexangonal holes on the underside of the lower printed case (as deeply as they will go). | <img alt="Nuts Inserted" src="https://github.com/user-attachments/assets/a611f28a-1c1b-444c-a974-b4a9d2b50296" /> |
 | 4 | Insert the board into the lower half of the printed case. The _Raspberry Pi_ header on the rear may be a tight fit here; push down on the white circles either side of the header to press this in. | <img alt="Board Inserted" src="https://github.com/user-attachments/assets/e3a8817d-76d7-4f4c-a74f-d56d9005a955" /> |
-| 5 | Place the upper half of the case on top and secure with four `M2.5x16` bolts. | <img alt="Case Assembled" src="https://github.com/user-attachments/assets/986af12a-4858-4d80-8412-7975f14e810f" /> |
+| 5 | Place the upper half of the case on top and secure with four `M2.5x16` bolts. | <img alt="Case Assembled" src="https://github.com/user-attachments/assets/d465d9a3-1d34-4e7c-8b77-c623085fb359" /> |
 
 ### Belt Rollers
 
