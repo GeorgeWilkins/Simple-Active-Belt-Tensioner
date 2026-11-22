@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SimHub;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using WoteverLocalization;
 
 namespace User.ActiveBeltTensioner
@@ -23,10 +23,10 @@ namespace User.ActiveBeltTensioner
 
         private bool _isInitialised = false;
 
-        /// <summary>Invoke when the current settings should be serialized to the plugin's JSON configuration file</summary>
         [JsonIgnore]
         public Action Persist { get; set; }
 
+        [JsonIgnore]
         public string DefaultUpshiftingModifiers = "0ms:100% 150ms:100% 300ms:0%";
 
         public void Initialise(DevicePlugin plugin)
@@ -34,7 +34,62 @@ namespace User.ActiveBeltTensioner
             _plugin = plugin;
             _isInitialised = true;
 
+            ApplyTransition();
+
             ChangeActiveProfile();
+        }
+        
+        /// <summary>Applies any required settings value transitions, then sets the the stored plugin version for future transitions</summary>
+        /// <remarks>This can be used to apply new defaults, merge or migrate properties, change types and scales, etc</remarks>
+        public DeviceSettings ApplyTransition()
+        {
+            string currentVersion = typeof(DevicePlugin).Assembly.GetName().Version.ToString(4) ?? new Version(1, 0).ToString(4);
+            string priorVersion = PluginVersion;
+
+            switch (true)
+            {
+                case bool _ when IsTransitioning(priorVersion, currentVersion, "0.*.*.*", "1.*.*.*"):
+
+                    // TODO: Add any migration logic here for settings values
+
+                    break;
+
+                case bool _ when IsTransitioning(priorVersion, currentVersion, "0.8.*.*", "0.9.*.*"):
+
+                    // TODO: Add any migration logic here for settings values
+
+                    break;
+            }
+
+            PluginVersion = currentVersion;
+
+            return this;
+        }
+
+        /// <summary>Indicates if these settings are transitioning between the specified plugin versions</summary>
+        /// <remarks>Supports wildcard patterns in the version strings like `0.9.*.*` or `1.*.*.*`</remarks>
+        private static bool IsTransitioning(string priorVersion, string currentVersion, string priorPattern, string currentPattern)
+        {
+            return (
+                IsVersionMatch(priorVersion, priorPattern) &&
+                IsVersionMatch(currentVersion, currentPattern)
+            );
+        }
+
+        private static bool IsVersionMatch(string version, string wildcardPattern)
+        {
+            if (string.IsNullOrWhiteSpace(version) || string.IsNullOrWhiteSpace(wildcardPattern))
+            {
+                return false;
+            }
+
+            string regexPattern = "^" + Regex.Escape(wildcardPattern).Replace("\\*", ".*") + "$";
+
+            return Regex.IsMatch(
+                version,
+                regexPattern,
+                RegexOptions.CultureInvariant | RegexOptions.IgnoreCase
+            );
         }
 
         private void InvokePropertyChange([CallerMemberName] string name = null)
@@ -52,59 +107,30 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private string _serialPort = null;
-        public string SerialPort
+        private string _pluginVersion = "0.0.0.0";
+        public string PluginVersion
         {
-            get { return _serialPort; }
+            get { return _pluginVersion; }
             set
             {
-                if (_serialPort != value)
+                if (_pluginVersion != value)
                 {
-                    _serialPort = value;
-                    InvokePropertyChange(nameof(SerialPort));
-                    InvokePropertyChange(nameof(IsSerialPortValid));
+                    _pluginVersion = value;
+                    InvokePropertyChange(nameof(PluginVersion));
                 }
             }
         }
 
-        private bool _startAutomatically = false;
-        public bool StartAutomatically
+        private string _deviceIdentifier = null;
+        public string DeviceIdentifier
         {
-            get { return _startAutomatically; }
+            get { return _deviceIdentifier; }
             set
             {
-                if (_startAutomatically != value)
+                if (_deviceIdentifier != value)
                 {
-                    _startAutomatically = value;
-                    InvokePropertyChange(nameof(StartAutomatically));
-                }
-            }
-        }
-
-        private bool _isFlipped = false;
-        public bool IsFlipped
-        {
-            get { return _isFlipped; }
-            set
-            {
-                if (_isFlipped != value)
-                {
-                    _isFlipped = value;
-                    InvokePropertyChange(nameof(IsFlipped));
-                }
-            }
-        }
-
-        private bool _isReversed = false;
-        public bool IsReversed
-        {
-            get { return _isReversed; }
-            set
-            {
-                if (_isReversed != value)
-                {
-                    _isReversed = value;
-                    InvokePropertyChange(nameof(IsReversed));
+                    _deviceIdentifier = value;
+                    InvokePropertyChange(nameof(DeviceIdentifier));
                 }
             }
         }
@@ -128,12 +154,17 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _reducedOutputTemperature = 50;
+        private int _reducedOutputTemperature = 45;
         public int ReducedOutputTemperature
         {
             get { return _reducedOutputTemperature; }
             set
             {
+                value = Math.Min(
+                    Math.Max(value, 40),
+                    _stoppedOutputTemperature - 1
+                );
+
                 if (_reducedOutputTemperature != value)
                 {
                     _reducedOutputTemperature = value;
@@ -142,12 +173,17 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _stoppedOutputTemperature = 60;
+        private int _stoppedOutputTemperature = 55;
         public int StoppedOutputTemperature
         {
             get { return _stoppedOutputTemperature; }
             set
             {
+                value = Math.Min(
+                    Math.Max(value, _reducedOutputTemperature + 1),
+                    80
+                );
+
                 if (_stoppedOutputTemperature != value)
                 {
                     _stoppedOutputTemperature = value;
@@ -156,18 +192,13 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _idleTension = 150;
-        public int IdleTension
+        private double _idleTension = 15.0;
+        public double IdleTension
         {
             get { return _idleTension; }
             set
             {
-                value = Math.Min(
-                    Math.Max(value, 0),
-                    250
-                );
-
-                if (_idleTension != value)
+                if (Math.Abs(_idleTension - value) > double.Epsilon)
                 {
                     _idleTension = value;
                     InvokePropertyChange(nameof(IdleTension));
@@ -175,38 +206,37 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _minimumTension = 200;
-        public int MinimumTension
+        private double _restingTension = 15.0;
+        public double RestingTension
         {
-            get { return _minimumTension; }
+            get { return _restingTension; }
             set
             {
                 value = Math.Min(
-                    Math.Max(value, 0),
-                    _maximumTension - _tensionStep
+                    Math.Max(value, 0.0),
+                    _maximumTension - _controlStep
                 );
 
-                if (_minimumTension != value)
+                if (Math.Abs(_restingTension - value) > double.Epsilon)
                 {
-                    _minimumTension = value;
-                    InvokePropertyChange(nameof(MinimumTension));
-                    InvokePropertyChange(nameof(IsMinimumTensionNonZero));
+                    _restingTension = value;
+                    InvokePropertyChange(nameof(RestingTension));
                 }
             }
         }
 
-        private int _maximumTension = 1000;
-        public int MaximumTension
+        private double _maximumTension = 100.0;
+        public double MaximumTension
         {
             get { return _maximumTension; }
             set
             {
                 value = Math.Min(
-                    Math.Max(value, _minimumTension + _tensionStep),
-                    1000
+                    Math.Max(value, _restingTension + _controlStep),
+                    100.0
                 );
 
-                if (_maximumTension != value)
+                if (Math.Abs(_maximumTension - value) > double.Epsilon)
                 {
                     _maximumTension = value;
                     InvokePropertyChange(nameof(MaximumTension));
@@ -214,32 +244,157 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _tensionStep = 10;
-        public int TensionStep
+        private double _controlStep = 1.0;
+        public double ControlStep
         {
-            get { return _tensionStep; }
+            get { return _controlStep; }
             set
             {
                 value = Math.Min(
-                    Math.Max(value, 1),
-                    200
+                    Math.Max(value, 0.1),
+                    10.0
                 );
 
-                if (_tensionStep != value)
+                if (Math.Abs(_controlStep - value) > double.Epsilon)
                 {
-                    _tensionStep = value;
-                    InvokePropertyChange(nameof(TensionStep));
+                    _controlStep = value;
+                    InvokePropertyChange(nameof(ControlStep));
                 }
             }
         }
 
-        private int _minimumSurge = -8;
-        public int MinimumSurge
+        private double _seatDegreesFromVertical = 11.0;
+        public double SeatDegreesFromVertical
+        {
+            get { return _seatDegreesFromVertical; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(40.0, value));
+
+                if (_seatDegreesFromVertical != clampedValue)
+                {
+                    _seatDegreesFromVertical = clampedValue;
+                    InvokePropertyChange(nameof(SeatDegreesFromVertical));
+                    InvokePropertyChange(nameof(SeatRadiansFromVertical));
+                }
+            }
+        }
+
+        public double SeatRadiansFromVertical
+        {
+            get { return _seatDegreesFromVertical * (Math.PI / 180.0); }
+        }
+
+        private double _waistBeltDegreesFromVertical = -38.5;
+        public double WaistBeltDegreesFromVertical
+        {
+            get { return _waistBeltDegreesFromVertical; }
+            set
+            {
+                double clampedValue = Math.Max(-90.0, Math.Min(0.0, value));
+
+                if (_waistBeltDegreesFromVertical != clampedValue)
+                {
+                    _waistBeltDegreesFromVertical = clampedValue;
+                    InvokePropertyChange(nameof(WaistBeltDegreesFromVertical));
+                    InvokePropertyChange(nameof(WaistBeltRadiansFromVertical));
+                }
+            }
+        }
+
+        public double WaistBeltRadiansFromVertical
+        {
+            get { return _waistBeltDegreesFromVertical * (Math.PI / 180.0); }
+        }
+
+        private double _surgeStrength = 100.0;
+        public double SurgeStrength
+        {
+            get { return _surgeStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(200.0, value));
+
+                if (Math.Abs(_surgeStrength - clampedValue) > double.Epsilon)
+                {
+                    _surgeStrength = clampedValue;
+                    InvokePropertyChange(nameof(SurgeStrength));
+                }
+            }
+        }
+
+        private double _swayStrength = 100.0;
+        public double SwayStrength
+        {
+            get { return _swayStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(200.0, value));
+
+                if (Math.Abs(_swayStrength - clampedValue) > double.Epsilon)
+                {
+                    _swayStrength = clampedValue;
+                    InvokePropertyChange(nameof(SwayStrength));
+                }
+            }
+        }
+
+        private double _heaveStrength = 100.0;
+        public double HeaveStrength
+        {
+            get { return _heaveStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(200.0, value));
+
+                if (Math.Abs(_heaveStrength - clampedValue) > double.Epsilon)
+                {
+                    _heaveStrength = clampedValue;
+                    InvokePropertyChange(nameof(HeaveStrength));
+                }
+            }
+        }
+
+        private bool _surgeInverted = false;
+        public bool SurgeInverted
+        {
+            get { return _surgeInverted;  }
+            set
+            {
+                _surgeInverted = value;
+                InvokePropertyChange(nameof(SurgeInverted));
+            }
+        }
+
+        private bool _swayInverted = false;
+        public bool SwayInverted
+        {
+            get { return _swayInverted; }
+            set
+            {
+                _swayInverted = value;
+                InvokePropertyChange(nameof(SwayInverted));
+            }
+        }
+
+        private bool _heaveInverted = false;
+        public bool HeaveInverted
+        {
+            get { return _heaveInverted; }
+            set
+            {
+                _heaveInverted = value;
+                InvokePropertyChange(nameof(HeaveInverted));
+            }
+        }
+
+        private double _minimumSurge = -8.0;
+        public double MinimumSurge
         {
             get { return _minimumSurge; }
             set
             {
-                if (_minimumSurge != value)
+                if (Math.Abs(_minimumSurge - value) > double.Epsilon)
                 {
                     _minimumSurge = Math.Min(value, _maximumSurge);
                     InvokePropertyChange(nameof(MinimumSurge));
@@ -247,13 +402,13 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _maximumSurge = 25;
-        public int MaximumSurge
+        private double _maximumSurge = 25.0;
+        public double MaximumSurge
         {
             get { return _maximumSurge; }
             set
             {
-                if (_maximumSurge != value)
+                if (Math.Abs(_maximumSurge - value) > double.Epsilon)
                 {
                     _maximumSurge = Math.Max(value, _minimumSurge);
                     InvokePropertyChange(nameof(MaximumSurge));
@@ -261,13 +416,13 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _minimumSway = -25;
-        public int MinimumSway
+        private double _minimumSway = -25.0;
+        public double MinimumSway
         {
             get { return _minimumSway; }
             set
             {
-                if (_minimumSway != value)
+                if (Math.Abs(_minimumSway - value) > double.Epsilon)
                 {
                     _minimumSway = Math.Min(value, _maximumSway);
                     InvokePropertyChange(nameof(MinimumSway));
@@ -275,13 +430,13 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _maximumSway = 25;
-        public int MaximumSway
+        private double _maximumSway = 25.0;
+        public double MaximumSway
         {
             get { return _maximumSway; }
             set
             {
-                if (_maximumSway != value)
+                if (Math.Abs(_maximumSway - value) > double.Epsilon)
                 {
                     _maximumSway = Math.Max(value, _minimumSway);
                     InvokePropertyChange(nameof(MaximumSway));
@@ -289,15 +444,15 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _minimumHeave = -25;
-        public int MinimumHeave
+        private double _minimumHeave = -25.0;
+        public double MinimumHeave
         {
             get { return _minimumHeave; }
             set
             {
                 value = Math.Min(value, _maximumHeave);
 
-                if (_minimumHeave != value)
+                if (Math.Abs(_minimumHeave - value) > double.Epsilon)
                 {
                     _minimumHeave = value;
                     InvokePropertyChange(nameof(MinimumHeave));
@@ -305,15 +460,15 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _maximumHeave = 75;
-        public int MaximumHeave
+        private double _maximumHeave = 75.0;
+        public double MaximumHeave
         {
             get { return _maximumHeave; }
             set
             {
                 value = Math.Max(value, _minimumHeave);
 
-                if (_maximumHeave != value)
+                if (Math.Abs(_maximumHeave - value) > double.Epsilon)
                 {
                     _maximumHeave = value;
                     InvokePropertyChange(nameof(MaximumHeave));
@@ -321,26 +476,73 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _sideBias = 0;
-        public int SideBias
+        private double _leftWaistStrength = 100.0;
+        public double LeftWaistStrength
         {
-            get { return _sideBias; }
-            set {
-                if (_sideBias != value)
+            get { return _leftWaistStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(100.0, value));
+                if (Math.Abs(_leftWaistStrength - clampedValue) > double.Epsilon)
                 {
-                    _sideBias = value;
-                    InvokePropertyChange(nameof(SideBias));
+                    _leftWaistStrength = clampedValue;
+                    InvokePropertyChange(nameof(LeftWaistStrength));
                 }
             }
         }
 
-        private int _smoothingFactor = 300;
-        public int SmoothingFactor
+        private double _rightWaistStrength = 100.0;
+        public double RightWaistStrength
+        {
+            get { return _rightWaistStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(100.0, value));
+                if (Math.Abs(_rightWaistStrength - clampedValue) > double.Epsilon)
+                {
+                    _rightWaistStrength = clampedValue;
+                    InvokePropertyChange(nameof(RightWaistStrength));
+                }
+            }
+        }
+
+        private double _leftShoulderStrength = 100.0;
+        public double LeftShoulderStrength
+        {
+            get { return _leftShoulderStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(100.0, value));
+                if (Math.Abs(_leftShoulderStrength - clampedValue) > double.Epsilon)
+                {
+                    _leftShoulderStrength = clampedValue;
+                    InvokePropertyChange(nameof(LeftShoulderStrength));
+                }
+            }
+        }
+
+        private double _rightShoulderStrength = 100.0;
+        public double RightShoulderStrength
+        {
+            get { return _rightShoulderStrength; }
+            set
+            {
+                double clampedValue = Math.Max(0.0, Math.Min(100.0, value));
+                if (Math.Abs(_rightShoulderStrength - clampedValue) > double.Epsilon)
+                {
+                    _rightShoulderStrength = clampedValue;
+                    InvokePropertyChange(nameof(RightShoulderStrength));
+                }
+            }
+        }
+
+        private double _smoothingFactor = 10.0;
+        public double SmoothingFactor
         {
             get { return _smoothingFactor; }
             set
             {
-                if (_smoothingFactor != value)
+                if (Math.Abs(_smoothingFactor - value) > double.Epsilon)
                 {
                     _smoothingFactor = value;
                     InvokePropertyChange(nameof(SmoothingFactor));
@@ -348,83 +550,13 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _corneringStrength = 1000;
-        public int CorneringStrength
-        {
-            get { return _corneringStrength; }
-            set
-            {
-                if (_corneringStrength != value)
-                {
-                    _corneringStrength = value;
-                    InvokePropertyChange(nameof(CorneringStrength));
-                }
-            }
-        }
-
-        private int _accelerationStrength = 1000;
-        public int AccelerationStrength
-        {
-            get { return _accelerationStrength; }
-            set
-            {
-                if (_accelerationStrength != value)
-                {
-                    _accelerationStrength = value;
-                    InvokePropertyChange(nameof(AccelerationStrength));
-                }
-            }
-        }
-
-        private int _brakingStrength = 1000;
-        public int BrakingStrength
-        {
-            get { return _brakingStrength; }
-            set
-            {
-                if (_brakingStrength != value)
-                {
-                    _brakingStrength = value;
-                    InvokePropertyChange(nameof(BrakingStrength));
-                }
-            }
-        }
-
-        private int _jumpingStrength = 1000;
-        public int JumpingStrength
-        {
-            get { return _jumpingStrength; }
-            set
-            {
-                if (_jumpingStrength != value)
-                {
-                    _jumpingStrength = value;
-                    InvokePropertyChange(nameof(JumpingStrength));
-                }
-            }
-        }
-
-        private int _landingStrength = 1000;
-        public int LandingStrength
-        {
-            get { return _landingStrength; }
-            set
-            {
-                if (_landingStrength != value)
-                {
-                    _landingStrength = value;
-                    InvokePropertyChange(nameof(LandingStrength));
-                }
-            }
-        }
-
-        private int _engineStrength = 0;
-        public int EngineStrength
+        private double _engineStrength = 0.0;
+        public double EngineStrength
         {
             get { return _engineStrength; }
             set
             {
-                if (_engineStrength != value)
+                if (Math.Abs(_engineStrength - value) > double.Epsilon)
                 {
                     _engineStrength = value;
                     InvokePropertyChange(nameof(EngineStrength));
@@ -432,13 +564,13 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private int _upshiftingStrength = 0;
-        public int UpshiftingStrength
+        private double _upshiftingStrength = 0.0;
+        public double UpshiftingStrength
         {
             get { return _upshiftingStrength; }
             set
             {
-                if (_upshiftingStrength != value)
+                if (Math.Abs(_upshiftingStrength - value) > double.Epsilon)
                 {
                     _upshiftingStrength = value;
                     InvokePropertyChange(nameof(UpshiftingStrength));
@@ -459,14 +591,28 @@ namespace User.ActiveBeltTensioner
                 if (_upshiftingModifiers != value)
                 {
                     _upshiftingModifiers = value;
+                    _parsedUpshiftingModifiers = null;
                     InvokePropertyChange(nameof(UpshiftingModifiers));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AreUpshiftingModifiersValid)));
+                    InvokePropertyChange(nameof(AreUpshiftingModifiersValid));
                 }
             }
         }
 
+        private (int timeOffset, int tensionModifier)[] _parsedUpshiftingModifiers = null;
         [JsonIgnore]
-        public bool AreUpshiftingModifiersValid => DevicePlugin.ValidateUpshiftingModifiers(_upshiftingModifiers);
+        public (int timeOffset, int tensionModifier)[] ParsedUpshiftingModifiers {
+            get {
+                if (_parsedUpshiftingModifiers == null)
+                {
+                    _parsedUpshiftingModifiers = DevicePlugin.ParseUpshiftingModifiers(UpshiftingModifiers);
+                }
+
+                return _parsedUpshiftingModifiers;
+            }
+        }
+
+        [JsonIgnore]
+        public bool AreUpshiftingModifiersValid => DevicePlugin.ValidateUpshiftingModifiers(UpshiftingModifiers);
 
         private bool _showSurgePlot = true;
         public bool ShowSurgePlot
@@ -481,7 +627,6 @@ namespace User.ActiveBeltTensioner
                 }
             }
         }
-
 
         private bool _showSwayPlot = true;
         public bool ShowSwayPlot
@@ -550,6 +695,8 @@ namespace User.ActiveBeltTensioner
             }
         }
 
+        public ObservableCollection<MotorConfiguration> MotorConfigurations { get; set; } = new ObservableCollection<MotorConfiguration>();
+
         public ObservableCollection<GameTuningProfile> Profiles { get; set; } = new ObservableCollection<GameTuningProfile>();
 
         /// <summary>Adds the given <see cref="GameTuningProfile" /> instance to our collection of profiles</summary>
@@ -614,6 +761,12 @@ namespace User.ActiveBeltTensioner
             MaximumSway = profile.MaximumSway;
             MinimumHeave = profile.MinimumHeave;
             MaximumHeave = profile.MaximumHeave;
+            SurgeStrength = profile.SurgeStrength;
+            SwayStrength = profile.SwayStrength;
+            HeaveStrength = profile.HeaveStrength;
+            SurgeInverted = profile.SurgeInverted;
+            SwayInverted = profile.SwayInverted;
+            HeaveInverted = profile.HeaveInverted;
             SmoothingFactor = profile.SmoothingFactor;
             EngineStrength = profile.EngineStrength;
             UpshiftingStrength = profile.UpshiftingStrength;
@@ -754,16 +907,6 @@ namespace User.ActiveBeltTensioner
                 }
             }
         }
-
-        public bool IsMinimumTensionNonZero
-        {
-            get { return MinimumTension > 0; }
-        }
-
-        public bool IsSerialPortValid
-        {
-            get { return !String.IsNullOrEmpty(_serialPort); }
-        }
     }
 
     /// <summary>A representation of the tuning parameters making up a game (and optionnaly vehicle) profile</summary>
@@ -804,15 +947,21 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        public int MinimumSurge { get; set; }
-        public int MaximumSurge { get; set; }
-        public int MinimumSway { get; set; }
-        public int MaximumSway { get; set; }
-        public int MinimumHeave { get; set; }
-        public int MaximumHeave { get; set; }
-        public int SmoothingFactor { get; set; }
-        public int EngineStrength { get; set; }
-        public int UpshiftingStrength { get; set; }
+        public double MinimumSurge { get; set; }
+        public double MaximumSurge { get; set; }
+        public double MinimumSway { get; set; }
+        public double MaximumSway { get; set; }
+        public double MinimumHeave { get; set; }
+        public double MaximumHeave { get; set; }
+        public double SurgeStrength { get; set; }
+        public double SwayStrength { get; set; }
+        public double HeaveStrength { get; set; }
+        public bool SurgeInverted { get; set; }
+        public bool SwayInverted { get; set; }
+        public bool HeaveInverted { get; set; }
+        public double SmoothingFactor { get; set; }
+        public double EngineStrength { get; set; }
+        public double UpshiftingStrength { get; set; }
         public string UpshiftingModifiers { get; set; }
 
         public GameTuningProfile(string game, string vehicle, bool promptForLabels = false)
@@ -823,26 +972,34 @@ namespace User.ActiveBeltTensioner
 
             if (promptForLabels)
             {
-                GameLabel = (game == string.Empty) ? _wildcardSymbol : Interaction.InputBox(
-                    Prompt: SLoc.GetValue("SABT_Message_AlterGameName"),
-                    Title: SLoc.GetValue("SABT_Title_AlterGameName"),
-                    DefaultResponse: PrettifyLabelPart(game)
-                );
-
-                if (string.IsNullOrEmpty(GameLabel))
+                if (game == string.Empty)
                 {
-                    GameLabel = PrettifyLabelPart(game);
+                    GameLabel = _wildcardSymbol;
+                }
+                else
+                {
+                    string gameLabel = ForegroundPrompt.ShowDialog(
+                        SLoc.GetValue("SABT_Message_AlterGameName"),
+                        "Prompt.Car.png",
+                        PrettifyLabelPart(game)
+                    );
+
+                    GameLabel = string.IsNullOrEmpty(gameLabel) ? PrettifyLabelPart(game) : gameLabel;
                 }
 
-                VehicleLabel = (vehicle == string.Empty) ? _wildcardSymbol : Interaction.InputBox(
-                    Prompt: SLoc.GetValue("SABT_Message_AlterVehicleName"),
-                    Title: SLoc.GetValue("SABT_Title_AlterVehicleName"),
-                    DefaultResponse: PrettifyLabelPart(vehicle)
-                );
-
-                if (string.IsNullOrEmpty(VehicleLabel))
+                if (vehicle == string.Empty)
                 {
-                    VehicleLabel = PrettifyLabelPart(vehicle);
+                    VehicleLabel = _wildcardSymbol;
+                }
+                else
+                {
+                    string vehicleLabel = ForegroundPrompt.ShowDialog(
+                        SLoc.GetValue("SABT_Message_AlterVehicleName"),
+                        "Prompt.Car.png",
+                        PrettifyLabelPart(vehicle)
+                    );
+
+                    VehicleLabel = string.IsNullOrEmpty(vehicleLabel) ? PrettifyLabelPart(vehicle) : vehicleLabel;
                 }
             }
         }
@@ -860,6 +1017,12 @@ namespace User.ActiveBeltTensioner
                 MaximumSway = settings.MaximumSway,
                 MinimumHeave = settings.MinimumHeave,
                 MaximumHeave = settings.MaximumHeave,
+                SurgeStrength = settings.SurgeStrength,
+                SwayStrength = settings.SwayStrength,
+                HeaveStrength = settings.HeaveStrength,
+                SurgeInverted = settings.SurgeInverted,
+                SwayInverted = settings.SwayInverted,
+                HeaveInverted = settings.HeaveInverted,
                 SmoothingFactor = settings.SmoothingFactor,
                 EngineStrength = settings.EngineStrength,
                 UpshiftingStrength = settings.UpshiftingStrength,
@@ -880,6 +1043,12 @@ namespace User.ActiveBeltTensioner
                 MaximumSway = this.MaximumSway,
                 MinimumHeave = this.MinimumHeave,
                 MaximumHeave = this.MaximumHeave,
+                SurgeStrength = this.SurgeStrength,
+                SwayStrength = this.SwayStrength,
+                HeaveStrength = this.HeaveStrength,
+                SurgeInverted = this.SurgeInverted,
+                SwayInverted = this.SwayInverted,
+                HeaveInverted = this.HeaveInverted,
                 SmoothingFactor = this.SmoothingFactor,
                 EngineStrength = this.EngineStrength,
                 UpshiftingStrength = this.UpshiftingStrength,
@@ -1010,6 +1179,47 @@ namespace User.ActiveBeltTensioner
             }
 
             return simplified.ToString();
+        }
+    }
+
+    /// <summary>A wrapper for the <see cref="Motor" /> configuration, allowing it to be stored and restored as part of the plugin settings</summary>
+    public class MotorConfiguration : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void InvokePropertyChange([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public byte Identifier { get; set; }
+
+        private byte _mapping = Motor.MotorMapping.Unused.Key;
+        public byte Mapping
+        {
+            get { return _mapping; }
+            set
+            {
+                if (_mapping != value)
+                {
+                    _mapping = value;
+                    InvokePropertyChange(nameof(Mapping));
+                }
+            }
+        }
+
+        private byte _direction = Motor.MotorDirection.Clockwise.Key;
+        public byte Direction
+        {
+            get { return _direction; }
+            set
+            {
+                if (_direction != value)
+                {
+                    _direction = value;
+                    InvokePropertyChange(nameof(Direction));
+                }
+            }
         }
     }
 }

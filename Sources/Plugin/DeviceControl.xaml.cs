@@ -1,6 +1,8 @@
 ﻿using SimHub;
+using SimHub.Plugins.Devices;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -14,9 +16,9 @@ namespace User.ActiveBeltTensioner
     public partial class DeviceControl : UserControl
     {
         private readonly DevicePlugin _plugin;
-        private readonly DispatcherTimer _updateSerialPortsTimer;
+        private readonly DispatcherTimer _detectDevicesTimer;
 
-        public Action<string> OnSerialPortSelected;
+        public Action<string> OnDeviceSelected;
 
         public DeviceControl(DevicePlugin plugin)
         {
@@ -29,11 +31,11 @@ namespace User.ActiveBeltTensioner
 
             _plugin.Settings.PropertyChanged += OnPropertyChanged;
 
-            _updateSerialPortsTimer = new DispatcherTimer
+            _detectDevicesTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromSeconds(5)
             };
-            _updateSerialPortsTimer.Tick += UpdateSerialPorts;
+            _detectDevicesTimer.Tick += DetectDevices;
         }
  
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -47,29 +49,70 @@ namespace User.ActiveBeltTensioner
             _plugin.DoWithoutWaiting(
                 devicePlugin =>
                 {
-                    devicePlugin.MotorController.UpdateSerialPorts();
+                    devicePlugin.MotorController.LoadMotorConfigurations();
+                    devicePlugin.MotorController.DetectDevices();
+                    devicePlugin.MotorController.DetectMotors();
                 }
             );
 
-            _updateSerialPortsTimer.Start();
+            _detectDevicesTimer.Start();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            _updateSerialPortsTimer.Stop();
+            _plugin.DoWithoutWaiting(
+                devicePlugin =>
+                {
+                    devicePlugin.MotorController.SaveMotorConfigurations();
+                }
+            );
+
+            _detectDevicesTimer.Stop();
         }
 
-        private void UpdateSerialPorts(object sender, EventArgs e)
+        private void SetTemperaturesForPLA(object sender, RoutedEventArgs e)
         {
-            if (IsLoaded)
-            {
-                _plugin.DoWithoutWaiting(
-                    devicePlugin =>
-                    {
-                        devicePlugin.MotorController.UpdateSerialPorts();
-                    }
-                );
-            }
+            _plugin.Settings.ReducedOutputTemperature = 0;
+            _plugin.Settings.StoppedOutputTemperature = 100;
+
+            _plugin.Settings.ReducedOutputTemperature = 45;
+            _plugin.Settings.StoppedOutputTemperature = 55;
+        }
+
+        private void SetTemperaturesForABS(object sender, RoutedEventArgs e)
+        {
+            _plugin.Settings.ReducedOutputTemperature = 0;
+            _plugin.Settings.StoppedOutputTemperature = 100;
+
+            _plugin.Settings.ReducedOutputTemperature = 65;
+            _plugin.Settings.StoppedOutputTemperature = 75;
+        }
+
+        private void SetTemperaturesForPETG(object sender, RoutedEventArgs e)
+        {
+            _plugin.Settings.ReducedOutputTemperature = 0;
+            _plugin.Settings.StoppedOutputTemperature = 100;
+
+            _plugin.Settings.ReducedOutputTemperature = 50;
+            _plugin.Settings.StoppedOutputTemperature = 60;
+        }
+
+        private void SetTemperaturesForASA(object sender, RoutedEventArgs e)
+        {
+            _plugin.Settings.ReducedOutputTemperature = 0;
+            _plugin.Settings.StoppedOutputTemperature = 100;
+
+            _plugin.Settings.ReducedOutputTemperature = 70;
+            _plugin.Settings.StoppedOutputTemperature = 80;
+        }
+
+        private void SetTemperaturesForPC(object sender, RoutedEventArgs e)
+        {
+            _plugin.Settings.ReducedOutputTemperature = 0;
+            _plugin.Settings.StoppedOutputTemperature = 100;
+
+            _plugin.Settings.ReducedOutputTemperature = 70;
+            _plugin.Settings.StoppedOutputTemperature = 80;
         }
 
         private void DuplicateProfileForCurrentGame(object sender, RoutedEventArgs e)
@@ -81,11 +124,10 @@ namespace User.ActiveBeltTensioner
 
                 if (_plugin.Settings.FindProfile(game, vehicle) != null)
                 {
-                    MessageBox.Show(
-                        SLoc.GetValue("SABT_Message_Profiles_AlreadyExists"),
-                        SLoc.GetValue("SABT_Plugin"),
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Exclamation
+                    ForegroundPrompt.ShowDialog(
+                        SLoc.GetValue("SABT_Message_ProfileAlreadyExists"),
+                        "Prompt.Car.png",
+                        false
                     );
 
                     return;
@@ -110,11 +152,10 @@ namespace User.ActiveBeltTensioner
 
                 if (_plugin.Settings.FindProfile(game, vehicle) != null)
                 {
-                    MessageBox.Show(
-                        SLoc.GetValue("SABT_Message_Profiles_AlreadyExists"),
-                        SLoc.GetValue("SABT_Plugin"),
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Exclamation
+                    ForegroundPrompt.ShowDialog(
+                        SLoc.GetValue("SABT_Message_ProfileAlreadyExists"),
+                        "Prompt.Car.png",
+                        false
                     );
 
                     return;
@@ -161,52 +202,112 @@ namespace User.ActiveBeltTensioner
             }
         }
 
-        private void TestLeftMotor(object sender, RoutedEventArgs e)
+        private void ResetPlugin(object sender, RoutedEventArgs e)
+        {
+            _plugin.ResetSettings();
+            DataContext = new DeviceViewModel(_plugin);
+        }
+
+        private void DetectDevices(object sender, EventArgs e)
+        {
+            if (IsLoaded)
+            {
+                _plugin.DoWithoutWaiting(
+                    devicePlugin =>
+                    {
+                        devicePlugin.MotorController.DetectDevices();
+                    }
+                );
+            }
+        }
+
+        private void DetectMotors(object sender, RoutedEventArgs e)
         {
             _plugin.DoWithoutWaiting(
                 devicePlugin =>
                 {
-                    if (!devicePlugin.MotorController.IsBusy)
-                    {
-                        devicePlugin.MotorController.GetLeftMotor().Test();
-                    }
+                    devicePlugin.MotorController.DetectMotors(true);
                 }
             );
         }
 
-        private void TestRightMotor(object sender, RoutedEventArgs e)
+        private void CopyLogToClipboard(object sender, RoutedEventArgs e)
         {
-            _plugin.DoWithoutWaiting(
-                devicePlugin =>
+            try
+            {
+                string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs", "SimHub.txt");
+
+                if (File.Exists(logPath))
                 {
-                    if (!devicePlugin.MotorController.IsBusy)
+                    string logText;
+                    using (var fileStream = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+                    using (var streamReader = new StreamReader(fileStream))
                     {
-                        devicePlugin.MotorController.GetRightMotor().Test();
+                        logText = streamReader.ReadToEnd();
                     }
+
+                    Clipboard.SetText(logText ?? "");
+
+                    Logging.Current.Info($"SABT: Copied log text to clipboard from '{logPath}'");
+
+                    ForegroundPrompt.ShowDialog(
+                        SLoc.GetValue("SABT_Message_LogCopied"),
+                        "Prompt.Settings.png",
+                        false
+                    );
+
+                    return;
                 }
+            }
+            catch (Exception exception)
+            {
+                Logging.Current.Error($"SABT: Could not copy SimHub log text to clipboard ({exception.Message})\nStack: {exception.StackTrace}");
+            }
+
+            ForegroundPrompt.ShowDialog(
+                SLoc.GetValue("SABT_Message_LogCopyFailure"),
+                "Prompt.Settings.png",
+                false
             );
         }
 
-        private void SetupMotors(object sender, RoutedEventArgs e)
+        private void CopySettingsToClipboard(object sender, RoutedEventArgs e)
         {
-            _plugin.DoWithoutWaiting(
-                devicePlugin =>
-                {
-                    if (!devicePlugin.MotorController.IsBusy)
-                    {
-                        devicePlugin.MotorController.Setup();
-                    }
-                }
-            );
-        }
+            try
+            {
+                string settingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PluginsData", "Common", "DevicePlugin.SimpleActiveBeltTensioner.json");
 
-        private void ResetDiagnostics(object sender, RoutedEventArgs e)
-        {
-            _plugin.DoWithoutWaiting(
-                devicePlugin =>
+                if (File.Exists(settingsPath))
                 {
-                    devicePlugin.MotorController.ResetDiagnostics();
+                    string settingsText;
+                    using (var fileStream = new FileStream(settingsPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+                    using (var streamReader = new StreamReader(fileStream))
+                    {
+                        settingsText = streamReader.ReadToEnd();
+                    }
+
+                    Clipboard.SetText(settingsText ?? "");
+
+                    Logging.Current.Info($"SABT: Copied plugin settings text to clipboard from '{settingsPath}'");
+
+                    ForegroundPrompt.ShowDialog(
+                        SLoc.GetValue("SABT_Message_SettingsCopied"),
+                        "Prompt.Settings.png",
+                        false
+                    );
+
+                    return;
                 }
+            }
+            catch (Exception exception)
+            {
+                Logging.Current.Error($"SABT: Could not copy plugin settings text to clipboard ({exception.Message})\nStack: {exception.StackTrace}");
+            }
+
+            ForegroundPrompt.ShowDialog(
+                SLoc.GetValue("SABT_Message_SettingsCopyFailure"),
+                "Prompt.Settings.png",
+                false
             );
         }
 
@@ -223,6 +324,14 @@ namespace User.ActiveBeltTensioner
         private void ResizeTelemetryGraph(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
             _plugin.Settings.TelemetryGraphHeight += e.VerticalChange;
+        }
+
+        private void ToggleCollapsibleBlock(object sender, RoutedEventArgs e)
+        {
+            if (sender is DependencyObject source && FindParent<Expander>(source) is Expander expander)
+            {
+                expander.IsExpanded = !expander.IsExpanded;
+            }
         }
 
         private static T FindParent<T>(DependencyObject current) where T : DependencyObject

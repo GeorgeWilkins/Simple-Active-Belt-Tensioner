@@ -14,7 +14,8 @@ Builders also have technical questions about the setup and operation of the kit,
     - [Can I use a different type of motor?](#can-i-use-a-different-type-of-motor)
     - [Can I use a different control board?](#can-i-use-a-different-control-board)
     - [Can I use higher voltages?](#can-i-use-higher-voltages)
-    - [What ype of harness do I need?](#what-type-of-harness-do-i-need)
+    - [Which power supply should I get?](#which-power-supply-should-i-get)
+    - [What type of harness do I need?](#what-type-of-harness-do-i-need)
 - [Assembly & Adjustment](#assembly--adjustment)
     - [My pulley covers are not spinning freely](#my-pulley-covers-are-not-spinning-freely)
     - [The cords are tangling up when not under tension](#the-cords-are-tangling-up-when-not-under-tension)
@@ -53,11 +54,9 @@ The SimHub plugin takes care of all of the software, and is simply copy+pasted i
 
 It is also _direct-drive_, so operates silently and smoothly. This permits it to act with a 'spring' effect and auto-tension the belts, meaning you don't have to pre-tighten your harness.
 
-The maximum force output of **SABT** is roughly 10Kg per belt. This is roughly half that of the [QS BT-1](https://qubicsystem.com/product/qs-bt1).
+The maximum force output of **SABT** is 10Kg per motor. This is roughly half that of the [QS BT-1](https://qubicsystem.com/product/qs-bt1); but you can run two motors per belt to achieve equivalent force output if desired.
 
-Some other DIY options offer considerably more power; particularly those using larger geared NEMA-format motors.
-
-Remember that **SABT** is designed to be _low-cost_ and _easy-to-build_. It is not intended to compete with high-end options costing many times more. If you are seeking maximum performance, you should consider other options.
+The vast majority of **SABT** builders have commented that 10Kg is plenty, and prefer to use additional motors to actively tension their waist belts, rather than increasing the force on the shoulder belts.
 
 ### What is the latency like?
 
@@ -103,15 +102,13 @@ If there is demand, a version of the kit for more powerful motors could be devel
 
 ### Can I use a different control board?
 
-It would be possible to control the DDSM115 motors with a generic RS485-USB adapter board. In fact, that's one of the approaches I considered when designing the kit. However you'd need two of those adapters to run the motors separately (or add custom electonics to support both motors on a single adapter), and the SimHub plugin would need to be modified to support the different control hardware.
-
-Generally it would be more expensive and complicated than just using the Waveshare control board.
+It would be possible to control the motors with a generic RS485-USB serial adapter board. In fact, adapters with the same serial bridge chipset may even be detected by the **SABT** plugin as a valid controller and would theoretically function correctly if you wired up the motors appropriately. However they would not offer the plug-and-play experience **SABT** was designed to provide.
 
 If the project becomes particularly popular there's a good chance I'll look at designing and manufacturing a custom board that integrates everything we need (including the back-driving protection circuitry), but for now the Waveshare board is a good off-the-shelf solution.
 
 ### Can I use higher voltages?
 
-The recommended `15V` was chosen to protect your motors. I would strongly suggest no more than `19V`.
+Originally the recommended voltage for **SABT** was `15V`, out of concern for the motors being damaged by back-driving voltage spikes. The currently recommended power supply is `20V`, since we've now had enough time and builds to determine that it's a reasonably safe voltage for the motors.
 
 The motors are _"wide-input"_, meaning they will accept a variety of input voltages between `12V` and `24V`. The _"rated voltage"_ is given as `18V` and `5S LiPo`, because as part of a robotics platform, they're intended to be powered by a battery pack. The control board simply passes the supply voltage through to the motors, so the motors will run at whatever voltage you supply to the board.
 
@@ -121,9 +118,24 @@ An additional consideration is _back-driving_ of the motors. This is a situation
 
 In a battery-driven application, this is not a problem as the battery can absorb the energy (in effect, _regenerative braking_). In our SMPS-driven setup, without any extra protection circuitry this will typically trigger the OVP/RC features of the power supply. The [back-driving protection unit](INSTRUCTIONS.md#back-driving-protection) was devised to prevent this from happening. However it doesn't _stop_ the voltage spike; it simply blocks it from returning to the supply and instead dumps it into a capacitor. Once the voltage spike has been absorbed and the external mechanical input ceased, the motors draw this back down to the supply voltage and continue as normal.
 
-Running your motors at a higher voltage means any relative spike that occurs will also be higher; potentially exceeding the voltage limits of the motors. This is why I would never run my motors at the maximum `24V` and chose `15V` as a recommended safe operating voltage.
+Running your motors at a higher voltage means any relative spike that occurs will also be higher; potentially exceeding the voltage limits of the motors. This is why I would never run my motors at the maximum `24V`.
 
-However there is an argument to be made for running at `19V`. This is a _very common_ voltage for laptop power supplies; which means many highy-quality supplies are available for virtually nothing. You probably already have at least one in your home from an old device. A number of SABT builders have reported good results running at `19V`, but this is typically joined by higher operating temperatures. While there are temperature-throttling features built into the plugin software, you may wish to look into active cooling of the motors if you intend to run at this voltage. You'll also want to use suitable filaments for the printed parts, such as PETG or ABS, which are more heat-resistant than PLA.
+### Which power supply should I get?
+
+The basic requirements are:
+- `5.5x2.5mm` Barrel Plug (or `XT60`)
+- `15V` to `20V` Fixed Output
+- `1.5A` per motor (plus headroom)
+
+Since the number of motors in a **SABT** configuration is up to you, the total current draw will vary. Regardless, I recommend buying a `≥7A` supply capable of supporting four motors; as you'll then not need to replace it if you decide to increase the motor count later.
+
+However, should you plan on never going beyond two motors, you can opt for lower current supplies.
+
+As a guide, each motor draws `~1.5A` at full stall, so a _quality_ `6A` supply capable of handling spikes is _theoretically_ capable of handling four motors (or `3A` for two motors). However I'd suggest looking for `~1A` of headroom to accommodate spikes and power supply underperformance (particularly with generic/unbranded ones).
+
+The `7A` Meanwell `GST160A20-R7B` is a high-quality supply that has been tested and confirmed to work with four motors, but has an unusual connector that requires an adapter or modification. The smaller `6A` Meanwell `GST120A20-P1M` has the correct barrel plug for our motor controller and is currently being tested under the same load. It will become the 'standard' supply if testing is successful.
+
+All other testing to date has been performed on supplies that far exceed (or at least claim to) the current draw of the motors.
 
 ### What type of harness do I need?
 
@@ -137,7 +149,6 @@ Regardless of your chosen harness configuration, a `2"` (`50mm`) belt width is r
 
 ### My pulley covers are not spinning freely
 
-
 Most likely the bearings are not seated correctly in the pulley covers, or the end of the cord is not quite inside the slot/hole in the centre of the pulley and it's pushing the cover out of alignment. One way to check is to remove the cords and re-attach the covers to see if they spin freely without the cords in place. If they do, then the cords were being pinched somewhere inside the pulleys.
 
 Reassemble the pulleys and make sure the cords are seated correctly in the pulley slots as pictured in the instructions. If the cord ends have frayed, consider trimming them back.
@@ -146,7 +157,9 @@ In rare cases, your printed pulley parts may be warped or undersized; in which c
 
 ### The cords are tangling up when not under tension
 
-With some UHMWPE/Dyneema cords, it is quite easy to twist them during installation. If done excessively, the cords will try to return to their untwisted state when the tensioner is not under load, which can cause them to tangle up. Remove the cords from the pulleys, straighten them out and re-install them, taking care not to twist them during installation.
+The self-orienting pulley covers are intended to prevent tangling from happening; but for them to work effectively the cords need to have at least _some_ tension applied. This usually happens naturally from the weight of your shoulder belts pulling on the cords, but in some configurations (especial four-channel builds with waist belts), this tension isn't present and the covers may simply spin with the motor, which causes tangling.
+
+The solution is to make use of the [anchoring holes](INSTRUCTIONS.md#pulley-anchoring) in the pulley covers, loosely securing the free-spinning cover to your rig.
 
 ### The cords or belts are rubbing against the back of my seat
 
@@ -235,6 +248,6 @@ This may change in a future release; but that will likely be a new major version
 
 The tensioner is designed to simulate sustained forces such as braking, acceleration and cornering. It can also simulate large impactful _heave_ events (such as jumps or dips). However it is not intended to simulate high-frequency vibrations or small bumps. That is the job of tactile transducers (or "bass shakers") which are designed specifically to create those effects.
 
-Adjusting the tensioner to express these small/brief impacts effects _is possible_, but it makes all other output extremely aggressive and overly sensitive. All braking, acceleration and cornering forces become oversaturated, making for an unpleasant experience.
+Adjusting the tensioner to express these small/brief impacts effects _is possible_, but it can make other output extremely aggressive and overly sensitive.
 
-There is [a feature request](https://github.com/GeorgeWilkins/Simple-Active-Belt-Tensioner/issues/74) being worked on that adds some additional effects (such as engine vibrations) to the plugin; however these are not strictly force-based (instead using RPM telemetry to achieve an _approximation_ of engine vibration) and will not be as realistic as a dedicated tactile transducer.
+There are special effects that can be enabled in the plugin to help simulate or accentuate some of these things, but they will never be as realistic as a dedicated tactile transducer.

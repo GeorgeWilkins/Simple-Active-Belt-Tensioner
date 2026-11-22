@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using WoteverCommon.RawInput.Win32;
 using WoteverLocalization;
@@ -38,10 +39,9 @@ namespace User.ActiveBeltTensioner
 
         public PluginManager PluginManager { get; set; }
 
-        public ImageSource PictureIcon => this.ToIcon(Properties.Resources.MenuIcon);
+        public ImageSource PictureIcon => new BitmapImage(new Uri("pack://application:,,,/User.ActiveBeltTensioner;component/Graphics/MenuIcon.png", UriKind.Absolute));
 
         public string LeftMenuTitle => SLoc.GetValue("SABT_Plugin");
-
 
         public MotorController MotorController;
 
@@ -49,31 +49,23 @@ namespace User.ActiveBeltTensioner
 
         private static string _settingsName = "SimpleActiveBeltTensioner";
 
-        private (int timeOffset, int tensionModifier)[] _upshiftModifierCurve = ParseUpshiftingModifiers(null);
-
         private readonly object _motorControllerLock = new object();
         private readonly object _telemetryLock = new object();
         private TelemetrySnapshot _latestTelemetry;
 
+        private PhysicsForceCalculator _physicsCalculator;
+        private Stopwatch _controlLoopStopwatch;
+
         private readonly AutoResetEvent _hasTelemetryArrived = new AutoResetEvent(false);
         private const int _controlLoopInterval = 3; // Milliseconds;
+        private const int _automaticTuningUpdateInterval = 16; // Milliseconds (~60FPS)
         private Thread _controlThread;
         private volatile bool _runControlLoop = false;
+
+        private volatile bool _isEnabled = false;
         private volatile bool _hasBeenInactive = true;
         private volatile bool _hasBypassedActivationWarning = false;
 
-        public struct TelemetrySnapshot
-        {
-            public double? Surge;
-            public double? Sway;
-            public double? Heave;
-            public double? Speed;
-            public double? Revolutions;
-            public bool DidUpshift;
-            public bool IsActive;
-        }
-
-        private volatile bool _isEnabled = false;
         public bool IsEnabled
         {
             get { return _isEnabled; }
@@ -93,12 +85,12 @@ namespace User.ActiveBeltTensioner
                     }
                     else
                     {
-                        _hasBeenInactive = true;
-
                         DoWithoutWaiting(devicePlugin =>
                         {
-                            devicePlugin.MotorController?.Disconnect();
+                            devicePlugin.MotorController?.Stop();
                         });
+
+                        _hasBeenInactive = true;
                     }
                 }
             }
@@ -160,6 +152,7 @@ namespace User.ActiveBeltTensioner
                 {
                     _isAutomaticallyTuning = value;
                     OnPropertyChanged(nameof(IsAutomaticallyTuning));
+                    OnPropertyChanged(nameof(IsNotAutomaticallyTuning));
 
                     if (_isAutomaticallyTuning)
                     {
@@ -167,11 +160,10 @@ namespace User.ActiveBeltTensioner
 
                         if (!_latestTelemetry.IsActive)
                         {
-                            MessageBox.Show(
+                            ForegroundPrompt.ShowDialog(
                                 SLoc.GetValue("SABT_Message_AutomaticTuningRequiresTelemetry"),
-                                SLoc.GetValue("SABT_Plugin"),
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Warning
+                                "Prompt.Telemetry.png",
+                                false
                             );
 
                             IsAutomaticallyTuning = false;
@@ -179,19 +171,18 @@ namespace User.ActiveBeltTensioner
                             return;
                         }
 
-                        MessageBoxResult result = MessageBoxResult.No;
+                        bool shouldProceed = false;
 
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            result = MessageBox.Show(
+                            shouldProceed = ForegroundPrompt.ShowDialog(
                                 SLoc.GetValue("SABT_Message_AutomaticTuningReset"),
-                                SLoc.GetValue("SABT_Plugin"),
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Warning
+                                "Prompt.Telemetry.png",
+                                true
                             );
                         });
 
-                        if (result == MessageBoxResult.Yes)
+                        if (shouldProceed)
                         {
                             Settings.MinimumSurge = -1;
                             Settings.MaximumSurge = 1;
@@ -199,6 +190,10 @@ namespace User.ActiveBeltTensioner
                             Settings.MaximumSway = 1;
                             Settings.MinimumHeave = -20;
                             Settings.MaximumHeave = 40;
+
+                            Settings.SurgeStrength = 100;
+                            Settings.SwayStrength = 100;
+                            Settings.HeaveStrength = 100;
 
                             IsEnabled = false;
                         }
@@ -214,8 +209,6 @@ namespace User.ActiveBeltTensioner
         {
             get { return !_isAutomaticallyTuning; }
         }
-
-
 
         public System.Windows.Controls.Control GetWPFSettingsControl(PluginManager pluginManager)
         {
@@ -239,22 +232,15 @@ namespace User.ActiveBeltTensioner
             );
 
             // Load Serialised Settings
-            Settings = this.ReadCommonSettings<DeviceSettings>(_settingsName, () => new DeviceSettings());
-            Settings.Persist = () => this.SaveCommonSettings(_settingsName, Settings);
-            Settings.PropertyChanged += OnSettingsChanged;
-            Settings.Initialise(this);
-
-            _upshiftModifierCurve = ParseUpshiftingModifiers(Settings.UpshiftingModifiers);
-
-            IsEnabled = IsEnabled || Settings.StartAutomatically;
+            Settings = LoadSettings();
 
             // Register Actions (For External Control)
             pluginManager.AddAction(
-                actionName: "SABT.ToggleMotors",
+                actionName: "SABT.ToggleEffects",
                 actionStart: (PluginManager manager, string input) => {
                     DoOnMainThread(devicePlugin =>
                     {
-                        Logging.Current.Info("SABT: Toggling motors from external input");
+                        Logging.Current.Info("SABT: Toggling effects from external input");
 
                         devicePlugin._hasBypassedActivationWarning = false;
                         devicePlugin.IsEnabled = !devicePlugin.IsEnabled;
@@ -262,18 +248,53 @@ namespace User.ActiveBeltTensioner
                 }
             );
             pluginManager.AddAction(
-                actionName: "SABT.ToggleMotorsWithoutWarning",
+                actionName: "SABT.ToggleEffectsWithoutWarning",
                 actionStart: (PluginManager manager, string input) => {
                     DoOnMainThread(devicePlugin =>
                     {
-                        Logging.Current.Info("SABT: Toggling motors from external input (without warning)");
+                        Logging.Current.Info("SABT: Toggling effects from external input (without warning)");
 
                         devicePlugin._hasBypassedActivationWarning = devicePlugin.IsEnabled ? false : true;
                         devicePlugin.IsEnabled = !devicePlugin.IsEnabled;
                     });
                 }
             );
+            pluginManager.AddAction(
+                actionName: "SABT.TurnEffectsOn",
+                actionStart: (PluginManager manager, string input) => {
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Turning on effects from external input");
 
+                        devicePlugin._hasBypassedActivationWarning = false;
+                        devicePlugin.IsEnabled = true;
+                    });
+                }
+            );
+            pluginManager.AddAction(
+                actionName: "SABT.TurnEffectsOnWithoutWarning",
+                actionStart: (PluginManager manager, string input) => {
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Turning on effects from external input (without warning)");
+
+                        devicePlugin._hasBypassedActivationWarning = devicePlugin.IsEnabled ? false : true;
+                        devicePlugin.IsEnabled = true;
+                    });
+                }
+            );
+            pluginManager.AddAction(
+                actionName: "SABT.TurnEffectsOff",
+                actionStart: (PluginManager manager, string input) => {
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Turning off effects from external input");
+
+                        devicePlugin._hasBypassedActivationWarning = false;
+                        devicePlugin.IsEnabled = false;
+                    });
+                }
+            );
             pluginManager.AddAction(
                 actionName: "SABT.IncreaseIdleTension",
                 actionStart: (PluginManager manager, string input) => {
@@ -281,7 +302,7 @@ namespace User.ActiveBeltTensioner
                     {
                         Logging.Current.Info("SABT: Increasing idle tension from external input");
 
-                        devicePlugin.Settings.IdleTension += devicePlugin.Settings.TensionStep;
+                        devicePlugin.Settings.IdleTension += devicePlugin.Settings.ControlStep;
                     });
                 }
             );
@@ -292,41 +313,39 @@ namespace User.ActiveBeltTensioner
                     {
                         Logging.Current.Info("SABT: Decreasing idle tension from external input");
 
-                        devicePlugin.Settings.IdleTension -= devicePlugin.Settings.TensionStep;
-                    });
-                }
-            );
-
-            pluginManager.AddAction(
-                actionName: "SABT.IncreaseMinimumTension",
-                actionStart: (PluginManager manager, string input) => {
-                    DoOnMainThread(devicePlugin =>
-                    {
-                        Logging.Current.Info("SABT: Increasing minimum tension from external input");
-
-                        devicePlugin.Settings.MinimumTension += devicePlugin.Settings.TensionStep;
+                        devicePlugin.Settings.IdleTension -= devicePlugin.Settings.ControlStep;
                     });
                 }
             );
             pluginManager.AddAction(
-                actionName: "SABT.DecreaseMinimumTension",
+                actionName: "SABT.IncreaseRestingTension",
                 actionStart: (PluginManager manager, string input) => {
                     DoOnMainThread(devicePlugin =>
                     {
-                        Logging.Current.Info("SABT: Decreasing minimum tension from external input");
+                        Logging.Current.Info("SABT: Increasing resting tension from external input");
 
-                        devicePlugin.Settings.MinimumTension -= devicePlugin.Settings.TensionStep;
+                        devicePlugin.Settings.RestingTension += devicePlugin.Settings.ControlStep;
                     });
                 }
             );
+            pluginManager.AddAction(
+                actionName: "SABT.DecreaseRestingTension",
+                actionStart: (PluginManager manager, string input) => {
+                    DoOnMainThread(devicePlugin =>
+                    {
+                        Logging.Current.Info("SABT: Decreasing resting tension from external input");
 
+                        devicePlugin.Settings.RestingTension -= devicePlugin.Settings.ControlStep;
+                    });
+                }
+            );
             pluginManager.AddAction(
                 actionName: "SABT.IncreaseMaximumTension",
                 actionStart: (PluginManager manager, string input) => {
                     DoOnMainThread(devicePlugin =>
                     {
                         Logging.Current.Info("SABT: Increasing maximum tension from external input");
-                        devicePlugin.Settings.MaximumTension += devicePlugin.Settings.TensionStep;
+                        devicePlugin.Settings.MaximumTension += devicePlugin.Settings.ControlStep;
                     });
                 }
             );
@@ -337,33 +356,42 @@ namespace User.ActiveBeltTensioner
                     {
                         Logging.Current.Info("SABT: Decreasing maximum tension from external input");
 
-                        devicePlugin.Settings.MaximumTension -= devicePlugin.Settings.TensionStep;
+                        devicePlugin.Settings.MaximumTension -= devicePlugin.Settings.ControlStep;
                     });
                 }
             );
 
             // Expose Properties
             pluginManager.AttachDelegate("SABT.IsEnabled", typeof(DevicePlugin), () => IsEnabled);
-            pluginManager.AttachDelegate("SABT.IdleTension", typeof(DevicePlugin), () => Settings.IdleTension / 10.0);
-            pluginManager.AttachDelegate("SABT.MinimumTension", typeof(DevicePlugin), () => Settings.MinimumTension / 10.0);
-            pluginManager.AttachDelegate("SABT.MaximumTension", typeof(DevicePlugin), () => Settings.MaximumTension / 10.0);
-            pluginManager.AttachDelegate("SABT.LeftMotorTemperature", typeof(DevicePlugin), () => MotorController.LeftMotorTemperature);
-            pluginManager.AttachDelegate("SABT.RightMotorTemperature", typeof(DevicePlugin), () => MotorController.RightMotorTemperature);
+            pluginManager.AttachDelegate("SABT.IdleTension", typeof(DevicePlugin), () => Settings.IdleTension);
+            pluginManager.AttachDelegate("SABT.RestingTension", typeof(DevicePlugin), () => Settings.RestingTension);
+            pluginManager.AttachDelegate("SABT.MaximumTension", typeof(DevicePlugin), () => Settings.MaximumTension);
+            pluginManager.AttachDelegate("SABT.MotorTemperature1", typeof(DevicePlugin), () => MotorController.Motors[0].Temperature);
+            pluginManager.AttachDelegate("SABT.MotorTemperature2", typeof(DevicePlugin), () => MotorController.Motors[1].Temperature);
+            pluginManager.AttachDelegate("SABT.MotorTemperature3", typeof(DevicePlugin), () => MotorController.Motors[2].Temperature);
+            pluginManager.AttachDelegate("SABT.MotorTemperature4", typeof(DevicePlugin), () => MotorController.Motors[3].Temperature);
+            pluginManager.AttachDelegate("SABT.MotorTorque1", typeof(DevicePlugin), () => MotorController.Motors[0].Torque);
+            pluginManager.AttachDelegate("SABT.MotorTorque2", typeof(DevicePlugin), () => MotorController.Motors[1].Torque);
+            pluginManager.AttachDelegate("SABT.MotorTorque3", typeof(DevicePlugin), () => MotorController.Motors[2].Torque);
+            pluginManager.AttachDelegate("SABT.MotorTorque4", typeof(DevicePlugin), () => MotorController.Motors[3].Torque);
 
             // Initialise Motor Controller
             MotorController = new MotorController(this);
-            if (IsEnabled && Settings.IsSerialPortValid)
+
+            DoWithoutWaiting(devicePlugin =>
             {
-                DoWithoutWaiting(devicePlugin =>
-                {
-                    devicePlugin.MotorController.Connect();
-                });
-            }
+                devicePlugin.MotorController.LoadMotorConfigurations();
+                devicePlugin.MotorController.DetectDevices();
+                devicePlugin.MotorController.DetectMotors();
+            });
+
+            // Initialise Physics Calculator
+            _physicsCalculator = new PhysicsForceCalculator(Settings);
 
             // Initialise Telemetry Graph
             InitialiseTelemetryGraph();
             UpdateTelemetryGraphThresholds(Settings);
-            UpdateTelemetryGraph(0, 0, 0, 0, 0);
+            UpdateTelemetryGraph(new TelemetrySnapshot(), 0, 0, 0, 0);
 
             // Start Control Loop
             _runControlLoop = true;
@@ -375,11 +403,79 @@ namespace User.ActiveBeltTensioner
             _controlThread.Start();
         }
 
+        private DeviceSettings ConfigureSettings(DeviceSettings settings)
+        {
+            DeviceSettings configuredSettings = settings ?? new DeviceSettings();
+
+            configuredSettings.Initialise(this);
+
+            configuredSettings.Persist = () =>
+            {
+                Logging.Current.Info("SABT: Persisting settings...");
+
+                this.SaveCommonSettings(_settingsName, configuredSettings);
+            };
+            configuredSettings.PropertyChanged += OnSettingsChanged;
+
+            return configuredSettings;
+        }
+
+        private DeviceSettings LoadSettings()
+        {
+            Logging.Current.Info("SABT: Loading settings...");
+
+            DeviceSettings settings = this.ReadCommonSettings<DeviceSettings>(_settingsName, () => new DeviceSettings()) ?? new DeviceSettings();
+
+            return ConfigureSettings(settings);
+        }
+
+        public void ResetSettings()
+        {
+            if (
+                ForegroundPrompt.ShowDialog(
+                    SLoc.GetValue("SABT_Message_ResetWarning"),
+                    "Prompt.Settings.png",
+                    true
+                )
+            )
+            {
+                Logging.Current.Info("SABT: Resetting plugin settings to defaults...");
+
+                IsEnabled = false;
+                IsAutomaticallyTuning = false;
+
+                if (Settings != null)
+                {
+                    Settings.PropertyChanged -= OnSettingsChanged;
+                }
+
+                Settings = ConfigureSettings(new DeviceSettings());
+                Settings.Persist?.Invoke();
+
+                _physicsCalculator = new PhysicsForceCalculator(Settings);
+
+                UpdateTelemetryGraphThresholds(Settings);
+                UpdateTelemetryGraphFilters();
+
+                DoWithoutWaiting(devicePlugin =>
+                {
+                    devicePlugin.Settings.MotorConfigurations.Clear();
+
+                    devicePlugin.MotorController.ClearMotorConfigurations();
+                    devicePlugin.MotorController.SaveMotorConfigurations();
+                    devicePlugin.MotorController.DetectDevices();
+                    devicePlugin.MotorController.DetectMotors();
+                });
+
+                Logging.Current.Info("SABT: Settings reset complete");
+            }
+        }
+
         /// <summary>Selectively initiates side effects for settings property changes</summary>
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
         {
             if (
-                e.PropertyName == nameof(Settings.SerialPort)
+                e.PropertyName == nameof(Settings.DeviceIdentifier)
             )
             {
                 IsEnabled = false;
@@ -387,9 +483,17 @@ namespace User.ActiveBeltTensioner
                 return;
             }
 
-            if (e.PropertyName == nameof(Settings.UpshiftingModifiers))
+            if (
+                e.PropertyName == nameof(Settings.UpshiftingModifiers) ||
+                e.PropertyName == nameof(Settings.LeftWaistStrength) ||
+                e.PropertyName == nameof(Settings.RightWaistStrength) ||
+                e.PropertyName == nameof(Settings.LeftShoulderStrength) ||
+                e.PropertyName == nameof(Settings.RightShoulderStrength) ||
+                e.PropertyName == nameof(Settings.EngineStrength) ||
+                e.PropertyName == nameof(Settings.UpshiftingStrength)
+            )
             {
-                _upshiftModifierCurve = ParseUpshiftingModifiers(Settings.UpshiftingModifiers);
+                _physicsCalculator?.ApplySettings(Settings);
 
                 return;
             }
@@ -421,6 +525,16 @@ namespace User.ActiveBeltTensioner
             }
 
             if (
+                e.PropertyName == nameof(Settings.SeatDegreesFromVertical) ||
+                e.PropertyName == nameof(Settings.WaistBeltDegreesFromVertical)
+            )
+            {
+                _physicsCalculator = new PhysicsForceCalculator(Settings);
+
+                return;
+            }
+
+            if (
                 e.PropertyName == nameof(Settings.ActiveProfileKey)
             )
             {
@@ -431,20 +545,7 @@ namespace User.ActiveBeltTensioner
         /// <summary>Called by SimHub when new telemetry data is available</summary>
         public void DataUpdate(PluginManager pluginManager, ref GameData data)
         {
-            short oldGear = 0;
-            short newGear = 0;
-            bool inGear = Int16.TryParse(data.OldData?.Gear, out oldGear) && Int16.TryParse(data.NewData?.Gear, out newGear);
-
-            TelemetrySnapshot telemetrySnapshot = new TelemetrySnapshot
-            {
-                Surge = data.NewData?.AccelerationSurge,
-                Sway = data.NewData?.AccelerationSway,
-                Heave = data.NewData?.AccelerationHeave,
-                Speed = data.NewData?.SpeedKmh,
-                Revolutions = data.NewData?.Rpms,
-                DidUpshift = inGear && (newGear > oldGear),
-                IsActive = (data.GameRunning && !data.GameInMenu) || data.GameReplay
-            };
+            TelemetrySnapshot telemetrySnapshot = TelemetrySnapshot.Create(data);
 
             lock (_telemetryLock)
             {
@@ -460,6 +561,15 @@ namespace User.ActiveBeltTensioner
         /// <summary>Called by SimHub when the plugin is unloaded, allowing the graceful release of connections and resources</summary>
         public void End(PluginManager pluginManager)
         {
+            Logging.Current.Info($"SABT: Ending...");
+
+            if (pluginManager.IsApplicationExiting)
+            {
+                IsEnabled = false;
+            }
+
+            MotorController.SaveMotorConfigurations();
+
             this.SaveCommonSettings(_settingsName, Settings);
 
             _runControlLoop = false;
@@ -471,12 +581,12 @@ namespace User.ActiveBeltTensioner
                 _controlThread = null;
             }
 
-            MotorController.Disconnect();
+            MotorController.Disconnect(pluginManager.IsApplicationExiting);
         }
 
         public void FinalizePlugin()
         {
-            Logging.Current.Info("SABT: Finalizing plugin");
+            Logging.Current.Info("SABT: Finalizing plugin...");
         }
 
         /// <summary>Evaluates the <see cref="TelemetrySnapshot"/> properties, then performs auto-tuning and calculates the appropriate effects to apply (sending commands to the motors if enabled)</summary>
@@ -490,13 +600,10 @@ namespace User.ActiveBeltTensioner
             double[] telemetryHeaveBuffer = new double[telemetryBufferSize];
             int telemetryBufferIndex = 0;
 
-            // Initialise Upshift Timer
-            Stopwatch upshiftStopwatch = Stopwatch.StartNew();
-            upshiftStopwatch.Reset();
-
-            // Initialise Oscillation State (For Engine RPM Effects)
-            int oscillationDirection = 1;
-            Stopwatch oscillationStopwatch = Stopwatch.StartNew();
+            // Monitor Control Loop Interval
+            _controlLoopStopwatch = Stopwatch.StartNew();
+            long latestPhysicsCalculationTime = 0;
+            long latestAutomaticTuningUpdate = 0;
 
             while (_runControlLoop)
             {
@@ -515,193 +622,55 @@ namespace User.ActiveBeltTensioner
 
                 try
                 {
-                    // Parse Preferences
-                    double idleTension = ConvertToFraction(Settings.IdleTension);
-                    double minimumTension = ConvertToFraction(Settings.MinimumTension);
-                    double maximumTension = ConvertToFraction(Settings.MaximumTension);
-                    double sideBias = ConvertToFraction(Settings.SideBias);
-                    double smoothingFactor = ConvertToFraction(Settings.SmoothingFactor);
-                    double corneringStrength = ConvertToFraction(Settings.CorneringStrength);
-                    double accelerationStrength = ConvertToFraction(Settings.AccelerationStrength);
-                    double brakingStrength = ConvertToFraction(Settings.BrakingStrength);
-                    double jumpingStrength = ConvertToFraction(Settings.JumpingStrength);
-                    double landingStrength = ConvertToFraction(Settings.LandingStrength);
-                    double engineStrength = ConvertToFraction(Settings.EngineStrength);
-                    double upshiftingStrength = ConvertToFraction(Settings.UpshiftingStrength);
+                    // Send Telemetry To Physics Calculator
+                    _physicsCalculator.CalculateForcesAndTorques(
+                        telemetrySnapshot,
+                        _controlLoopStopwatch.ElapsedMilliseconds - latestPhysicsCalculationTime,
+                        out double leftShoulderTarget,
+                        out double rightShoulderTarget,
+                        out double leftWaistTarget,
+                        out double rightWaistTarget
+                    );
 
-                    // Handle Tuning & Telemetry
-                    int minimumSurge = Settings.MinimumSurge;
-                    int maximumSurge = Settings.MaximumSurge;
-                    int minimumSway = Settings.MinimumSway;
-                    int maximumSway = Settings.MaximumSway;
-                    int minimumHeave = Settings.MinimumHeave;
-                    int maximumHeave = Settings.MaximumHeave;
+                    latestPhysicsCalculationTime = _controlLoopStopwatch.ElapsedMilliseconds;
 
-                    bool isMoving = telemetrySnapshot.Speed > 0.2;
-                    bool didUpshift = telemetrySnapshot.DidUpshift;
-                    double surge = telemetrySnapshot.Surge ?? 0.0;
-                    double sway = (ConvertToFractionOfRange(telemetrySnapshot.Sway ?? 0.0, minimumSway, maximumSway) * 2.0) - 1.0;
-                    double heave = telemetrySnapshot.Heave ?? 0.0;
-                    double speed = telemetrySnapshot.Speed ?? 0.0;
-                    double revolutions = telemetrySnapshot.Revolutions ?? 0.0;
-
-                    // Calculate Forces
-                    double braking = ConvertToFractionOfRange(surge, 0, maximumSurge);
-                    double acceleration = 1.0 - ConvertToFractionOfRange(surge, minimumSurge, 0);
-                    double landing = ConvertToFractionOfRange(heave, 0, maximumHeave);
-                    double jumping = 1.0 - ConvertToFractionOfRange(heave, minimumHeave, 0);
-
-                    double increasingModifierLeft = 0.0;
-                    double increasingModifierRight = 0.0;
-                    double decreasingModifierLeft = 0.0;
-                    double decreasingModifierRight = 0.0;
-
-                    double leftTarget = 0.0;
-                    double rightTarget = 0.0;
-
-                    increasingModifierLeft = Math.Max(increasingModifierLeft, (braking * brakingStrength));
-                    increasingModifierRight = Math.Max(increasingModifierRight, (braking * brakingStrength));
-                    decreasingModifierLeft = Math.Max(decreasingModifierLeft, (acceleration * accelerationStrength));
-                    decreasingModifierRight = Math.Max(decreasingModifierRight, (acceleration * accelerationStrength));
-                    decreasingModifierLeft = Math.Max(decreasingModifierLeft, (jumping * jumpingStrength));
-                    decreasingModifierRight = Math.Max(decreasingModifierRight, (jumping * jumpingStrength));
-                    increasingModifierLeft = Math.Max(increasingModifierLeft, (landing * landingStrength));
-                    increasingModifierRight = Math.Max(increasingModifierRight, (landing * landingStrength));
-                    increasingModifierLeft = Math.Max(increasingModifierLeft, (sway <= 0.0) ? (Math.Abs(sway * corneringStrength)) : 0.0);
-                    increasingModifierRight = Math.Max(increasingModifierRight, (sway > 0.0) ? (Math.Abs(sway * corneringStrength)) : 0.0);
-
-                    // Combine Modifiers
-                    double totalModifierLeft = increasingModifierLeft - decreasingModifierLeft;
-                    double totalModifierRight = increasingModifierRight - decreasingModifierRight;
-
-                    if (totalModifierLeft < 0.0)
-                    {
-                        leftTarget = minimumTension + (totalModifierLeft * minimumTension);
-                    }
-                    else {
-                        leftTarget = minimumTension + (totalModifierLeft * (maximumTension - minimumTension));
-                    }
-
-                    if (totalModifierRight < 0.0)
-                    {
-                        rightTarget = minimumTension + (totalModifierRight * minimumTension);
-                    }
-                    else
-                    {
-                        rightTarget = minimumTension + (totalModifierRight * (maximumTension - minimumTension));
-                    }
-
-                    // Upshift Blip
-                    if (didUpshift && upshiftingStrength > 0.0)
-                    {
-                        upshiftStopwatch.Restart();
-                    }
-
-                    if (upshiftStopwatch.IsRunning)
-                    {
-                        double upshiftDuration = upshiftStopwatch.Elapsed.TotalMilliseconds;
-
-                        if (_upshiftModifierCurve != null)
-                        {
-                            if (upshiftDuration >= _upshiftModifierCurve[_upshiftModifierCurve.Length - 1].timeOffset)
-                            {
-                                upshiftStopwatch.Stop();
-                            }
-                            else
-                            {
-                                double upshiftModifier = GetUpshiftModifier(upshiftDuration) * upshiftingStrength;
-
-                                if (upshiftModifier > 0.0)
-                                {
-                                    leftTarget += upshiftModifier * (maximumTension - leftTarget);
-                                    rightTarget += upshiftModifier * (maximumTension - rightTarget);
-                                }
-                                else if (upshiftModifier < 0.0)
-                                {
-                                    leftTarget += upshiftModifier * leftTarget;
-                                    rightTarget += upshiftModifier * rightTarget;
-                                }
-                            }
-                        }
-                    }
-
-                    // Map To Range (Minimum ~ Maximum Tension)
-                    leftTarget = ClampTo(leftTarget, 0.0, maximumTension);
-                    rightTarget = ClampTo(rightTarget, 0.0, maximumTension);
-
-                    // Idle Tension
-                    if (!isMoving)
-                    {
-                        leftTarget = idleTension;
-                        rightTarget = idleTension;
-                    }
-
-                    // Engine Revolutions
-                    if (revolutions > 0.0 && engineStrength > 0.0)
-                    {
-                        double oscillationIntervalSeconds = (30.0 / revolutions);
-
-                        if (oscillationStopwatch.Elapsed.TotalSeconds >= oscillationIntervalSeconds)
-                        {
-                            oscillationDirection *= -1;
-                            oscillationStopwatch.Restart();
-                        }
-
-                        double revolutionsFraction = ConvertToFractionOfRange(revolutions, 0, 5000);
-
-                     // double adjustedEngineStrength = (1.0 - (revolutionsFraction * revolutionsFraction * revolutionsFraction)) * engineStrength * 0.5; // Cubic Curve
-                        double adjustedEngineStrength = (1.0 - revolutionsFraction) * engineStrength * 0.5; // Linear
-
-                        if (oscillationDirection > 0)
-                        {
-                            leftTarget = ClampTo(leftTarget + (adjustedEngineStrength * (maximumTension - leftTarget)), 0.0, maximumTension);
-                            rightTarget = ClampTo(rightTarget - (adjustedEngineStrength * rightTarget), 0.0, maximumTension);
-                        }
-                        else
-                        {
-                            rightTarget = ClampTo(rightTarget + (adjustedEngineStrength * (maximumTension - rightTarget)), 0.0, maximumTension);
-                            leftTarget = ClampTo(leftTarget - (adjustedEngineStrength * leftTarget), 0.0, maximumTension);
-                        }
-                    }
-
-                    // Side Bias
-                    if (sideBias < 0.0)
-                    {
-                        rightTarget *= (1.0 - Math.Abs(sideBias));
-                    }
-                    else if (sideBias > 0.0)
-                    {
-                        leftTarget *= (1.0 - sideBias);
-                    }
-
-                    // Update Telemetry Graph
+                    // Check Game State & Tab Focus
                     if (telemetrySnapshot.IsActive && SelectedTabIndex == 2)
                     {
                         UpdateTelemetryGraph(
-                            telemetrySnapshot.Surge ?? 0,
-                            telemetrySnapshot.Sway ?? 0,
-                            telemetrySnapshot.Heave ?? 0,
-                            leftTarget,
-                            rightTarget
+                            telemetrySnapshot,
+                            leftWaistTarget,
+                            rightWaistTarget,
+                            leftShoulderTarget,
+                            rightShoulderTarget
                         );
+                    }
+                    else
+                    {
+                        IsAutomaticallyTuning = false;
                     }
 
                     // Apply Automatic Tuning
                     if (IsAutomaticallyTuning)
                     {
-                        int averagedSurge = GetAveragedTelemetryValue(telemetrySurgeBuffer, telemetrySnapshot.Surge ?? 0, telemetryBufferIndex);
-                        int averagedSway = GetAveragedTelemetryValue(telemetrySwayBuffer, Math.Abs(telemetrySnapshot.Sway ?? 0), telemetryBufferIndex);
-                        int averagedHeave = GetAveragedTelemetryValue(telemetryHeaveBuffer, telemetrySnapshot.Heave ?? 0, telemetryBufferIndex);
-
-                        Settings.MaximumSurge = Math.Max(Settings.MaximumSurge, averagedSurge);
-                        Settings.MinimumSurge = Math.Min(Settings.MinimumSurge, averagedSurge);
-                        Settings.MaximumSway = Math.Max(Settings.MaximumSway, averagedSway);
-                        Settings.MinimumSway = Settings.MaximumSway * -1;
-                        Settings.MaximumHeave = Math.Max(Settings.MaximumHeave, averagedHeave);
-                        Settings.MinimumHeave = Math.Min(Settings.MinimumHeave, averagedHeave);
-
+                        int averagedSurge = GetAveragedTelemetryValue(telemetrySurgeBuffer, telemetrySnapshot.Surge, telemetryBufferIndex);
+                        int averagedSway = GetAveragedTelemetryValue(telemetrySwayBuffer, Math.Abs(telemetrySnapshot.Sway), telemetryBufferIndex);
+                        int averagedHeave = GetAveragedTelemetryValue(telemetryHeaveBuffer, telemetrySnapshot.Heave, telemetryBufferIndex);
+                        
                         telemetryBufferIndex = (telemetryBufferIndex + 1) % telemetryBufferSize;
 
+                        if ((_controlLoopStopwatch.ElapsedMilliseconds - latestAutomaticTuningUpdate) >= _automaticTuningUpdateInterval)
+                        {
+                            Settings.MaximumSurge = Math.Max(Settings.MaximumSurge, averagedSurge);
+                            Settings.MinimumSurge = Math.Min(Settings.MinimumSurge, averagedSurge);
+                            Settings.MaximumSway = Math.Max(Settings.MaximumSway, averagedSway);
+                            Settings.MinimumSway = Settings.MaximumSway * -1;
+                            Settings.MaximumHeave = Math.Max(Settings.MaximumHeave, averagedHeave);
+                            Settings.MinimumHeave = Math.Min(Settings.MinimumHeave, averagedHeave);
+
+                            latestAutomaticTuningUpdate = _controlLoopStopwatch.ElapsedMilliseconds;
+                        }
+                        
                         continue;
                     }
 
@@ -721,21 +690,33 @@ namespace User.ActiveBeltTensioner
 
                     if (_hasBeenInactive)
                     {
+                        if (!motorController.HasDevice)
+                        {
+                            ForegroundPrompt.ShowDialog(
+                                SLoc.GetValue("SABT_Message_NoDeviceDetected"),
+                                "Prompt.Controller.Configuration.png",
+                                false
+                            );
+
+                            IsEnabled = false;
+
+                            continue;
+                        }
+
                         if (!_hasBypassedActivationWarning)
                         {
-                            MessageBoxResult result = MessageBoxResult.No;
+                            bool shouldProceed = false;
 
                             Application.Current.Dispatcher.Invoke(() =>
                             {
-                                result = MessageBox.Show(
+                                shouldProceed = ForegroundPrompt.ShowDialog(
                                     SLoc.GetValue("SABT_Message_ActivationWarning"),
-                                    SLoc.GetValue("SABT_Plugin"),
-                                    MessageBoxButton.YesNo,
-                                    MessageBoxImage.Warning
+                                    "Prompt.Pulley.png",
+                                    true
                                 );
                             });
 
-                            if (result != MessageBoxResult.Yes)
+                            if (!shouldProceed)
                             {
                                 IsEnabled = false;
 
@@ -743,6 +724,15 @@ namespace User.ActiveBeltTensioner
                             }
 
                             motorController.Connect();
+
+                            if (!motorController.HasAnyMappings)
+                            {
+                                ForegroundPrompt.ShowDialog(
+                                    SLoc.GetValue("SABT_Message_NoMappedMotors"),
+                                    "Prompt.Pulley.png",
+                                    false
+                                );
+                            }
                         }
 
                         _hasBeenInactive = false;
@@ -751,19 +741,19 @@ namespace User.ActiveBeltTensioner
                     _hasBypassedActivationWarning = false;
 
                     // Send To Motors
-                    if (!motorController.IsBusy && motorController.HasSerial)
+                    if (!motorController.IsBusy && motorController.HasDevice)
                     {
-                        if (!motorController.SetTorques(leftTarget, rightTarget, smoothingFactor))
-                        {
-                            Logging.Current.Warn("SABT: Exceeded motor communication failure limit (disabling plugin)");
-
-                            IsEnabled = false;
-                        }
+                        motorController.SetTorques(
+                            leftShoulderTarget,
+                            rightShoulderTarget,
+                            leftWaistTarget,
+                            rightWaistTarget
+                        );
                     }
                 }
                 catch (Exception exception)
                 {
-                    Logging.Current.Error("SABT: " + exception.Message);
+                    Logging.Current.Error("SABT: " + exception.Message + "\nStack: " + exception.StackTrace);
                 }
             }
         }
@@ -771,7 +761,18 @@ namespace User.ActiveBeltTensioner
         /// <summary>An action wrapper for executing logic asynchronously</summary>
         public async Task DoWithoutWaiting(Action<DevicePlugin> actionToPerform)
         {
-            await Task.Run(() => actionToPerform(this));
+            string actionName = actionToPerform?.Method?.Name ?? "UnknownAction";
+
+            try
+            {
+                await Task.Run(() => actionToPerform(this));
+            }
+            catch (Exception exception)
+            {
+                Logging.Current.Error($"SABT: Asynchronous process failed: {actionName} ({exception.Message})\nStack: {exception.StackTrace}");
+
+                throw;
+            }
         }
 
         /// <summary>An action wrapper for executing logic on the main thread (where triggering logic may not be)</summary>
@@ -792,60 +793,12 @@ namespace User.ActiveBeltTensioner
             );
         }
 
-        /// <summary>A utility method for converting the 10x/100x/1000x integers used in the settings sliders with decimal values</summary>
-        private static double ConvertToFraction(double value, uint resolution = 1000)
-        {
-            value /= resolution;
-            if (value < -1.0) { return -1.0; }
-            if (value > 1.0) { return 1.0; }
-            return value;
-        }
-
-        /// <summary>A utility method for converting the integers used in the settings sliders with decimal values (relative to the given range)</summary>
-        private static double ConvertToFractionOfRange(double value, double min, double max)
-        {
-            value = ClampTo(value, min, max);
-
-            return (value - min) / (max - min);
-        }
-
         /// <summary>A utility method for clamping the given value to a given range</summary>
         private static double ClampTo(double value, double min, double max)
         {
             if (value < min) { return min; }
             if (value > max) { return max; }
             return value;
-        }
-
-        /// <summary>Returns the appropriate tension modifier for the given <paramref name="upshiftOffset"/> time</summary>
-        private double GetUpshiftModifier(double upshiftOffset)
-        {
-            if (upshiftOffset <= _upshiftModifierCurve[0].timeOffset)
-            {
-                return _upshiftModifierCurve[0].tensionModifier / 100.0;
-            }
-
-            if (upshiftOffset >= _upshiftModifierCurve[_upshiftModifierCurve.Length - 1].timeOffset)
-            {
-                return 0.0;
-            }
-
-            for (int i = 0; i < _upshiftModifierCurve.Length - 1; i++)
-            {
-                double fromTime  = _upshiftModifierCurve[i].timeOffset;
-                double fromValue = _upshiftModifierCurve[i].tensionModifier / 100.0;
-                double toTime    = _upshiftModifierCurve[i + 1].timeOffset;
-                double toValue   = _upshiftModifierCurve[i + 1].tensionModifier / 100.0;
-
-                if (upshiftOffset >= fromTime && upshiftOffset < toTime)
-                {
-                    double t = (upshiftOffset - fromTime) / (toTime - fromTime);
-
-                    return fromValue + t * (toValue - fromValue);
-                }
-            }
-
-            return 0.0;
         }
 
         /// <summary>Validates a "milliseconds:torque,milliseconds:torque,..." formatted upshifting time/torque modifier string</summary>
@@ -855,7 +808,7 @@ namespace User.ActiveBeltTensioner
         }
 
         /// <summary>Parses a "milliseconds:torque,milliseconds:torque,..." formatted upshifting time/torque modifier string, returning the parsed values or null if it is invalid</summary>
-        private static (int timeOffset, int tensionModifier)[] ParseUpshiftingModifiers(string upshiftingModifiers)
+        internal static (int timeOffset, int tensionModifier)[] ParseUpshiftingModifiers(string upshiftingModifiers)
         {
             if (string.IsNullOrWhiteSpace(upshiftingModifiers))
             {
@@ -974,8 +927,10 @@ namespace User.ActiveBeltTensioner
         private LineSeries _surgeSeries;
         private LineSeries _swaySeries;
         private LineSeries _heaveSeries;
-        private LineSeries _leftTorqueSeries;
-        private LineSeries _rightTorqueSeries;
+        private LineSeries _leftWaistSeries;
+        private LineSeries _leftShoulderSeries;
+        private LineSeries _rightWaistSeries;
+        private LineSeries _rightShoulderSeries;
 
         private LineAnnotation _surgeMinimumAnnotation;
         private LineAnnotation _surgeMaximumAnnotation;
@@ -985,8 +940,10 @@ namespace User.ActiveBeltTensioner
         private LineAnnotation _heaveMaximumAnnotation;
 
         private LineAnnotation _targetDividerAnnotation;
-        private RectangleAnnotation _leftTargetBarAnnotation;
-        private RectangleAnnotation _rightTargetBarAnnotation;
+        private RectangleAnnotation _leftWaistBarAnnotation;
+        private RectangleAnnotation _rightWaistBarAnnotation;
+        private RectangleAnnotation _leftShoulderBarAnnotation;
+        private RectangleAnnotation _rightShoulderBarAnnotation;
 
         private LinearAxis _accelerationAxis;
         private LinearAxis _timeAxis;
@@ -1000,7 +957,19 @@ namespace User.ActiveBeltTensioner
         private const string _targetAxisKey = "targetAxis";
 
         private DateTime _lastPlotRefresh = DateTime.MinValue;
-        private static readonly TimeSpan PlotRefreshInterval = TimeSpan.FromMilliseconds(33); // 33
+        private static readonly TimeSpan PlotRefreshInterval = TimeSpan.FromMilliseconds(33);
+
+
+
+
+
+
+
+
+
+
+
+
 
         /// <summary>Initialises the telemetry graph instance and configures its styling and legends</summary>
         private void InitialiseTelemetryGraph()
@@ -1091,8 +1060,10 @@ namespace User.ActiveBeltTensioner
             _heaveMinimumAnnotation = AddThresholdLine(yellow);
             _heaveMaximumAnnotation = AddThresholdLine(yellow);
 
-            _leftTorqueSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_Torque") + " (L)", lighterBlue);
-            _rightTorqueSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_Torque") + " (R)", darkerBlue);
+            _leftWaistSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_LeftWaistTorque"), darkerBlue);
+            _rightWaistSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_RightWaistTorque"), darkerBlue);
+            _leftShoulderSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_LeftShoulderTorque"), lighterBlue);
+            _rightShoulderSeries = AddTelemetryLine(_torqueAxisKey, SLoc.GetValue("SABT_Legend_RightShoulderTorque"), lighterBlue);
 
             _targetDividerAnnotation = new LineAnnotation
             {
@@ -1104,31 +1075,55 @@ namespace User.ActiveBeltTensioner
                 X = 0
             };
 
-            _leftTargetBarAnnotation = new RectangleAnnotation
+            _leftWaistBarAnnotation = new RectangleAnnotation
             {
                 XAxisKey = _targetAxisKey,
                 Fill = lighterBlue,
                 Layer = AnnotationLayer.AboveSeries,
-                MinimumX = 0.1,
-                MaximumX = 0.45,
+                MinimumX = (double) 1 / 13,
+                MaximumX = (double) 3 / 13,
                 MinimumY = _accelerationAxis.Minimum,
                 MaximumY = _accelerationAxis.Minimum
             };
 
-            _rightTargetBarAnnotation = new RectangleAnnotation
+            _leftShoulderBarAnnotation = new RectangleAnnotation
+            {
+                XAxisKey = _targetAxisKey,
+                Fill = lighterBlue,
+                Layer = AnnotationLayer.AboveSeries,
+                MinimumX = (double) 4 / 13,
+                MaximumX = (double) 6 / 13,
+                MinimumY = _accelerationAxis.Minimum,
+                MaximumY = _accelerationAxis.Minimum
+            };
+
+            _rightShoulderBarAnnotation = new RectangleAnnotation
             {
                 XAxisKey = _targetAxisKey,
                 Fill = darkerBlue,
                 Layer = AnnotationLayer.AboveSeries,
-                MinimumX = 0.55,
-                MaximumX = 0.9,
+                MinimumX = (double) 7 / 13,
+                MaximumX = (double) 9 / 13,
+                MinimumY = _accelerationAxis.Minimum,
+                MaximumY = _accelerationAxis.Minimum
+            };
+
+            _rightWaistBarAnnotation = new RectangleAnnotation
+            {
+                XAxisKey = _targetAxisKey,
+                Fill = darkerBlue,
+                Layer = AnnotationLayer.AboveSeries,
+                MinimumX = (double) 10 / 13,
+                MaximumX = (double) 12 / 13,
                 MinimumY = _accelerationAxis.Minimum,
                 MaximumY = _accelerationAxis.Minimum
             };
 
             TelemetryGraphModel.Annotations.Add(_targetDividerAnnotation);
-            TelemetryGraphModel.Annotations.Add(_leftTargetBarAnnotation);
-            TelemetryGraphModel.Annotations.Add(_rightTargetBarAnnotation);
+            TelemetryGraphModel.Annotations.Add(_leftWaistBarAnnotation);
+            TelemetryGraphModel.Annotations.Add(_rightWaistBarAnnotation);
+            TelemetryGraphModel.Annotations.Add(_leftShoulderBarAnnotation);
+            TelemetryGraphModel.Annotations.Add(_rightShoulderBarAnnotation);
 
             UpdateTelemetryGraphFilters();
         }
@@ -1165,13 +1160,21 @@ namespace User.ActiveBeltTensioner
                 ToggleThresholdlLine(_heaveMinimumAnnotation, Settings.ShowHeavePlot);
                 ToggleThresholdlLine(_heaveMaximumAnnotation, Settings.ShowHeavePlot);
             }
-            if (_leftTorqueSeries != null)
+            if (_leftWaistSeries != null)
             {
-                _leftTorqueSeries.IsVisible = Settings.ShowTorquePlot;
+                _leftWaistSeries.IsVisible = Settings.ShowTorquePlot;
             }
-            if (_rightTorqueSeries != null)
+            if (_rightWaistSeries != null)
             {
-                _rightTorqueSeries.IsVisible = Settings.ShowTorquePlot;
+                _rightWaistSeries.IsVisible = Settings.ShowTorquePlot;
+            }
+            if (_leftShoulderSeries != null)
+            {
+                _leftShoulderSeries.IsVisible = Settings.ShowTorquePlot;
+            }
+            if (_rightShoulderSeries != null)
+            {
+                _rightShoulderSeries.IsVisible = Settings.ShowTorquePlot;
             }
 
             TelemetryGraphModel.InvalidatePlot(true);
@@ -1180,34 +1183,47 @@ namespace User.ActiveBeltTensioner
         }
 
         /// <summary>Applies the given telemetry data to the telemetry graph and requests (but does not guarantee) a redraw</summary>
-        private void UpdateTelemetryGraph(double surge, double sway, double heave, double leftTorque, double rightTorque)
+        private void UpdateTelemetryGraph(TelemetrySnapshot telemetrySnapshot, double leftwaistTorque, double rightwaistTorque, double leftShoulderTorque, double rightShoulderTorque)
         {
             double x = _plotPointIndex++;
 
-            _surgeSeries.Points.Add(new DataPoint(x, surge));
-            _swaySeries.Points.Add(new DataPoint(x, sway));
-            _heaveSeries.Points.Add(new DataPoint(x, heave));
-            _leftTorqueSeries.Points.Add(new DataPoint(x, leftTorque * 100));
-            _rightTorqueSeries.Points.Add(new DataPoint(x, rightTorque * 100));
+            _surgeSeries.Points.Add(new DataPoint(x, telemetrySnapshot.Surge));
+            _swaySeries.Points.Add(new DataPoint(x, telemetrySnapshot.Sway));
+            _heaveSeries.Points.Add(new DataPoint(x, telemetrySnapshot.Heave));
+            _leftWaistSeries.Points.Add(new DataPoint(x, leftwaistTorque * 100));
+            _rightWaistSeries.Points.Add(new DataPoint(x, rightwaistTorque * 100));
+            _leftShoulderSeries.Points.Add(new DataPoint(x, leftShoulderTorque * 100));
+            _rightShoulderSeries.Points.Add(new DataPoint(x, rightShoulderTorque * 100));
 
             if (_surgeSeries.Points.Count > _maximumPlotPoints)
             {
                 _surgeSeries.Points.RemoveAt(0);
                 _swaySeries.Points.RemoveAt(0);
                 _heaveSeries.Points.RemoveAt(0);
-                _leftTorqueSeries.Points.RemoveAt(0);
-                _rightTorqueSeries.Points.RemoveAt(0);
+                _leftWaistSeries.Points.RemoveAt(0);
+                _rightWaistSeries.Points.RemoveAt(0);
+                _leftShoulderSeries.Points.RemoveAt(0);
+                _rightShoulderSeries.Points.RemoveAt(0);
             }
 
-            double leftTorqueClamped = ClampTo(leftTorque, 0.0, 1.0);
-            double rightTorqueClamped = ClampTo(rightTorque, 0.0, 1.0);
+            double leftWaistTorqueClamped = ClampTo(leftwaistTorque, 0.0, 1.0);
+            double rightWaistTorqueClamped = ClampTo(rightwaistTorque, 0.0, 1.0);
+            double leftShoulderTorqueClamped = ClampTo(leftShoulderTorque, 0.0, 1.0);
+            double rightShoulderTorqueClamped = ClampTo(rightShoulderTorque, 0.0, 1.0);
+
             double graphHeight = _accelerationAxis.Maximum - _accelerationAxis.Minimum;
 
-            _leftTargetBarAnnotation.MinimumY = _accelerationAxis.Minimum;
-            _leftTargetBarAnnotation.MaximumY = _accelerationAxis.Minimum + (leftTorqueClamped * graphHeight);
+            _leftWaistBarAnnotation.MinimumY = _accelerationAxis.Minimum;
+            _leftWaistBarAnnotation.MaximumY = _accelerationAxis.Minimum + (leftWaistTorqueClamped * graphHeight);
 
-            _rightTargetBarAnnotation.MinimumY = _accelerationAxis.Minimum;
-            _rightTargetBarAnnotation.MaximumY = _accelerationAxis.Minimum + (rightTorqueClamped * graphHeight);
+            _rightWaistBarAnnotation.MinimumY = _accelerationAxis.Minimum;
+            _rightWaistBarAnnotation.MaximumY = _accelerationAxis.Minimum + (rightWaistTorqueClamped * graphHeight);
+
+            _leftShoulderBarAnnotation.MinimumY = _accelerationAxis.Minimum;
+            _leftShoulderBarAnnotation.MaximumY = _accelerationAxis.Minimum + (leftShoulderTorqueClamped * graphHeight);
+
+            _rightShoulderBarAnnotation.MinimumY = _accelerationAxis.Minimum;
+            _rightShoulderBarAnnotation.MaximumY = _accelerationAxis.Minimum + (rightShoulderTorqueClamped * graphHeight);
 
             RedrawGraph();
         }

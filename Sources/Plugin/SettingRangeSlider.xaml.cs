@@ -1,28 +1,74 @@
+using Newtonsoft.Json.Linq;
+using SimHub;
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace User.ActiveBeltTensioner
 {
     public partial class SettingRangeSlider : UserControl
     {
-        private bool _isSynchronizingValues;
-        private bool _isSynchronizingMirroredValues;
-        private bool _isSynchronizingMidpoint;
-        private bool _isMidpointAuto = true;
+        private enum MirroredValueSource
+        {
+            LeftValue,
+            RightValue
+        }
+
+        private const int AutomaticMirroringDelay = 20;
+        private readonly DispatcherTimer _automaticMirroringTimer;
+
+        private bool _isMirroring;
+        private bool _isCoercing;
+        private bool _hasLeftValue;
+        private bool _hasRightValue;
+        private MirroredValueSource _lastChangedValueSource;
 
         public SettingRangeSlider()
         {
             InitializeComponent();
-            UpdateMidpoint();
-            SetCurrentValue(LeftSliderValueProperty, MapLeftValueToSliderValue(LeftValue));
+
+            _automaticMirroringTimer = new DispatcherTimer();
+            _automaticMirroringTimer.Interval = TimeSpan.FromMilliseconds(AutomaticMirroringDelay);
+            _automaticMirroringTimer.Tick += OnAutomaticMirroringTimerTick;
+
+            IsEnabledChanged += (s, e) =>
+            {
+                UpdateSliderOpacity();
+                UpdateCenterButtonVisibility();
+
+                if (!IsEnabled)
+                {
+                    StopAutomaticMirroringTimer();
+                }
+            };
+
+            Unloaded += (s, e) => StopAutomaticMirroringTimer();
+
+            UpdateSliderOpacity();
+            UpdateDisplayValues();
+        }
+
+        private void UpdateSliderOpacity()
+        {
+            RangeSliderControl.Opacity = IsEnabled ? 1.0 : 0.5;
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+            UpdateSliderOpacity();
+            UpdateDisplayValues();
+            UpdateCenterButtonVisibility();
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             nameof(Title),
             typeof(string),
             typeof(SettingRangeSlider),
-            new PropertyMetadata(string.Empty));
+            new PropertyMetadata(string.Empty)
+        );
 
         public string Title
         {
@@ -34,7 +80,8 @@ namespace User.ActiveBeltTensioner
             nameof(Unit),
             typeof(string),
             typeof(SettingRangeSlider),
-            new PropertyMetadata(string.Empty));
+            new PropertyMetadata(string.Empty)
+        );
 
         public string Unit
         {
@@ -46,7 +93,8 @@ namespace User.ActiveBeltTensioner
             nameof(Minimum),
             typeof(double),
             typeof(SettingRangeSlider),
-            new PropertyMetadata(0d, OnRangeChanged));
+            new PropertyMetadata(0d, OnRangeChanged)
+        );
 
         public double Minimum
         {
@@ -58,7 +106,8 @@ namespace User.ActiveBeltTensioner
             nameof(Maximum),
             typeof(double),
             typeof(SettingRangeSlider),
-            new PropertyMetadata(100d, OnRangeChanged));
+            new PropertyMetadata(100d, OnRangeChanged)
+        );
 
         public double Maximum
         {
@@ -70,40 +119,13 @@ namespace User.ActiveBeltTensioner
             nameof(Step),
             typeof(double),
             typeof(SettingRangeSlider),
-            new PropertyMetadata(1d));
+            new PropertyMetadata(1d, OnStepChanged)
+        );
 
         public double Step
         {
             get { return (double)GetValue(StepProperty); }
             set { SetValue(StepProperty, value); }
-        }
-
-        public static readonly DependencyProperty ShouldMirrorProperty = DependencyProperty.Register(
-            nameof(ShouldMirror),
-            typeof(bool),
-            typeof(SettingRangeSlider),
-            new PropertyMetadata(false, OnShouldMirrorChanged));
-
-        public bool ShouldMirror
-        {
-            get { return (bool)GetValue(ShouldMirrorProperty); }
-            set { SetValue(ShouldMirrorProperty, value); }
-        }
-
-        public static readonly DependencyProperty MidpointProperty = DependencyProperty.Register(
-            nameof(Midpoint),
-            typeof(double),
-            typeof(SettingRangeSlider),
-            new FrameworkPropertyMetadata(
-                double.NaN,
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                OnMidpointChanged,
-                CoerceMidpoint));
-
-        public double Midpoint
-        {
-            get { return (double)GetValue(MidpointProperty); }
-            set { SetValue(MidpointProperty, value); }
         }
 
         public static readonly DependencyProperty LeftValueProperty = DependencyProperty.Register(
@@ -114,7 +136,9 @@ namespace User.ActiveBeltTensioner
                 0d,
                 FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 OnLeftValueChanged,
-                CoerceLeftValue));
+                CoerceLeftValue
+            )
+        );
 
         public static readonly DependencyProperty RightValueProperty = DependencyProperty.Register(
             nameof(RightValue),
@@ -124,17 +148,9 @@ namespace User.ActiveBeltTensioner
                 0d,
                 FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 OnRightValueChanged,
-                CoerceRightValue));
-
-        public static readonly DependencyProperty LeftSliderValueProperty = DependencyProperty.Register(
-            nameof(LeftSliderValue),
-            typeof(double),
-            typeof(SettingRangeSlider),
-            new FrameworkPropertyMetadata(
-                0d,
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                OnLeftSliderValueChanged,
-                CoerceLeftSliderValue));
+                CoerceRightValue
+            )
+        );
 
         public double LeftValue
         {
@@ -148,196 +164,242 @@ namespace User.ActiveBeltTensioner
             set { SetValue(RightValueProperty, value); }
         }
 
-        public double LeftSliderValue
+        public static readonly DependencyProperty ShowCenterProperty = DependencyProperty.Register(
+            nameof(ShowCenter),
+            typeof(bool),
+            typeof(SettingRangeSlider),
+            new PropertyMetadata(false, OnShowCenterChanged)
+        );
+
+        public bool ShowCenter
         {
-            get { return (double)GetValue(LeftSliderValueProperty); }
-            set { SetValue(LeftSliderValueProperty, value); }
+            get { return (bool)GetValue(ShowCenterProperty); }
+            set { SetValue(ShowCenterProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShouldAutomaticallyMirrorProperty = DependencyProperty.Register(
+            nameof(ShouldAutomaticallyMirror),
+            typeof(bool),
+            typeof(SettingRangeSlider),
+            new PropertyMetadata(false, OnShouldAutomaticallyMirrorChanged)
+        );
+
+        public bool ShouldAutomaticallyMirror
+        {
+            get { return (bool)GetValue(ShouldAutomaticallyMirrorProperty); }
+            set { SetValue(ShouldAutomaticallyMirrorProperty, value); }
+        }
+
+        private static void OnStepChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (SettingRangeSlider)d;
+
+            control.UpdateDisplayValues();
         }
 
         private static void OnRangeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (SettingRangeSlider)d;
-            control.CoerceValue(MidpointProperty);
-            control.UpdateMidpoint();
-            control.CoerceValue(LeftValueProperty);
-            control.CoerceValue(RightValueProperty);
-            control.CoerceValue(LeftSliderValueProperty);
-            control.SetCurrentValue(LeftSliderValueProperty, control.MapLeftValueToSliderValue(control.LeftValue));
 
-            if (control.ShouldMirror)
+            control._isCoercing = true;
+
+            try
             {
-                control.ApplyMirroredValuesFromRight();
+                control.CoerceValue(LeftValueProperty);
+                control.CoerceValue(RightValueProperty);
             }
-        }
-
-        private void UpdateMidpoint()
-        {
-            if (!_isMidpointAuto)
+            finally
             {
-                return;
+                control._isCoercing = false;
             }
 
-            _isSynchronizingMidpoint = true;
-            SetCurrentValue(MidpointProperty, CalculateMidpoint(Minimum, Maximum));
-            _isSynchronizingMidpoint = false;
+            control.UpdateDisplayValues();
         }
 
         private static void OnLeftValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (SettingRangeSlider)d;
-            if (control._isSynchronizingValues)
+
+            if (!control._isCoercing)
             {
-                return;
+                control._hasLeftValue = true;
             }
 
-            control._isSynchronizingValues = true;
-            control.SetCurrentValue(LeftSliderValueProperty, control.MapLeftValueToSliderValue((double)e.NewValue));
-            control._isSynchronizingValues = false;
-
-            if (control.ShouldMirror && !control._isSynchronizingMirroredValues)
-            {
-                control.ApplyMirroredValuesFromLeft();
-            }
+            control.UpdateDisplayValues();
+            control.ScheduleAutomaticMirroring(MirroredValueSource.LeftValue);
         }
 
         private static void OnRightValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (SettingRangeSlider)d;
-            if (control.ShouldMirror && !control._isSynchronizingMirroredValues)
+
+            if (!control._isCoercing)
             {
-                control.ApplyMirroredValuesFromRight();
+                control._hasRightValue = true;
             }
+
+            control.UpdateDisplayValues();
+            control.ScheduleAutomaticMirroring(MirroredValueSource.RightValue);
         }
 
-        private static void OnLeftSliderValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnShowCenterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (SettingRangeSlider)d;
-            if (control._isSynchronizingValues)
+
+            control.UpdateCenterButtonVisibility();
+        }
+
+        private static void OnShouldAutomaticallyMirrorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (SettingRangeSlider)d;
+
+            if (!(bool)e.NewValue)
+            {
+                control.StopAutomaticMirroringTimer();
+                return;
+            }
+
+            control.CoerceValue(LeftValueProperty);
+            control.CoerceValue(RightValueProperty);
+            control.UpdateDisplayValues();
+        }
+
+        private void OnCenterClick(object sender, RoutedEventArgs e)
+        {
+            CenterValues();
+        }
+
+        private void CenterValues()
+        {
+            var midpoint = GetMidpoint();
+            var range = RightValue - LeftValue;
+
+            SetCurrentValue(LeftValueProperty, midpoint - (range / 2d));
+            SetCurrentValue(RightValueProperty, midpoint + (range / 2d));
+        }
+
+        private void ScheduleAutomaticMirroring(MirroredValueSource source)
+        {
+            if (_isMirroring)
             {
                 return;
             }
 
-            control._isSynchronizingValues = true;
-            control.SetCurrentValue(LeftValueProperty, control.MapLeftSliderValueToValue((double)e.NewValue));
-            control._isSynchronizingValues = false;
+            _lastChangedValueSource = source;
+            _automaticMirroringTimer.Stop();
 
-            if (control.ShouldMirror && !control._isSynchronizingMirroredValues)
+            if (ShouldAutomaticallyMirror && IsEnabled)
             {
-                control.ApplyMirroredValuesFromLeft();
+                _automaticMirroringTimer.Start();
             }
         }
 
-        private static object CoerceMidpoint(DependencyObject d, object baseValue)
+        private void StopAutomaticMirroringTimer()
         {
-            var control = (SettingRangeSlider)d;
-            var midpoint = (double)baseValue;
+            _automaticMirroringTimer.Stop();
+        }
 
-            if (double.IsNaN(midpoint))
+        private void OnAutomaticMirroringTimerTick(object sender, EventArgs e)
+        {
+            _automaticMirroringTimer.Stop();
+            ApplyAutomaticMirroring();
+        }
+
+        private void ApplyAutomaticMirroring()
+        {
+            var midpoint = GetMidpoint();
+
+            _isMirroring = true;
+
+            try
             {
-                return double.NaN;
+                if (_lastChangedValueSource == MirroredValueSource.LeftValue)
+                {
+                    SetCurrentValue(RightValueProperty, (midpoint * 2d) - LeftValue);
+                }
+                else
+                {
+                    SetCurrentValue(LeftValueProperty, (midpoint * 2d) - RightValue);
+                }
             }
-
-            return Clamp(midpoint, control.Minimum, control.Maximum);
+            finally
+            {
+                _isMirroring = false;
+            }
         }
 
         private static object CoerceLeftValue(DependencyObject d, object baseValue)
         {
             var control = (SettingRangeSlider)d;
-            return Clamp((double)baseValue, control.Minimum, control.GetEffectiveMidpoint());
+            var maximum = control._hasRightValue ? control.RightValue : control.Maximum;
+
+            if (control.ShouldAutomaticallyMirror)
+            {
+                maximum = Math.Min(maximum, control.GetMidpoint());
+            }
+
+            return Clamp((double)baseValue, control.Minimum, maximum);
         }
 
         private static object CoerceRightValue(DependencyObject d, object baseValue)
         {
             var control = (SettingRangeSlider)d;
-            return Clamp((double)baseValue, control.GetEffectiveMidpoint(), control.Maximum);
-        }
+            var minimum = control._hasLeftValue ? control.LeftValue : control.Minimum;
 
-        private static object CoerceLeftSliderValue(DependencyObject d, object baseValue)
-        {
-            var control = (SettingRangeSlider)d;
-            return Clamp((double)baseValue, control.Minimum, control.GetEffectiveMidpoint());
-        }
-
-        private static void OnMidpointChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var control = (SettingRangeSlider)d;
-
-            if (!control._isSynchronizingMidpoint)
+            if (control.ShouldAutomaticallyMirror)
             {
-                var midpoint = (double)e.NewValue;
-                control._isMidpointAuto = double.IsNaN(midpoint);
-
-                if (control._isMidpointAuto)
-                {
-                    control.UpdateMidpoint();
-                    return;
-                }
+                minimum = Math.Max(minimum, control.GetMidpoint());
             }
 
-            control.CoerceValue(LeftValueProperty);
-            control.CoerceValue(RightValueProperty);
-            control.CoerceValue(LeftSliderValueProperty);
-            control.SetCurrentValue(LeftSliderValueProperty, control.MapLeftValueToSliderValue(control.LeftValue));
+            return Clamp((double)baseValue, minimum, control.Maximum);
+        }
 
-            if (control.ShouldMirror)
+        private void UpdateDisplayValues()
+        {
+            var leftValueTextBlock = FindName("LeftValueTextBlock") as TextBlock;
+            if (leftValueTextBlock != null)
             {
-                control.ApplyMirroredValuesFromRight();
+                leftValueTextBlock.Text = FormatValueForStep(LeftValue, Step);
+            }
+
+            var rightValueTextBlock = FindName("RightValueTextBlock") as TextBlock;
+            if (rightValueTextBlock != null)
+            {
+                rightValueTextBlock.Text = FormatValueForStep(RightValue, Step);
             }
         }
 
-        private static void OnShouldMirrorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private void UpdateCenterButtonVisibility()
         {
-            var control = (SettingRangeSlider)d;
-            if ((bool)e.NewValue)
+            var centerButton = FindName("CenterButton") as Button;
+            if (centerButton != null)
             {
-                control.ApplyMirroredValuesFromRight();
+                centerButton.Visibility = (ShowCenter && IsEnabled) ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
-        private void ApplyMirroredValuesFromLeft()
+        private static string FormatValueForStep(double value, double step)
         {
-            _isSynchronizingMirroredValues = true;
-            SetCurrentValue(RightValueProperty, MapMirroredValue(LeftValue));
-            _isSynchronizingMirroredValues = false;
+            var decimals = GetDecimalPlaces(step);
+            return value.ToString($"F{decimals}", CultureInfo.CurrentCulture);
         }
 
-        private void ApplyMirroredValuesFromRight()
+        private static int GetDecimalPlaces(double step)
         {
-            _isSynchronizingMirroredValues = true;
-            SetCurrentValue(LeftValueProperty, MapMirroredValue(RightValue));
-            _isSynchronizingMirroredValues = false;
-        }
-
-        private double MapMirroredValue(double value)
-        {
-            return (2d * GetEffectiveMidpoint()) - value;
-        }
-
-        private double MapLeftValueToSliderValue(double leftValue)
-        {
-            return Minimum + GetEffectiveMidpoint() - leftValue;
-        }
-
-        private double MapLeftSliderValueToValue(double leftSliderValue)
-        {
-            return Minimum + GetEffectiveMidpoint() - leftSliderValue;
-        }
-
-        private double GetEffectiveMidpoint()
-        {
-            return double.IsNaN(Midpoint) ? CalculateMidpoint(Minimum, Maximum) : Midpoint;
-        }
-
-        private static double CalculateMidpoint(double minimum, double maximum)
-        {
-            if (minimum > maximum)
+            if (step <= 0 || double.IsNaN(step) || double.IsInfinity(step))
             {
-                var temporary = minimum;
-                minimum = maximum;
-                maximum = temporary;
+                return 0;
             }
 
-            return minimum + ((maximum - minimum) / 2d);
+            var text = step.ToString("0.#############################", CultureInfo.InvariantCulture);
+            var decimalIndex = text.IndexOf('.');
+
+            return decimalIndex < 0 ? 0 : text.Length - decimalIndex - 1;
+        }
+
+        private double GetMidpoint()
+        {
+            return Minimum + ((Maximum - Minimum) / 2d);
         }
 
         private static double Clamp(double value, double minimum, double maximum)

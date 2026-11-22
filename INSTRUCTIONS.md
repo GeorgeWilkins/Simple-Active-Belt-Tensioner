@@ -4,50 +4,72 @@ Everything you need to know about building a tensioner of your own is in this do
 
 ## Printed Parts
 
-See the [/Printables/](/Printables/) directory to obtain the printable files, and detailed information on printing them. Make sure you read through this document and note which printable parts you _actually need_.
+See the [/Printables/](/Printables/) directory to obtain the printable files, and detailed information on printing them. Make sure you read through this document and note which printable parts you _actually need_; some are optional.
 
 ## Ordering Components
 ### Motors, Electronics & Fixings
 
-You should be able to order the _Waveshare_ [motors](https://www.waveshare.com/wiki/DDSM115) and [control board](http://www.waveshare.com/wiki/DDSM_Driver_HAT_(A)) from the same supplier, as they are almost always stocked together. They are designed for robotics projects, so those kinds of retailers are your best bet.
+You should be able to order the [motors](https://www.waveshare.com/wiki/DDSM115) and [control board](http://www.waveshare.com/wiki/DDSM_Driver_HAT_(A)) from the same supplier, as they are almost always stocked together. They are designed for robotics projects, so those kinds of retailers are your best bet.
 
-The rest of the parts can be obtained from virtually anywhere, including [Amazon](https://www.amazon.co.uk) or [AliExpress](https://www.aliexpress.com). Where I've linked to particular products, these are not endorsements or items I've tested; simply representative examples. Shop around, as prices change constantly...
+The rest of the parts can be obtained from virtually anywhere, including [Amazon](https://www.amazon.co.uk) or [AliExpress](https://www.aliexpress.com). Where I've linked to particular products, these are not endorsements or necessarilyitems I've tested; simply representative examples.
 
-| Guide Price | Part | Description | Example |
-| - | - | - | - |
-| `60 GBP` `x2` | 2 x `DDSM115` _or_ `M0601` Motors | Waveshare or DFRobot servo motors | [PiHut UK](https://thepihut.com/products/ddsm115-direct-drive-servo-motor) / [Waveshare](https://www.waveshare.com/ddsm115.htm) / [DFRobot](https://www.dfrobot.com/product-3077.html) |
-| `20 GBP` | `DDSM Driver HAT (A)` | Waveshare Controller Board (Version `A`) | [PiHut UK](https://thepihut.com/products/ddsm-hub-motor-driver-board) |
-| `6 GBP` | 2 x `6706` Bearings | `30x37x4mm` bearings for the pulleys | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DN3RW8) |
-| `7 GBP` | `M2.5` Screw & Nut Set | Eight `M2.5x16` (or `M2.5x18`) + eight `M2.5x10` + six `M2.5x12` + six `M2.5x20` + sixteen `M2.5` nuts | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
-| `5 GBP` | `~1M` UHMWPE/Dyneema Cord | The low-friction high-strength cord for the pulleys (`1.6~2.0MM` Diameter) | (any by-the-metre seller; eBay, etc) |
-| `20 GBP` | `15V` `90W` DC Power Supply | The power supply for the board and motors (standard `5.5x2.5MM` centre-positive barrel plug) | [Amazon UK](https://www.amazon.co.uk/dp/B09RHC7QG9) |
-| `25 GBP` | 4/5/6-Point `2"` Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
+Since availability and prices change constantly, I can't keep buying and verifying each component personally. Take note of the listed specifications and shop around for the best deal, or check our [Discord](https://discord.gg/26wcbKJMpR) for advice and recommendations.
+
+Some of these items are only sold in multiples, so our guide prices are calculated by dividing the total price _when bought together_ by the required quantity. They are not available _singularly_ at those prices. In some cases you'll have spares.
+
+| Guide Price (Each) | Quantity | Part | Notes | Example |
+| - | - | - | - | - |
+| `60 GBP` | `2x`-`4x` | `DDSM115`/`M0601` Motor | These two servo motors are the same OEM model and functionally identical. A basic two-channel shoulder belt configuration requires `2x` motors. Four-channel or tandem setups require `4x` motors | [PiHut UK](https://thepihut.com/products/ddsm115-direct-drive-servo-motor) / [Waveshare](https://www.waveshare.com/ddsm115.htm) / [DFRobot](https://www.dfrobot.com/product-3077.html) |
+| `20 GBP` | `1x` | `DDSM Driver HAT (A)` Motor Controller | A motor controller board designed specifically for these motors; up to four at a time. It **must** be the `(A)` model, as there are a few different ones for different motors that are incompatible | [PiHut UK](https://thepihut.com/products/ddsm-hub-motor-driver-board) |
+| `2 GBP` | `2x`-`4x` | `6706` Bearing | `30x37x4mm` bearings for the self-orienting pulley covers (in the same quantity as the motors) | [Amazon UK](https://www.amazon.co.uk/dp/B0D4DN3RW8) |
+| `7 GBP` | `1x` | `M2.5` Screw & Nut Set | A selection of `M2.5` screws and nuts that we use to fit the various parts together. The kit includes everything you need for any possible motor configuration, including a hex key | [Amazon UK](https://www.amazon.co.uk/dp/B0FSWHZPGD) |
+| `5 GBP` | `~5M` | `~1.8MM` UHMWPE/Dyneema Cord | Low-friction high-strength cord for up to four motors and pulley anchors. Avoid _'Paracord'_ style products with outer sheaths; go for _100% braided UHMWPE/Dyneema_ in `1.6mm` to `2.0mm` diameters | eBay, Kite/Sail stores, etc |
+| `40 GBP` | `1x` | `20V` `≥120W` DC Power Supply | The power supply for the motors. `120W` (`6A` at `20V`) is the verified _absolute minimum_ required for `4x` motor configurations; `≥140W` is strongly recommended (`≥7A` at `20V`) | [DigiKey](https://www.digikey.co.uk/en/products/detail/fsp-technology-inc/FSP135-AJBU3/16164268) / [AliExpress](https://www.aliexpress.com/item/1005011817355175.html) |
+| `25 GBP` | `1x` | 4/5/6-Point `2"` Harness | A low-cost Aliexpress model or used/expired FIA harness | [AliExpress](https://www.aliexpress.com/item/1005008051519590.html) |
 
 > 📢 **Important:**
-> - The `DDSM115` and `M0601` motors are the same OEM motor, but rebranded versions
-> - The motors are _sometimes_ sold in **pairs**. Make sure you're only buying _two motors_, not _two sets of two_
-> - There are multiple motor models in the `DDSMXXX` series. Make sure you're buying the [DDSM115](https://www.waveshare.com/wiki/DDSM115)
-> - There are multiple control board models of similar appearance. Make sure you're buying the [DDSM Driver HAT (A)](https://www.waveshare.com/wiki/DDSM_Driver_HAT_(A)) (irrespective of which brand of motor you buy)
-> - If using the _tubular_ motor brackets, you'll need [M5x25mm Clamping Knobs](https://www.amazon.co.uk/dp/B0CP2GQLQJ) and [M5 Nuts (8mm Hex)](https://www.amazon.co.uk/dp/B0FMRFPWJ3) to secure them to the tubing
-> - `15V` is the currently recommended voltage, but some builders are using `19V` (commonly offered by laptop supplies)
+> - The motors are _sometimes_ sold in **pairs** rather than individually. Make sure you're ordering the correct quantity for your preferred setup
+> - There are many products in the `DDSM` series. Make sure you're buying the [DDSM115](https://www.waveshare.com/wiki/DDSM115) and [DDSM Driver HAT (A)](https://www.waveshare.com/wiki/DDSM_Driver_HAT_(A))
+> - You can use power supplies from `15V` to `20V` as long as they are capable of _at least_ `6A` continuous output; but exceeding `20V` is **not recommended**
+
+### Power Supply
+Since the power requirements depend on the number of motors you are using, it is recommended that you buy a supply capable of handling the maximum of **four motors**; then if you decide to add motors later, you won't have to replace it.
+
+At minimum, this means you need:
+- `5.5x2.5mm` Barrel Plug (or `XT60`)
+- `15V` to `20V` Fixed Output
+- `≥1.5A` per motor
+
+The `GST120A20-P1M` is a high-quality `6A` supply that has been tested and verified with four motors under reasonable conditions. However it offers no headroom whatsoever; so hot environments or long sessions of heavy load may cause problems. Something like the `FSP135-AJBU3` is theoretically a better choice with more headroom; but you should shop around for quality supplies. `≥7A` is strongly recommended; the wattage will vary depending on your chosen voltage.
+
+Low quality supplies are unlikely to sustain their claimed output or handle spikes well.
+
+Gaming laptop supplies are a good source of high-current `19~20V` units; but watch out for the connector type and size.
+
+The motor controller accepts `5.5x2.5mm` barrel plugs or `XT60` connectors. Virtually no power supplies provide `XT60` output, but adapter cables exist. We use one of those to create our **back-driving protection unit**, which acts as a `5.5x2.5mm` barrel plug to `XT60` adapter.
 
 ### Belt Rollers
 
 These are considered to be _optional_, but are usually required for seats with angled or irregularly shaped belt guides. They cost little to build, so are _recommended_ if you have any doubts about your seat's belt guide design or want maximum performance.
 
-| Guide Price | Part | Description | Example |
-| - | - | - | - |
-| `5 GBP` | 4 x `605` Bearings | `5x14x5mm` bearings for the rollers | [Amazon UK](https://www.amazon.co.uk/dp/B0CZ8DJ6YM) / [Amazon UK](https://www.amazon.co.uk/dp/B0F6LNSC75) |
-| `5 GBP` | 8 x `M5` Fully-Threaded Countersunk Bolts | Length depends on seat belt guide depth | [Amazon UK](https://www.amazon.co.uk/dp/B0C97LXKBP) |
-| `5 GBP` | 8 x `M5` Hex Nuts (`8mm` WAF) | Must be `<5mm` thick | [Amazon UK](https://www.amazon.co.uk/dp/B0FMRFPWJ3) |
+| Guide Price (Each) | Quantity | Part | Description | Example |
+| - | - | - | - | - |
+| `0.5 GBP` | `4x` | `605` Bearings | `5x14x5mm` bearings for the rollers | [Amazon UK](https://www.amazon.co.uk/dp/B0CZ8DJ6YM) / [Amazon UK](https://www.amazon.co.uk/dp/B0F6LNSC75) |
+| `0.5 GBP` | `8x` | `M5` Countersunk Bolts | These **must** be _fully threaded_. You'll need to measure your belt hole depth (front to back) to determine the required length; add `10mm` to that and round up to the nearest standard bolt length (e.g. my `39mm` deep belt guides need `50mm` bolts) | [Amazon UK](https://www.amazon.co.uk/dp/B0C97LXKBP) |
+| `0.5 GBP` | `8x` | `M5` Hex Nuts | Must be `<5mm` thick and `8mm` wide across the flats | [Amazon UK](https://www.amazon.co.uk/dp/B0FMRFPWJ3) |
 
 > 📢 **Important:**
 > - Countersunk bolts are typically measured by their _entire length_ including the head
-> - Measure your seat's belt guide/hole depth and _add_ `10mm`, rounding up to the nearest standard bolt length (e.g. my `39mm` belt guides need `50mm` bolts)
 > - The bolts _must_ be fully threaded; otherwise you won't be able to use them for the roller axles
 > - If you use bolts that are longer than needed, they may interfere with the belts and rollers
 
 If _not_ using rollers, you can reduce friction (and wear) on your seat's belt loops if you apply some low-friction tape over the contact points. I've had success with [2-3/8" PTFE Tape](https://www.amazon.co.uk/dp/B0F3XKJW2V).
+
+### Belt Clamps
+
+The standard [Belt Clamps](Printables/Belt%20Clamps/) make use of screws and nuts from the `M2.5` screw set, so don't require any extra hardware.
+
+Only the _idler-equipped_ clamp designs require additional hardware; `2x` `682XZZ` `2.5x6x2.5mm` bearings _per clamp_ (so a maximum of `8x` for any possible **SABT** configuration).
 
 ### Back-Driving Protection
 
@@ -112,51 +134,79 @@ See the diagrams above for a reference circuit design.
 
 ## Assembly
 
-Depending on your choices above, some of these assembly instructions may not be relevant to you. Please read through the instructions and only follow the steps that are applicable to your build.
+Depending on your choices above, some of these assembly instructions may not be relevant to you. Please read through them and only follow the steps that are applicable to your build.
 
-The photographs provided are for illustrative purposes and may not show the absolute latest part designs; don't worry if they aren't _exactly_ the same as the parts you've printed.
+The photographs provided are for illustrative purposes and may not show the _exact same_ part designs you are using (either due to updates or various options being available).
 
 ### Motors
 
-| Step | Instructions | Illustration |
-| :-: | :- | :-: |
-| 1 | Since the motors are technically _wheels_, they come pre-fitted with rubber treads, which we need to remove.<br /><br />Unscrew the three `M2.5` bolts holding on motor face plate and remove it. You may need to remove a 'QA' sticker covering one of the screws.<br /><br />With the face plate removed, push the motor face (with the triangular hub) firmly with your thumbs, while holding the opposing face/rim of the tire with your fingers. Gradually working your way around the rim, moving small amounts at a time works best. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/37161acb-f815-408a-b04b-bd79367bf17b" /> |
-| 2 | You'll be left with the bare motor. Keep the rubber tire, face plate and bolts safe though; in case you need to return the motors or repurpose them later. | <img alt="Motor Without Tire" src="https://github.com/user-attachments/assets/522b9d83-0a32-4464-8a26-77f0ff1cfd14" /> |
+The motors provide our belt tensioning forces. They receive power and torque commands from the motor controller.
 
-### Pulleys
+Since the motors are technically _wheels_ intended for robotics projects, they come pre-fitted with rubber treads, which we'll need to remove. Note that the data/power cables on these motors are relatively fragile. Be careful not to damage them during assembly.
 
 | Step | Instructions | Illustration |
 | :-: | :- | :-: |
-| 1 | Gather the four pulley parts; the bearing, the outer cover, the face plate and hub. | <img alt="Pulley Parts" src="https://github.com/user-attachments/assets/a71e7c59-454f-469d-a038-f88115272059" /> |
-| 2 | Press the bearing into the outer cover. This should be possible by hand. The accuracy/roughness of your print will dictate how easy this is.<br /><br />If the fit is too tight, use a hammer to _gently_ tap it in (alternating sides with each tap) or consider shaving away some material with a knife or file.<br /><br />If the fit is too loose, cut up a drinks can and shim around the edges of the bearing to fill in the gap (ensuring the shims do not protrude). | <img alt="Inserting The Bearing" src="https://github.com/user-attachments/assets/ad074009-27f4-4a20-aeaf-5cc2b9e5fe1e" /><img alt="Inserted Bearing" src="https://github.com/user-attachments/assets/36d34db8-b217-4201-b0ea-c0265f49e00e" /> |
-| 3 | Insert the pulley face from the front so it sits inside the inner ring of the bearing. The notes above regarding fitting tolerances apply here too. | <img alt="Face Inserted" src="https://github.com/user-attachments/assets/d301219f-ad1e-46d6-be3b-2027827be9d9" /> |
-| 4 | Insert the pulley hub over the top, so that the triangular shape on the face part pushes into the triangular hole of the hub. They may pop together or be loose depending on the tolerances of your print (either is fine). The slot in the hub for the cord should be facing outward. | <img alt="Hub Fitted" src="https://github.com/user-attachments/assets/74074eec-8118-420c-ae5c-088a4f61ddf7" /> |
-| 6 | Cut a `0.5M` length of the _UHMWPE/Dyneema cord_ and tie a tight knot in the end, then remove any excess cord after the knot. | <img alt="Knotting The Cord" src="https://github.com/user-attachments/assets/e8b54846-080b-41f7-bd63-63bef5716200" /> |
-| 5 | Thread one end of the cord through one of the pulley cover holes. When assembling the _Left_ pulley, use the hole marked with `L` inside the pulley cover (or `R` for the _Right_ pulley). Push the knot into the cut-out in the pulley hub. It should stay in place relatively well. | <img alt="Cord Inserted" src="https://github.com/user-attachments/assets/6f4bf1de-827f-4c2a-84de-9a5fa84f8851" /> |
-| 8 | Install the pulley onto the motor hub and insert and tighten three `M2.5x12MM` screws into the face plate. Make sure that the cord stays in the cut-out when doing so. | <img alt="Installing The Pulley" src="https://github.com/user-attachments/assets/ebaff46f-a8b5-4f85-8226-95cd5d5e60f6" /> |
+| 1 | Unscrew the three `M2.5` bolts holding on motor face plate and remove it. You may need to remove a 'QA' sticker covering one of the screws. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/37161acb-f815-408a-b04b-bd79367bf17b" /> |
+| 2 | Push the motor face (with the triangular hub) firmly with your thumbs, while holding the opposing face/rim of the tire with your fingers. Gradually working your way around the rim, moving small amounts at a time works best.<br /><br />If you have difficulty, warming the tires up with a hair dryer or heat gun will soften them and make this easier. | <img alt="Wheel Motor" src="https://github.com/user-attachments/assets/11f57779-0d66-4b99-9151-42d3f9739a8f" /> |
+| 3 | You'll be left with the bare motor. Keep the rubber tire, face plate and bolts safe though; in case you need to return the motors or repurpose them later. | <img alt="Motor Without Tire" src="https://github.com/user-attachments/assets/522b9d83-0a32-4464-8a26-77f0ff1cfd14" /> |
 
 ### Belt Clamps
+The belt clamps join our standard harness belts to the cord that will wrap around our pulleys. There are a few different designs you can choose from.
+
+In this guide we'll be using the **End Clamps**; designed to attach to the bare end of 2" webbing. However the assembly steps are essentially the same across all clamp designs.
 
 | Step | Instructions | Illustration |
 | :-: | ------- | :-: |
-| 1 | Gather the belt clamp parts; the four `M2.5x10` bolts, four `M2.5` nuts, and the front and rear plates. | <img alt="Belt Clamp Parts" src="https://github.com/user-attachments/assets/b2617647-5f2d-4c36-b557-64a65785d3fc" /> |
-| 1 | Insert `M2.5` nuts into the hexagonal holes on the underside of the rear clamp plate (as deeply as they will go). | <img alt="Nuits Fitted" src="https://github.com/user-attachments/assets/febc264f-4dce-4fbc-a7b0-05f986c8a296" /> |
-| 2 | Tie a tight knot in other end of the cord you previously attached to the _Pulley_. Push the knot into the cut-out in the rear clamp plate, so the cord comes out the bottom. | <img alt="Cord Fitted" src="https://github.com/user-attachments/assets/d5fe03f3-3ded-4b5f-b801-8cff1d229c37" /> |
-| 3 | Place the end of the harness belt into the rectangular detent of the rear clamp plate (it may overlap the knot; that's fine). Push the front clamp plate firmly down over both. | <img alt="Belt Positioned" src="https://github.com/user-attachments/assets/fc458388-391f-4c7b-82ae-c79fb7a6a81b" /><img alt="Clamp Applied" src="https://github.com/user-attachments/assets/75c67344-5ba3-4967-80b8-f37deb5d0f67" /> |
-| 4 | Keep pressure on the assembly while securing with the four `M2.5x10` bolts. Tighen each bolt partially in a circular pattern until they are all tight, rather than trying to fully tighten one at a time. | <img alt="Tightening The Clamp" src="https://github.com/user-attachments/assets/f2bd5545-2124-48f2-95b8-cdd25818f3c8" /> |
-| 5 | Once fully tightened, the two clamp parts should be fully touching with no visible gap between them. | <img alt="Clamp Tightened" src="https://github.com/user-attachments/assets/ede38304-9e67-4346-b12a-6ac284669664" /><img alt="Clamp Fully Assembled" src="https://github.com/user-attachments/assets/e4ce1ea0-6511-4f91-b2e1-c62682849e1b" /> |
+| 1 | Gather the belt clamp parts; the four `M2.5x10` bolts, four `M2.5` nuts, and the front and rear plates.<br /><br />Note that the clamps have three cord positions. If you are using a **single motor** with this belt, use the centre position. If you are using a **pair of motors**, use the outer positions. | <img alt="Belt Clamp Parts" src="https://github.com/user-attachments/assets/35c971b6-75bb-495c-b9a5-f20d2064c719" /> |
+| 2 | Insert `M2.5` nuts into the hexagonal holes on the underside of the rear clamp plate (as deeply as they will go). | <img alt="Nuts Fitted" src="https://github.com/user-attachments/assets/8b0e9e06-9d9d-4466-8b34-5d950757cdf7" /> |
+| 3 | Tie a tight knot in other end of the cord you previously attached to the _Pulley_. Push the knot into the cut-out in the rear clamp plate, so the cord comes out the bottom.<br /><br />If using paired motors, repeat this for the second cord. | <img alt="Cord Fitted" src="https://github.com/user-attachments/assets/8b5d01b1-9f84-433b-b4ed-aa20c9cd9ab0" /> |
+| 4 | Place the end of the harness belt into the rectangular detent of the rear clamp plate (it may overlap the knot; that's fine). Push the front clamp plate firmly down over both. | <img alt="Belt Positioned" src="https://github.com/user-attachments/assets/46525793-602e-4a68-b153-8ac3b75d40fc" /><img alt="Clamp Applied" src="https://github.com/user-attachments/assets/13527a52-6bf2-4621-86c8-55bebbf0f8cc" /> |
+| 5 | Keep pressure on the assembly while securing with the four `M2.5x10` bolts. Tighen each bolt partially then move on to the next one, until they are all tight; rather than trying to fully tighten one at a time. | <img alt="Tightening The Clamp" src="https://github.com/user-attachments/assets/5b5760dd-792c-4324-875b-2024a9978939" /> |
+| 6 | Once fully tightened, the two clamp parts should be fully touching with no visible gap between them. | <img alt="Clamp Fully Assembled" src="https://github.com/user-attachments/assets/efbe1e7a-ff0c-4ac8-bca8-95196e785525" /> |
 
-### Brackets
+### Belt Clamps (Idler Equipped)
+For the special versions of the clamps with idler-pulleys (for increased force output), the instructions are much the same.
 
 | Step | Instructions | Illustration |
 | :-: | ------- | :-: |
-| 1 | Gather the bracket parts; three `M2.5x20` bolts, the bracket and the motor (with or without pulley fitted). Since there are a number of bracket designs, the hardware needed to actually attach them to your rig will vary (but should be obvious if you already have a rig). | <img alt="Bracket Parts" src="https://github.com/user-attachments/assets/ad8dff22-55bb-4067-9ee4-b4830107c591" /> |
-| 1 | _Carefully_ feed the motor connectors and wires through the hole in the bracket. Bend back the smaller connector so you're not trying to push both through at once. | <img alt="Folding Back The Connector" src="https://github.com/user-attachments/assets/1b7b2707-8864-4f94-9705-66493df46735" /><img alt="Wires Fed Through" src="https://github.com/user-attachments/assets/e8dfd768-ad01-4a7f-9c6a-ea86f61c2314" /> |
-| 3 | Insert the motor stem into the socket on the braket. The shaft and socket are three-sided and symmetrical, so rotate it until it aligns with the socket and push in. As long as it sits fully into the socket, the angle doesn't matter. | <img alt="Inserted The Motor" src="https://github.com/user-attachments/assets/b77ca3aa-80c6-4385-ae0c-92eddb5b90c2" /> |
-| 2 | Secure the motor with the three `M2.5x20MM` bolts | <img alt="Motor Bolted In" src="https://github.com/user-attachments/assets/bee30fac-97a7-4d76-a025-d396fefac354" /> |
-| 3 | Attach the bracket to your rig frame. If using the _aluminium profile_ bracket designs, secure the bracket to your rig frame with suitable t-nuts and bolts. If using the tubular mount (with truss clamp), insert the `M10` nut into the printed backet slot, then secure it to the truss clamp with the `M10x16` bolt. | <img alt="Assembled Bracket" src="https://github.com/user-attachments/assets/357d287c-e556-41b7-832f-6e56bf0db2f5" /> |
+| 1 | Gather the belt clamp parts; the five `M2.5x12` bolts, five `M2.5` nuts, two `682XZZ` bearings, the printed pulley, and the front and rear plates.<br /><br />Press-fit the two bearings into the centre of the pulley. | <img alt="Belt Clamp Parts" src="https://github.com/user-attachments/assets/3f95405c-81ee-4e53-a030-67bdcf9a7d23" /> |
+| 2~3 | Same steps as the other clamp designs... | - |
+| 4 | When closing the two halves of the clamp together, insert the assembled pulley into the cavity and secure it with the fifth `M2.5` bolt and nut.<br /><br />You won't be able to do this after the clamp parts are tightened together. | <img alt="Pulley Inserted" src="https://github.com/user-attachments/assets/2819236b-f9d8-4721-89ca-e240f726d8fd" /> |
+| 5~7 | Same steps as the other clamp designs... | - |
+
+### Pulleys
+The pulleys turn the motor's torque into linear force by wrapping cords around small hubs. This design has self-orienting pulley covers, which orient themselves to the correct angle for your seat position. This allows for use with adjustable/sliding seats without needing to adjust the tensioning system.
+
+They can be optionally _anchored_ to your frame if you have any issues with the covers spinning or cords tangling (most commonly with **waist belts**, which are not kept taut by the weight of your harness like **shoulder belts** are).
+
+Note that attaching the pulleys to the motors is not recommended until _after_ you have fitted your motors to your rig. However we'll assemble them fully here for the purposes of this guide.
+
+| Step | Instructions | Illustration |
+| :-: | :- | :-: |
+| 1 | Gather the pulley parts; three `M2.5x12` bolts, the bearing, the outer cover, the face plate and hub. | <img alt="Pulley Parts" src="https://github.com/user-attachments/assets/20ecef0e-e12a-44bf-87e7-396b65f2046a" /> |
+| 2 | Press the bearing into the outer cover. This should be possible by hand. The accuracy/roughness of your print will dictate how easy this is.<br /><br />If the fit is too tight, use a hammer to _gently_ tap it in (alternating sides with each tap) or consider shaving away some material with a knife or file.<br /><br />If the fit is too loose, cut up a drinks can and shim around the edges of the bearing to fill in the gap (ensuring the shims do not protrude). | <img alt="Inserting The Bearing" src="https://github.com/user-attachments/assets/5488ba09-e4f6-406a-8622-1a27627ca863" /> |
+| 3 | Once installed, the bearing will be flush with the inside face of the pulley. It must be fully inserted and flat, or the pulley won't function correctly. | <img alt="Inserted Bearing" src="https://github.com/user-attachments/assets/fea62189-76d1-4eaa-9b78-85f078385c4e" /> |
+| 4 | **Optional:** Insert the _anchoring cord_ into the appropriate hole. This is just a `~0.3M` length of the same cord we use for our belts with a knot at one end.<br /><br />Once the motor and pulley are installed on your rig, you can attach the other end of this cord to the rig frame to anchor the pulley cover and prevent it from spinning freely (should that be an issue for your configuration).<br /><br />Many holes are provided so you can choose an appropriate anchoring angle relative to the belt cord exit angle (the large open slot in the side of the cover). | <img alt="Anchoring Cord" src="https://github.com/user-attachments/assets/1c1159e5-ec3a-496e-aec3-7f930c67eae3" /> |
+| 5 | Next we'll attach the pulley and belt cord to the motor. Normally you'd wait until the motor is installed on your rig to do this. | <img alt="Belt Cord" src="https://github.com/user-attachments/assets/3b1b6f60-eb70-425b-9b3b-f2ec0b786ea4" /> |
+| 6 | Place the knotted end of your belt cord into the recess inside the pulley hub. | <img alt="Cord Placement" src="https://github.com/user-attachments/assets/d54dfb8f-6569-42ab-8bba-ba0887265b58" /> |
+| 7 | Push the hub over the motor's triangular face, keeping the cord end captive. It should press fit tightly and stay in place once fitted. Make sure the cord hasn't slipped out and is held securely by the knotted end. | <img alt="Hub Installed" src="https://github.com/user-attachments/assets/60e4d662-2f5f-40ed-953a-9adb78563de9" /> |
+| 8 | Place the pulley cover over the motor face. Your belt cord must exit through the large open slot in the side of the pulley.<br /><br />If you have also installed an anchoring cord, pull it outwards while fitting the pulley cover, so that you don't trap it between the hub and cover. | <img alt="Installing The Pulley" src="https://github.com/user-attachments/assets/95318510-6dc2-45e1-b681-a0433a4c381c" /> |
+| 9 | The pulley face plate has a matching triangular shape that pops into the centre of the cover and secures everything in place.<br /><br />Take note of the alignment of the triangular hub when installing it. | <img alt="Inserting The Face Plate" src="https://github.com/user-attachments/assets/36ee9ec7-18fc-4e16-83da-c9c4876d8834" /> |
+| 10 | Insert and tighten the three `M2.5x12MM` screws into the face plate.<br /><br />You now have a completely assembled pulley. It should rotate freely without any wobble or rubbing against the motor. | <img alt="Inserting The Face Plate" src="https://github.com/user-attachments/assets/36ee9ec7-18fc-4e16-83da-c9c4876d8834" /> |
+
+### Motor Brackets
+Since there are so many different sim rig constructions, there are also various brackets designs for you to pick from. Here we're just going to show how to attach a motor to a bracket, which is the same process for every bracket design.
+
+Where necessary, additional instructions may be included in the same directory as the printable bracket parts; but they are all extremely simple to assemble. Mounting hardware (bolts, t-nuts and washers) for your specific rig are not included in the **SABT** BOM, as it is assumed you'll already have these available.
+
+| Step | Instructions | Illustration |
+| :-: | ------- | :-: |
+| 1 | Gather the bracket parts; three `M2.5x20` bolts, the bracket and the motor (with or without the pulley fitted). | <img alt="Bracket Parts" src="https://github.com/user-attachments/assets/f872c7e5-08b8-489a-ab4d-dcf05c2846e3" /> |
+| 2 | _Carefully_ feed the motor connectors and wires through the hole in the bracket. Bend back the smaller connector so you're not trying to push both through at once. | <img alt="Folding Back The Connector" src="https://github.com/user-attachments/assets/d22e94b7-2e17-416f-8c49-0e0be0b90f23" /><img alt="Wires Fed Through" src="https://github.com/user-attachments/assets/342b0ea6-d163-4b98-be9c-85c0587ea623" /> |
+| 3 | Insert the motor stem into the socket on the braket. The shaft and socket are three-sided and symmetrical, so rotate it until it aligns with the socket and push in. As long as it sits fully into the socket, the angle doesn't matter.<br /><br />Secure the motor with the three `M2.5x20MM` bolts; tightening them each bolt a little at a time.  | <img alt="Inserted The Motor" src="https://github.com/user-attachments/assets/17f964a0-787b-46e2-9c83-8de3ae23d5b1" /><img alt="Motor Bolted In" src="https://github.com/user-attachments/assets/1d3dd758-c869-469a-b425-27bfa8791cb9" /> |
 
 ### Controller Board
+The controller board sends power and commands to the motors. To prevent shorting or damage, we enclose it in a printed case. There are two versions of the case; the only difference being the location of their mounting brackets. Pick whichever suits your mounting position best.
 
 | Step | Instructions | Illustration |
 | :-: | ------- | :-: |
@@ -164,22 +214,22 @@ The photographs provided are for illustrative purposes and may not show the abso
 | 2 | Flip the switch on the control board to the `USB` setting. | <img alt="Switch Set To 'USB'" src="https://github.com/user-attachments/assets/535d4f6b-7255-40b4-9976-2180dd30fd0d" /> |
 | 3 | Insert `M2.5` nuts into the hexangonal holes on the underside of the lower printed case (as deeply as they will go). | <img alt="Nuts Inserted" src="https://github.com/user-attachments/assets/a611f28a-1c1b-444c-a974-b4a9d2b50296" /> |
 | 4 | Insert the board into the lower half of the printed case. The _Raspberry Pi_ header on the rear may be a tight fit here; push down on the white circles either side of the header to press this in. | <img alt="Board Inserted" src="https://github.com/user-attachments/assets/e3a8817d-76d7-4f4c-a74f-d56d9005a955" /> |
-| 5 | Place the upper half of the case on top and secure with four `M2.5x16` bolts. | <img alt="Case Assembled" src="https://github.com/user-attachments/assets/986af12a-4858-4d80-8412-7975f14e810f" /> |
+| 5 | Place the upper half of the case on top and secure with four `M2.5x16` bolts. | <img alt="Case Assembled" src="https://github.com/user-attachments/assets/d465d9a3-1d34-4e7c-8b77-c623085fb359" /> |
 
 ### Belt Rollers
 
 | Step | Instructions | Illustration |
 | :-: | ------- | :-: |
-| 1 | Gather the parts for each belt roller; the five `M5` bolts (length according to your belt guide depth), five `M5` nuts, three spacers, two `605` bearings, bracket, plate and roller. | <img alt="Belt Roller Parts" src="https://github.com/user-attachments/assets/6d63f725-313d-4d9e-b69f-4a526df867df" /> |
-| 2 | Press-fit the bearings into the ends of the roller. | <img alt="Fitting The Bearings" src="https://github.com/user-attachments/assets/8131e0b5-44e1-49d6-8490-dbcde63bac78" /> |
-| 3 | Insert two `M5` nuts into the inside faces of the bracket ends and thread in the `M5` bolts from the outside; no more than a couple turns (so their ends are flush with the nuts). | <img alt="Inserting Nuts &amp; Bolts" src="https://github.com/user-attachments/assets/30ec19c5-ffd8-4b66-9886-5d0a59cf98fb" /> |
-| 4 | Position the roller between the bracket ends and start screwing in the bolts all the way, securing the roller in place. | <img alt="Attaching The Roller" src="https://github.com/user-attachments/assets/338092c1-5afb-42e1-bf11-466ec6de9b88" /> |
-| 5 | Take the partially assembled roller and remaining parts to your sim rig. | <img alt="Partially Assembled" src="https://github.com/user-attachments/assets/3ffca7dd-2bd9-46b1-ba57-1ad740ed98a1" /> |
-| 6 | Establish where you'd like to mount the roller and which positioning holes you'll use. The roller must be as close to horizontal as possible and nideally cover the entire width of the belt guide hole. Horizontal guides only require two holes/bolts, while angled guides typically require three to prevent sideways movement. | <img alt="Positioning" src="https://github.com/user-attachments/assets/d3137559-1444-4194-bb93-3fb397a6fc0b" /> |
+| 1 | Gather the parts for each belt roller; the five `M5` bolts (length according to your belt guide depth), five `M5` nuts, spacers, two `605` bearings, bracket, plate and roller. | <img alt="Belt Roller Parts" src="https://github.com/user-attachments/assets/0f2454af-8aa6-4cf3-8b0c-d099daece124" /> |
+| 2 | Press-fit the bearings into the ends of the roller. | <img alt="Fitting The Bearings" src="https://github.com/user-attachments/assets/c9431d04-51e4-4df5-9a9f-c9de150d6fa1" /> |
+| 3 | Insert two `M5` nuts into the inside faces of the bracket ends and thread in the `M5` bolts from the outside; no more than a couple turns (so their ends are flush with the nuts). | <img alt="Inserting Nuts &amp; Bolts" src="https://github.com/user-attachments/assets/101801b7-8bd0-4d2d-87ea-de82c328abc3" /> |
+| 4 | Position the roller between the bracket ends and start screwing in the bolts all the way, securing the roller in place. | <img alt="Attaching The Roller" src="https://github.com/user-attachments/assets/e11869d2-476c-4c38-9d3c-7a2a77a1a002" /> |
+| 5 | Take the partially assembled roller and remaining parts to your sim rig. | <img alt="Partially Assembled" src="https://github.com/user-attachments/assets/5c4cee84-597f-486d-bb97-32495b3fea70" /> |
+| 6 | Establish where you'd like to mount the roller and which positioning holes you'll use. The roller must be as close to horizontal as possible and nideally cover the entire width of the belt guide hole. Horizontal guides only require two holes/bolts, while angled guides typically require three to prevent sideways movement. | <img alt="Positioning" src="https://github.com/user-attachments/assets/d017e2b1-ba2c-474e-b093-8fd3d113bb2d" /> |
 | 7 | On the face plate, find the corresponding holes to the ones you previously chose and insert the `M5` bolts. Place the printed spacers over those. | <img alt="Bolts &amp; Spacers" src="https://github.com/user-attachments/assets/bdc1d8c4-473c-4288-af75-3b34a11f1ddd" /> |
-| 8 | Position the face plate inside the belt guide, with the bolts resting on the bottom face of the belt guide hole. At this point you may need to feed through your belt, as there may not be space to do so once the roller is fitted. | <img alt="Face Plate" src="https://github.com/user-attachments/assets/1c5f9365-3fa1-412e-a063-d15ad5c2c189" /> |
-| 9 | Line up the bracket with the face plate and bolts, then insert the `M5` nuts and tighten from the other side. The face plate and bracket should _lightly_ clamp to the front and back faces of the seat's belt guide. | <img alt="Bracket Installation" src="https://github.com/user-attachments/assets/cbfdded9-015e-4a1d-b791-eb379cb9d14b" /> |
-| 10 | Repeat for the other side and if you haven't already, feed the belts through and check that everything is moving freely. | <img alt="Installed" src="https://github.com/user-attachments/assets/7000174e-5d14-47a2-84d9-4a895e18c4bd" /> |
+| 8 | Position the face plate inside the belt guide, with the bolts resting on the bottom face of the belt guide hole. At this point you may need to feed through your belt, as there may not be space to do so once the roller is fitted. | <img alt="Face Plate" src="https://github.com/user-attachments/assets/bdd1d0ff-f4ad-416a-adb2-47f3e3ba973a" /> |
+| 9 | Line up the bracket with the face plate and bolts, then insert the `M5` nuts and tighten from the other side. The face plate and bracket should _lightly_ clamp to the front and back faces of the seat's belt guide. | <img alt="Bracket Installation" src="https://github.com/user-attachments/assets/e4ea8a58-6077-4737-b605-f50408402cb3" /> |
+| 10 | Repeat for the other side and if you haven't already, feed the belts through and check that everything is moving freely. | <img alt="Installed" src="https://github.com/user-attachments/assets/25cc1bc9-0394-4d3c-9786-6b8a722edbae" /> |
 
 The choice of which holes to use is up to you and very much specific to your seat design. Below are some placement examples for common seat belt guide shapes. Note that horizontal belt guides can be fitted with only two `M5` positioning bolts, while angled guides usually need three to prevent sideways movement:
 
@@ -196,6 +246,48 @@ The choice of which holes to use is up to you and very much specific to your sea
 | 6 | Insert the bare wires into the screw terminals. The `XT60` cable should be on the **output** side and the round DC barrel cable should be on the **input** side. **Black** to `GND` and **red** to `VOUT` and `VIN`. Tighten up the screws as much as they will go. |  <img alt="Inserting The Wires" src="https://github.com/user-attachments/assets/0a9b5a0d-ac72-4451-a24e-41a58c598081" /> |
 | 5 | Check for any stray or loose wires and adjust if needed. Install the unit into the printed case, taking care not to disturb the fitted wires. Make sure that the black outer sheath of the cable goes _completely inside_ the case as shown, so that the case lid can clamp down on it once closed. | <img alt="Fitting Into The Case" src="https://github.com/user-attachments/assets/99450677-ceb3-4b04-8392-2bc96aac6a44" /> |
 | 8 | Install the `M2.5x16MM` screws and nuts into the case and tighten as much as they will reasonably go. Ideally if you happen to have a multimeter, before attempting to power the controller board, check that the `XT60` connector produces the expected `15V` in the correct polarity (the **flat** side should be `+` and the **beveled** side `-`) when the power supply is connected to the dc barrel plug. |  <img alt="The Completed Protection Unit" src="https://github.com/user-attachments/assets/f5234cca-f23d-4a27-9115-615e1edb59dc" /> |
+
+## Configurations
+**SABT** supports a wide variety of configurations; some of which are illustrated below:
+
+![Layouts](https://github.com/user-attachments/assets/08ea101a-9048-48ad-88ee-3bb640d5036d)
+
+The main options are which belts you'd like to be **active** and how much **force** you desire:
+- I want **active shoulder belts**
+    - You'll need **two motors** (with **one motor per belt**)
+    - Your waist belts will be passive
+    - You'll get `~10Kg` per belt
+        - You can increase this to `~18Kg` by using **idler-pulley belt clamps**
+        - You can increase this to `~20Kg` by using **paired motors** (**four motors** total)
+- I want **active shoulder belts** and **active waist belts**
+    - You'll need **four motors** (with **one motor per belt**)
+    - You'll get `~10Kg` per belt
+        - You can increase this to `~18Kg` by using **idler-pulley belt clamps**
+
+Other configurations (such as **single motor** inertia-reel style layouts) can be used, but are not formally supported.
+
+Within the plugin you can map any motor to any belt position.
+
+> 📢 **Important:** Since **SABT** can be upgraded over time by adding more motors or printing different parts, it is suggested that you try the standard `10Kg` output before choosing to go for more force. Most **SABT** builders have expressed satisfaction with the standard force output.
+
+## Fitting
+
+Since every rig is different, the fitting process can't be covered in every possible detail and is going to require some common sense from the builder.
+
+By now you will have chosen your motor brackets (and attached the motors) and should find their installation intuitive.
+
+Typically you would aim to mount all of your motors on the rearmost crossmember of your rig regardless of whether it is aluminium profile or tubular steel.
+
+Some rigs will prohibit certain layouts due to having insufficient mounting space, so you may need to consider other locations and orientations for your motors. I my case, the tubular steel rear bar was not wide enough for four motors, so I mounted a longer steel tube with some truss clamps, to which I then mounted the motor brackets. A number of builders have done the same but with aluminium profile instead.
+
+In rare cases some custom fabrication may be required; but typically only for more advanced four-channel configurations or unusual rig designs.
+
+It is a good idea to consult the _Google Photos_ [builds gallery](https://photos.app.goo.gl/ju7rso1PFKGxnRhJ8) or _Discord_ [builds channel](https://discord.gg/zbSNYTMFD3) for inspiration regarding layouts and mounting solutions. **SABT** builders have already come up with some innovative customisations and mounting solutions.
+
+Also consider visiting our _Discord_ [support](https://discord.gg/ccMynUxRVa) or [pre-build questions](https://discord.gg/YwW3TvEJEv) channels.
+
+### Video Guides
+[![Pulley Guide](https://github.com/user-attachments/assets/814b8002-cfd0-4495-8b5e-566ffa27c1b8)](https://youtu.be/M0-eGNMEdT8)
 
 ## Wiring Up
 
@@ -215,8 +307,6 @@ If everything is connected correctly, the board will be detected by the SimHub p
 
 ## Adjustment
 
-[![Pulley & USB Port Guidance](https://github.com/user-attachments/assets/b133db7d-114e-4c2f-b4da-042420bd6363)](https://www.youtube.com/watch?v=9At6qqblOZY)
-
 If you already have a harness, you'll be accustomed to tightening it up with the buckles/straps it has. **You don't need to do that with this tensioner**, since it pre-tensions the harness for you (see `Idle Tension` in the `Tension` tab of the plugin).
 
 However when first setting up the tensioner, you'll need to ensure the following:
@@ -232,21 +322,37 @@ The method of adjustment may depend on your chosen belt clamp design:
 - **Through Clamps**: Loosen the clamp bolts and simply slide the clamp up or down the length of the harness shoulder belts, then retighten in the desired location
 - **Loop Clamps**: You'll already be using belt buckles to secure the looped harness shoulder belts against themselves, so simply adjust those buckles until you achieve the desired lengths
 
-![Adjustment](https://github.com/user-attachments/assets/36ae4e29-3134-4734-8135-1fb9f7847400)
+### Cord & Belt Lengths
 
 For reference, a _single turn_ of the pulley is about `~10CM` of cord. This is useful when working out how much cord you have wrapped around the enclosed pulley.
 
 Since our harness is going to be self-adjusting (at least in the shoulders), we should make sure we have `~25CM` of cord between the belt clamps and the pulleys. Obviously we do not want our belt clamps colliding with the pulleys under normal operation.
 
+![Adjustment](https://github.com/user-attachments/assets/36ae4e29-3134-4734-8135-1fb9f7847400)
+
 We also want there to _always_ be at least some cord wrapped around the pulleys (`10~20CM`), as the motors will be unable to apply torque properly if the cord is fully unwound. Do not wrap more than `40CM` or about _four turns_ of cord, as this will start to bind the pulley.
 
 ![Cord Wrapping](https://github.com/user-attachments/assets/23a5a874-b905-484b-865d-39467735623d)
 
+### Pulley Anchoring
+
+Should you encounter issues with the pulley covers not self-orienting properly (resulting in cord tangling), you can add **anchoring cords**.
+
+These are simply additional `~30CM` lengths of cord with a knot in one end. The other end is fed through one of the many anchoring holes around the outside of the pulley cover (from the inside to the outside), with the knot keeping it attached inside the cover.
+
+The exposed cord is then tied around (or otherwise attached) to your rig frame. This doesn't need to be particularly taut; just enough to prevent the pulley cover from spinning with the motor. A little slack is desirable, as you still want the pulley covers to self-orient to the correct angle for your current seat position.
+
+Anchoring is particularly important for waist belts, as those do not benefit from the harness weight keeping their cords inherently taut.
+
+Which anchoring hole you use will depend on the exit angle of your belt cord and the relative angle of your rig anchoring point. Rotate the pulley to the angle it would be under normal operation, then take note of which of the anchroing holes is facing your rig's frame (usually where the motor bracket is mounted).
+
+![Pulley Anchoring](https://github.com/user-attachments/assets/903c60df-6b3b-4b6b-af7b-edc62e404244)
+
+### Cord Alignment
+
 It is important that the cord is aligned such that it does not rub against the _sides_ of the pulley housing. The housing is designed to freely rotate with the cord at any angle along the axis of the motor; so if you move your chair backwards or forwards, it doesn't cause a problem. However the motor pulleys must line up perfectly underneath the seat's belt holes to avoid rubbing. In other words, the motor axles must be _perpendicular_ to the cords:
 
-![Pulley Alignment](https://github.com/user-attachments/assets/458a506e-d968-46da-b6e9-95d0174b4486)
-
-_(Instructional Video TBC)_
+![Pulley Alignment](https://github.com/user-attachments/assets/6ec85e2f-677c-4701-b27d-69fdb16ac114)
 
 ## Software
 

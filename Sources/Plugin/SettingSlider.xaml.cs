@@ -1,20 +1,47 @@
+using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using MahApps.Metro.Controls;
 
 namespace User.ActiveBeltTensioner
 {
     public partial class SettingSlider : UserControl
     {
+        private bool _isSynchronizingLowerValue;
+
         public SettingSlider()
         {
             InitializeComponent();
+            IsEnabledChanged += (s, e) =>
+            {
+                UpdateSliderOpacity();
+                UpdateCenterButtonVisibility();
+            };
+            UpdateDisplayValue();
+        }
+
+        private void UpdateSliderOpacity()
+        {
+            SliderControl.Opacity = IsEnabled ? 1.0 : 0.5;
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+            UpdateSliderOpacity();
+            UpdateDisplayValue();
+            UpdateCenterButtonVisibility();
+            EnsureLowerValuePinned();
         }
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
             nameof(Title),
             typeof(string),
             typeof(SettingSlider),
-            new PropertyMetadata(string.Empty));
+            new PropertyMetadata(string.Empty)
+        );
 
         public string Title
         {
@@ -26,7 +53,8 @@ namespace User.ActiveBeltTensioner
             nameof(Unit),
             typeof(string),
             typeof(SettingSlider),
-            new PropertyMetadata(string.Empty));
+            new PropertyMetadata(string.Empty)
+        );
 
         public string Unit
         {
@@ -38,7 +66,8 @@ namespace User.ActiveBeltTensioner
             nameof(Minimum),
             typeof(double),
             typeof(SettingSlider),
-            new PropertyMetadata(0d));
+            new PropertyMetadata(0d)
+        );
 
         public double Minimum
         {
@@ -50,7 +79,8 @@ namespace User.ActiveBeltTensioner
             nameof(Maximum),
             typeof(double),
             typeof(SettingSlider),
-            new PropertyMetadata(100d));
+            new PropertyMetadata(100d)
+        );
 
         public double Maximum
         {
@@ -62,7 +92,8 @@ namespace User.ActiveBeltTensioner
             nameof(Step),
             typeof(double),
             typeof(SettingSlider),
-            new PropertyMetadata(1d));
+            new PropertyMetadata(1d, OnStepChanged)
+        );
 
         public double Step
         {
@@ -74,12 +105,126 @@ namespace User.ActiveBeltTensioner
             nameof(Value),
             typeof(double),
             typeof(SettingSlider),
-            new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+            new FrameworkPropertyMetadata(
+                0d,
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                OnValueChanged
+            )
+        );
 
         public double Value
         {
             get { return (double)GetValue(ValueProperty); }
             set { SetValue(ValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowCenterProperty = DependencyProperty.Register(
+            nameof(ShowCenter),
+            typeof(bool),
+            typeof(SettingSlider),
+            new PropertyMetadata(false, OnShowCenterChanged)
+        );
+
+        public bool ShowCenter
+        {
+            get { return (bool)GetValue(ShowCenterProperty); }
+            set { SetValue(ShowCenterProperty, value); }
+        }
+
+        private static void OnStepChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (SettingSlider)d;
+
+            control.UpdateDisplayValue();
+        }
+
+        private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (SettingSlider)d;
+
+            control.UpdateDisplayValue();
+        }
+
+        private static void OnShowCenterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (SettingSlider)d;
+
+            control.UpdateCenterButtonVisibility();
+        }
+
+        private void UpdateDisplayValue()
+        {
+            var valueTextBlock = FindName("ValueTextBlock") as TextBlock;
+            if (valueTextBlock != null)
+            {
+                valueTextBlock.Text = FormatValueForStep(Value, Step);
+            }
+        }
+
+        private void UpdateCenterButtonVisibility()
+        {
+            var centerButton = FindName("CenterButton") as Button;
+            if (centerButton != null)
+            {
+                centerButton.Visibility = (ShowCenter && IsEnabled) ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        private static string FormatValueForStep(double value, double step)
+        {
+            var decimals = GetDecimalPlaces(step);
+            return value.ToString($"F{decimals}", CultureInfo.CurrentCulture);
+        }
+
+        private static int GetDecimalPlaces(double step)
+        {
+            if (step <= 0 || double.IsNaN(step) || double.IsInfinity(step))
+            {
+                return 0;
+            }
+
+            var text = step.ToString("0.#############################", CultureInfo.InvariantCulture);
+            var decimalSeparatorIndex = text.IndexOf('.');
+            return decimalSeparatorIndex < 0 ? 0 : text.Length - decimalSeparatorIndex - 1;
+        }
+
+        private void OnSliderLowerValueChanged(object sender, RangeParameterChangedEventArgs e)
+        {
+            EnsureLowerValuePinned();
+        }
+
+        private void OnSliderCentralThumbDragStarted(object sender, DragStartedEventArgs e)
+        {
+            e.Handled = true;
+            EnsureLowerValuePinned();
+        }
+
+        private void OnSliderCentralThumbDragDelta(object sender, DragDeltaEventArgs e)
+        {
+            e.Handled = true;
+            EnsureLowerValuePinned();
+        }
+
+        private void EnsureLowerValuePinned()
+        {
+            if (_isSynchronizingLowerValue)
+            {
+                return;
+            }
+
+            if (Math.Abs(SliderControl.LowerValue - Minimum) < double.Epsilon)
+            {
+                return;
+            }
+
+            _isSynchronizingLowerValue = true;
+            SliderControl.SetCurrentValue(RangeSlider.LowerValueProperty, Minimum);
+            _isSynchronizingLowerValue = false;
+        }
+
+        private void OnCenterClick(object sender, RoutedEventArgs e)
+        {
+            Value = (Minimum + Maximum) * 0.5;
         }
     }
 }
