@@ -48,6 +48,18 @@ Gaming laptop supplies are a good source of high-current `19~20V` units; but wat
 
 The motor controller accepts `5.5x2.5mm` barrel plugs or `XT60` connectors. Virtually no power supplies provide `XT60` output, but adapter cables exist. We use one of those to create our **back-driving protection unit**, which acts as a `5.5x2.5mm` barrel plug to `XT60` adapter.
 
+### Power & Data Extensions
+If you're building a **four-motor** configuration, you may find you need further reach than the standard `~20cm` motor cables provide. In that case you can buy commonly available extension cables:
+- `JST-XH 2-pin` extension for power ([AliExpress](https://www.aliexpress.com/item/1005012290038006.html))
+    - One per motor
+    - Commonly described as `1S` `Balancing Extension`
+    - `22AWG` minimum
+- `JST-ZH 4-pin` extension for data (one per motor) ([AliExpress](https://www.aliexpress.com/item/1005010199761105.html))
+    - One per motor
+    - Wire gauge not important
+
+Up to `30cm` extensions have been tested without issue. Note that the wire colours of the extensions _will not match_ the motor cables. That isn't a problem, as long as the extensions don't swap any of the wires between the two ends.
+
 ### Belt Rollers
 
 These are considered to be _optional_, but are usually required for seats with angled or irregularly shaped belt guides. They cost little to build, so are _recommended_ if you have any doubts about your seat's belt guide design or want maximum performance.
