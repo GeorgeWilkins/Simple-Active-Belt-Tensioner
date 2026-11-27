@@ -3,7 +3,7 @@ These attach the motors to your rig. Since there are various rig frame types, a 
 
 All bracket designs attach to their motors using `3x` `M2.5x20mm` screws from the `M2.5` bolt & nut kit in the project BOM.
 
-![Parts](https://github.com/user-attachments/assets/b23eb74e-2c56-4610-be5a-b5752f0bc731)
+![Parts](https://github.com/user-attachments/assets/57812501-b4bc-458e-9a13-c0a1d6a999bd)
 
 ## Choosing Your Brackets
 ### For Aluminium Profile (30, 40 & 45 Series)
